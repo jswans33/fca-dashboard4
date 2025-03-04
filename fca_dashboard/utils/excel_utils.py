@@ -43,6 +43,7 @@ from fca_dashboard.utils.excel import (
     # Column utils
     get_column_names,
     # File utils
+    get_database_schema,
     get_excel_file_type,
     # Sheet utils
     get_sheet_names,
@@ -79,6 +80,7 @@ __all__ = [
     
     # Conversion utils
     'convert_excel_to_csv',
+    'get_database_schema',
     'merge_excel_files',
     'save_excel_to_database',
     

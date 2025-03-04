@@ -1,0 +1,61 @@
+Validation Report for Sheet: Asset Data
+DataFrame Shape: 774 rows, 24 columns
+
+Missing Values Report:
+--------------------------------------------------
+  asset name: 0.00% missing
+  asset tag: 0.00% missing
+  trade: 0.00% missing
+  equip served by: 0.00% missing
+  vendor: 0.00% missing
+  manufacturer: 0.00% missing
+  model number: 0.00% missing
+  serial number: 0.00% missing
+  size: 27.26% missing
+  unit: 0.00% missing
+  motor hp: 27.13% missing
+  estimated operating hours: 26.74% missing
+  usassetid: 0.00% missing
+  system category: 0.00% missing
+  sub system type: 0.00% missing
+  sub system classification: 0.00% missing
+  asset size (rounded up): 26.87% missing
+  id unit: 0.00% missing
+  service life: 26.87% missing
+  date installed: 26.74% missing
+  floor: 27.00% missing
+  area: 0.00% missing
+  room number: 0.00% missing
+  notes: 80.62% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 205
+  Duplicate indices: [568, 570, 571, 572, 573, 574, 575, 576, 577, 578] ... and 195 more
+
+Value Ranges Report:
+--------------------------------------------------
+  motor hp:
+    Below minimum: 0
+    Above maximum: 0
+    Total outside range: 0
+  size:
+    Below minimum: 0
+    Above maximum: 0
+    Total outside range: 0
+
+Data Types Report:
+--------------------------------------------------
+  motor hp:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  size:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  manufacturer:
+    Expected type: str
+    Current type: object
+    Error count: 0
+

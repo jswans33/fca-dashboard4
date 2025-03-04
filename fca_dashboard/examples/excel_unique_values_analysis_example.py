@@ -47,28 +47,27 @@ def extract_and_analyze_data(file_path, output_dir):
     print(f"File type: {analysis['file_type']}")
     print(f"Sheet names: {analysis['sheet_names']}")
     
-    # Create a configuration for the Excel file
-    # This configuration is based on our analysis of the file structure
-    config = {
-        "default": {
-            "header_row": None,  # Auto-detect for most sheets
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "Asset Data": {
-            "header_row": 6,  # We know the header starts at row 7 (index 6)
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "EQ IDs": {
-            "header_row": 0,  # Header is in the first row
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        }
-    }
+    # Get extraction configuration from settings
+    extraction_config = settings.get("excel_utils.extraction", {})
+    
+    # Convert sheet names to match the format in the settings
+    # The settings use lowercase with underscores, but the Excel file uses spaces and title case
+    config = {}
+    
+    # Add default settings
+    if "default" in extraction_config:
+        config["default"] = extraction_config["default"]
+    
+    # Add sheet-specific settings
+    for sheet_name in analysis['sheet_names']:
+        # Convert sheet name to the format used in settings (lowercase with underscores)
+        settings_key = sheet_name.lower().replace(" ", "_")
+        
+        # If there are settings for this sheet, add them to the config
+        if settings_key in extraction_config:
+            config[sheet_name] = extraction_config[settings_key]
+    
+    print(f"Using extraction configuration from settings: {config}")
     
     # Extract data from the Excel file using our configuration
     extracted_data = extract_excel_with_config(file_path, config)
@@ -91,16 +90,34 @@ def extract_and_analyze_data(file_path, output_dir):
         # Initialize sheet results
         sheet_results = {}
         
+        # Get analysis configuration from settings
+        analysis_config = settings.get("excel_utils.analysis", {})
+        
+        # Get default analysis settings
+        default_analysis = analysis_config.get("default", {})
+        
         # 1. Analyze unique values
         print(f"  Analyzing unique values...")
+        # Get unique values settings
+        unique_values_settings = default_analysis.get("unique_values", {})
+        max_unique_values = unique_values_settings.get("max_unique_values", 20)
+        
         # Select a subset of columns for unique value analysis
         # For demonstration purposes, we'll analyze the first 5 columns
         unique_columns = list(df.columns[:5])
-        unique_values_results = analyze_unique_values(df, columns=unique_columns)
+        unique_values_results = analyze_unique_values(
+            df,
+            columns=unique_columns,
+            max_unique_values=max_unique_values
+        )
         sheet_results['unique_values'] = unique_values_results
         
         # 2. Analyze column statistics for numeric columns
         print(f"  Analyzing column statistics...")
+        # Get column statistics settings
+        column_stats_settings = default_analysis.get("column_statistics", {})
+        include_outliers = column_stats_settings.get("include_outliers", True)
+        
         numeric_columns = df.select_dtypes(include=['number']).columns.tolist()
         if numeric_columns:
             column_stats_results = analyze_column_statistics(df, columns=numeric_columns[:5])
@@ -108,6 +125,10 @@ def extract_and_analyze_data(file_path, output_dir):
         
         # 3. Analyze text columns
         print(f"  Analyzing text columns...")
+        # Get text analysis settings
+        text_analysis_settings = default_analysis.get("text_analysis", {})
+        include_pattern_analysis = text_analysis_settings.get("include_pattern_analysis", True)
+        
         text_columns = df.select_dtypes(include=['object']).columns.tolist()
         if text_columns:
             text_analysis_results = analyze_text_columns(df, columns=text_columns[:5])

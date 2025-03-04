@@ -245,3 +245,65 @@ def save_excel_to_database(
         error_msg = f"Error saving DataFrame to database table {table_name}: {str(e)}"
         logger.error(error_msg)
         raise ExcelUtilError(error_msg) from e
+
+
+def get_database_schema(
+    connection_string: str,
+    table_name: str
+) -> str:
+    """
+    Get the schema of a database table.
+    
+    Args:
+        connection_string: The SQLAlchemy connection string.
+        table_name: The name of the table to get the schema for.
+        
+    Returns:
+        A string containing the schema of the table.
+        
+    Raises:
+        ExcelUtilError: If an error occurs while getting the schema.
+    """
+    logger = get_logger("excel_utils")
+    
+    try:
+        import sqlalchemy
+        
+        # Create the engine
+        engine = sqlalchemy.create_engine(connection_string)
+        
+        # Get the schema of the table
+        with engine.connect() as conn:
+            # For SQLite
+            if connection_string.startswith('sqlite'):
+                from sqlalchemy import text
+                result = conn.execute(text(f"PRAGMA table_info({table_name})"))
+                columns = []
+                for row in result:
+                    columns.append(f"{row[1]} {row[2]}")
+                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
+            # For PostgreSQL
+            elif connection_string.startswith('postgresql'):
+                from sqlalchemy import text
+                result = conn.execute(text(f"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{table_name}'"))
+                columns = []
+                for row in result:
+                    columns.append(f"{row[0]} {row[1]}")
+                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
+            # For MySQL
+            elif connection_string.startswith('mysql'):
+                from sqlalchemy import text
+                result = conn.execute(text(f"DESCRIBE {table_name}"))
+                columns = []
+                for row in result:
+                    columns.append(f"{row[0]} {row[1]}")
+                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
+            else:
+                schema = f"Schema for {table_name} not available for this database type"
+        
+        logger.info(f"Successfully retrieved schema for table {table_name}")
+        return schema
+    except Exception as e:
+        error_msg = f"Error getting schema for table {table_name}: {str(e)}"
+        logger.error(error_msg)
+        raise ExcelUtilError(error_msg) from e

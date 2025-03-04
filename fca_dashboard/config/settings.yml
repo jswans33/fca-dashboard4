@@ -17,6 +17,65 @@ examples:
     columns_to_extract: ["ID", "Product", "Price"]
     price_threshold: 15
 
+# Medtronics pipeline settings
+medtronics:
+  input_file: "uploads/Medtronics - Asset Log Uploader.xlsx"
+  output_dir: "outputs/pipeline/medtronic"
+  db_name: "medtronics_assets.db"
+  sheet_name: "Asset Data"
+  columns_to_extract: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
+  drop_na_columns: ["asset name"]  # Drop rows where these columns have NaN values
+
+# Excel utilities settings
+excel_utils:
+  extraction:
+    default:
+      header_row: null  # Auto-detect
+      drop_empty_rows: true
+      clean_column_names: true
+      strip_whitespace: true
+      convert_dtypes: true
+    asset_data:
+      header_row: 6  # We know the header starts at row 7 (index 6)
+    eq_ids:
+      header_row: 0  # Header is in the first row
+    cobie:
+      header_row: 2  # Header is in the third row
+    dropdowns:
+      header_row: 0  # Header is in the first row
+  
+  validation:
+    default:
+      missing_values:
+        threshold: 0.5  # Allow up to 50% missing values
+        columns: null  # Check all columns
+      duplicate_rows:
+        subset: null  # Check all columns for duplicates
+      data_types:
+        date_columns: ["date", "scheduled delivery date", "actual on-site date"]
+        numeric_columns: ["motor hp", "size"]
+        string_columns: ["equipment name", "equipment tag id", "manufacturer"]
+        boolean_columns: ["o&m received", "attic stock"]
+    asset_data:
+      value_ranges:
+        motor hp:
+          min: 0
+          max: 1000
+        size:
+          min: 0
+          max: null  # No upper limit
+    eq_ids:
+      required_columns: ["Lookup (for Uploader)", "Trade", "Precon System"]
+  
+  analysis:
+    default:
+      unique_values:
+        max_unique_values: 20  # Maximum number of unique values to include in the result
+      column_statistics:
+        include_outliers: true
+      text_analysis:
+        include_pattern_analysis: true
+
 # Database settings
 databases:
   sqlite:

@@ -65,167 +65,27 @@ Duplicate Rows Report:
 
 Value Ranges Report:
 --------------------------------------------------
-  Size:
-    Below minimum: 0
-    Above maximum: 0
-    Total outside range: 0
   Motor HP:
     Below minimum: 0
     Above maximum: 0
     Total outside range: 0
-  Asset Size (Rounded up):
+  Size:
     Below minimum: 0
     Above maximum: 0
     Total outside range: 0
 
 Data Types Report:
 --------------------------------------------------
-  Asset Name:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Asset Tag:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Manufacturer:
-    Expected type: str
-    Current type: object
+  Motor HP:
+    Expected type: float
+    Current type: float64
     Error count: 0
   Size:
     Expected type: float
     Current type: float64
     Error count: 0
-  Motor HP:
-    Expected type: float
-    Current type: float64
-    Error count: 0
-  Asset Size (Rounded up):
-    Expected type: float
-    Current type: float64
-    Error count: 0
-  Date Installed:
-    Expected type: date
-    Current type: datetime64[ns]
-    Error count: 0
-  Unnamed: 24:
-    Expected type: str
-    Current type: float64
-    Error count: 0
-  Unnamed: 25:
-    Expected type: str
-    Current type: float64
-    Error count: 0
-  Unnamed: 26:
+  Manufacturer:
     Expected type: str
     Current type: object
     Error count: 0
-  Unnamed: 27:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Unnamed: 28:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Unnamed: 29:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Unnamed: 30:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Unnamed: 31:
-    Expected type: str
-    Current type: object
-    Error count: 0
-  Unnamed: 32:
-    Expected type: str
-    Current type: float64
-    Error count: 0
-  Unnamed: 33:
-    Expected type: str
-    Current type: float64
-    Error count: 0
-  Unnamed: 34:
-    Expected type: str
-    Current type: float64
-    Error count: 0
-  Unnamed: 35:
-    Expected type: str
-    Current type: float64
-    Error count: 567
-  Unnamed: 36:
-    Expected type: str
-    Current type: float64
-    Error count: 567
-  Unnamed: 37:
-    Expected type: str
-    Current type: float64
-    Error count: 519
-  Unnamed: 38:
-    Expected type: str
-    Current type: float64
-    Error count: 519
-  Unnamed: 39:
-    Expected type: str
-    Current type: float64
-    Error count: 509
-  Unnamed: 40:
-    Expected type: str
-    Current type: float64
-    Error count: 484
-  Unnamed: 41:
-    Expected type: str
-    Current type: float64
-    Error count: 484
-  Unnamed: 42:
-    Expected type: str
-    Current type: float64
-    Error count: 483
-  Unnamed: 43:
-    Expected type: str
-    Current type: float64
-    Error count: 480
-  Unnamed: 44:
-    Expected type: str
-    Current type: float64
-    Error count: 330
-  Unnamed: 45:
-    Expected type: str
-    Current type: float64
-    Error count: 271
-  Unnamed: 46:
-    Expected type: str
-    Current type: float64
-    Error count: 271
-  Unnamed: 47:
-    Expected type: str
-    Current type: float64
-    Error count: 271
-  Unnamed: 48:
-    Expected type: str
-    Current type: float64
-    Error count: 271
-  Unnamed: 49:
-    Expected type: str
-    Current type: float64
-    Error count: 5
-  Unnamed: 50:
-    Expected type: str
-    Current type: float64
-    Error count: 5
-  Unnamed: 51:
-    Expected type: str
-    Current type: float64
-    Error count: 3
-  Unnamed: 52:
-    Expected type: str
-    Current type: float64
-    Error count: 3
-  Unnamed: 53:
-    Expected type: str
-    Current type: float64
-    Error count: 3
 

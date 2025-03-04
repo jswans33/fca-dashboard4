@@ -23,6 +23,7 @@ from fca_dashboard.utils.excel.column_utils import (
 )
 from fca_dashboard.utils.excel.conversion_utils import (
     convert_excel_to_csv,
+    get_database_schema,
     merge_excel_files,
     save_excel_to_database,
 )
@@ -73,6 +74,7 @@ __all__ = [
     'convert_excel_to_csv',
     'merge_excel_files',
     'save_excel_to_database',
+    'get_database_schema',
     
     # Analysis utils
     'analyze_excel_structure',

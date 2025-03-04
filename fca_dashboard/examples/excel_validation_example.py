@@ -50,28 +50,27 @@ def extract_and_validate_data(file_path, output_dir):
     print(f"File type: {analysis['file_type']}")
     print(f"Sheet names: {analysis['sheet_names']}")
     
-    # Create a configuration for the Excel file
-    # This configuration is based on our analysis of the file structure
-    config = {
-        "default": {
-            "header_row": None,  # Auto-detect for most sheets
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "Asset Data": {
-            "header_row": 6,  # We know the header starts at row 7 (index 6)
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "EQ IDs": {
-            "header_row": 0,  # Header is in the first row
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        }
-    }
+    # Get extraction configuration from settings
+    extraction_config = settings.get("excel_utils.extraction", {})
+    
+    # Convert sheet names to match the format in the settings
+    # The settings use lowercase with underscores, but the Excel file uses spaces and title case
+    config = {}
+    
+    # Add default settings
+    if "default" in extraction_config:
+        config["default"] = extraction_config["default"]
+    
+    # Add sheet-specific settings
+    for sheet_name in analysis['sheet_names']:
+        # Convert sheet name to the format used in settings (lowercase with underscores)
+        settings_key = sheet_name.lower().replace(" ", "_")
+        
+        # If there are settings for this sheet, add them to the config
+        if settings_key in extraction_config:
+            config[sheet_name] = extraction_config[settings_key]
+    
+    print(f"Using extraction configuration from settings: {config}")
     
     # Extract data from the Excel file using our configuration
     extracted_data = extract_excel_with_config(file_path, config)
@@ -115,62 +114,88 @@ def create_validation_config(sheet_name, df):
     Returns:
         A dictionary containing the validation configuration.
     """
-    # Initialize the validation configuration
+    # Get validation configuration from settings
+    validation_settings = settings.get("excel_utils.validation", {})
+    
+    # Initialize the validation configuration with default settings
     validation_config = {}
     
-    # Add missing values check for all sheets
-    validation_config["missing_values"] = {
-        "columns": list(df.columns),
-        "threshold": 0.5  # Allow up to 50% missing values
-    }
-    
-    # Add duplicate rows check for all sheets
-    validation_config["duplicate_rows"] = {
-        "subset": None  # Check all columns for duplicates
-    }
+    # Add default settings
+    if "default" in validation_settings:
+        default_settings = validation_settings["default"]
+        
+        # Add missing values check
+        if "missing_values" in default_settings:
+            missing_values_settings = default_settings["missing_values"]
+            validation_config["missing_values"] = {
+                "columns": missing_values_settings.get("columns") or list(df.columns),
+                "threshold": missing_values_settings.get("threshold", 0.5)
+            }
+        
+        # Add duplicate rows check
+        if "duplicate_rows" in default_settings:
+            duplicate_rows_settings = default_settings["duplicate_rows"]
+            validation_config["duplicate_rows"] = {
+                "subset": duplicate_rows_settings.get("subset")
+            }
+        
+        # Add data types check
+        if "data_types" in default_settings:
+            data_types_settings = default_settings["data_types"]
+            
+            # Create type specifications based on settings
+            type_specs = {}
+            
+            # Add date columns
+            for col in data_types_settings.get("date_columns", []):
+                if col in df.columns:
+                    type_specs[col] = "date"
+            
+            # Add numeric columns
+            for col in data_types_settings.get("numeric_columns", []):
+                if col in df.columns:
+                    type_specs[col] = "float"
+            
+            # Add string columns
+            for col in data_types_settings.get("string_columns", []):
+                if col in df.columns:
+                    type_specs[col] = "str"
+            
+            # Add boolean columns
+            for col in data_types_settings.get("boolean_columns", []):
+                if col in df.columns:
+                    type_specs[col] = "bool"
+            
+            if type_specs:
+                validation_config["data_types"] = type_specs
     
     # Add sheet-specific validation
-    if sheet_name == "asset_data":
-        # Add value ranges check for numeric columns
-        numeric_columns = df.select_dtypes(include=["number"]).columns.tolist()
-        
-        # Create ranges for numeric columns
-        ranges = {}
-        for col in numeric_columns:
-            if "size" in col.lower():
-                ranges[col] = {"min": 0, "max": None}  # Size should be positive
-            elif "hp" in col.lower():
-                ranges[col] = {"min": 0, "max": 1000}  # HP should be between 0 and 1000
-        
-        if ranges:
-            validation_config["value_ranges"] = ranges
-        
-        # Add data types check
-        type_specs = {}
-        for col in df.columns:
-            if "size" in col.lower() or "hp" in col.lower():
-                type_specs[col] = "float"
-            elif "date" in col.lower():
-                type_specs[col] = "date"
-            elif "name" in col.lower() or "tag" in col.lower() or "manufacturer" in col.lower():
-                type_specs[col] = "str"
-        
-        if type_specs:
-            validation_config["data_types"] = type_specs
+    # Convert sheet name to the format used in settings (lowercase with underscores)
+    settings_key = sheet_name.lower()
     
-    elif sheet_name == "eq_ids":
-        # Add data types check
-        type_specs = {}
-        for col in df.columns:
-            if "id" in col.lower():
-                type_specs[col] = "str"
-            elif "size" in col.lower():
-                type_specs[col] = "float"
-            elif "life" in col.lower():
-                type_specs[col] = "int"
+    if settings_key in validation_settings:
+        sheet_settings = validation_settings[settings_key]
         
-        if type_specs:
-            validation_config["data_types"] = type_specs
+        # Add value ranges check
+        if "value_ranges" in sheet_settings:
+            validation_config["value_ranges"] = sheet_settings["value_ranges"]
+        
+        # Add required columns check
+        if "required_columns" in sheet_settings:
+            validation_config["required_columns"] = sheet_settings["required_columns"]
+    
+    # If no validation config was created from settings, create a basic one
+    if not validation_config:
+        # Add missing values check for all sheets
+        validation_config["missing_values"] = {
+            "columns": list(df.columns),
+            "threshold": 0.5  # Allow up to 50% missing values
+        }
+        
+        # Add duplicate rows check for all sheets
+        validation_config["duplicate_rows"] = {
+            "subset": None  # Check all columns for duplicates
+        }
     
     return validation_config
 

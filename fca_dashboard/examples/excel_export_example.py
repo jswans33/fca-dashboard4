@@ -46,28 +46,27 @@ def extract_and_export_data(file_path, output_dir):
     print(f"File type: {analysis['file_type']}")
     print(f"Sheet names: {analysis['sheet_names']}")
     
-    # Create a configuration for the Excel file
-    # This configuration is based on our analysis of the file structure
-    config = {
-        "default": {
-            "header_row": None,  # Auto-detect for most sheets
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "Asset Data": {
-            "header_row": 6,  # We know the header starts at row 7 (index 6)
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        },
-        "EQ IDs": {
-            "header_row": 0,  # Header is in the first row
-            "drop_empty_rows": True,
-            "clean_column_names": True,
-            "strip_whitespace": True,
-        }
-    }
+    # Get extraction configuration from settings
+    extraction_config = settings.get("excel_utils.extraction", {})
+    
+    # Convert sheet names to match the format in the settings
+    # The settings use lowercase with underscores, but the Excel file uses spaces and title case
+    config = {}
+    
+    # Add default settings
+    if "default" in extraction_config:
+        config["default"] = extraction_config["default"]
+    
+    # Add sheet-specific settings
+    for sheet_name in analysis['sheet_names']:
+        # Convert sheet name to the format used in settings (lowercase with underscores)
+        settings_key = sheet_name.lower().replace(" ", "_")
+        
+        # If there are settings for this sheet, add them to the config
+        if settings_key in extraction_config:
+            config[sheet_name] = extraction_config[settings_key]
+    
+    print(f"Using extraction configuration from settings: {config}")
     
     # Extract data from the Excel file using our configuration
     extracted_data = extract_excel_with_config(file_path, config)
