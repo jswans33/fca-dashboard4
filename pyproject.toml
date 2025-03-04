@@ -36,8 +36,32 @@ disallow_untyped_defs = true
 disallow_incomplete_defs = true
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["fca_dashboard/tests"]
 python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "--cov=fca_dashboard --cov-report=html --cov-report=term"
+
+[tool.coverage.run]
+source = ["fca_dashboard"]
+omit = [
+    "*/tests/*",
+    "*/alembic/*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
 
 [tool.ruff]
 # Enable Pyflakes ('F'), pycodestyle ('E'), and isort ('I') codes by default.

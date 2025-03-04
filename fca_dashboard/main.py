@@ -13,6 +13,7 @@ import yaml
 
 from fca_dashboard.config.settings import get_settings
 from fca_dashboard.utils.logging_config import configure_logging, get_logger
+from fca_dashboard.utils.path_util import get_logs_path, resolve_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -57,16 +58,19 @@ def main() -> int:
     args = parse_args()
 
     # Configure logging
-    log_file = Path("logs") / "fca_dashboard.log"
+    log_file = get_logs_path("fca_dashboard.log")
     configure_logging(level=args.log_level, log_file=str(log_file), rotation="10 MB", retention="1 month")
 
     # Get a logger for this module
     log = get_logger("main")
 
     try:
+        # Resolve the configuration file path
+        config_path = resolve_path(args.config)
+        log.info(f"Loading configuration from {config_path}")
+
         # Load settings
-        log.info(f"Loading configuration from {args.config}")
-        settings = get_settings(args.config)
+        settings = get_settings(str(config_path))
 
         # Log startup information
         log.info("FCA Dashboard ETL Pipeline starting")
@@ -86,8 +90,11 @@ def main() -> int:
         #    - Validate data integrity after loading
         log.info("ETL Pipeline execution would start here")
 
+        log.info(f"Database URL: {settings.get('databases.sqlite.url')}")
+
         if args.excel_file:
-            log.info(f"Would process Excel file: {args.excel_file}")
+            excel_path = resolve_path(args.excel_file)
+            log.info(f"Would process Excel file: {excel_path}")
 
         if args.table_name:
             log.info(f"Would process table: {args.table_name}")

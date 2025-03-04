@@ -126,8 +126,32 @@ This SOP covers:
    disallow_incomplete_defs = true
    
    [tool.pytest.ini_options]
-   testpaths = ["tests"]
+   testpaths = ["fca_dashboard/tests"]
    python_files = "test_*.py"
+   python_classes = "Test*"
+   python_functions = "test_*"
+   addopts = "--cov=fca_dashboard --cov-report=html --cov-report=term"
+
+   [tool.coverage.run]
+   source = ["fca_dashboard"]
+   omit = [
+       "*/tests/*",
+       "*/alembic/*",
+       "*/__pycache__/*",
+       "*/migrations/*",
+       "*/venv/*",
+       "*/.venv/*",
+   ]
+
+   [tool.coverage.report]
+   exclude_lines = [
+       "pragma: no cover",
+       "def __repr__",
+       "raise NotImplementedError",
+       "if __name__ == .__main__.:",
+       "pass",
+       "raise ImportError",
+   ]
    
    [tool.ruff]
    # Enable Pyflakes ('F'), pycodestyle ('E'), and isort ('I') codes by default.
@@ -166,6 +190,33 @@ This SOP covers:
    known-first-party = ["fca_dashboard"]
    ```
 
+2. Create a `pytest.ini` file for additional pytest configuration:
+
+   ```ini
+   [pytest]
+   testpaths = fca_dashboard/tests
+   python_files = test_*.py
+   python_classes = Test*
+   python_functions = test_*
+
+   [mypy]
+   python_version = 3.8
+   warn_return_any = True
+   warn_unused_configs = True
+   disallow_untyped_defs = True
+   disallow_incomplete_defs = True
+
+   # Ignore missing imports for third-party libraries
+   [mypy.plugins.pytest]
+   # This tells mypy that pytest fixtures can return Any
+   pytest_fixture_function = True
+
+   # Ignore errors in test files
+   [mypy-fca_dashboard.tests.*]
+   disallow_untyped_defs = False
+   disallow_incomplete_defs = False
+   ```
+
 2. Create a minimal `setup.py` file to make the package installable:
 
    ```python
@@ -193,7 +244,7 @@ This SOP covers:
 3. Create a `Makefile` for convenience commands:
 
    ```makefile
-   .PHONY: lint test format install
+   .PHONY: lint test format install run clean init-db coverage test-unit test-integration
 
    lint:
     black --check .
@@ -206,7 +257,17 @@ This SOP covers:
     isort .
 
    test:
-    pytest tests/
+    pytest fca_dashboard/tests/
+
+   coverage:
+    pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+    @echo "HTML coverage report generated in htmlcov/"
+
+   test-unit:
+    pytest fca_dashboard/tests/unit/
+
+   test-integration:
+    pytest fca_dashboard/tests/integration/
 
    install:
     python -m pip install --upgrade pip
@@ -214,7 +275,12 @@ This SOP covers:
     pip install -e .
    ```
 
-   Note: The `install` target includes installing the package in development mode (`pip install -e .`), which is necessary for absolute imports to work correctly.
+   Note: The `install` target includes installing the package in development mode (`pip install -e .`), which is necessary for absolute imports to work correctly. The additional test targets provide more granular control over test execution:
+
+   - `test`: Runs all tests
+   - `test-unit`: Runs only unit tests
+   - `test-integration`: Runs only integration tests
+   - `coverage`: Runs tests with coverage reporting, generating both terminal and HTML reports
 
 ### 3.4. Understanding and Using Makefiles
 
@@ -513,7 +579,151 @@ This SOP covers:
    python -c "from fca_dashboard.utils.logging_config import configure_logging; configure_logging('DEBUG', 'logs/fca_dashboard.log')"
    ```
 
-### 8. Example Pipeline Usage
+### 8. Unit Testing Setup
+
+1. Create test files for key modules:
+
+   ```bash
+   # Create test files for settings and logging modules
+   mkdir -p fca_dashboard/tests/unit
+   touch fca_dashboard/tests/unit/__init__.py
+   touch fca_dashboard/tests/unit/test_settings.py
+   touch fca_dashboard/tests/unit/test_logging_config.py
+   ```
+
+2. Create a `conftest.py` file in the tests directory to ensure pytest can find modules:
+
+   ```python
+   """
+   Pytest configuration file.
+
+   This file contains shared fixtures and configuration for pytest.
+   """
+
+   import os
+   import sys
+   from pathlib import Path
+
+   # Add the project root directory to the Python path
+   # This ensures that the tests can import modules from the project
+   project_root = Path(__file__).parent.parent.parent
+   sys.path.insert(0, str(project_root))
+   ```
+
+3. Implement unit tests for the Settings module in `fca_dashboard/tests/unit/test_settings.py`:
+
+   ```python
+   """
+   Unit tests for the Settings module.
+
+   This module contains tests for the Settings class and related functionality
+   in the fca_dashboard.config.settings module.
+   """
+
+   import os
+   import tempfile
+   from pathlib import Path
+
+   import pytest
+   import yaml
+
+   from fca_dashboard.config.settings import Settings, get_settings
+
+
+   @pytest.fixture
+   def temp_settings_file() -> str:
+       """Create a temporary settings file for testing."""
+       config_content = """
+       database:
+         host: localhost
+         port: 5432
+         user: test_user
+         password: secret
+       app:
+         name: test_app
+         debug: true
+       """
+       with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
+           temp_file.write(config_content.encode("utf-8"))
+           temp_path = temp_file.name
+       
+       yield temp_path
+       
+       # Cleanup
+       os.unlink(temp_path)
+
+
+   def test_settings_load_valid_file(temp_settings_file: str) -> None:
+       """Test loading settings from a valid file."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.host") == "localhost"
+       assert settings.get("database.port") == 5432
+       assert settings.get("app.name") == "test_app"
+       assert settings.get("app.debug") is True
+
+
+   def test_settings_load_missing_file() -> None:
+       """Test that loading a non-existent file raises FileNotFoundError."""
+       with pytest.raises(FileNotFoundError):
+           Settings(config_path="nonexistent_file.yml")
+
+
+   def test_settings_get_nonexistent_key(temp_settings_file: str) -> None:
+       """Test getting a non-existent key returns the default value."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("nonexistent.key") is None
+       assert settings.get("nonexistent.key", default="fallback") == "fallback"
+
+
+   def test_settings_get_nested_keys(temp_settings_file: str) -> None:
+       """Test getting nested keys from the configuration."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.user") == "test_user"
+       assert settings.get("database.password") == "secret"
+
+
+   def test_get_settings_caching(temp_settings_file: str) -> None:
+       """Test that get_settings caches instances for the same config path."""
+       settings1 = get_settings(temp_settings_file)
+       settings2 = get_settings(temp_settings_file)
+       
+       # Should be the same instance
+       assert settings1 is settings2
+       
+       # Modify the first instance and check that the second reflects the change
+       settings1.config["test_key"] = "test_value"
+       assert settings2.config["test_key"] == "test_value"
+
+
+   def test_get_settings_default() -> None:
+       """Test that get_settings returns the default instance when no path is provided."""
+       settings = get_settings()
+       assert isinstance(settings, Settings)
+       
+       # Should return the same default instance on subsequent calls
+       settings2 = get_settings()
+       assert settings is settings2
+   ```
+
+4. Run the tests using the Makefile:
+
+   ```bash
+   # Run all tests
+   make test
+   
+   # Run only unit tests
+   make test-unit
+   
+   # Run tests with coverage reporting
+   make coverage
+   ```
+
+5. Verify test coverage:
+   - Open the HTML coverage report in a browser: `open htmlcov/index.html`
+   - Check the terminal output for coverage statistics
+   - Aim for at least 80% code coverage for critical modules
+
+### 9. Example Pipeline Usage
 
 1. Example command for running the ETL pipeline:
 
@@ -529,6 +739,9 @@ This SOP covers:
    
    # Run tests
    make test
+   
+   # Run tests with coverage
+   make coverage
    
    # Format code
    make format
@@ -556,7 +769,7 @@ This SOP covers:
      "python.testing.unittestEnabled": false,
      "python.testing.nosetestsEnabled": false,
      "python.testing.pytestArgs": [
-       "tests"
+       "fca_dashboard/tests"
      ],
      "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
      "python.analysis.extraPaths": [
@@ -742,6 +955,14 @@ This SOP covers:
    - For file permission issues, check that the logs directory exists and is writable
    - If log rotation isn't working, verify the rotation and retention parameters
 
+10. Testing issues:
+
+- If pytest can't find your modules, ensure you have a `conftest.py` file that adds the project root to the Python path
+- If you get type errors in test files, check the `pytest.ini` configuration for mypy settings
+- For coverage issues, verify the `[tool.coverage.run]` and `[tool.coverage.report]` settings in `pyproject.toml`
+- If tests pass locally but fail in CI, check for environment-specific issues like file paths or dependencies
+- For slow tests, consider using pytest's `-xvs` flags for more verbose output and to stop on the first failure
+
 ## Completion Status
 
 This SOP has been completed and verified on March 3, 2025. All steps have been tested and confirmed to work correctly. The environment setup is now complete and ready for development.
@@ -763,3 +984,4 @@ This SOP has been completed and verified on March 3, 2025. All steps have been t
 | 1.3 | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users |
 | 1.4 | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting |
 | 1.5 | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
+| 1.6 | 2025-03-03 | ETL Team | Added unit testing setup, improved test configuration, and updated VS Code settings |

@@ -1,4 +1,4 @@
-.PHONY: lint test format install run clean init-db
+.PHONY: lint test format install run clean init-db coverage test-unit test-integration
 
 lint:
 	black --check .
@@ -11,7 +11,18 @@ format:
 	isort .
 
 test:
-	pytest tests/
+	pytest fca_dashboard/tests/
+
+coverage:
+	pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+	@echo "HTML coverage report generated in htmlcov/"
+	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
+
+test-unit:
+	pytest fca_dashboard/tests/unit/
+
+test-integration:
+	pytest fca_dashboard/tests/integration/
 
 install:
 	python -m pip install --upgrade pip
