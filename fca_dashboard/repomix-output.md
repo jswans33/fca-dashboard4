@@ -1,4 +1,4 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
 
 # File Summary
 
@@ -27,6 +27,7 @@ The content is organized as follows:
 ## Notes
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: tests/
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 
@@ -38,21 +39,13 @@ The content is organized as follows:
 config/__init__.py
 config/settings.py
 config/settings.yml
+coverage_output.txt
+coverage_report.txt
 main.py
 repomix.config.json
-tests/conftest.py
-tests/unit/test_date_utils.py
-tests/unit/test_error_handler.py
-tests/unit/test_json_util.py
-tests/unit/test_logging_config.py
-tests/unit/test_main.py
-tests/unit/test_number_utils.py
-tests/unit/test_path_util.py
-tests/unit/test_settings.py
-tests/unit/test_string_utils.py
-tests/unit/test_validation_utils.py
 utils/__init__.py
 utils/date_utils.py
+utils/env_utils.py
 utils/error_handler.py
 utils/json_utils.py
 utils/logging_config.py
@@ -61,6 +54,7 @@ utils/number_utils.py
 utils/path_util.py
 utils/string_utils.py
 utils/validation_utils.py
+utils/validation_utils.py,cover
 ```
 
 # Files
@@ -232,6 +226,12 @@ def get_settings(config_path: Optional[Union[str, Path]] = None) -> Settings:
 
 ## File: config/settings.yml
 ```yaml
+# Environment settings
+env:
+  ENVIRONMENT: "development"  # Default environment (can be overridden by OS environment variables)
+  LOG_LEVEL: "INFO"
+  DEBUG: true
+
 # Database settings
 databases:
   sqlite:
@@ -242,7 +242,7 @@ databases:
 # Pipeline settings
 pipeline_settings:
   batch_size: 5000
-  log_level: "INFO"
+  log_level: "${LOG_LEVEL}"  # Uses the environment variable from env section
   
 # Table mappings
 tables:
@@ -252,6 +252,82 @@ tables:
       tag: "Tag"
       name: "Name"
       description: "Description"
+```
+
+## File: coverage_output.txt
+```
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-7.4.4, pluggy-1.5.0 -- C:\Repos\fca-dashboard4\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Repos\fca-dashboard4
+configfile: pytest.ini
+plugins: cov-4.1.0
+collecting ... collected 18 items
+
+tests\unit\test_validation_utils.py::TestEmailValidation::test_valid_emails PASSED [  5%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_invalid_emails PASSED [ 11%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_email_with_consecutive_dots PASSED [ 16%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_email_with_trailing_dot PASSED [ 22%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_email_with_spaces PASSED [ 27%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_email_domain_with_hyphens PASSED [ 33%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_domain_parts_with_hyphens PASSED [ 38%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_none_input PASSED [ 44%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_non_string_input PASSED [ 50%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_valid_phone_numbers PASSED [ 55%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_invalid_phone_numbers PASSED [ 61%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_international_phone_formats PASSED [ 66%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_none_input PASSED [ 72%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_non_string_input PASSED [ 77%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_valid_urls PASSED [ 83%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_invalid_urls PASSED [ 88%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_none_input PASSED [ 94%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_non_string_input PASSED [100%]
+
+---------- coverage: platform win32, python 3.12.6-final-0 -----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+utils\validation_utils.py      50      3    94%
+-----------------------------------------------
+TOTAL                          50      3    94%
+
+
+============================= 18 passed in 0.48s ==============================
+```
+
+## File: coverage_report.txt
+```
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-7.4.4, pluggy-1.5.0 -- C:\Repos\fca-dashboard4\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Repos\fca-dashboard4
+configfile: pytest.ini
+plugins: cov-4.1.0
+collecting ... collected 14 items
+
+tests\unit\test_validation_utils.py::TestEmailValidation::test_valid_emails PASSED [  7%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_invalid_emails PASSED [ 14%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_domain_parts_with_hyphens PASSED [ 21%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_none_input PASSED [ 28%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_non_string_input PASSED [ 35%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_valid_phone_numbers PASSED [ 42%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_invalid_phone_numbers PASSED [ 50%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_international_phone_formats PASSED [ 57%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_none_input PASSED [ 64%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_non_string_input PASSED [ 71%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_valid_urls PASSED [ 78%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_invalid_urls PASSED [ 85%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_none_input PASSED [ 92%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_non_string_input PASSED [100%]
+
+---------- coverage: platform win32, python 3.12.6-final-0 -----------
+Name                        Stmts   Miss  Cover   Missing
+---------------------------------------------------------
+utils\validation_utils.py      50      3    94%   35, 37, 42
+---------------------------------------------------------
+TOTAL                          50      3    94%
+
+
+============================= 14 passed in 0.48s ==============================
 ```
 
 ## File: main.py
@@ -434,1778 +510,6 @@ if __name__ == "__main__":
 }
 ```
 
-## File: tests/conftest.py
-```python
-"""
-Pytest configuration file.
-
-This file contains shared fixtures and configuration for pytest.
-"""
-
-import sys
-from pathlib import Path
-
-# Add the project root directory to the Python path
-# This ensures that the tests can import modules from the project
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-```
-
-## File: tests/unit/test_date_utils.py
-```python
-"""Tests for date and time utility functions."""
-import datetime
-
-import pytest
-from freezegun import freeze_time
-
-from fca_dashboard.utils.date_utils import format_date, parse_date, time_since
-
-
-class TestFormatDate:
-    """Tests for the format_date function."""
-
-    def test_format_date_default(self):
-        """Test formatting a date with default format."""
-        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
-        assert format_date(date) == "May 15, 2023"
-
-    def test_format_date_custom_format(self):
-        """Test formatting a date with a custom format."""
-        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
-        assert format_date(date, "%Y-%m-%d") == "2023-05-15"
-
-    def test_format_date_with_time(self):
-        """Test formatting a date with time."""
-        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
-        assert format_date(date, "%b %d, %Y %H:%M") == "May 15, 2023 14:30"
-
-    def test_format_date_none(self):
-        """Test formatting None date."""
-        assert format_date(None) == ""
-
-    def test_format_date_with_default_value(self):
-        """Test formatting None date with a default value."""
-        assert format_date(None, default="N/A") == "N/A"
-
-
-class TestTimeSince:
-    """Tests for the time_since function."""
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_seconds(self):
-        """Test time since for seconds."""
-        date = datetime.datetime(2023, 5, 15, 14, 29, 30)
-        assert time_since(date) == "30 seconds ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_minute(self):
-        """Test time since for a minute."""
-        date = datetime.datetime(2023, 5, 15, 14, 29, 0)
-        assert time_since(date) == "1 minute ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_minutes(self):
-        """Test time since for minutes."""
-        date = datetime.datetime(2023, 5, 15, 14, 25, 0)
-        assert time_since(date) == "5 minutes ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_hour(self):
-        """Test time since for an hour."""
-        date = datetime.datetime(2023, 5, 15, 13, 30, 0)
-        assert time_since(date) == "1 hour ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_hours(self):
-        """Test time since for hours."""
-        date = datetime.datetime(2023, 5, 15, 10, 30, 0)
-        assert time_since(date) == "4 hours ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_day(self):
-        """Test time since for a day."""
-        date = datetime.datetime(2023, 5, 14, 14, 30, 0)
-        assert time_since(date) == "1 day ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_days(self):
-        """Test time since for days."""
-        date = datetime.datetime(2023, 5, 10, 14, 30, 0)
-        assert time_since(date) == "5 days ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_month(self):
-        """Test time since for a month."""
-        date = datetime.datetime(2023, 4, 15, 14, 30, 0)
-        assert time_since(date) == "1 month ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_months(self):
-        """Test time since for months."""
-        date = datetime.datetime(2023, 1, 15, 14, 30, 0)
-        assert time_since(date) == "4 months ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_year(self):
-        """Test time since for a year."""
-        date = datetime.datetime(2022, 5, 15, 14, 30, 0)
-        assert time_since(date) == "1 year ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_years(self):
-        """Test time since for years."""
-        date = datetime.datetime(2020, 5, 15, 14, 30, 0)
-        assert time_since(date) == "3 years ago"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_future(self):
-        """Test time since for a future date."""
-        date = datetime.datetime(2023, 5, 16, 14, 30, 0)
-        assert time_since(date) == "in 1 day"
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_time_since_none(self):
-        """Test time since for None date."""
-        assert time_since(None) == ""
-
-
-class TestParseDate:
-    """Tests for the parse_date function."""
-
-    def test_parse_date_iso_format(self):
-        """Test parsing a date in ISO format."""
-        assert parse_date("2023-05-15") == datetime.datetime(2023, 5, 15, 0, 0, 0)
-
-    def test_parse_date_with_time(self):
-        """Test parsing a date with time."""
-        assert parse_date("2023-05-15 14:30:00") == datetime.datetime(2023, 5, 15, 14, 30, 0)
-
-    def test_parse_date_custom_format(self):
-        """Test parsing a date with a custom format."""
-        assert parse_date("15/05/2023", format="%d/%m/%Y") == datetime.datetime(2023, 5, 15, 0, 0, 0)
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_yesterday(self):
-        """Test parsing 'yesterday'."""
-        expected = datetime.datetime(2023, 5, 14, 0, 0, 0)
-        assert parse_date("yesterday") == expected
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_today(self):
-        """Test parsing 'today'."""
-        expected = datetime.datetime(2023, 5, 15, 0, 0, 0)
-        assert parse_date("today") == expected
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_tomorrow(self):
-        """Test parsing 'tomorrow'."""
-        expected = datetime.datetime(2023, 5, 16, 0, 0, 0)
-        assert parse_date("tomorrow") == expected
-
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_days_ago(self):
-        """Test parsing 'X days ago'."""
-        expected = datetime.datetime(2023, 5, 10, 0, 0, 0)
-        assert parse_date("5 days ago") == expected
-        
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_invalid_days_ago_format(self):
-        """Test parsing an invalid 'X days ago' format."""
-        # This should fall through to the dateutil parser and raise ValueError
-        with pytest.raises(ValueError):
-            parse_date("invalid days ago")
-            
-    @freeze_time("2023-05-15 14:30:00")
-    def test_parse_date_empty_days_ago_format(self):
-        """Test parsing an empty 'days ago' format."""
-        # This should fall through to the dateutil parser and raise ValueError
-        with pytest.raises(ValueError):
-            parse_date(" days ago")
-
-    def test_parse_date_datetime_object(self):
-        """Test parsing a datetime object."""
-        dt = datetime.datetime(2023, 5, 15, 14, 30, 0)
-        assert parse_date(dt) is dt
-
-    def test_parse_date_invalid(self):
-        """Test parsing an invalid date."""
-        with pytest.raises(ValueError):
-            parse_date("not a date")
-
-    def test_parse_date_none(self):
-        """Test parsing None."""
-        assert parse_date(None) is None
-
-    def test_parse_date_empty(self):
-        """Test parsing an empty string."""
-        assert parse_date("") is None
-```
-
-## File: tests/unit/test_error_handler.py
-```python
-"""
-Unit tests for the error handling module.
-
-This module contains tests for the error handling functionality
-in the fca_dashboard.utils.error_handler module.
-"""
-
-import sys
-from unittest.mock import MagicMock, patch
-
-import pytest
-
-from fca_dashboard.utils.error_handler import (
-    ConfigurationError,
-    DataExtractionError,
-    DataLoadingError,
-    DataTransformationError,
-    ErrorHandler,
-    FCADashboardError,
-    ValidationError,
-)
-
-
-def test_error_handler_initialization() -> None:
-    """Test that the ErrorHandler initializes correctly."""
-    # Mock the get_logger function to verify it's called with the correct name
-    with patch("fca_dashboard.utils.error_handler.get_logger") as mock_get_logger:
-        handler = ErrorHandler("test_handler")
-        mock_get_logger.assert_called_once_with("test_handler")
-
-
-def test_handle_file_not_found_error() -> None:
-    """Test handling of FileNotFoundError."""
-    handler = ErrorHandler()
-    error = FileNotFoundError("test.txt")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 1
-
-
-def test_handle_configuration_error() -> None:
-    """Test handling of ConfigurationError."""
-    handler = ErrorHandler()
-    error = ConfigurationError("Invalid configuration")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 2
-
-
-def test_handle_data_extraction_error() -> None:
-    """Test handling of DataExtractionError."""
-    handler = ErrorHandler()
-    error = DataExtractionError("Failed to extract data")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 3
-
-
-def test_handle_data_transformation_error() -> None:
-    """Test handling of DataTransformationError."""
-    handler = ErrorHandler()
-    error = DataTransformationError("Failed to transform data")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 4
-
-
-def test_handle_data_loading_error() -> None:
-    """Test handling of DataLoadingError."""
-    handler = ErrorHandler()
-    error = DataLoadingError("Failed to load data")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 5
-
-
-def test_handle_validation_error() -> None:
-    """Test handling of ValidationError."""
-    handler = ErrorHandler()
-    error = ValidationError("Data validation failed")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 6
-
-
-def test_handle_generic_error() -> None:
-    """Test handling of a generic Exception."""
-    handler = ErrorHandler()
-    error = Exception("Generic error")
-    exit_code = handler.handle_error(error)
-    assert exit_code == 99
-
-
-def test_with_error_handling_decorator_success() -> None:
-    """Test that the with_error_handling decorator works for successful functions."""
-    handler = ErrorHandler()
-
-    @handler.with_error_handling
-    def successful_function() -> str:
-        return "success"
-
-    result = successful_function()
-    assert result == "success"
-
-
-def test_with_error_handling_decorator_error() -> None:
-    """Test that the with_error_handling decorator handles errors correctly."""
-    handler = ErrorHandler()
-    mock_handle_error = MagicMock(return_value=42)
-    handler.handle_error = mock_handle_error
-
-    # Test with a function that returns int
-    @handler.with_error_handling
-    def failing_function_with_int_return() -> int:
-        raise ValueError("Test error")
-
-    # When the function returns int, the decorator should return the exit code
-    result = failing_function_with_int_return()
-    assert result == 42
-    mock_handle_error.assert_called_once()
-
-
-def test_with_error_handling_decorator_pytest_behavior() -> None:
-    """Test that the with_error_handling decorator raises exceptions in pytest environment."""
-    handler = ErrorHandler()
-    mock_handle_error = MagicMock(return_value=42)
-    handler.handle_error = mock_handle_error
-
-    # Test with a function that returns None
-    @handler.with_error_handling
-    def failing_function() -> None:
-        raise ValueError("Test error")
-
-    # In pytest environment, the decorator should re-raise the exception
-    with patch("sys.exit") as mock_exit:
-        with pytest.raises(ValueError, match="Test error"):
-            failing_function()
-        
-        # Verify sys.exit was NOT called
-        mock_exit.assert_not_called()
-        # Ensure handle_error was called correctly
-        mock_handle_error.assert_called_once()
-
-
-def test_with_error_handling_decorator_exit() -> None:
-    """Test that the with_error_handling decorator calls sys.exit for non-int return types."""
-    handler = ErrorHandler()
-    mock_handle_error = MagicMock(return_value=42)
-    handler.handle_error = mock_handle_error
-
-    # Test with a function that returns None
-    @handler.with_error_handling
-    def failing_function() -> None:
-        raise ValueError("Test error")
-
-    # We need to patch both sys.modules and sys.exit
-    with patch.dict("sys.modules", {"pytest": None}):  # Simulate non-pytest environment
-        with patch("sys.exit") as mock_exit:
-            failing_function()
-            mock_exit.assert_called_once_with(42)
-
-
-def test_custom_exception_inheritance() -> None:
-    """Test that custom exceptions inherit correctly."""
-    assert issubclass(ConfigurationError, FCADashboardError)
-    assert issubclass(DataExtractionError, FCADashboardError)
-    assert issubclass(DataTransformationError, FCADashboardError)
-    assert issubclass(DataLoadingError, FCADashboardError)
-    assert issubclass(ValidationError, FCADashboardError)
-    assert issubclass(FCADashboardError, Exception)
-
-
-def test_custom_exception_message() -> None:
-    """Test that custom exceptions store the message correctly."""
-    message = "Test error message"
-    error = FCADashboardError(message)
-    assert error.message == message
-    assert str(error) == message
-
-
-def test_error_handler_with_main_function() -> None:
-    """Test integration of ErrorHandler with a main-like function."""
-    handler = ErrorHandler()
-
-    # Mock a main-like function that raises different exceptions
-    def mock_main(exception_type: Exception) -> int:
-        try:
-            raise exception_type
-        except Exception as e:
-            return handler.handle_error(e)
-
-    # Test with different exception types
-    assert mock_main(FileNotFoundError("test.txt")) == 1
-    assert mock_main(ConfigurationError("Invalid config")) == 2
-    assert mock_main(Exception("Generic error")) == 99
-```
-
-## File: tests/unit/test_json_util.py
-```python
-import os
-import tempfile
-
-import pytest
-
-from fca_dashboard.utils.json_utils import (
-    json_deserialize,
-    json_is_valid,
-    json_load,
-    json_save,
-    json_serialize,
-    pretty_print_json,
-    safe_get,
-    safe_get_nested,
-)
-
-
-def test_json_load_and_save():
-    data = {"key": "value", "number": 42}
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
-        path = tmp.name
-        json_save(data, path)
-
-    loaded_data = json_load(path)
-    assert loaded_data == data
-
-    os.unlink(path)
-
-
-def test_json_serialize():
-    data = {"name": "Alice", "age": 30}
-    json_str = json_serialize(data)
-    assert json_str == '{"name": "Alice", "age": 30}'
-
-
-def test_json_deserialize_valid():
-    json_str = '{"valid": true, "value": 10}'
-    result = json_deserialize(json_str)
-    assert result == {"valid": True, "value": 10}
-
-
-def test_json_deserialize_invalid():
-    json_str = '{invalid json}'
-    default = {"default": True}
-    result = json_deserialize(json_str, default=default)
-    assert result == default
-
-
-def test_json_is_valid():
-    assert json_is_valid('{"valid": true}') is True
-    assert json_is_valid('{invalid json}') is False
-
-
-def test_pretty_print_json():
-    data = {"key": "value"}
-    expected = '{\n  "key": "value"\n}'
-    assert pretty_print_json(data) == expected
-
-
-def test_safe_get():
-    data = {"a": 1, "b": None}
-    assert safe_get(data, "a") == 1
-    assert safe_get(data, "b", default="default") is None
-    assert safe_get(data, "missing", default="default") == "default"
-
-
-def test_safe_get_nested():
-    data = {"a": {"b": {"c": 42}}}
-    assert safe_get_nested(data, "a", "b", "c") == 42
-    assert safe_get_nested(data, "a", "x", default="missing") == "missing"
-    assert safe_get_nested(data, "a", "b", "c", "d", default=None) is None
-
-
-def test_json_load_file_not_found():
-    with pytest.raises(FileNotFoundError):
-        json_load("nonexistent_file.json")
-
-
-def test_json_load_invalid_json():
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
-        tmp.write("{invalid json}")
-        path = tmp.name
-
-    with pytest.raises(Exception):
-        json_load(path)
-
-    os.unlink(path)
-
-
-def test_json_save_and_load_unicode():
-    data = {"message": "こんにちは世界"}
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
-        path = tmp.name
-        json_save(data, path)
-
-    loaded_data = json_load(path)
-    assert loaded_data == data
-
-    os.unlink(path)
-```
-
-## File: tests/unit/test_logging_config.py
-```python
-"""
-Unit tests for the logging configuration module.
-
-This module contains tests for the logging configuration functionality
-in the fca_dashboard.utils.logging_config module.
-"""
-
-import os
-import tempfile
-from typing import Generator
-
-import pytest
-from _pytest.capture import CaptureFixture
-from loguru import logger
-
-from fca_dashboard.utils.logging_config import configure_logging, get_logger
-
-
-@pytest.fixture
-def temp_log_file() -> Generator[str, None, None]:
-    """Create a temporary log file for testing."""
-    with tempfile.NamedTemporaryFile(suffix=".log", delete=False) as temp_file:
-        temp_path = temp_file.name
-
-    yield temp_path
-
-    # Cleanup
-    if os.path.exists(temp_path):
-        os.unlink(temp_path)
-
-
-def test_configure_logging_console_only() -> None:
-    """Test configuring logging with console output only."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Configure logging with console output only
-    configure_logging(level="DEBUG")
-
-    # Get a logger and log a message
-    log = get_logger("test_logger")
-    log.debug("Test debug message")
-    log.info("Test info message")
-
-    # No assertions here as we're just testing that no exceptions are raised
-    # and visually confirming console output during test execution
-
-
-def test_configure_logging_with_file(temp_log_file: str) -> None:
-    """Test configuring logging with file output."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Configure logging with file output
-    configure_logging(level="INFO", log_file=temp_log_file)
-
-    # Get a logger and log messages
-    log = get_logger("test_logger")
-    log.debug("Test debug message - should not be in file")
-    log.info("Test info message - should be in file")
-    log.warning("Test warning message - should be in file")
-
-    # Force flush by removing handlers
-    logger.remove()
-
-    # Check that the log file exists and contains the expected messages
-    assert os.path.exists(temp_log_file)
-    with open(temp_log_file, "r") as f:
-        log_content = f.read()
-        assert "Test debug message - should not be in file" not in log_content
-        assert "Test info message - should be in file" in log_content
-        assert "Test warning message - should be in file" in log_content
-
-
-def test_configure_logging_creates_directory() -> None:
-    """Test that configure_logging creates the log directory if it doesn't exist."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Create a temporary directory
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Create a path to a log file in a non-existent subdirectory
-        nonexistent_dir = os.path.join(temp_dir, "nonexistent_dir")
-        log_file = os.path.join(nonexistent_dir, "test.log")
-
-        # Configure logging - this should create the directory
-        configure_logging(level="INFO", log_file=log_file)
-
-        # Get a logger and log a message
-        log = get_logger("test_logger")
-        log.info("Test message")
-
-        # Force flush by removing handlers
-        logger.remove()
-
-        # Check that the directory and log file were created
-        assert os.path.exists(nonexistent_dir)
-        assert os.path.exists(log_file)
-
-        # Check that the log file contains the message
-        with open(log_file, "r") as f:
-            log_content = f.read()
-            assert "Test message" in log_content
-
-
-def test_configure_logging_with_custom_format(temp_log_file: str) -> None:
-    """Test configuring logging with a custom format string."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Custom format string
-    custom_format = "{time} | {level} | {message}"
-
-    # Configure logging with custom format
-    configure_logging(level="INFO", log_file=temp_log_file, format_string=custom_format)
-
-    # Get a logger and log a message
-    log = get_logger("test_logger")
-    log.info("Test message with custom format")
-
-    # Force flush by removing handlers
-    logger.remove()
-
-    # Check that the log file contains the message with the custom format
-    with open(temp_log_file, "r") as f:
-        log_content = f.read()
-        assert "Test message with custom format" in log_content
-        # The format is simplified, so we don't check for exact format
-
-
-def test_configure_logging_with_simple_format(temp_log_file: str) -> None:
-    """Test configuring logging with the simple format option."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Configure logging with simple format
-    configure_logging(level="INFO", log_file=temp_log_file, simple_format=True)
-
-    # Get a logger and log a message
-    log = get_logger("test_logger")
-    log.info("Test message with simple format")
-
-    # Force flush by removing handlers
-    logger.remove()
-
-    # Check that the log file contains the message
-    with open(temp_log_file, "r") as f:
-        log_content = f.read()
-        assert "Test message with simple format" in log_content
-        # We don't check the exact format, just that the message is there
-
-
-def test_get_logger_with_name(capfd: CaptureFixture) -> None:
-    """Test getting a logger with a specific name."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Configure logging
-    configure_logging(level="INFO")
-
-    # Get a logger with a specific name
-    log_name = "custom_logger_name"
-    log = get_logger(log_name)
-    log.info("Checking logger name")
-
-    # Capture the output and verify the log message is included
-    captured = capfd.readouterr()
-    # The name might not be directly visible in the output due to formatting
-    # but we can verify the log message is there
-    assert "Checking logger name" in captured.err
-
-
-def test_get_logger_default_name(capfd: CaptureFixture) -> None:
-    """Test getting a logger with the default name."""
-    # Remove any existing handlers
-    logger.remove()
-
-    # Configure logging
-    configure_logging(level="INFO")
-
-    # Get a logger with the default name
-    log = get_logger()
-    log.info("Checking default logger name")
-
-    # Capture the output and verify the default logger name is included
-    captured = capfd.readouterr()
-    assert "fca_dashboard" in captured.err
-    assert "Checking default logger name" in captured.err
-```
-
-## File: tests/unit/test_main.py
-```python
-from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
-import yaml
-
-from fca_dashboard.main import main, parse_args, run_etl_pipeline
-from fca_dashboard.utils.error_handler import ConfigurationError, DataExtractionError
-
-
-@patch("sys.argv", ["main.py", "--config", "config/settings.yml"])
-def test_main_runs_successfully() -> None:
-    """Test that the main function runs successfully with default arguments."""
-    exit_code = main()
-    assert exit_code == 0
-
-
-def test_parse_args_defaults() -> None:
-    """Test that parse_args returns expected defaults."""
-    with patch("sys.argv", ["main.py"]):
-        args = parse_args()
-        assert "settings.yml" in args.config
-        assert args.log_level == "INFO"
-        assert args.excel_file is None
-        assert args.table_name is None
-
-
-def test_parse_args_custom_values() -> None:
-    """Test that parse_args handles custom arguments correctly."""
-    with patch(
-        "sys.argv",
-        [
-            "main.py",
-            "--config",
-            "custom_config.yml",
-            "--log-level",
-            "DEBUG",
-            "--excel-file",
-            "data.xlsx",
-            "--table-name",
-            "equipment",
-        ],
-    ):
-        args = parse_args()
-        assert args.config == "custom_config.yml"
-        assert args.log_level == "DEBUG"
-        assert args.excel_file == "data.xlsx"
-        assert args.table_name == "equipment"
-
-
-@patch("fca_dashboard.main.get_settings")
-@patch("fca_dashboard.main.configure_logging")
-@patch("fca_dashboard.main.get_logger")
-@patch("fca_dashboard.main.resolve_path")
-def test_main_with_excel_file_and_table(
-    mock_resolve_path: MagicMock,
-    mock_get_logger: MagicMock,
-    mock_configure_logging: MagicMock,
-    mock_get_settings: MagicMock,
-) -> None:
-    """Test main function with excel_file and table_name arguments."""
-    # Setup mocks
-    mock_logger = MagicMock()
-    mock_get_logger.return_value = mock_logger
-    mock_settings = MagicMock()
-    mock_get_settings.return_value = mock_settings
-    mock_settings.get.return_value = "sqlite:///test.db"
-    mock_resolve_path.side_effect = lambda x: Path(f"/resolved/{x}")
-
-    # Run with excel file and table name
-    with patch(
-        "sys.argv",
-        ["main.py", "--config", "config/settings.yml", "--excel-file", "data.xlsx", "--table-name", "equipment"],
-    ):
-        exit_code = main()
-
-    # Verify
-    assert exit_code == 0
-    assert mock_logger.info.call_count >= 5  # Multiple info logs
-    # Check that excel file and table name were logged
-    mock_resolve_path.assert_any_call("data.xlsx")
-    # Check that the log message contains the excel file path (exact format may vary by OS)
-    excel_log_found = False
-    for call_args in mock_logger.info.call_args_list:
-        if "Would process Excel file:" in call_args[0][0] and "data.xlsx" in call_args[0][0]:
-            excel_log_found = True
-            break
-    assert excel_log_found, "Excel file log message not found"
-    mock_logger.info.assert_any_call("Would process table: equipment")
-
-
-@patch("fca_dashboard.main.get_logger")
-@patch("fca_dashboard.main.configure_logging")
-@patch("fca_dashboard.main.resolve_path")
-@patch("fca_dashboard.main.ErrorHandler")
-def test_main_file_not_found_error(
-    mock_error_handler_class: MagicMock,
-    mock_resolve_path: MagicMock,
-    mock_configure_logging: MagicMock,
-    mock_get_logger: MagicMock,
-) -> None:
-    """Test main function handling FileNotFoundError."""
-    # Setup mocks
-    mock_logger = MagicMock()
-    mock_get_logger.return_value = mock_logger
-    mock_resolve_path.return_value = Path("nonexistent_file.yml")
-    
-    # Setup error handler mock
-    mock_error_handler = MagicMock()
-    mock_error_handler.handle_error.return_value = 1
-    mock_error_handler_class.return_value = mock_error_handler
-
-    # Simulate FileNotFoundError when trying to load settings
-    with (
-        patch("fca_dashboard.main.get_settings", side_effect=FileNotFoundError("File not found")),
-        patch("sys.argv", ["main.py", "--config", "nonexistent_file.yml"]),
-    ):
-        exit_code = main()
-
-    # Verify
-    assert exit_code == 1
-    mock_error_handler.handle_error.assert_called_once()
-    # Verify the error passed to handle_error is a FileNotFoundError
-    args, _ = mock_error_handler.handle_error.call_args
-    assert isinstance(args[0], FileNotFoundError)
-
-
-@patch("fca_dashboard.main.get_logger")
-@patch("fca_dashboard.main.configure_logging")
-@patch("fca_dashboard.main.resolve_path")
-@patch("fca_dashboard.main.ErrorHandler")
-def test_main_yaml_error(
-    mock_error_handler_class: MagicMock,
-    mock_resolve_path: MagicMock,
-    mock_configure_logging: MagicMock,
-    mock_get_logger: MagicMock,
-) -> None:
-    """Test main function handling YAMLError."""
-    # Setup mocks
-    mock_logger = MagicMock()
-    mock_get_logger.return_value = mock_logger
-    mock_resolve_path.return_value = Path("invalid_yaml.yml")
-    
-    # Setup error handler mock
-    mock_error_handler = MagicMock()
-    mock_error_handler.handle_error.return_value = 2  # ConfigurationError code
-    mock_error_handler_class.return_value = mock_error_handler
-
-    # Simulate YAMLError when trying to load settings
-    with (
-        patch("fca_dashboard.main.get_settings", side_effect=yaml.YAMLError("Invalid YAML")),
-        patch("sys.argv", ["main.py", "--config", "invalid_yaml.yml"]),
-    ):
-        exit_code = main()
-
-    # Verify
-    assert exit_code == 2  # ConfigurationError code
-    mock_error_handler.handle_error.assert_called_once()
-    # Verify the error passed to handle_error is a ConfigurationError
-    args, _ = mock_error_handler.handle_error.call_args
-    assert isinstance(args[0], ConfigurationError)
-    assert "YAML configuration error" in str(args[0])
-
-
-@patch("fca_dashboard.main.get_logger")
-@patch("fca_dashboard.main.configure_logging")
-@patch("fca_dashboard.main.resolve_path")
-def test_main_unexpected_error(
-    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
-) -> None:
-    """Test main function handling unexpected exceptions."""
-    # Setup mocks
-    mock_logger = MagicMock()
-    mock_get_logger.return_value = mock_logger
-    mock_resolve_path.return_value = Path("config.yml")
-
-    # Simulate unexpected exception
-    with (
-        patch("fca_dashboard.main.get_settings", side_effect=Exception("Unexpected error")),
-        patch("sys.argv", ["main.py", "--config", "config.yml"]),
-    ):
-        exit_code = main()
-
-    # Verify
-    assert exit_code == 99  # Generic error code from ErrorHandler
-    # The error is now handled by ErrorHandler, not directly in main
-
-
-def test_run_etl_pipeline_success() -> None:
-    """Test that run_etl_pipeline runs successfully with valid arguments."""
-    # Setup mocks
-    mock_args = MagicMock()
-    mock_args.config = "config/settings.yml"
-    mock_args.excel_file = None
-    mock_args.table_name = None
-    mock_log = MagicMock()
-
-    with (
-        patch("fca_dashboard.main.resolve_path", return_value=Path("config/settings.yml")),
-        patch("fca_dashboard.main.get_settings", return_value={"databases.sqlite.url": "sqlite:///test.db"}),
-    ):
-        exit_code = run_etl_pipeline(mock_args, mock_log)
-
-    # Verify
-    assert exit_code == 0
-    assert mock_log.info.call_count >= 4  # Multiple info logs
-
-
-def test_run_etl_pipeline_configuration_error() -> None:
-    """Test that run_etl_pipeline raises ConfigurationError for YAML errors."""
-    # Setup mocks
-    mock_args = MagicMock()
-    mock_args.config = "invalid_config.yml"
-    mock_log = MagicMock()
-
-    with (
-        patch("fca_dashboard.main.resolve_path", return_value=Path("invalid_config.yml")),
-        patch("fca_dashboard.main.get_settings", side_effect=yaml.YAMLError("Invalid YAML")),
-        pytest.raises(ConfigurationError) as exc_info,
-    ):
-        run_etl_pipeline(mock_args, mock_log)
-
-    # Verify
-    assert "YAML configuration error" in str(exc_info.value)
-
-
-def test_run_etl_pipeline_excel_file_not_found() -> None:
-    """Test that run_etl_pipeline raises DataExtractionError for missing Excel files."""
-    # Setup mocks
-    mock_args = MagicMock()
-    mock_args.config = "config/settings.yml"
-    mock_args.excel_file = "nonexistent.xlsx"
-    mock_args.table_name = None
-    mock_log = MagicMock()
-
-    with (
-        patch("fca_dashboard.main.resolve_path", side_effect=[
-            Path("config/settings.yml"),  # First call for config file
-            FileNotFoundError("Excel file not found"),  # Second call for Excel file
-        ]),
-        patch("fca_dashboard.main.get_settings", return_value={"databases.sqlite.url": "sqlite:///test.db"}),
-        pytest.raises(DataExtractionError) as exc_info,
-    ):
-        run_etl_pipeline(mock_args, mock_log)
-
-    # Verify
-    assert "Excel file not found" in str(exc_info.value)
-
-
-def test_main_with_error_handler() -> None:
-    """Test that main uses ErrorHandler to handle exceptions."""
-    # Setup mocks
-    mock_error_handler = MagicMock()
-    mock_error_handler.handle_error.return_value = 42
-
-    with (
-        patch("fca_dashboard.main.ErrorHandler", return_value=mock_error_handler),
-        patch("fca_dashboard.main.run_etl_pipeline", side_effect=Exception("Test error")),
-        patch("fca_dashboard.main.configure_logging"),
-        patch("fca_dashboard.main.get_logger"),
-        patch("sys.argv", ["main.py"]),
-    ):
-        exit_code = main()
-
-    # Verify
-    assert exit_code == 42
-    mock_error_handler.handle_error.assert_called_once()
-```
-
-## File: tests/unit/test_number_utils.py
-```python
-"""Unit tests for number utilities."""
-import re
-from decimal import Decimal
-
-import pytest
-
-from fca_dashboard.utils.number_utils import format_currency, random_number, round_to
-
-
-class TestFormatCurrency:
-    """Test cases for currency formatting function."""
-
-    def test_integer_values(self):
-        """Test formatting integer values as currency."""
-        assert format_currency(1234) == "$1,234.00"
-        assert format_currency(0) == "$0.00"
-        assert format_currency(-1234) == "-$1,234.00"
-
-    def test_float_values(self):
-        """Test formatting float values as currency."""
-        assert format_currency(1234.56) == "$1,234.56"
-        assert format_currency(1234.5) == "$1,234.50"
-        assert format_currency(0.99) == "$0.99"
-        assert format_currency(-1234.56) == "-$1,234.56"
-
-    def test_decimal_values(self):
-        """Test formatting Decimal values as currency."""
-        assert format_currency(Decimal("1234.56")) == "$1,234.56"
-        assert format_currency(Decimal("1234.5")) == "$1,234.50"
-        assert format_currency(Decimal("0.99")) == "$0.99"
-        assert format_currency(Decimal("-1234.56")) == "-$1,234.56"
-
-    def test_custom_currency_symbol(self):
-        """Test formatting with custom currency symbols."""
-        assert format_currency(1234.56, symbol="€") == "€1,234.56"
-        assert format_currency(1234.56, symbol="£") == "£1,234.56"
-        assert format_currency(1234.56, symbol="¥") == "¥1,234.56"
-        assert format_currency(1234.56, symbol="") == "1,234.56"
-
-    def test_custom_decimal_places(self):
-        """Test formatting with custom decimal places."""
-        assert format_currency(1234.56, decimal_places=0) == "$1,235"
-        assert format_currency(1234.56, decimal_places=1) == "$1,234.6"
-        assert format_currency(1234.56, decimal_places=3) == "$1,234.560"
-        assert format_currency(1234.56789, decimal_places=4) == "$1,234.5679"
-
-    def test_custom_thousands_separator(self):
-        """Test formatting with custom thousands separator."""
-        assert format_currency(1234567.89, thousands_sep=".") == "$1.234.567.89"
-        assert format_currency(1234567.89, thousands_sep=" ") == "$1 234 567.89"
-        assert format_currency(1234567.89, thousands_sep="") == "$1234567.89"
-
-    def test_custom_decimal_separator(self):
-        """Test formatting with custom decimal separator."""
-        assert format_currency(1234.56, decimal_sep=",") == "$1,234,56"
-        assert format_currency(1234.56, decimal_sep=" ") == "$1,234 56"
-
-    def test_none_input(self):
-        """Test that None input is handled correctly."""
-        assert format_currency(None) == ""
-        assert format_currency(None, default="N/A") == "N/A"
-
-    def test_non_numeric_input(self):
-        """Test that non-numeric inputs are handled correctly."""
-        with pytest.raises(TypeError):
-            format_currency("not a number")
-        with pytest.raises(TypeError):
-            format_currency([])
-
-
-class TestRoundTo:
-    """Test cases for number rounding function."""
-
-    def test_round_to_zero_places(self):
-        """Test rounding to zero decimal places."""
-        assert round_to(1.4, 0) == 1
-        assert round_to(1.5, 0) == 2
-        assert round_to(-1.5, 0) == -2
-        assert round_to(0, 0) == 0
-
-    def test_round_to_positive_places(self):
-        """Test rounding to positive decimal places."""
-        assert round_to(1.234, 2) == 1.23
-        assert round_to(1.235, 2) == 1.24
-        assert round_to(-1.235, 2) == -1.24
-        assert round_to(1.2, 2) == 1.20
-
-    def test_round_to_negative_places(self):
-        """Test rounding to negative decimal places (tens, hundreds, etc.)."""
-        assert round_to(123, -1) == 120
-        assert round_to(125, -1) == 130
-        assert round_to(1234, -2) == 1200
-        assert round_to(1250, -2) == 1300
-        assert round_to(-1250, -2) == -1300
-
-    def test_round_decimal_type(self):
-        """Test rounding Decimal objects."""
-        assert round_to(Decimal("1.234"), 2) == Decimal("1.23")
-        assert round_to(Decimal("1.235"), 2) == Decimal("1.24")
-        assert round_to(Decimal("-1.235"), 2) == Decimal("-1.24")
-
-    def test_return_type(self):
-        """Test that the return type matches the input type."""
-        assert isinstance(round_to(1.5, 0), int)
-        assert isinstance(round_to(1.5, 1), float)
-        assert isinstance(round_to(Decimal("1.5"), 1), Decimal)
-
-    def test_none_input(self):
-        """Test that None input is handled correctly."""
-        with pytest.raises(TypeError):
-            round_to(None, 2)
-
-    def test_non_numeric_input(self):
-        """Test that non-numeric inputs are handled correctly."""
-        with pytest.raises(TypeError):
-            round_to("not a number", 2)
-        with pytest.raises(TypeError):
-            round_to([], 2)
-
-
-class TestRandomNumber:
-    """Test cases for random number generation function."""
-
-    def test_within_range(self):
-        """Test that generated numbers are within the specified range."""
-        for _ in range(100):  # Run multiple times to increase confidence
-            num = random_number(1, 10)
-            assert 1 <= num <= 10
-
-    def test_min_equals_max(self):
-        """Test when min equals max."""
-        assert random_number(5, 5) == 5
-
-    def test_negative_range(self):
-        """Test with negative numbers in the range."""
-        for _ in range(100):
-            num = random_number(-10, -1)
-            assert -10 <= num <= -1
-
-    def test_mixed_range(self):
-        """Test with a range that includes both negative and positive numbers."""
-        for _ in range(100):
-            num = random_number(-5, 5)
-            assert -5 <= num <= 5
-
-    def test_large_range(self):
-        """Test with a large range."""
-        for _ in range(10):
-            num = random_number(-1000000, 1000000)
-            assert -1000000 <= num <= 1000000
-
-    def test_distribution(self):
-        """Test that the distribution is roughly uniform."""
-        # Generate a large number of random values between 1 and 10
-        results = [random_number(1, 10) for _ in range(1000)]
-        
-        # Count occurrences of each value
-        counts = {}
-        for num in range(1, 11):
-            counts[num] = results.count(num)
-        
-        # Check that each number appears roughly the expected number of times
-        # (100 times each, with some tolerance for randomness)
-        for num, count in counts.items():
-            assert 70 <= count <= 130, f"Number {num} appeared {count} times, expected roughly 100"
-
-    def test_invalid_range(self):
-        """Test with invalid range (min > max)."""
-        with pytest.raises(ValueError):
-            random_number(10, 1)
-
-    def test_non_integer_input(self):
-        """Test with non-integer inputs."""
-        with pytest.raises(TypeError):
-            random_number(1.5, 10)
-        with pytest.raises(TypeError):
-            random_number(1, 10.5)
-        with pytest.raises(TypeError):
-            random_number("1", 10)
-        with pytest.raises(TypeError):
-            random_number(1, "10")
-```
-
-## File: tests/unit/test_path_util.py
-```python
-"""
-Unit tests for the path utility module.
-
-This module contains tests for the path utility functions in the
-fca_dashboard.utils.path_util module.
-"""
-
-import os
-import tempfile
-from pathlib import Path
-from typing import Any
-from unittest.mock import patch
-
-from fca_dashboard.utils.path_util import get_config_path, get_logs_path, get_root_dir, resolve_path
-
-
-def test_get_root_dir() -> None:
-    """Test that get_root_dir returns a Path object to the project root."""
-    root_dir = get_root_dir()
-    assert isinstance(root_dir, Path)
-    # Check that the directory exists
-    assert root_dir.exists()
-    # Check that it contains expected project files/directories
-    assert (root_dir / "fca_dashboard").exists()
-    assert (root_dir / "setup.py").exists() or (root_dir / "pyproject.toml").exists()
-
-
-def test_get_config_path_default() -> None:
-    """Test get_config_path with default filename."""
-    config_path = get_config_path()
-    assert isinstance(config_path, Path)
-    assert config_path.name == "settings.yml"
-    # Use os.path.join to handle platform-specific path separators
-    assert os.path.join("fca_dashboard", "config") in str(config_path)
-
-
-def test_get_config_path_custom() -> None:
-    """Test get_config_path with custom filename."""
-    custom_filename = "custom_settings.yml"
-    config_path = get_config_path(custom_filename)
-    assert isinstance(config_path, Path)
-    assert config_path.name == custom_filename
-    # Use os.path.join to handle platform-specific path separators
-    assert os.path.join("fca_dashboard", "config") in str(config_path)
-
-
-@patch("fca_dashboard.utils.path_util.logger")
-def test_get_config_path_nonexistent(mock_logger: Any) -> None:
-    """Test get_config_path with a nonexistent file."""
-    nonexistent_file = "nonexistent_file.yml"
-    config_path = get_config_path(nonexistent_file)
-    assert isinstance(config_path, Path)
-    assert config_path.name == nonexistent_file
-    # Check that a warning was logged
-    mock_logger.warning.assert_called_once()
-
-
-def test_get_logs_path_default() -> None:
-    """Test get_logs_path with default filename."""
-    logs_path = get_logs_path()
-    assert isinstance(logs_path, Path)
-    assert logs_path.name == "fca_dashboard.log"
-    assert "logs" in str(logs_path)
-    # Check that the logs directory exists
-    assert logs_path.parent.exists()
-
-
-def test_get_logs_path_custom() -> None:
-    """Test get_logs_path with custom filename."""
-    custom_filename = "custom.log"
-    logs_path = get_logs_path(custom_filename)
-    assert isinstance(logs_path, Path)
-    assert logs_path.name == custom_filename
-    assert "logs" in str(logs_path)
-
-
-def test_resolve_path_absolute() -> None:
-    """Test resolve_path with an absolute path."""
-    # Create a temporary file
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        temp_path = Path(temp_file.name)
-
-    try:
-        # Test with absolute path
-        resolved_path = resolve_path(temp_path)
-        assert resolved_path == temp_path
-    finally:
-        # Clean up
-        os.unlink(temp_path)
-
-
-def test_resolve_path_existing_relative() -> None:
-    """Test resolve_path with an existing relative path."""
-    # Create a temporary file in the current directory
-    with tempfile.NamedTemporaryFile(dir=".", delete=False) as temp_file:
-        temp_name = Path(temp_file.name).name
-
-    try:
-        # Test with relative path that exists
-        resolved_path = resolve_path(temp_name)
-        assert resolved_path.is_absolute()
-        assert resolved_path.name == temp_name
-    finally:
-        # Clean up
-        os.unlink(temp_name)
-
-
-@patch("fca_dashboard.utils.path_util.logger")
-def test_resolve_path_nonexistent(mock_logger: Any) -> None:
-    """Test resolve_path with a nonexistent path."""
-    nonexistent_path = "nonexistent_file.txt"
-    resolved_path = resolve_path(nonexistent_path)
-    assert isinstance(resolved_path, Path)
-    assert resolved_path.name == nonexistent_path
-    # Check that a warning message was logged (changed from debug to warning)
-    mock_logger.warning.assert_called()
-
-
-def test_resolve_path_with_base_dir() -> None:
-    """Test resolve_path with a base directory."""
-    # Create a temporary directory
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Create a file in the temporary directory
-        temp_file_path = Path(temp_dir) / "test_file.txt"
-        with open(temp_file_path, "w") as f:
-            f.write("test")
-
-        # Test resolving the file relative to the base directory
-        resolved_path = resolve_path("test_file.txt", base_dir=Path(temp_dir))
-        assert resolved_path.is_absolute()
-        assert resolved_path.name == "test_file.txt"
-        assert resolved_path.parent == Path(temp_dir).resolve()
-
-
-def test_resolve_path_with_fca_dashboard_subdir() -> None:
-    """Test resolve_path with a path in the fca_dashboard subdirectory."""
-    # Mock a base directory with an fca_dashboard subdirectory
-    with tempfile.TemporaryDirectory() as temp_dir:
-        base_dir = Path(temp_dir)
-        fca_dir = base_dir / "fca_dashboard"
-        fca_dir.mkdir()
-
-        # Create a file in the fca_dashboard subdirectory
-        test_file = fca_dir / "test_file.txt"
-        with open(test_file, "w") as f:
-            f.write("test")
-
-        # Test resolving the file
-        resolved_path = resolve_path("test_file.txt", base_dir=base_dir)
-        assert resolved_path.is_absolute()
-        assert resolved_path.name == "test_file.txt"
-        assert resolved_path.parent == fca_dir.resolve()
-```
-
-## File: tests/unit/test_settings.py
-```python
-"""
-Unit tests for the Settings module.
-
-This module contains tests for the Settings class and related functionality
-in the fca_dashboard.config.settings module.
-"""
-
-import os
-import tempfile
-from typing import Generator
-
-import pytest
-
-from fca_dashboard.config.settings import Settings, get_settings
-
-
-@pytest.fixture
-def temp_settings_file() -> Generator[str, None, None]:
-    """Create a temporary settings file for testing."""
-    config_content = """
-database:
-  host: localhost
-  port: 5432
-  user: test_user
-  password: secret
-app:
-  name: test_app
-  debug: true
-"""
-    with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
-        temp_file.write(config_content.encode("utf-8"))
-        temp_path = temp_file.name
-
-    yield temp_path
-
-    # Cleanup
-    os.unlink(temp_path)
-
-
-@pytest.fixture
-def temp_settings_file_with_env_vars() -> Generator[str, None, None]:
-    """Create a temporary settings file with environment variable placeholders."""
-    config_content = """
-database:
-  host: localhost
-  port: 5432
-  user: ${TEST_DB_USER}
-  password: ${TEST_DB_PASSWORD}
-app:
-  name: test_app
-  debug: true
-  environments: ["dev", "${TEST_ENV}", "prod"]
-  secrets: 
-    - key1: value1
-    - key2: ${TEST_SECRET}
-"""
-    with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
-        temp_file.write(config_content.encode("utf-8"))
-        temp_path = temp_file.name
-
-    yield temp_path
-
-    # Cleanup
-    os.unlink(temp_path)
-
-
-def test_settings_load_valid_file(temp_settings_file: str) -> None:
-    """Test loading settings from a valid file."""
-    settings = Settings(config_path=temp_settings_file)
-    assert settings.get("database.host") == "localhost"
-    assert settings.get("database.port") == 5432
-    assert settings.get("app.name") == "test_app"
-    assert settings.get("app.debug") is True
-
-
-def test_settings_load_missing_file() -> None:
-    """Test that loading a non-existent file raises FileNotFoundError."""
-    with pytest.raises(FileNotFoundError):
-        Settings(config_path="nonexistent_file.yml")
-
-
-def test_settings_get_nonexistent_key(temp_settings_file: str) -> None:
-    """Test getting a non-existent key returns the default value."""
-    settings = Settings(config_path=temp_settings_file)
-    assert settings.get("nonexistent.key") is None
-    assert settings.get("nonexistent.key", default="fallback") == "fallback"
-
-
-def test_settings_get_nested_keys(temp_settings_file: str) -> None:
-    """Test getting nested keys from the configuration."""
-    settings = Settings(config_path=temp_settings_file)
-    assert settings.get("database.user") == "test_user"
-    assert settings.get("database.password") == "secret"
-
-
-def test_get_settings_caching(temp_settings_file: str) -> None:
-    """Test that get_settings caches instances for the same config path."""
-    settings1 = get_settings(temp_settings_file)
-    settings2 = get_settings(temp_settings_file)
-
-    # Should be the same instance
-    assert settings1 is settings2
-
-    # Modify the first instance and check that the second reflects the change
-    settings1.config["test_key"] = "test_value"
-    assert settings2.config["test_key"] == "test_value"
-
-
-def test_get_settings_default() -> None:
-    """Test that get_settings returns the default instance when no path is provided."""
-    settings = get_settings()
-    assert isinstance(settings, Settings)
-
-    # Should return the same default instance on subsequent calls
-    settings2 = get_settings()
-    assert settings is settings2
-
-
-def test_environment_variable_substitution(temp_settings_file_with_env_vars: str) -> None:
-    """Test that environment variables are substituted in the configuration."""
-    # Set environment variables for testing
-    os.environ["TEST_DB_USER"] = "env_user"
-    os.environ["TEST_DB_PASSWORD"] = "env_password"
-    
-    try:
-        # Load settings with environment variables
-        settings = Settings(config_path=temp_settings_file_with_env_vars)
-        
-        # Check that environment variables were substituted
-        assert settings.get("database.user") == "env_user"
-        assert settings.get("database.password") == "env_password"
-        
-        # Check that non-environment variable settings are still loaded correctly
-        assert settings.get("database.host") == "localhost"
-        assert settings.get("app.name") == "test_app"
-    finally:
-        # Clean up environment variables
-        del os.environ["TEST_DB_USER"]
-        del os.environ["TEST_DB_PASSWORD"]
-
-
-def test_missing_environment_variable(temp_settings_file_with_env_vars: str) -> None:
-    """Test that missing environment variables keep the original placeholder."""
-    # Ensure environment variables are not set
-    if "TEST_DB_USER" in os.environ:
-        del os.environ["TEST_DB_USER"]
-    if "TEST_DB_PASSWORD" in os.environ:
-        del os.environ["TEST_DB_PASSWORD"]
-    
-    # Load settings with missing environment variables
-    settings = Settings(config_path=temp_settings_file_with_env_vars)
-    
-    # Check that placeholders are preserved
-    assert settings.get("database.user") == "${TEST_DB_USER}"
-    assert settings.get("database.password") == "${TEST_DB_PASSWORD}"
-
-
-def test_environment_variable_substitution_in_lists(temp_settings_file_with_env_vars: str) -> None:
-    """Test that environment variables are substituted in lists and nested structures."""
-    # Set environment variables for testing
-    os.environ["TEST_ENV"] = "staging"
-    os.environ["TEST_SECRET"] = "secret_value"
-    
-    try:
-        # Load settings with environment variables
-        settings = Settings(config_path=temp_settings_file_with_env_vars)
-        
-        # Check that environment variables in lists are substituted
-        environments = settings.get("app.environments")
-        assert isinstance(environments, list)
-        assert environments[0] == "dev"
-        assert environments[1] == "staging"  # Substituted from ${TEST_ENV}
-        assert environments[2] == "prod"
-        
-        # Check that environment variables in nested structures are substituted
-        secrets = settings.get("app.secrets")
-        assert isinstance(secrets, list)
-        assert secrets[0]["key1"] == "value1"
-        assert secrets[1]["key2"] == "secret_value"  # Substituted from ${TEST_SECRET}
-    finally:
-        # Clean up environment variables
-        del os.environ["TEST_ENV"]
-        del os.environ["TEST_SECRET"]
-```
-
-## File: tests/unit/test_string_utils.py
-```python
-"""Tests for string utility functions."""
-import pytest
-
-from fca_dashboard.utils.string_utils import capitalize, is_empty, slugify, truncate
-
-
-class TestCapitalize:
-    """Tests for the capitalize function."""
-
-    def test_capitalize_lowercase(self):
-        """Test capitalizing a lowercase string."""
-        assert capitalize("hello") == "Hello"
-
-    def test_capitalize_already_capitalized(self):
-        """Test capitalizing an already capitalized string."""
-        assert capitalize("Hello") == "Hello"
-
-    def test_capitalize_empty_string(self):
-        """Test capitalizing an empty string."""
-        assert capitalize("") == ""
-
-    def test_capitalize_single_char(self):
-        """Test capitalizing a single character."""
-        assert capitalize("a") == "A"
-
-    def test_capitalize_with_spaces(self):
-        """Test capitalizing a string with leading spaces."""
-        assert capitalize("  hello") == "  Hello"
-
-    def test_capitalize_with_numbers(self):
-        """Test capitalizing a string starting with numbers."""
-        assert capitalize("123abc") == "123abc"
-
-
-class TestSlugify:
-    """Tests for the slugify function."""
-
-    def test_slugify_simple_string(self):
-        """Test slugifying a simple string."""
-        assert slugify("Hello World") == "hello-world"
-
-    def test_slugify_with_special_chars(self):
-        """Test slugifying a string with special characters."""
-        assert slugify("Hello, World!") == "hello-world"
-
-    def test_slugify_with_multiple_spaces(self):
-        """Test slugifying a string with multiple spaces."""
-        assert slugify("Hello   World") == "hello-world"
-
-    def test_slugify_with_dashes(self):
-        """Test slugifying a string that already has dashes."""
-        assert slugify("Hello-World") == "hello-world"
-
-    def test_slugify_with_underscores(self):
-        """Test slugifying a string with underscores."""
-        assert slugify("Hello_World") == "hello-world"
-
-    def test_slugify_empty_string(self):
-        """Test slugifying an empty string."""
-        assert slugify("") == ""
-
-    def test_slugify_with_accents(self):
-        """Test slugifying a string with accented characters."""
-        assert slugify("Héllö Wörld") == "hello-world"
-
-
-class TestTruncate:
-    """Tests for the truncate function."""
-
-    def test_truncate_short_string(self):
-        """Test truncating a string shorter than the limit."""
-        assert truncate("Hello", 10) == "Hello"
-
-    def test_truncate_exact_length(self):
-        """Test truncating a string of exact length."""
-        assert truncate("Hello", 5) == "Hello"
-
-    def test_truncate_long_string(self):
-        """Test truncating a string longer than the limit."""
-        assert truncate("Hello World", 5) == "Hello..."
-
-    def test_truncate_with_custom_suffix(self):
-        """Test truncating with a custom suffix."""
-        assert truncate("Hello World", 5, suffix="...more") == "Hello...more"
-
-    def test_truncate_empty_string(self):
-        """Test truncating an empty string."""
-        assert truncate("", 5) == ""
-
-    def test_truncate_with_zero_length(self):
-        """Test truncating with zero length."""
-        assert truncate("Hello", 0) == "..."
-
-
-class TestIsEmpty:
-    """Tests for the is_empty function."""
-
-    def test_is_empty_with_empty_string(self):
-        """Test checking if an empty string is empty."""
-        assert is_empty("") is True
-
-    def test_is_empty_with_whitespace(self):
-        """Test checking if a whitespace string is empty."""
-        assert is_empty("   ") is True
-        assert is_empty("\t\n") is True
-
-    def test_is_empty_with_text(self):
-        """Test checking if a non-empty string is empty."""
-        assert is_empty("Hello") is False
-
-    def test_is_empty_with_whitespace_and_text(self):
-        """Test checking if a string with whitespace and text is empty."""
-        assert is_empty("  Hello  ") is False
-
-    def test_is_empty_with_none(self):
-        """Test checking if None is empty."""
-        with pytest.raises(TypeError):
-            is_empty(None)
-```
-
-## File: tests/unit/test_validation_utils.py
-```python
-"""Unit tests for validation utilities."""
-import pytest
-
-from fca_dashboard.utils.validation_utils import is_valid_email, is_valid_phone, is_valid_url
-
-
-class TestEmailValidation:
-    """Test cases for email validation function."""
-
-    def test_valid_emails(self):
-        """Test that valid email addresses are correctly identified."""
-        valid_emails = [
-            "user@example.com",
-            "user.name@example.com",
-            "user+tag@example.com",
-            "user-name@example.co.uk",
-            "user_name@example-domain.com",
-            "123456@example.com",
-            "user@subdomain.example.com",
-        ]
-        for email in valid_emails:
-            assert is_valid_email(email), f"Email should be valid: {email}"
-
-    def test_invalid_emails(self):
-        """Test that invalid email addresses are correctly rejected."""
-        invalid_emails = [
-            "",  # Empty string
-            "user",  # Missing @ and domain
-            "user@",  # Missing domain
-            "@example.com",  # Missing username
-            "user@.com",  # Missing domain name
-            "user@example",  # Missing TLD
-            "user@example..com",  # Double dot
-            "user@example.com.",  # Trailing dot
-            "user name@example.com",  # Space in username
-            "user@exam ple.com",  # Space in domain
-            "user@-example.com",  # Domain starts with hyphen
-            "user@example-.com",  # Domain ends with hyphen
-        ]
-        for email in invalid_emails:
-            assert not is_valid_email(email), f"Email should be invalid: {email}"
-
-    def test_none_input(self):
-        """Test that None input is handled correctly."""
-        assert not is_valid_email(None), "None should be invalid"
-
-    def test_non_string_input(self):
-        """Test that non-string inputs are handled correctly."""
-        assert not is_valid_email(123), "Integer should be invalid"
-        assert not is_valid_email(True), "Boolean should be invalid"
-        assert not is_valid_email([]), "List should be invalid"
-
-
-class TestPhoneValidation:
-    """Test cases for phone number validation function."""
-
-    def test_valid_phone_numbers(self):
-        """Test that valid phone numbers are correctly identified."""
-        valid_phones = [
-            "1234567890",  # Simple 10-digit
-            "123-456-7890",  # Hyphenated
-            "(123) 456-7890",  # Parentheses
-            "+1 123-456-7890",  # International format
-            "123.456.7890",  # Dots
-            "123 456 7890",  # Spaces
-            "+12345678901",  # International without separators
-        ]
-        for phone in valid_phones:
-            assert is_valid_phone(phone), f"Phone should be valid: {phone}"
-
-    def test_invalid_phone_numbers(self):
-        """Test that invalid phone numbers are correctly rejected."""
-        invalid_phones = [
-            "",  # Empty string
-            "123",  # Too short
-            "123456",  # Too short
-            "abcdefghij",  # Letters
-            "123-abc-7890",  # Mixed letters and numbers
-            "123-456-789",  # Too short with separators
-            "123-456-78901",  # Too long with separators
-            "(123)456-7890",  # Missing space after parentheses
-            "123 - 456 - 7890",  # Spaces around hyphens
-        ]
-        for phone in invalid_phones:
-            assert not is_valid_phone(phone), f"Phone should be invalid: {phone}"
-
-    def test_none_input(self):
-        """Test that None input is handled correctly."""
-        assert not is_valid_phone(None), "None should be invalid"
-
-    def test_non_string_input(self):
-        """Test that non-string inputs are handled correctly."""
-        assert not is_valid_phone(123), "Integer should be invalid"
-        assert not is_valid_phone(True), "Boolean should be invalid"
-        assert not is_valid_phone([]), "List should be invalid"
-
-
-class TestUrlValidation:
-    """Test cases for URL validation function."""
-
-    def test_valid_urls(self):
-        """Test that valid URLs are correctly identified."""
-        valid_urls = [
-            "http://example.com",
-            "https://example.com",
-            "http://www.example.com",
-            "https://example.com/path",
-            "https://example.com/path?query=value",
-            "https://example.com/path#fragment",
-            "https://example.com:8080",
-            "https://subdomain.example.com",
-            "https://example-domain.com",
-            "https://example.co.uk",
-            "http://localhost",
-            "http://localhost:8080",
-            "http://127.0.0.1",
-            "http://127.0.0.1:8080",
-        ]
-        for url in valid_urls:
-            assert is_valid_url(url), f"URL should be valid: {url}"
-
-    def test_invalid_urls(self):
-        """Test that invalid URLs are correctly rejected."""
-        invalid_urls = [
-            "",  # Empty string
-            "example.com",  # Missing protocol
-            "http://",  # Missing domain
-            "http:/example.com",  # Missing slash
-            "http://example",  # Missing TLD
-            "http://.com",  # Missing domain name
-            "http://example..com",  # Double dot
-            "http://example.com.",  # Trailing dot
-            "http://exam ple.com",  # Space in domain
-            "http://-example.com",  # Domain starts with hyphen
-            "http://example-.com",  # Domain ends with hyphen
-            "htp://example.com",  # Typo in protocol
-            "http:example.com",  # Missing slashes
-            "http//example.com",  # Missing colon
-        ]
-        for url in invalid_urls:
-            assert not is_valid_url(url), f"URL should be invalid: {url}"
-
-    def test_none_input(self):
-        """Test that None input is handled correctly."""
-        assert not is_valid_url(None), "None should be invalid"
-
-    def test_non_string_input(self):
-        """Test that non-string inputs are handled correctly."""
-        assert not is_valid_url(123), "Integer should be invalid"
-        assert not is_valid_url(True), "Boolean should be invalid"
-        assert not is_valid_url([]), "List should be invalid"
-```
-
 ## File: utils/__init__.py
 ```python
 """Utility modules for the FCA Dashboard application."""
@@ -2383,6 +687,98 @@ def parse_date(
         return parser.parse(date_str)
     except (ValueError, parser.ParserError) as err:
         raise ValueError(f"Could not parse date string: {date_str}") from err
+```
+
+## File: utils/env_utils.py
+```python
+"""
+Environment and configuration utilities.
+
+This module provides functions to safely access environment variables
+and check the current running environment. It integrates with the application's
+settings module for consistent configuration access.
+"""
+
+import os
+from typing import Any
+
+from fca_dashboard.config.settings import settings
+
+# The environment variable name used to determine the current environment
+ENV_VAR_NAME = "ENVIRONMENT"
+
+
+def get_env_var(key: str, fallback: Any = None) -> Any:
+    """
+    Safely access environment variables with an optional fallback value.
+    
+    This function first checks if the environment variable is set directly in
+    the OS environment. If not found, it attempts to retrieve it from the
+    application settings. If still not found, it returns the fallback value.
+    
+    Args:
+        key: The name of the environment variable to retrieve
+        fallback: The value to return if the environment variable is not set
+        
+    Returns:
+        The value of the environment variable if it exists, otherwise the fallback value
+    """
+    # First check OS environment variables
+    value = os.environ.get(key)
+    
+    # If not found in OS environment, check application settings
+    if value is None:
+        # Look for the key in the env section of settings
+        value = settings.get(f"env.{key}")
+        
+        # If still not found, look for it at the top level
+        if value is None:
+            value = settings.get(key)
+    
+    # If still not found, return the fallback
+    if value is None:
+        return fallback
+        
+    return value
+
+
+def is_dev() -> bool:
+    """
+    Check if the current environment is development.
+    
+    This function checks the environment variable specified by ENV_VAR_NAME
+    to determine if the current environment is development.
+    
+    Returns:
+        True if the current environment is development, False otherwise
+    """
+    env = str(get_env_var(ENV_VAR_NAME, "")).lower()
+    return env in ["development", "dev"]
+
+
+def is_prod() -> bool:
+    """
+    Check if the current environment is production.
+    
+    This function checks the environment variable specified by ENV_VAR_NAME
+    to determine if the current environment is production.
+    
+    Returns:
+        True if the current environment is production, False otherwise
+    """
+    env = str(get_env_var(ENV_VAR_NAME, "")).lower()
+    return env in ["production", "prod"]
+
+
+def get_environment() -> str:
+    """
+    Get the current environment name.
+    
+    Returns:
+        The current environment name (e.g., 'development', 'production', 'staging')
+        or 'unknown' if not set
+    """
+    return str(get_env_var(ENV_VAR_NAME, "unknown")).lower()
 ```
 
 ## File: utils/error_handler.py
@@ -3091,9 +1487,9 @@ def format_currency(
         return f"{symbol}{formatted_value}"
 
 
-def round_to(value: NumericType, places: int) -> NumericType:
+def round_to(value: NumericType, places: int = 0) -> NumericType:
     """
-    Round a number to a specified number of decimal places.
+    Round a number to a specified number of decimal places with ROUND_HALF_UP rounding.
 
     This function handles both positive and negative decimal places:
     - Positive places round to that many decimal places
@@ -3102,7 +1498,7 @@ def round_to(value: NumericType, places: int) -> NumericType:
 
     Args:
         value: The numeric value to round.
-        places: Number of decimal places to round to.
+        places: Number of decimal places to round to (default: 0).
 
     Returns:
         Rounded value of the same type as the input.
@@ -3117,27 +1513,41 @@ def round_to(value: NumericType, places: int) -> NumericType:
         1.24
         >>> round_to(123, -1)
         120
+        >>> round_to(125, -1)
+        130
     """
     if not isinstance(value, (int, float, Decimal)):
         raise TypeError(f"Expected numeric type, got {type(value).__name__}")
 
-    # Handle Decimal type
-    if isinstance(value, Decimal):
-        if places >= 0:
-            return value.quantize(Decimal(f"0.{'0' * places}"), rounding=ROUND_HALF_UP)
-        else:
-            # For negative places (tens, hundreds, etc.)
-            return value.quantize(Decimal(f"1{'0' * abs(places)}"), rounding=ROUND_HALF_UP)
-
-    # Handle int and float types
-    factor = 10 ** places
+    # Preserve the original type
+    original_type = type(value)
+    
+    # Convert to Decimal for consistent rounding behavior
+    if not isinstance(value, Decimal):
+        decimal_value = Decimal(str(value))
+    else:
+        decimal_value = value
+    
+    # Calculate the factor based on places
+    factor = Decimal("10") ** places
+    
     if places >= 0:
-        result = round(value * factor) / factor
-        # Convert to int if places is 0
-        return int(result) if places == 0 else result
+        # For positive places (decimal places)
+        result = decimal_value.quantize(Decimal(f"0.{'0' * places}"), rounding=ROUND_HALF_UP)
     else:
         # For negative places (tens, hundreds, etc.)
-        return round(value / factor) * factor
+        # First divide by factor, round to integer, then multiply back
+        factor = Decimal("10") ** abs(places)
+        result = (decimal_value / factor).quantize(Decimal("1"), rounding=ROUND_HALF_UP) * factor
+    
+    # Return the result in the original type
+    if original_type == int or (places == 0 and original_type == float):
+        # Convert to int if original was int or if rounding to integer (places=0)
+        return int(result)
+    elif original_type == float:
+        return float(result)
+    else:
+        return result  # Already a Decimal
 
 
 def random_number(min_value: int, max_value: int) -> int:
@@ -3427,11 +1837,7 @@ def is_valid_email(email: Any) -> bool:
     
     # Check for hyphens at the end of domain parts
     domain_parts = domain.split('.')
-    for part in domain_parts:
-        if part.endswith('-'):
-            return False
-    
-    return True
+    return all(not part.endswith('-') for part in domain_parts)
 
 
 def is_valid_phone(phone: Any) -> bool:
@@ -3516,7 +1922,8 @@ def is_valid_url(url: Any) -> bool:
     
     # URL regex pattern that validates common URL formats
     pattern = r'^(https?:\/\/)' + \
-              r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
+              r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|' + \
+              r'(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
               r'(:\d+)?(\/[-a-zA-Z0-9%_.~#+]*)*' + \
               r'(\?[;&a-zA-Z0-9%_.~+=-]*)?' + \
               r'(#[-a-zA-Z0-9%_]+)?$'
@@ -3527,8 +1934,151 @@ def is_valid_url(url: Any) -> bool:
     
     # Check for domain part
     domain_part = url.split('://')[1].split('/')[0].split(':')[0]
-    if domain_part.startswith('-') or domain_part.endswith('-'):
-        return False
-    
-    return True
+    return not (domain_part.startswith('-') or domain_part.endswith('-'))
+```
+
+## File: utils/validation_utils.py,cover
+```
+> """
+> Validation utilities for common data formats.
+  
+> This module provides functions to validate common data formats such as
+> email addresses, phone numbers, and URLs.
+> """
+> import re
+> from typing import Any
+  
+  
+> def is_valid_email(email: Any) -> bool:
+>     """
+>     Validate if the input is a properly formatted email address.
+  
+>     Args:
+>         email: The email address to validate.
+  
+>     Returns:
+>         bool: True if the email is valid, False otherwise.
+>     """
+>     if not isinstance(email, str):
+>         return False
+  
+      # RFC 5322 compliant email regex pattern with additional validations
+>     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}$'
+      
+      # Basic pattern match
+>     if not re.match(pattern, email):
+>         return False
+      
+      # Additional validations
+>     if '..' in email:  # No consecutive dots
+>         return False
+>     if email.endswith('.'):  # No trailing dot
+!         return False
+>     if ' ' in email:  # No spaces
+!         return False
+      
+      # Check domain part
+>     domain = email.split('@')[1]
+>     if domain.startswith('-') or domain.endswith('-'):  # No leading/trailing hyphens in domain
+!         return False
+      
+      # Check for hyphens at the end of domain parts
+>     domain_parts = domain.split('.')
+>     return all(not part.endswith('-') for part in domain_parts)
+  
+  
+> def is_valid_phone(phone: Any) -> bool:
+>     """
+>     Validate if the input is a properly formatted phone number.
+  
+>     Accepts various formats including:
+>     - 10 digits: 1234567890
+>     - Hyphenated: 123-456-7890
+>     - Parentheses: (123) 456-7890
+>     - International: +1 123-456-7890
+>     - Dots: 123.456.7890
+>     - Spaces: 123 456 7890
+  
+>     Args:
+>         phone: The phone number to validate.
+  
+>     Returns:
+>         bool: True if the phone number is valid, False otherwise.
+>     """
+>     if not isinstance(phone, str):
+>         return False
+  
+      # Check for specific invalid formats first
+>     if phone == "":
+>         return False
+      
+      # Check for spaces around hyphens
+>     if " - " in phone:
+>         return False
+      
+      # Check for missing space after parentheses in format like (123)456-7890
+>     if re.search(r'\)[0-9]', phone):
+>         return False
+      
+      # Remove all non-alphanumeric characters for normalization
+>     normalized = re.sub(r'[^0-9+]', '', phone)
+      
+      # Check for letters in the phone number
+>     if re.search(r'[a-zA-Z]', phone):
+>         return False
+      
+      # Check for international format (starting with +)
+>     if normalized.startswith('+'):
+          # International numbers should have at least 8 digits after the country code
+>         return len(normalized) >= 9 and normalized[1:].isdigit()
+      
+      # For US/Canada numbers, expect 10 digits
+>     return len(normalized) == 10 and normalized.isdigit()
+  
+  
+> def is_valid_url(url: Any) -> bool:
+>     """
+>     Validate if the input is a properly formatted URL.
+  
+>     Validates URLs with http or https protocols.
+  
+>     Args:
+>         url: The URL to validate.
+  
+>     Returns:
+>         bool: True if the URL is valid, False otherwise.
+>     """
+>     if not isinstance(url, str):
+>         return False
+  
+      # Check for specific invalid formats first
+>     if url == "":
+>         return False
+      
+      # Check for spaces
+>     if ' ' in url:
+>         return False
+      
+      # Check for double dots
+>     if '..' in url:
+>         return False
+      
+      # Check for trailing dot
+>     if url.endswith('.'):
+>         return False
+      
+      # URL regex pattern that validates common URL formats
+>     pattern = r'^(https?:\/\/)' + \
+>               r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
+>               r'(:\d+)?(\/[-a-zA-Z0-9%_.~#+]*)*' + \
+>               r'(\?[;&a-zA-Z0-9%_.~+=-]*)?' + \
+>               r'(#[-a-zA-Z0-9%_]+)?$'
+      
+      # Basic pattern match
+>     if not re.match(pattern, url):
+>         return False
+      
+      # Check for domain part
+>     domain_part = url.split('://')[1].split('/')[0].split(':')[0]
+>     return not (domain_part.startswith('-') or domain_part.endswith('-'))
 ```

@@ -54,3 +54,11 @@ clean:
 # Create initial database schema
 init-db:
 	python -c "from fca_dashboard.core.models import Base; from sqlalchemy import create_engine; engine = create_engine('sqlite:///etl.db'); Base.metadata.create_all(engine)"
+
+#compile code: 
+
+compile-core:
+	cd fca_dashboard && npx repomix --ignore "tests/"
+
+compile-tests:
+	cd fca_dashboard && npx repomix --include "tests/"
