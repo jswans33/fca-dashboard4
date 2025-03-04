@@ -5,6 +5,8 @@ pandas>=1.5.0,<2.0.0
 openpyxl>=3.1.0,<4.0.0  # For Excel support in pandas
 pyyaml>=6.0,<7.0
 psycopg2-binary>=2.9.5,<3.0.0  # PostgreSQL driver
+python-dateutil>=2.8.2,<3.0.0  # Date parsing utilities
+freezegun>=1.2.0,<2.0.0  # For time-based testing
 
 # Development dependencies
 pytest>=7.0.0,<8.0.0
@@ -27,4 +29,3 @@ loguru>=0.6.0,<0.7.0
 pytest>=7.0.0,<8.0.0
 pytest-cov>=4.0.0,<5.0.0
 coverage>=7.0.0,<8.0.0
-
