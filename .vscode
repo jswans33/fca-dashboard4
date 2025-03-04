@@ -1,0 +1,51 @@
+ {
+     "python.linting.enabled": true,
+     "python.linting.flake8Enabled": true,
+     "python.linting.mypyEnabled": true,
+     "python.formatting.provider": "black",
+     "editor.formatOnSave": true,
+     "editor.rulers": [120],
+     "python.testing.pytestEnabled": true,
+     "python.testing.unittestEnabled": false,
+     "python.testing.nosetestsEnabled": false,
+     "python.testing.pytestArgs": [
+       "fca_dashboard/tests"
+     ],
+     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+     "python.analysis.extraPaths": [
+       "${workspaceFolder}"
+     ],
+     "ruff.enable": true,
+     "ruff.organizeImports": true,
+     "ruff.fixAll": true,
+     "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+     "[python]": {
+       "editor.defaultFormatter": "charliermarsh.ruff",
+       "editor.formatOnSave": true,
+       "editor.codeActionsOnSave": {
+         "source.fixAll.ruff": true,
+         "source.organizeImports.ruff": true
+       }
+     },
+     
+     "prettier.enable": true,
+     "[javascript]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[json]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[yaml]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[markdown]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "prettier.singleQuote": true,
+     "prettier.trailingComma": "es5",
+     "prettier.printWidth": 100
+   }

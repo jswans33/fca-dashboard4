@@ -33,8 +33,10 @@ This SOP covers:
    ```
 
 2. Activate the virtual environment:
-   - Windows: `.venv\Scripts\activate`
-   - Unix/MacOS: `source .venv/bin/activate`
+
+```bash
+    source ./.venv/scripts/activate
+```
 
 ### 2. Dependencies Setup
 
@@ -241,7 +243,23 @@ This SOP covers:
    mypy .
    ```
 
-3. Create a `Makefile` for convenience commands:
+3.1. nstalling Make on Windows using PowerShell
+Here's the step-by-step PowerShell script to install Make using Chocolatey:
+
+First, check if Chocolatey is installed, if not install it:
+Then install Make:
+Verify the installation:
+Alternative: Using Git Bash
+If you have Git for Windows installed, you can also use Git Bash which comes with Make pre-installed:
+
+Open Git Bash
+Navigate to your project directory
+Run Make commands directly in Git Bash
+Note: If you're using VS Code, you can set Git Bash as your integrated terminal:
+
+Similar code found with 2 license types - View matches
+   
+3.2 Create a `Makefile` for convenience commands:
 
    ```makefile
    .PHONY: lint test format install run clean init-db coverage test-unit test-integration
@@ -332,6 +350,34 @@ This SOP covers:
    - Run tests: `make test`
    - Install dependencies: `make install`
    - Execute multiple targets: `make clean install test`
+
+### Installing Make on Windows
+
+1. Using PowerShell (Administrator):
+```powershell
+# Install Chocolatey if not already installed
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Install Make using Chocolatey
+choco install make -y
+```
+
+2. Alternative: Using Git Bash
+- Git Bash comes with Make pre-installed
+- Open Git Bash
+- Verify installation: `make --version`
+
+3. VS Code Integration
+```json
+// In .vscode/settings.json
+{
+    "terminal.integrated.defaultProfile.windows": "Git Bash"
+}
+```
+
+This will allow you to use Make commands directly in the VS Code integrated terminal.
 
 ### 4. Project Structure Setup
 
@@ -755,7 +801,7 @@ This SOP covers:
    mkdir -p .vscode
    ```
 
-2. Create `.vscode/settings.json` for linting and autoformatting configuration:
+2. Create `.vscode/settings.json` for linting, autoformatting and Prettier configuration:
 
    ```json
    {
@@ -786,7 +832,28 @@ This SOP covers:
          "source.fixAll.ruff": true,
          "source.organizeImports.ruff": true
        }
-     }
+     },
+     // Prettier configuration for non-Python files
+     "prettier.enable": true,
+     "[javascript]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[json]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[yaml]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "[markdown]": {
+       "editor.defaultFormatter": "esbenp.prettier-vscode",
+       "editor.formatOnSave": true
+     },
+     "prettier.singleQuote": true,
+     "prettier.trailingComma": "es5",
+     "prettier.printWidth": 100
    }
    ```
 
@@ -976,12 +1043,12 @@ This SOP has been completed and verified on March 3, 2025. All steps have been t
 
 ## Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-03-03 | ETL Team | Initial version |
-| 1.1 | 2025-03-03 | ETL Team | Enhanced with version bounds, Makefile, example usage, expanded troubleshooting |
-| 1.2 | 2025-03-03 | ETL Team | Added detailed VS Code setup, linting and autoformat configuration |
-| 1.3 | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users |
-| 1.4 | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting |
-| 1.5 | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
-| 1.6 | 2025-03-03 | ETL Team | Added unit testing setup, improved test configuration, and updated VS Code settings |
+| Version | Date       | Author   | Changes                                                                                     |
+| ------- | ---------- | -------- | ------------------------------------------------------------------------------------------- |
+| 1.0     | 2025-03-03 | ETL Team | Initial version                                                                             |
+| 1.1     | 2025-03-03 | ETL Team | Enhanced with version bounds, Makefile, example usage, expanded troubleshooting             |
+| 1.2     | 2025-03-03 | ETL Team | Added detailed VS Code setup, linting and autoformat configuration                          |
+| 1.3     | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users                                    |
+| 1.4     | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting               |
+| 1.5     | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
+| 1.6     | 2025-03-03 | ETL Team | Added unit testing setup, improved test configuration, and updated VS Code settings         |

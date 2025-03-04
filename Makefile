@@ -1,10 +1,14 @@
 .PHONY: lint test format install run clean init-db coverage test-unit test-integration
 
 lint:
+
 	black --check .
 	isort --check .
 	flake8 .
 	mypy .
+
+lint-md:
+	npx markdownlint-cli "**/*.md" --config .markdownlint.json
 
 format:
 	black .
