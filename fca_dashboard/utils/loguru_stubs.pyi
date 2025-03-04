@@ -1,0 +1,66 @@
+from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, Union
+
+class Logger:
+    def remove(self, handler_id: Optional[int] = None) -> None: ...
+    def add(
+        self,
+        sink: Union[TextIO, str, Callable, Dict[str, Any]],
+        *,
+        level: Optional[Union[str, int]] = None,
+        format: Optional[str] = None,
+        filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
+        colorize: Optional[bool] = None,
+        serialize: Optional[bool] = None,
+        backtrace: Optional[bool] = None,
+        diagnose: Optional[bool] = None,
+        enqueue: Optional[bool] = None,
+        catch: Optional[bool] = None,
+        rotation: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        retention: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        compression: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        delay: Optional[bool] = None,
+        mode: Optional[str] = None,
+        buffering: Optional[int] = None,
+        encoding: Optional[str] = None,
+        **kwargs: Any,
+    ) -> int: ...
+    def bind(self, **kwargs: Any) -> "Logger": ...
+    def opt(
+        self,
+        *,
+        exception: Optional[Union[bool, Tuple[Any, ...], Dict[str, Any]]] = None,
+        record: Optional[bool] = None,
+        lazy: Optional[bool] = None,
+        colors: Optional[bool] = None,
+        raw: Optional[bool] = None,
+        capture: Optional[bool] = None,
+        depth: Optional[int] = None,
+        ansi: Optional[bool] = None,
+    ) -> "Logger": ...
+    def trace(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def debug(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def info(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def success(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def warning(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def error(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def critical(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def exception(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def log(self, level: Union[int, str], __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def level(self, name: str, no: int = 0, color: Optional[str] = None, icon: Optional[str] = None) -> "Logger": ...
+    def disable(self, name: str) -> None: ...
+    def enable(self, name: str) -> None: ...
+    def configure(
+        self,
+        *,
+        handlers: List[Dict[str, Any]] = [],
+        levels: List[Dict[str, Any]] = [],
+        extra: Dict[str, Any] = {},
+        patcher: Optional[Callable] = None,
+        activation: List[Tuple[str, bool]] = [],
+    ) -> None: ...
+    def patch(self, patcher: Callable) -> "Logger": ...
+    def complete(self) -> None: ...
+    @property
+    def catch(self) -> Callable: ...
+
+logger: Logger

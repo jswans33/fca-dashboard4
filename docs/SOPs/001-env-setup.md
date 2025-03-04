@@ -56,6 +56,15 @@ This SOP covers:
    flake8>=6.0.0,<7.0.0
    mypy>=1.0.0,<2.0.0
    ruff>=0.0.262,<1.0.0  # Fast Python linter
+   
+   # Type checking
+   types-PyYAML>=6.0.0,<7.0.0
+   types-requests>=2.29.0,<3.0.0
+   types-setuptools>=65.0.0,<66.0.0
+   types-toml>=0.10.0,<0.11.0
+   
+   # Logging
+   loguru>=0.6.0,<0.7.0
    ```
 
 2. Install dependencies:
@@ -64,11 +73,36 @@ This SOP covers:
    pip install -r requirements.txt
    ```
 
+3. Install the package in development mode:
+
+   ```bash
+   pip install -e .
+   ```
+
+   This step is crucial for allowing the package to be imported using absolute imports (e.g., `from fca_dashboard.config.settings import get_settings`). Without this step, you may encounter `ModuleNotFoundError` when trying to import modules from the package.
+
+   Note: The Makefile's `install` target includes this step, so you can also run `make install` to install all dependencies and the package in development mode.
+
 ### 3. Linter Configuration
 
-1. Create `pyproject.toml` with linting configurations:
+1. Create `pyproject.toml` with build system, project metadata, and linting configurations:
 
    ```toml
+   [build-system]
+   requires = ["setuptools>=42", "wheel"]
+   build-backend = "setuptools.build_meta"
+
+   [project]
+   name = "fca-dashboard"
+   version = "0.1.0"
+   description = "ETL Pipeline for FCA Dashboard"
+   readme = "README.md"
+   requires-python = ">=3.9"
+   license = {text = "Proprietary"}
+   authors = [
+       {name = "ETL Team"}
+   ]
+
    [tool.black]
    line-length = 120
    target-version = ['py39']
@@ -132,6 +166,21 @@ This SOP covers:
    known-first-party = ["fca_dashboard"]
    ```
 
+2. Create a minimal `setup.py` file to make the package installable:
+
+   ```python
+   """
+   Setup script for the FCA Dashboard package.
+   """
+
+   from setuptools import setup, find_packages
+
+   setup(
+       name="fca_dashboard",
+       packages=find_packages(),
+   )
+   ```
+
 2. Test linters:
 
    ```bash
@@ -162,7 +211,10 @@ This SOP covers:
    install:
     python -m pip install --upgrade pip
     pip install -r requirements.txt
+    pip install -e .
    ```
+
+   Note: The `install` target includes installing the package in development mode (`pip install -e .`), which is necessary for absolute imports to work correctly.
 
 ### 3.4. Understanding and Using Makefiles
 
@@ -275,10 +327,189 @@ This SOP covers:
    touch logs/fca_dashboard.log
    ```
 
-2. Ensure the logging utility is implemented early in development:
+2. Create a type stub file for Loguru to help with type checking:
+
+   ```python
+   # fca_dashboard/utils/loguru_stubs.pyi
+   from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, Union, overload
+
+   class Logger:
+       def remove(self, handler_id: Optional[int] = None) -> None: ...
+       
+       def add(
+           self,
+           sink: Union[TextIO, str, Callable, Dict[str, Any]],
+           *,
+           level: Optional[Union[str, int]] = None,
+           format: Optional[str] = None,
+           filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
+           colorize: Optional[bool] = None,
+           serialize: Optional[bool] = None,
+           backtrace: Optional[bool] = None,
+           diagnose: Optional[bool] = None,
+           enqueue: Optional[bool] = None,
+           catch: Optional[bool] = None,
+           rotation: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           retention: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           compression: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           delay: Optional[bool] = None,
+           mode: Optional[str] = None,
+           buffering: Optional[int] = None,
+           encoding: Optional[str] = None,
+           **kwargs: Any
+       ) -> int: ...
+       
+       def bind(self, **kwargs: Any) -> "Logger": ...
+       
+       def opt(
+           self,
+           *,
+           exception: Optional[Union[bool, Tuple[Any, ...], Dict[str, Any]]] = None,
+           record: Optional[bool] = None,
+           lazy: Optional[bool] = None,
+           colors: Optional[bool] = None,
+           raw: Optional[bool] = None,
+           capture: Optional[bool] = None,
+           depth: Optional[int] = None,
+           ansi: Optional[bool] = None,
+       ) -> "Logger": ...
+       
+       def trace(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def debug(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def info(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def success(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def warning(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def error(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def critical(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def exception(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def log(self, level: Union[int, str], __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       
+       def level(self, name: str, no: int = 0, color: Optional[str] = None, icon: Optional[str] = None) -> "Logger": ...
+       def disable(self, name: str) -> None: ...
+       def enable(self, name: str) -> None: ...
+       
+       def configure(
+           self,
+           *,
+           handlers: List[Dict[str, Any]] = [],
+           levels: List[Dict[str, Any]] = [],
+           extra: Dict[str, Any] = {},
+           patcher: Optional[Callable] = None,
+           activation: List[Tuple[str, bool]] = [],
+       ) -> None: ...
+       
+       def patch(self, patcher: Callable) -> "Logger": ...
+       
+       def complete(self) -> None: ...
+       
+       @property
+       def catch(self) -> Callable: ...
+
+   logger: Logger
+   ```
+
+3. Create a logging utility using Loguru:
+
+   ```python
+   # fca_dashboard/utils/logging_config.py
+   """
+   Logging configuration module for the FCA Dashboard application.
+
+   This module provides functionality to configure logging for the application
+   using Loguru, which offers improved formatting, better exception handling,
+   and simplified configuration compared to the standard logging module.
+   """
+
+   import sys
+   from pathlib import Path
+   from typing import Optional, Any
+
+   from loguru import logger  # type: ignore
+
+
+   def configure_logging(
+       level: str = "INFO",
+       log_file: Optional[str] = None,
+       rotation: str = "10 MB",
+       retention: str = "1 month",
+       format_string: Optional[str] = None
+   ) -> None:
+       """
+       Configure application logging with console and optional file output using Loguru.
+       
+       Args:
+           level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+           log_file: Path to log file. If None, only console logging is configured.
+           rotation: When to rotate the log file (e.g., "10 MB", "1 day")
+           retention: How long to keep log files (e.g., "1 month", "1 year")
+           format_string: Custom format string for log messages
+       """
+       # Remove default handlers
+       logger.remove()
+       
+       # Default format string if none provided
+       if format_string is None:
+           format_string = (
+               "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+               "<level>{level: <8}</level> | "
+               "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+               "<level>{message}</level>"
+           )
+       
+       # Add console handler
+       logger.add(
+           sys.stderr,
+           level=level.upper(),
+           format=format_string,
+           colorize=True
+       )
+       
+       # Add file handler if log_file is provided
+       if log_file:
+           # Ensure log directory exists
+           log_path = Path(log_file)
+           log_dir = log_path.parent
+           if not log_dir.exists():
+               log_dir.mkdir(parents=True, exist_ok=True)
+           
+           # Add rotating file handler
+           logger.add(
+               log_file,
+               level=level.upper(),
+               format=format_string,
+               rotation=rotation,
+               retention=retention,
+               compression="zip"
+           )
+       
+       logger.info(f"Logging configured with level: {level}")
+
+
+   def get_logger(name: str = "fca_dashboard") -> Any:
+       """
+       Get a logger instance with the specified name.
+       
+       Args:
+           name: Logger name, typically the module name
+           
+       Returns:
+           Loguru logger instance
+       """
+       return logger.bind(name=name)
+   ```
+
+3. Install type stubs for libraries:
 
    ```bash
-   # Test logging configuration
+   # Install type stubs for PyYAML (already in requirements.txt)
+   pip install types-PyYAML
+   ```
+
+   Note: Type stubs are important for static type checking with mypy. They provide type information for libraries that don't have built-in type annotations. If you encounter mypy errors like "Cannot find implementation or library stub for module named X", you may need to install type stubs for that library.
+
+4. Test logging configuration:
+
+   ```bash
    python -c "from fca_dashboard.utils.logging_config import configure_logging; configure_logging('DEBUG', 'logs/fca_dashboard.log')"
    ```
 
@@ -463,39 +694,64 @@ This SOP covers:
    - If pip install fails with permission errors, ensure the virtual environment is activated
    - If package conflicts occur, try installing packages one by one to identify conflicts
    - For psycopg2-binary installation issues on Windows, you might need to install Visual C++ Build Tools
+   - If pandas wheel building takes too long, consider using a pre-built wheel: `pip install --only-binary=:all: pandas`
+   - If you encounter `ModuleNotFoundError` when importing from the package, ensure you've installed the package in development mode with `pip install -e .`
 
 3. Linter configuration issues:
    - If linters aren't recognized, ensure they're installed in the virtual environment
    - For VS Code integration issues, install the Python extension and reload the window
    - If black/isort configurations conflict, ensure the profiles are compatible
 
-7. VS Code linting and formatting issues:
+4. Makefile issues:
+   - If `make` command is not found on Windows, install it using Chocolatey
+   - If Chocolatey installation fails with permission errors, run PowerShell as administrator:
+
+     ```powershell
+     Start-Process powershell -Verb RunAs -ArgumentList "choco install make -y"
+     ```
+
+   - If lock file errors occur during installation, you may need to delete the lock file mentioned in the error message
+   - Ensure Makefile commands use tabs for indentation, not spaces
+   - For Windows users without make, you can run the individual commands directly
+
+5. VS Code linting and formatting issues:
    - If autoformatting doesn't work on save, check that `"editor.formatOnSave": true` is set
    - If linting doesn't work, ensure the Python extension is installed and activated
    - Try reloading the VS Code window (Ctrl+Shift+P, then "Developer: Reload Window")
    - Verify the Python interpreter is correctly set to the virtual environment
    - Check the VS Code output panel (View > Output) and select "Python" to see linting errors
+   - If you see "Import X could not be resolved from source" errors in VS Code/Pylance, but the code runs correctly, this is likely just an IDE issue. Try reloading the window or restarting VS Code. You can also try adding the package to the `python.analysis.extraPaths` setting in `.vscode/settings.json`.
 
-4. Project structure issues:
+6. Project structure issues:
    - On Windows, use appropriate mkdir commands or create directories through Explorer
    - Ensure proper permissions to create directories and files
    - For nested directory creation issues on Windows, create parent directories first
 
-5. Database connection issues:
+7. Database connection issues:
    - For SQLite: Ensure the database file path is writable
    - For PostgreSQL: Verify connection parameters and that the PostgreSQL service is running
    - Check firewall settings if connecting to a remote database
 
-6. Pipeline execution issues:
+8. Pipeline execution issues:
    - Verify input file formats match expected formats
    - Check for sufficient disk space for large data operations
    - For memory errors during processing, try reducing batch_size in settings.yaml
+
+9. Logging issues:
+   - If using Loguru, ensure it's properly installed: `pip install loguru`
+   - For file permission issues, check that the logs directory exists and is writable
+   - If log rotation isn't working, verify the rotation and retention parameters
+
+## Completion Status
+
+This SOP has been completed and verified on March 3, 2025. All steps have been tested and confirmed to work correctly. The environment setup is now complete and ready for development.
 
 ## References
 
 - [ETL Pipeline v4 Implementation Guide](../../docs/guide/guide.md)
 - [Python venv documentation](https://docs.python.org/3/library/venv.html)
 - [VS Code Python setup](https://code.visualstudio.com/docs/python/python-tutorial)
+- [Loguru documentation](https://github.com/Delgan/loguru)
 
 ## Revision History
 
@@ -504,3 +760,6 @@ This SOP covers:
 | 1.0 | 2025-03-03 | ETL Team | Initial version |
 | 1.1 | 2025-03-03 | ETL Team | Enhanced with version bounds, Makefile, example usage, expanded troubleshooting |
 | 1.2 | 2025-03-03 | ETL Team | Added detailed VS Code setup, linting and autoformat configuration |
+| 1.3 | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users |
+| 1.4 | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting |
+| 1.5 | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
