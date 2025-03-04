@@ -41,15 +41,26 @@ config/settings.yml
 main.py
 repomix.config.json
 tests/conftest.py
+tests/unit/test_date_utils.py
 tests/unit/test_error_handler.py
+tests/unit/test_json_util.py
 tests/unit/test_logging_config.py
 tests/unit/test_main.py
+tests/unit/test_number_utils.py
 tests/unit/test_path_util.py
 tests/unit/test_settings.py
+tests/unit/test_string_utils.py
+tests/unit/test_validation_utils.py
+utils/__init__.py
+utils/date_utils.py
 utils/error_handler.py
+utils/json_utils.py
 utils/logging_config.py
 utils/loguru_stubs.pyi
+utils/number_utils.py
 utils/path_util.py
+utils/string_utils.py
+utils/validation_utils.py
 ```
 
 # Files
@@ -80,6 +91,8 @@ This module provides functionality to load settings from YAML configuration file
 and access them in a structured way throughout the application.
 """
 
+import os
+import re
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
@@ -114,6 +127,52 @@ class Settings:
 
         with open(config_path, "r") as config_file:
             self.config = yaml.safe_load(config_file)
+            
+        # Process environment variable substitutions
+        self._process_env_vars(self.config)
+        
+    def _process_env_vars(self, config_section: Any) -> None:
+        """
+        Recursively process environment variable substitutions in the config.
+        
+        Args:
+            config_section: A section of the configuration to process
+        """
+        if isinstance(config_section, dict):
+            for key, value in config_section.items():
+                if isinstance(value, (dict, list)):
+                    self._process_env_vars(value)
+                elif isinstance(value, str):
+                    config_section[key] = self._substitute_env_vars(value)
+        elif isinstance(config_section, list):
+            for i, value in enumerate(config_section):
+                if isinstance(value, (dict, list)):
+                    self._process_env_vars(value)
+                elif isinstance(value, str):
+                    config_section[i] = self._substitute_env_vars(value)
+    
+    def _substitute_env_vars(self, value: str) -> str:
+        """
+        Substitute environment variables in a string.
+        
+        Args:
+            value: The string value to process
+            
+        Returns:
+            The string with environment variables substituted
+        """
+        # Match ${VAR_NAME} pattern
+        pattern = r'\${([A-Za-z0-9_]+)}'
+        
+        def replace_env_var(match):
+            env_var_name = match.group(1)
+            env_var_value = os.environ.get(env_var_name)
+            if env_var_value is None:
+                # If environment variable is not set, keep the original placeholder
+                return match.group(0)
+            return env_var_value
+            
+        return re.sub(pattern, replace_env_var, value)
 
     def get(self, key: str, default: Any = None) -> Any:
         """
@@ -139,6 +198,7 @@ class Settings:
 
 
 # Cache for settings instances
+# Consider thread-safety if accessed from multiple threads
 _settings_cache: Dict[str, Settings] = {}
 # Create a default settings instance
 settings = Settings()
@@ -177,7 +237,7 @@ databases:
   sqlite:
     url: "sqlite:///fca_dashboard.db"
   postgresql:
-    url: "postgresql://user:password@localhost/fca_dashboard"
+    url: "${POSTGRES_URL}"
     
 # Pipeline settings
 pipeline_settings:
@@ -275,22 +335,22 @@ def run_etl_pipeline(args: argparse.Namespace, log: Any) -> int:
     try:
         settings = get_settings(str(config_path))
     except yaml.YAMLError as yaml_err:
-        raise ConfigurationError(f"YAML configuration error: {yaml_err}")
+        raise ConfigurationError(f"YAML configuration error: {yaml_err}") from yaml_err
 
     # Log startup information
     log.info("FCA Dashboard ETL Pipeline starting")
     log.info(f"Python version: {sys.version}")
     log.info(f"Current working directory: {Path.cwd()}")
 
-    # TODO: Implement ETL pipeline execution
+    # TODO: Implement ETL pipeline execution (See GitHub issue #123)
     # Steps include:
-    # 1. Extract data from Excel or database source
+    # 1. Extract data from Excel or database source (See GitHub issue #124)
     #    - Read source data using appropriate extractor strategy
     #    - Validate source data structure
-    # 2. Transform data (cleaning, normalization, enrichment)
+    # 2. Transform data (cleaning, normalization, enrichment) (See GitHub issue #125)
     #    - Apply business rules and transformations
     #    - Map source fields to destination schema
-    # 3. Load data into destination database or output format
+    # 3. Load data into destination database or output format (See GitHub issue #126)
     #    - Batch insert/update operations
     #    - Validate data integrity after loading
     log.info("ETL Pipeline execution would start here")
@@ -302,7 +362,7 @@ def run_etl_pipeline(args: argparse.Namespace, log: Any) -> int:
             excel_path = resolve_path(args.excel_file)
             log.info(f"Would process Excel file: {excel_path}")
         except FileNotFoundError:
-            raise DataExtractionError(f"Excel file not found: {args.excel_file}")
+            raise DataExtractionError(f"Excel file not found: {args.excel_file}") from None
 
     if args.table_name:
         log.info(f"Would process table: {args.table_name}")
@@ -355,9 +415,9 @@ if __name__ == "__main__":
     "removeComments": false,
     "removeEmptyLines": false,
     "compress": false,
-    "topFilesLength": 5,
+    "topFilesLength": 15,
     "showLineNumbers": false,
-    "copyToClipboard": false
+    "copyToClipboard": true
   },
   "include": [],
   "ignore": {
@@ -389,6 +449,197 @@ from pathlib import Path
 # This ensures that the tests can import modules from the project
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
+```
+
+## File: tests/unit/test_date_utils.py
+```python
+"""Tests for date and time utility functions."""
+import datetime
+
+import pytest
+from freezegun import freeze_time
+
+from fca_dashboard.utils.date_utils import format_date, parse_date, time_since
+
+
+class TestFormatDate:
+    """Tests for the format_date function."""
+
+    def test_format_date_default(self):
+        """Test formatting a date with default format."""
+        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
+        assert format_date(date) == "May 15, 2023"
+
+    def test_format_date_custom_format(self):
+        """Test formatting a date with a custom format."""
+        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
+        assert format_date(date, "%Y-%m-%d") == "2023-05-15"
+
+    def test_format_date_with_time(self):
+        """Test formatting a date with time."""
+        date = datetime.datetime(2023, 5, 15, 14, 30, 0)
+        assert format_date(date, "%b %d, %Y %H:%M") == "May 15, 2023 14:30"
+
+    def test_format_date_none(self):
+        """Test formatting None date."""
+        assert format_date(None) == ""
+
+    def test_format_date_with_default_value(self):
+        """Test formatting None date with a default value."""
+        assert format_date(None, default="N/A") == "N/A"
+
+
+class TestTimeSince:
+    """Tests for the time_since function."""
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_seconds(self):
+        """Test time since for seconds."""
+        date = datetime.datetime(2023, 5, 15, 14, 29, 30)
+        assert time_since(date) == "30 seconds ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_minute(self):
+        """Test time since for a minute."""
+        date = datetime.datetime(2023, 5, 15, 14, 29, 0)
+        assert time_since(date) == "1 minute ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_minutes(self):
+        """Test time since for minutes."""
+        date = datetime.datetime(2023, 5, 15, 14, 25, 0)
+        assert time_since(date) == "5 minutes ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_hour(self):
+        """Test time since for an hour."""
+        date = datetime.datetime(2023, 5, 15, 13, 30, 0)
+        assert time_since(date) == "1 hour ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_hours(self):
+        """Test time since for hours."""
+        date = datetime.datetime(2023, 5, 15, 10, 30, 0)
+        assert time_since(date) == "4 hours ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_day(self):
+        """Test time since for a day."""
+        date = datetime.datetime(2023, 5, 14, 14, 30, 0)
+        assert time_since(date) == "1 day ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_days(self):
+        """Test time since for days."""
+        date = datetime.datetime(2023, 5, 10, 14, 30, 0)
+        assert time_since(date) == "5 days ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_month(self):
+        """Test time since for a month."""
+        date = datetime.datetime(2023, 4, 15, 14, 30, 0)
+        assert time_since(date) == "1 month ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_months(self):
+        """Test time since for months."""
+        date = datetime.datetime(2023, 1, 15, 14, 30, 0)
+        assert time_since(date) == "4 months ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_year(self):
+        """Test time since for a year."""
+        date = datetime.datetime(2022, 5, 15, 14, 30, 0)
+        assert time_since(date) == "1 year ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_years(self):
+        """Test time since for years."""
+        date = datetime.datetime(2020, 5, 15, 14, 30, 0)
+        assert time_since(date) == "3 years ago"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_future(self):
+        """Test time since for a future date."""
+        date = datetime.datetime(2023, 5, 16, 14, 30, 0)
+        assert time_since(date) == "in 1 day"
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_time_since_none(self):
+        """Test time since for None date."""
+        assert time_since(None) == ""
+
+
+class TestParseDate:
+    """Tests for the parse_date function."""
+
+    def test_parse_date_iso_format(self):
+        """Test parsing a date in ISO format."""
+        assert parse_date("2023-05-15") == datetime.datetime(2023, 5, 15, 0, 0, 0)
+
+    def test_parse_date_with_time(self):
+        """Test parsing a date with time."""
+        assert parse_date("2023-05-15 14:30:00") == datetime.datetime(2023, 5, 15, 14, 30, 0)
+
+    def test_parse_date_custom_format(self):
+        """Test parsing a date with a custom format."""
+        assert parse_date("15/05/2023", format="%d/%m/%Y") == datetime.datetime(2023, 5, 15, 0, 0, 0)
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_yesterday(self):
+        """Test parsing 'yesterday'."""
+        expected = datetime.datetime(2023, 5, 14, 0, 0, 0)
+        assert parse_date("yesterday") == expected
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_today(self):
+        """Test parsing 'today'."""
+        expected = datetime.datetime(2023, 5, 15, 0, 0, 0)
+        assert parse_date("today") == expected
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_tomorrow(self):
+        """Test parsing 'tomorrow'."""
+        expected = datetime.datetime(2023, 5, 16, 0, 0, 0)
+        assert parse_date("tomorrow") == expected
+
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_days_ago(self):
+        """Test parsing 'X days ago'."""
+        expected = datetime.datetime(2023, 5, 10, 0, 0, 0)
+        assert parse_date("5 days ago") == expected
+        
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_invalid_days_ago_format(self):
+        """Test parsing an invalid 'X days ago' format."""
+        # This should fall through to the dateutil parser and raise ValueError
+        with pytest.raises(ValueError):
+            parse_date("invalid days ago")
+            
+    @freeze_time("2023-05-15 14:30:00")
+    def test_parse_date_empty_days_ago_format(self):
+        """Test parsing an empty 'days ago' format."""
+        # This should fall through to the dateutil parser and raise ValueError
+        with pytest.raises(ValueError):
+            parse_date(" days ago")
+
+    def test_parse_date_datetime_object(self):
+        """Test parsing a datetime object."""
+        dt = datetime.datetime(2023, 5, 15, 14, 30, 0)
+        assert parse_date(dt) is dt
+
+    def test_parse_date_invalid(self):
+        """Test parsing an invalid date."""
+        with pytest.raises(ValueError):
+            parse_date("not a date")
+
+    def test_parse_date_none(self):
+        """Test parsing None."""
+        assert parse_date(None) is None
+
+    def test_parse_date_empty(self):
+        """Test parsing an empty string."""
+        assert parse_date("") is None
 ```
 
 ## File: tests/unit/test_error_handler.py
@@ -584,6 +835,109 @@ def test_error_handler_with_main_function() -> None:
     assert mock_main(Exception("Generic error")) == 99
 ```
 
+## File: tests/unit/test_json_util.py
+```python
+import os
+import tempfile
+
+import pytest
+
+from fca_dashboard.utils.json_utils import (
+    json_deserialize,
+    json_is_valid,
+    json_load,
+    json_save,
+    json_serialize,
+    pretty_print_json,
+    safe_get,
+    safe_get_nested,
+)
+
+
+def test_json_load_and_save():
+    data = {"key": "value", "number": 42}
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
+        path = tmp.name
+        json_save(data, path)
+
+    loaded_data = json_load(path)
+    assert loaded_data == data
+
+    os.unlink(path)
+
+
+def test_json_serialize():
+    data = {"name": "Alice", "age": 30}
+    json_str = json_serialize(data)
+    assert json_str == '{"name": "Alice", "age": 30}'
+
+
+def test_json_deserialize_valid():
+    json_str = '{"valid": true, "value": 10}'
+    result = json_deserialize(json_str)
+    assert result == {"valid": True, "value": 10}
+
+
+def test_json_deserialize_invalid():
+    json_str = '{invalid json}'
+    default = {"default": True}
+    result = json_deserialize(json_str, default=default)
+    assert result == default
+
+
+def test_json_is_valid():
+    assert json_is_valid('{"valid": true}') is True
+    assert json_is_valid('{invalid json}') is False
+
+
+def test_pretty_print_json():
+    data = {"key": "value"}
+    expected = '{\n  "key": "value"\n}'
+    assert pretty_print_json(data) == expected
+
+
+def test_safe_get():
+    data = {"a": 1, "b": None}
+    assert safe_get(data, "a") == 1
+    assert safe_get(data, "b", default="default") is None
+    assert safe_get(data, "missing", default="default") == "default"
+
+
+def test_safe_get_nested():
+    data = {"a": {"b": {"c": 42}}}
+    assert safe_get_nested(data, "a", "b", "c") == 42
+    assert safe_get_nested(data, "a", "x", default="missing") == "missing"
+    assert safe_get_nested(data, "a", "b", "c", "d", default=None) is None
+
+
+def test_json_load_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        json_load("nonexistent_file.json")
+
+
+def test_json_load_invalid_json():
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
+        tmp.write("{invalid json}")
+        path = tmp.name
+
+    with pytest.raises(Exception):
+        json_load(path)
+
+    os.unlink(path)
+
+
+def test_json_save_and_load_unicode():
+    data = {"message": "こんにちは世界"}
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as tmp:
+        path = tmp.name
+        json_save(data, path)
+
+    loaded_data = json_load(path)
+    assert loaded_data == data
+
+    os.unlink(path)
+```
+
 ## File: tests/unit/test_logging_config.py
 ```python
 """
@@ -714,6 +1068,28 @@ def test_configure_logging_with_custom_format(temp_log_file: str) -> None:
         log_content = f.read()
         assert "Test message with custom format" in log_content
         # The format is simplified, so we don't check for exact format
+
+
+def test_configure_logging_with_simple_format(temp_log_file: str) -> None:
+    """Test configuring logging with the simple format option."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging with simple format
+    configure_logging(level="INFO", log_file=temp_log_file, simple_format=True)
+
+    # Get a logger and log a message
+    log = get_logger("test_logger")
+    log.info("Test message with simple format")
+
+    # Force flush by removing handlers
+    logger.remove()
+
+    # Check that the log file contains the message
+    with open(temp_log_file, "r") as f:
+        log_content = f.read()
+        assert "Test message with simple format" in log_content
+        # We don't check the exact format, just that the message is there
 
 
 def test_get_logger_with_name(capfd: CaptureFixture) -> None:
@@ -1025,6 +1401,191 @@ def test_main_with_error_handler() -> None:
     mock_error_handler.handle_error.assert_called_once()
 ```
 
+## File: tests/unit/test_number_utils.py
+```python
+"""Unit tests for number utilities."""
+import re
+from decimal import Decimal
+
+import pytest
+
+from fca_dashboard.utils.number_utils import format_currency, random_number, round_to
+
+
+class TestFormatCurrency:
+    """Test cases for currency formatting function."""
+
+    def test_integer_values(self):
+        """Test formatting integer values as currency."""
+        assert format_currency(1234) == "$1,234.00"
+        assert format_currency(0) == "$0.00"
+        assert format_currency(-1234) == "-$1,234.00"
+
+    def test_float_values(self):
+        """Test formatting float values as currency."""
+        assert format_currency(1234.56) == "$1,234.56"
+        assert format_currency(1234.5) == "$1,234.50"
+        assert format_currency(0.99) == "$0.99"
+        assert format_currency(-1234.56) == "-$1,234.56"
+
+    def test_decimal_values(self):
+        """Test formatting Decimal values as currency."""
+        assert format_currency(Decimal("1234.56")) == "$1,234.56"
+        assert format_currency(Decimal("1234.5")) == "$1,234.50"
+        assert format_currency(Decimal("0.99")) == "$0.99"
+        assert format_currency(Decimal("-1234.56")) == "-$1,234.56"
+
+    def test_custom_currency_symbol(self):
+        """Test formatting with custom currency symbols."""
+        assert format_currency(1234.56, symbol="€") == "€1,234.56"
+        assert format_currency(1234.56, symbol="£") == "£1,234.56"
+        assert format_currency(1234.56, symbol="¥") == "¥1,234.56"
+        assert format_currency(1234.56, symbol="") == "1,234.56"
+
+    def test_custom_decimal_places(self):
+        """Test formatting with custom decimal places."""
+        assert format_currency(1234.56, decimal_places=0) == "$1,235"
+        assert format_currency(1234.56, decimal_places=1) == "$1,234.6"
+        assert format_currency(1234.56, decimal_places=3) == "$1,234.560"
+        assert format_currency(1234.56789, decimal_places=4) == "$1,234.5679"
+
+    def test_custom_thousands_separator(self):
+        """Test formatting with custom thousands separator."""
+        assert format_currency(1234567.89, thousands_sep=".") == "$1.234.567.89"
+        assert format_currency(1234567.89, thousands_sep=" ") == "$1 234 567.89"
+        assert format_currency(1234567.89, thousands_sep="") == "$1234567.89"
+
+    def test_custom_decimal_separator(self):
+        """Test formatting with custom decimal separator."""
+        assert format_currency(1234.56, decimal_sep=",") == "$1,234,56"
+        assert format_currency(1234.56, decimal_sep=" ") == "$1,234 56"
+
+    def test_none_input(self):
+        """Test that None input is handled correctly."""
+        assert format_currency(None) == ""
+        assert format_currency(None, default="N/A") == "N/A"
+
+    def test_non_numeric_input(self):
+        """Test that non-numeric inputs are handled correctly."""
+        with pytest.raises(TypeError):
+            format_currency("not a number")
+        with pytest.raises(TypeError):
+            format_currency([])
+
+
+class TestRoundTo:
+    """Test cases for number rounding function."""
+
+    def test_round_to_zero_places(self):
+        """Test rounding to zero decimal places."""
+        assert round_to(1.4, 0) == 1
+        assert round_to(1.5, 0) == 2
+        assert round_to(-1.5, 0) == -2
+        assert round_to(0, 0) == 0
+
+    def test_round_to_positive_places(self):
+        """Test rounding to positive decimal places."""
+        assert round_to(1.234, 2) == 1.23
+        assert round_to(1.235, 2) == 1.24
+        assert round_to(-1.235, 2) == -1.24
+        assert round_to(1.2, 2) == 1.20
+
+    def test_round_to_negative_places(self):
+        """Test rounding to negative decimal places (tens, hundreds, etc.)."""
+        assert round_to(123, -1) == 120
+        assert round_to(125, -1) == 130
+        assert round_to(1234, -2) == 1200
+        assert round_to(1250, -2) == 1300
+        assert round_to(-1250, -2) == -1300
+
+    def test_round_decimal_type(self):
+        """Test rounding Decimal objects."""
+        assert round_to(Decimal("1.234"), 2) == Decimal("1.23")
+        assert round_to(Decimal("1.235"), 2) == Decimal("1.24")
+        assert round_to(Decimal("-1.235"), 2) == Decimal("-1.24")
+
+    def test_return_type(self):
+        """Test that the return type matches the input type."""
+        assert isinstance(round_to(1.5, 0), int)
+        assert isinstance(round_to(1.5, 1), float)
+        assert isinstance(round_to(Decimal("1.5"), 1), Decimal)
+
+    def test_none_input(self):
+        """Test that None input is handled correctly."""
+        with pytest.raises(TypeError):
+            round_to(None, 2)
+
+    def test_non_numeric_input(self):
+        """Test that non-numeric inputs are handled correctly."""
+        with pytest.raises(TypeError):
+            round_to("not a number", 2)
+        with pytest.raises(TypeError):
+            round_to([], 2)
+
+
+class TestRandomNumber:
+    """Test cases for random number generation function."""
+
+    def test_within_range(self):
+        """Test that generated numbers are within the specified range."""
+        for _ in range(100):  # Run multiple times to increase confidence
+            num = random_number(1, 10)
+            assert 1 <= num <= 10
+
+    def test_min_equals_max(self):
+        """Test when min equals max."""
+        assert random_number(5, 5) == 5
+
+    def test_negative_range(self):
+        """Test with negative numbers in the range."""
+        for _ in range(100):
+            num = random_number(-10, -1)
+            assert -10 <= num <= -1
+
+    def test_mixed_range(self):
+        """Test with a range that includes both negative and positive numbers."""
+        for _ in range(100):
+            num = random_number(-5, 5)
+            assert -5 <= num <= 5
+
+    def test_large_range(self):
+        """Test with a large range."""
+        for _ in range(10):
+            num = random_number(-1000000, 1000000)
+            assert -1000000 <= num <= 1000000
+
+    def test_distribution(self):
+        """Test that the distribution is roughly uniform."""
+        # Generate a large number of random values between 1 and 10
+        results = [random_number(1, 10) for _ in range(1000)]
+        
+        # Count occurrences of each value
+        counts = {}
+        for num in range(1, 11):
+            counts[num] = results.count(num)
+        
+        # Check that each number appears roughly the expected number of times
+        # (100 times each, with some tolerance for randomness)
+        for num, count in counts.items():
+            assert 70 <= count <= 130, f"Number {num} appeared {count} times, expected roughly 100"
+
+    def test_invalid_range(self):
+        """Test with invalid range (min > max)."""
+        with pytest.raises(ValueError):
+            random_number(10, 1)
+
+    def test_non_integer_input(self):
+        """Test with non-integer inputs."""
+        with pytest.raises(TypeError):
+            random_number(1.5, 10)
+        with pytest.raises(TypeError):
+            random_number(1, 10.5)
+        with pytest.raises(TypeError):
+            random_number("1", 10)
+        with pytest.raises(TypeError):
+            random_number(1, "10")
+```
+
 ## File: tests/unit/test_path_util.py
 ```python
 """
@@ -1141,8 +1702,8 @@ def test_resolve_path_nonexistent(mock_logger: Any) -> None:
     resolved_path = resolve_path(nonexistent_path)
     assert isinstance(resolved_path, Path)
     assert resolved_path.name == nonexistent_path
-    # Check that a debug message was logged
-    mock_logger.debug.assert_called()
+    # Check that a warning message was logged (changed from debug to warning)
+    mock_logger.warning.assert_called()
 
 
 def test_resolve_path_with_base_dir() -> None:
@@ -1222,6 +1783,33 @@ app:
     os.unlink(temp_path)
 
 
+@pytest.fixture
+def temp_settings_file_with_env_vars() -> Generator[str, None, None]:
+    """Create a temporary settings file with environment variable placeholders."""
+    config_content = """
+database:
+  host: localhost
+  port: 5432
+  user: ${TEST_DB_USER}
+  password: ${TEST_DB_PASSWORD}
+app:
+  name: test_app
+  debug: true
+  environments: ["dev", "${TEST_ENV}", "prod"]
+  secrets: 
+    - key1: value1
+    - key2: ${TEST_SECRET}
+"""
+    with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
+        temp_file.write(config_content.encode("utf-8"))
+        temp_path = temp_file.name
+
+    yield temp_path
+
+    # Cleanup
+    os.unlink(temp_path)
+
+
 def test_settings_load_valid_file(temp_settings_file: str) -> None:
     """Test loading settings from a valid file."""
     settings = Settings(config_path=temp_settings_file)
@@ -1272,6 +1860,529 @@ def test_get_settings_default() -> None:
     # Should return the same default instance on subsequent calls
     settings2 = get_settings()
     assert settings is settings2
+
+
+def test_environment_variable_substitution(temp_settings_file_with_env_vars: str) -> None:
+    """Test that environment variables are substituted in the configuration."""
+    # Set environment variables for testing
+    os.environ["TEST_DB_USER"] = "env_user"
+    os.environ["TEST_DB_PASSWORD"] = "env_password"
+    
+    try:
+        # Load settings with environment variables
+        settings = Settings(config_path=temp_settings_file_with_env_vars)
+        
+        # Check that environment variables were substituted
+        assert settings.get("database.user") == "env_user"
+        assert settings.get("database.password") == "env_password"
+        
+        # Check that non-environment variable settings are still loaded correctly
+        assert settings.get("database.host") == "localhost"
+        assert settings.get("app.name") == "test_app"
+    finally:
+        # Clean up environment variables
+        del os.environ["TEST_DB_USER"]
+        del os.environ["TEST_DB_PASSWORD"]
+
+
+def test_missing_environment_variable(temp_settings_file_with_env_vars: str) -> None:
+    """Test that missing environment variables keep the original placeholder."""
+    # Ensure environment variables are not set
+    if "TEST_DB_USER" in os.environ:
+        del os.environ["TEST_DB_USER"]
+    if "TEST_DB_PASSWORD" in os.environ:
+        del os.environ["TEST_DB_PASSWORD"]
+    
+    # Load settings with missing environment variables
+    settings = Settings(config_path=temp_settings_file_with_env_vars)
+    
+    # Check that placeholders are preserved
+    assert settings.get("database.user") == "${TEST_DB_USER}"
+    assert settings.get("database.password") == "${TEST_DB_PASSWORD}"
+
+
+def test_environment_variable_substitution_in_lists(temp_settings_file_with_env_vars: str) -> None:
+    """Test that environment variables are substituted in lists and nested structures."""
+    # Set environment variables for testing
+    os.environ["TEST_ENV"] = "staging"
+    os.environ["TEST_SECRET"] = "secret_value"
+    
+    try:
+        # Load settings with environment variables
+        settings = Settings(config_path=temp_settings_file_with_env_vars)
+        
+        # Check that environment variables in lists are substituted
+        environments = settings.get("app.environments")
+        assert isinstance(environments, list)
+        assert environments[0] == "dev"
+        assert environments[1] == "staging"  # Substituted from ${TEST_ENV}
+        assert environments[2] == "prod"
+        
+        # Check that environment variables in nested structures are substituted
+        secrets = settings.get("app.secrets")
+        assert isinstance(secrets, list)
+        assert secrets[0]["key1"] == "value1"
+        assert secrets[1]["key2"] == "secret_value"  # Substituted from ${TEST_SECRET}
+    finally:
+        # Clean up environment variables
+        del os.environ["TEST_ENV"]
+        del os.environ["TEST_SECRET"]
+```
+
+## File: tests/unit/test_string_utils.py
+```python
+"""Tests for string utility functions."""
+import pytest
+
+from fca_dashboard.utils.string_utils import capitalize, is_empty, slugify, truncate
+
+
+class TestCapitalize:
+    """Tests for the capitalize function."""
+
+    def test_capitalize_lowercase(self):
+        """Test capitalizing a lowercase string."""
+        assert capitalize("hello") == "Hello"
+
+    def test_capitalize_already_capitalized(self):
+        """Test capitalizing an already capitalized string."""
+        assert capitalize("Hello") == "Hello"
+
+    def test_capitalize_empty_string(self):
+        """Test capitalizing an empty string."""
+        assert capitalize("") == ""
+
+    def test_capitalize_single_char(self):
+        """Test capitalizing a single character."""
+        assert capitalize("a") == "A"
+
+    def test_capitalize_with_spaces(self):
+        """Test capitalizing a string with leading spaces."""
+        assert capitalize("  hello") == "  Hello"
+
+    def test_capitalize_with_numbers(self):
+        """Test capitalizing a string starting with numbers."""
+        assert capitalize("123abc") == "123abc"
+
+
+class TestSlugify:
+    """Tests for the slugify function."""
+
+    def test_slugify_simple_string(self):
+        """Test slugifying a simple string."""
+        assert slugify("Hello World") == "hello-world"
+
+    def test_slugify_with_special_chars(self):
+        """Test slugifying a string with special characters."""
+        assert slugify("Hello, World!") == "hello-world"
+
+    def test_slugify_with_multiple_spaces(self):
+        """Test slugifying a string with multiple spaces."""
+        assert slugify("Hello   World") == "hello-world"
+
+    def test_slugify_with_dashes(self):
+        """Test slugifying a string that already has dashes."""
+        assert slugify("Hello-World") == "hello-world"
+
+    def test_slugify_with_underscores(self):
+        """Test slugifying a string with underscores."""
+        assert slugify("Hello_World") == "hello-world"
+
+    def test_slugify_empty_string(self):
+        """Test slugifying an empty string."""
+        assert slugify("") == ""
+
+    def test_slugify_with_accents(self):
+        """Test slugifying a string with accented characters."""
+        assert slugify("Héllö Wörld") == "hello-world"
+
+
+class TestTruncate:
+    """Tests for the truncate function."""
+
+    def test_truncate_short_string(self):
+        """Test truncating a string shorter than the limit."""
+        assert truncate("Hello", 10) == "Hello"
+
+    def test_truncate_exact_length(self):
+        """Test truncating a string of exact length."""
+        assert truncate("Hello", 5) == "Hello"
+
+    def test_truncate_long_string(self):
+        """Test truncating a string longer than the limit."""
+        assert truncate("Hello World", 5) == "Hello..."
+
+    def test_truncate_with_custom_suffix(self):
+        """Test truncating with a custom suffix."""
+        assert truncate("Hello World", 5, suffix="...more") == "Hello...more"
+
+    def test_truncate_empty_string(self):
+        """Test truncating an empty string."""
+        assert truncate("", 5) == ""
+
+    def test_truncate_with_zero_length(self):
+        """Test truncating with zero length."""
+        assert truncate("Hello", 0) == "..."
+
+
+class TestIsEmpty:
+    """Tests for the is_empty function."""
+
+    def test_is_empty_with_empty_string(self):
+        """Test checking if an empty string is empty."""
+        assert is_empty("") is True
+
+    def test_is_empty_with_whitespace(self):
+        """Test checking if a whitespace string is empty."""
+        assert is_empty("   ") is True
+        assert is_empty("\t\n") is True
+
+    def test_is_empty_with_text(self):
+        """Test checking if a non-empty string is empty."""
+        assert is_empty("Hello") is False
+
+    def test_is_empty_with_whitespace_and_text(self):
+        """Test checking if a string with whitespace and text is empty."""
+        assert is_empty("  Hello  ") is False
+
+    def test_is_empty_with_none(self):
+        """Test checking if None is empty."""
+        with pytest.raises(TypeError):
+            is_empty(None)
+```
+
+## File: tests/unit/test_validation_utils.py
+```python
+"""Unit tests for validation utilities."""
+import pytest
+
+from fca_dashboard.utils.validation_utils import is_valid_email, is_valid_phone, is_valid_url
+
+
+class TestEmailValidation:
+    """Test cases for email validation function."""
+
+    def test_valid_emails(self):
+        """Test that valid email addresses are correctly identified."""
+        valid_emails = [
+            "user@example.com",
+            "user.name@example.com",
+            "user+tag@example.com",
+            "user-name@example.co.uk",
+            "user_name@example-domain.com",
+            "123456@example.com",
+            "user@subdomain.example.com",
+        ]
+        for email in valid_emails:
+            assert is_valid_email(email), f"Email should be valid: {email}"
+
+    def test_invalid_emails(self):
+        """Test that invalid email addresses are correctly rejected."""
+        invalid_emails = [
+            "",  # Empty string
+            "user",  # Missing @ and domain
+            "user@",  # Missing domain
+            "@example.com",  # Missing username
+            "user@.com",  # Missing domain name
+            "user@example",  # Missing TLD
+            "user@example..com",  # Double dot
+            "user@example.com.",  # Trailing dot
+            "user name@example.com",  # Space in username
+            "user@exam ple.com",  # Space in domain
+            "user@-example.com",  # Domain starts with hyphen
+            "user@example-.com",  # Domain ends with hyphen
+        ]
+        for email in invalid_emails:
+            assert not is_valid_email(email), f"Email should be invalid: {email}"
+
+    def test_none_input(self):
+        """Test that None input is handled correctly."""
+        assert not is_valid_email(None), "None should be invalid"
+
+    def test_non_string_input(self):
+        """Test that non-string inputs are handled correctly."""
+        assert not is_valid_email(123), "Integer should be invalid"
+        assert not is_valid_email(True), "Boolean should be invalid"
+        assert not is_valid_email([]), "List should be invalid"
+
+
+class TestPhoneValidation:
+    """Test cases for phone number validation function."""
+
+    def test_valid_phone_numbers(self):
+        """Test that valid phone numbers are correctly identified."""
+        valid_phones = [
+            "1234567890",  # Simple 10-digit
+            "123-456-7890",  # Hyphenated
+            "(123) 456-7890",  # Parentheses
+            "+1 123-456-7890",  # International format
+            "123.456.7890",  # Dots
+            "123 456 7890",  # Spaces
+            "+12345678901",  # International without separators
+        ]
+        for phone in valid_phones:
+            assert is_valid_phone(phone), f"Phone should be valid: {phone}"
+
+    def test_invalid_phone_numbers(self):
+        """Test that invalid phone numbers are correctly rejected."""
+        invalid_phones = [
+            "",  # Empty string
+            "123",  # Too short
+            "123456",  # Too short
+            "abcdefghij",  # Letters
+            "123-abc-7890",  # Mixed letters and numbers
+            "123-456-789",  # Too short with separators
+            "123-456-78901",  # Too long with separators
+            "(123)456-7890",  # Missing space after parentheses
+            "123 - 456 - 7890",  # Spaces around hyphens
+        ]
+        for phone in invalid_phones:
+            assert not is_valid_phone(phone), f"Phone should be invalid: {phone}"
+
+    def test_none_input(self):
+        """Test that None input is handled correctly."""
+        assert not is_valid_phone(None), "None should be invalid"
+
+    def test_non_string_input(self):
+        """Test that non-string inputs are handled correctly."""
+        assert not is_valid_phone(123), "Integer should be invalid"
+        assert not is_valid_phone(True), "Boolean should be invalid"
+        assert not is_valid_phone([]), "List should be invalid"
+
+
+class TestUrlValidation:
+    """Test cases for URL validation function."""
+
+    def test_valid_urls(self):
+        """Test that valid URLs are correctly identified."""
+        valid_urls = [
+            "http://example.com",
+            "https://example.com",
+            "http://www.example.com",
+            "https://example.com/path",
+            "https://example.com/path?query=value",
+            "https://example.com/path#fragment",
+            "https://example.com:8080",
+            "https://subdomain.example.com",
+            "https://example-domain.com",
+            "https://example.co.uk",
+            "http://localhost",
+            "http://localhost:8080",
+            "http://127.0.0.1",
+            "http://127.0.0.1:8080",
+        ]
+        for url in valid_urls:
+            assert is_valid_url(url), f"URL should be valid: {url}"
+
+    def test_invalid_urls(self):
+        """Test that invalid URLs are correctly rejected."""
+        invalid_urls = [
+            "",  # Empty string
+            "example.com",  # Missing protocol
+            "http://",  # Missing domain
+            "http:/example.com",  # Missing slash
+            "http://example",  # Missing TLD
+            "http://.com",  # Missing domain name
+            "http://example..com",  # Double dot
+            "http://example.com.",  # Trailing dot
+            "http://exam ple.com",  # Space in domain
+            "http://-example.com",  # Domain starts with hyphen
+            "http://example-.com",  # Domain ends with hyphen
+            "htp://example.com",  # Typo in protocol
+            "http:example.com",  # Missing slashes
+            "http//example.com",  # Missing colon
+        ]
+        for url in invalid_urls:
+            assert not is_valid_url(url), f"URL should be invalid: {url}"
+
+    def test_none_input(self):
+        """Test that None input is handled correctly."""
+        assert not is_valid_url(None), "None should be invalid"
+
+    def test_non_string_input(self):
+        """Test that non-string inputs are handled correctly."""
+        assert not is_valid_url(123), "Integer should be invalid"
+        assert not is_valid_url(True), "Boolean should be invalid"
+        assert not is_valid_url([]), "List should be invalid"
+```
+
+## File: utils/__init__.py
+```python
+"""Utility modules for the FCA Dashboard application."""
+
+from fca_dashboard.utils.date_utils import *  # noqa
+from fca_dashboard.utils.error_handler import *  # noqa
+from fca_dashboard.utils.json_utils import *  # noqa
+from fca_dashboard.utils.logging_config import *  # noqa
+from fca_dashboard.utils.number_utils import (  # noqa
+    format_currency,
+    random_number,
+    round_to,
+)
+from fca_dashboard.utils.path_util import *  # noqa
+from fca_dashboard.utils.string_utils import *  # noqa
+from fca_dashboard.utils.validation_utils import (  # noqa
+    is_valid_email,
+    is_valid_phone,
+    is_valid_url,
+)
+```
+
+## File: utils/date_utils.py
+```python
+"""
+Date and time utility functions for common operations.
+
+This module provides a collection of utility functions for date and time manipulation
+that follow CLEAN code principles:
+- Clear: Functions have descriptive names and docstrings
+- Logical: Each function has a single, well-defined purpose
+- Efficient: Operations are optimized for performance
+- Adaptable: Functions accept optional parameters for flexibility
+"""
+import datetime
+from typing import Optional, Union
+
+from dateutil import parser
+
+
+def format_date(
+    date: Optional[datetime.datetime], 
+    format_str: str = "%b %d, %Y", 
+    default: str = ""
+) -> str:
+    """
+    Format a datetime object into a readable string.
+
+    Args:
+        date: The datetime object to format.
+        format_str: The format string to use (default: "%b %d, %Y").
+        default: The default value to return if date is None.
+
+    Returns:
+        A formatted date string or the default value if date is None.
+
+    Examples:
+        >>> format_date(datetime.datetime(2023, 5, 15, 14, 30, 0))
+        'May 15, 2023'
+        >>> format_date(datetime.datetime(2023, 5, 15, 14, 30, 0), "%Y-%m-%d")
+        '2023-05-15'
+    """
+    if date is None:
+        return default
+    
+    return date.strftime(format_str)
+
+
+def time_since(date: Optional[datetime.datetime], default: str = "") -> str:
+    """
+    Calculate the relative time between the given date and now.
+
+    Args:
+        date: The datetime to calculate the time since.
+        default: The default value to return if date is None.
+
+    Returns:
+        A human-readable string representing the time difference (e.g., "2 hours ago").
+
+    Examples:
+        >>> # Assuming current time is 2023-05-15 14:30:00
+        >>> time_since(datetime.datetime(2023, 5, 15, 13, 30, 0))
+        '1 hour ago'
+        >>> time_since(datetime.datetime(2023, 5, 14, 14, 30, 0))
+        '1 day ago'
+    """
+    if date is None:
+        return default
+    
+    now = datetime.datetime.now()
+    diff = now - date
+    
+    # Handle future dates
+    if diff.total_seconds() < 0:
+        diff = -diff
+        is_future = True
+    else:
+        is_future = False
+    
+    seconds = int(diff.total_seconds())
+    minutes = seconds // 60
+    hours = minutes // 60
+    days = diff.days
+    months = days // 30  # Approximate
+    years = days // 365  # Approximate
+    
+    if years > 0:
+        time_str = f"{years} year{'s' if years != 1 else ''}"
+    elif months > 0:
+        time_str = f"{months} month{'s' if months != 1 else ''}"
+    elif days > 0:
+        time_str = f"{days} day{'s' if days != 1 else ''}"
+    elif hours > 0:
+        time_str = f"{hours} hour{'s' if hours != 1 else ''}"
+    elif minutes > 0:
+        time_str = f"{minutes} minute{'s' if minutes != 1 else ''}"
+    else:
+        time_str = f"{seconds} second{'s' if seconds != 1 else ''}"
+    
+    return f"in {time_str}" if is_future else f"{time_str} ago"
+
+
+def parse_date(
+    date_str: Optional[Union[str, datetime.datetime]], 
+    format: Optional[str] = None
+) -> Optional[datetime.datetime]:
+    """
+    Convert a string into a datetime object.
+
+    Args:
+        date_str: The string to parse or a datetime object to return as-is.
+        format: Optional format string for parsing (if None, tries to infer format).
+
+    Returns:
+        A datetime object or None if the input is None or empty.
+
+    Raises:
+        ValueError: If the string cannot be parsed as a date.
+
+    Examples:
+        >>> parse_date("2023-05-15")
+        datetime.datetime(2023, 5, 15, 0, 0)
+        >>> parse_date("15/05/2023", format="%d/%m/%Y")
+        datetime.datetime(2023, 5, 15, 0, 0)
+    """
+    if date_str is None or (isinstance(date_str, str) and not date_str.strip()):
+        return None
+    
+    if isinstance(date_str, datetime.datetime):
+        return date_str
+    
+    if format:
+        return datetime.datetime.strptime(date_str, format)
+    
+    # Handle common natural language date expressions
+    if isinstance(date_str, str):
+        date_str = date_str.lower().strip()
+        now = datetime.datetime.now()
+        
+        if date_str == "today":
+            return now.replace(hour=0, minute=0, second=0, microsecond=0)
+        elif date_str == "yesterday":
+            return (now - datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        elif date_str == "tomorrow":
+            return (now + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        elif date_str.endswith(" days ago"):
+            try:
+                days = int(date_str.split(" ")[0])
+                return (now - datetime.timedelta(days=days)).replace(hour=0, minute=0, second=0, microsecond=0)
+            except (ValueError, IndexError):
+                pass
+    
+    # Try to parse using dateutil's flexible parser
+    try:
+        return parser.parse(date_str)
+    except (ValueError, parser.ParserError) as err:
+        raise ValueError(f"Could not parse date string: {date_str}") from err
 ```
 
 ## File: utils/error_handler.py
@@ -1492,6 +2603,8 @@ class ErrorHandler:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
+                # Log the function name where the error occurred for easier debugging
+                self.logger.error(f"Error occurred in function '{func.__name__}'")
                 # Call handle_error to get the exit code and log the error
                 exit_code = self.handle_error(e)
                 
@@ -1508,6 +2621,201 @@ class ErrorHandler:
                 sys.exit(exit_code)
 
         return wrapper
+```
+
+## File: utils/json_utils.py
+```python
+"""
+JSON utility functions for common JSON data operations.
+
+This module provides utility functions for JSON serialization, deserialization,
+validation, formatting, and safe access following CLEAN principles:
+- Clear: Functions have descriptive names and clear docstrings.
+- Logical: Each function has a single, well-defined purpose.
+- Efficient: Optimized for typical JSON-related tasks.
+- Adaptable: Allow optional parameters for flexibility.
+"""
+
+import json
+from typing import Any, Dict, Optional, TypeVar, Union
+
+T = TypeVar("T")
+
+
+def json_load(file_path: str, encoding: str = "utf-8") -> Any:
+    """
+    Load JSON data from a file.
+
+    Args:
+        file_path: Path to the JSON file.
+        encoding: File encoding (default utf-8).
+
+    Returns:
+        Parsed JSON data.
+
+    Raises:
+        JSONDecodeError: if JSON is invalid.
+        FileNotFoundError: if file does not exist.
+    
+    Example:
+        >>> data = json_load("data.json")
+        >>> print(data)
+        {'name': 'Bob'}
+    """
+    with open(file_path, "r", encoding=encoding) as f:
+        return json.load(f)
+
+
+def json_save(data: Any, file_path: str, encoding: str = "utf-8", indent: int = 2) -> None:
+    """
+    Save data as JSON to a file.
+
+    Args:
+        data: Data to serialize.
+        file_path: Path to save the JSON file.
+        encoding: File encoding (default utf-8).
+        indent: Indentation spaces for formatting (default 2).
+
+    Returns:
+        None
+
+    Raises:
+        JSONDecodeError: if JSON is invalid.
+        FileNotFoundError: if file does not exist.
+    
+    Example:
+        >>> data = {"name": "Bob"}
+        >>> json_save(data, "data.json")
+    """
+    with open(file_path, "w", encoding=encoding) as f:
+        json.dump(data, f, ensure_ascii=False, indent=indent)
+
+def json_serialize(data: Any, indent: Optional[int] = None) -> str:
+    """
+    Serialize data to a JSON string.
+
+    Args:
+        data: Data to serialize.
+        indent: Optional indentation for formatting.
+
+    Returns:
+        JSON-formatted string.
+
+    Example:
+        >>> json_serialize({"key": "value"})
+        '{"key": "value"}'
+    """
+    return json.dumps(data, ensure_ascii=False, indent=indent)
+
+
+def json_deserialize(json_str: str, default: Optional[T] = None) -> Union[Any, T]:
+    """
+    Deserialize a JSON string into a Python object.
+
+    Args:
+        json_str: JSON-formatted string.
+        default: Value to return if deserialization fails.
+
+    Returns:
+        Python data object or default.
+
+    Example:
+        >>> json_deserialize('{"name": "Bob"}')
+        {'name': 'Bob'}
+    """
+    try:
+        return json.loads(json_str)
+    except json.JSONDecodeError:
+        return default
+
+
+def json_is_valid(json_str: str) -> bool:
+    """
+    Check if a string is valid JSON.
+
+    Args:
+        json_str: String to validate.
+
+    Returns:
+        True if valid JSON, False otherwise.
+
+    Example:
+        >>> json_is_valid('{"valid": true}')
+        True
+        >>> json_is_valid('{invalid json}')
+        False
+    """
+    try:
+        json.loads(json_str)
+        return True
+    except json.JSONDecodeError:
+        return False
+
+
+def pretty_print_json(data: Any) -> str:
+    """
+    Pretty-print JSON data with indentation.
+
+    Args:
+        data: JSON data (Python object).
+
+    Returns:
+        Pretty-printed JSON string.
+
+    Example:
+        >>> pretty_print_json({"key": "value"})
+        '{\n  "key": "value"\n}'
+    """
+    return json.dumps(data, ensure_ascii=False, indent=2)
+
+
+def safe_get(data: Dict, key: str, default: Optional[T] = None) -> Union[Any, T]:
+    """
+    Safely get a value from a dictionary.
+
+    Args:
+        data: Dictionary to extract value from.
+        key: Key to look up.
+        default: Default value if key is missing.
+
+    Returns:
+        Value associated with key or default.
+
+    Example:
+        >>> safe_get({"a": 1}, "a")
+        1
+        >>> safe_get({"a": 1}, "b", 0)
+        0
+    """
+    return data.get(key, default)
+
+
+def safe_get_nested(data: Dict, *keys: str, default: Optional[T] = None) -> Union[Any, T]:
+    """
+    Safely retrieve a nested value from a dictionary.
+
+    Args:
+        data: Nested dictionary.
+        *keys: Sequence of keys for nested lookup.
+        default: Default value if key path is missing.
+
+    Returns:
+        Nested value or default.
+
+    Example:
+        >>> safe_get_nested({"a": {"b": 2}}, "a", "b")
+        2
+        >>> safe_get_nested({"a": {"b": 2}}, "a", "c", default="missing")
+        'missing'
+    """
+    current = data
+    for key in keys:
+        if not isinstance(current, dict):
+            return default
+        current = current.get(key)
+        if current is None:
+            return default
+    return current
 ```
 
 ## File: utils/logging_config.py
@@ -1538,6 +2846,7 @@ def configure_logging(
     rotation: str = "10 MB",
     retention: str = "1 month",
     format_string: Optional[Union[str, Callable[[Record], str]]] = None,
+    simple_format: bool = False,
 ) -> None:
     """
     Configure application logging with console and optional file output using Loguru.
@@ -1548,27 +2857,35 @@ def configure_logging(
         rotation: When to rotate the log file (e.g., "10 MB", "1 day")
         retention: How long to keep log files (e.g., "1 month", "1 year")
         format_string: Custom format string for log messages
+        simple_format: Use a simplified format for production environments
     """
     # Remove default handlers
     logger.remove()
 
     # Default format string if none provided
     if format_string is None:
-        # Define a custom format function that safely handles extra[name]
-        def safe_format(record: Record) -> str:
-            # Add the name from extra if available, otherwise use empty string
-            name = record["extra"].get("name", "")
-            name_part = f"<cyan>{name}</cyan> | " if name else ""
+        if simple_format:
+            # Simple format for production environments
+            def simple_format_fn(record: Record) -> str:
+                return "<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | <level>{message}</level>"
+            
+            format_string = simple_format_fn
+        else:
+            # Detailed format for development environments
+            def safe_format(record: Record) -> str:
+                # Add the name from extra if available, otherwise use empty string
+                name = record["extra"].get("name", "")
+                name_part = f"<cyan>{name}</cyan> | " if name else ""
 
-            return (
-                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-                "<level>{level: <8}</level> | "
-                f"{name_part}"
-                "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-                "<level>{message}</level>"
-            ).format_map(record)
+                return (
+                    "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                    "<level>{level: <8}</level> | "
+                    f"{name_part}"
+                    "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+                    "<level>{message}</level>"
+                ).format_map(record)
 
-        format_string = safe_format
+            format_string = safe_format
 
     # Add console handler
     logger.add(sys.stderr, level=level.upper(), format=format_string, colorize=True)  # type: ignore
@@ -1675,6 +2992,190 @@ class Logger:
 logger: Logger
 ```
 
+## File: utils/number_utils.py
+```python
+"""
+Number utility functions for common numeric operations.
+
+This module provides a collection of utility functions for number formatting,
+rounding, and random number generation that follow CLEAN code principles:
+- Clear: Functions have descriptive names and docstrings
+- Logical: Each function has a single, well-defined purpose
+- Efficient: Operations are optimized for performance
+- Adaptable: Functions accept optional parameters for flexibility
+"""
+import random
+from decimal import ROUND_HALF_UP, Decimal
+from typing import Any, Optional, Union, overload
+
+# Type aliases for numeric types
+NumericType = Union[int, float, Decimal]
+
+
+def format_currency(
+    value: Optional[NumericType],
+    symbol: str = "$",
+    decimal_places: int = 2,
+    thousands_sep: str = ",",
+    decimal_sep: str = ".",
+    default: str = "",
+) -> str:
+    """
+    Format a number as a currency string.
+
+    Args:
+        value: The numeric value to format.
+        symbol: Currency symbol to prepend (default: "$").
+        decimal_places: Number of decimal places to show (default: 2).
+        thousands_sep: Character to use as thousands separator (default: ",").
+        decimal_sep: Character to use as decimal separator (default: ".").
+        default: Value to return if input is None (default: "").
+
+    Returns:
+        Formatted currency string.
+
+    Raises:
+        TypeError: If value is not a numeric type.
+
+    Examples:
+        >>> format_currency(1234.56)
+        '$1,234.56'
+        >>> format_currency(1234.56, symbol="€", decimal_sep=",")
+        '€1,234,56'
+    """
+    if value is None:
+        return default
+
+    # Validate input type
+    if not isinstance(value, (int, float, Decimal)):
+        raise TypeError(f"Expected numeric type, got {type(value).__name__}")
+
+    # Handle negative values
+    is_negative = value < 0
+    abs_value = abs(value)
+
+    # Round to specified decimal places
+    if isinstance(value, Decimal):
+        rounded_value = abs_value.quantize(Decimal(f"0.{'0' * decimal_places}"), rounding=ROUND_HALF_UP)
+    else:
+        rounded_value = round(abs_value, decimal_places)
+
+    # Convert to string and split into integer and decimal parts
+    str_value = str(rounded_value)
+    if "." in str_value:
+        int_part, dec_part = str_value.split(".")
+    else:
+        int_part, dec_part = str_value, ""
+
+    # Format integer part with thousands separator
+    formatted_int = ""
+    for i, char in enumerate(reversed(int_part)):
+        if i > 0 and i % 3 == 0:
+            formatted_int = thousands_sep + formatted_int
+        formatted_int = char + formatted_int
+
+    # Format decimal part
+    if decimal_places > 0:
+        # Pad with zeros if needed
+        dec_part = dec_part.ljust(decimal_places, "0")
+        # Truncate if too long
+        dec_part = dec_part[:decimal_places]
+        formatted_value = formatted_int + decimal_sep + dec_part
+    else:
+        formatted_value = formatted_int
+
+    # Add currency symbol and handle negative values
+    if is_negative:
+        return f"-{symbol}{formatted_value}"
+    else:
+        return f"{symbol}{formatted_value}"
+
+
+def round_to(value: NumericType, places: int) -> NumericType:
+    """
+    Round a number to a specified number of decimal places.
+
+    This function handles both positive and negative decimal places:
+    - Positive places round to that many decimal places
+    - Zero places round to the nearest integer
+    - Negative places round to tens, hundreds, etc.
+
+    Args:
+        value: The numeric value to round.
+        places: Number of decimal places to round to.
+
+    Returns:
+        Rounded value of the same type as the input.
+
+    Raises:
+        TypeError: If value is not a numeric type.
+
+    Examples:
+        >>> round_to(1.234, 2)
+        1.23
+        >>> round_to(1.235, 2)
+        1.24
+        >>> round_to(123, -1)
+        120
+    """
+    if not isinstance(value, (int, float, Decimal)):
+        raise TypeError(f"Expected numeric type, got {type(value).__name__}")
+
+    # Handle Decimal type
+    if isinstance(value, Decimal):
+        if places >= 0:
+            return value.quantize(Decimal(f"0.{'0' * places}"), rounding=ROUND_HALF_UP)
+        else:
+            # For negative places (tens, hundreds, etc.)
+            return value.quantize(Decimal(f"1{'0' * abs(places)}"), rounding=ROUND_HALF_UP)
+
+    # Handle int and float types
+    factor = 10 ** places
+    if places >= 0:
+        result = round(value * factor) / factor
+        # Convert to int if places is 0
+        return int(result) if places == 0 else result
+    else:
+        # For negative places (tens, hundreds, etc.)
+        return round(value / factor) * factor
+
+
+def random_number(min_value: int, max_value: int) -> int:
+    """
+    Generate a random integer within a specified range.
+
+    Args:
+        min_value: The minimum value (inclusive).
+        max_value: The maximum value (inclusive).
+
+    Returns:
+        A random integer between min_value and max_value (inclusive).
+
+    Raises:
+        ValueError: If min_value is greater than max_value.
+        TypeError: If min_value or max_value is not an integer.
+
+    Examples:
+        >>> # Returns a random number between 1 and 10
+        >>> random_number(1, 10)
+        7
+        >>> # Returns a random number between -10 and 10
+        >>> random_number(-10, 10)
+        -3
+    """
+    # Validate input types
+    if not isinstance(min_value, int):
+        raise TypeError(f"min_value must be an integer, got {type(min_value).__name__}")
+    if not isinstance(max_value, int):
+        raise TypeError(f"max_value must be an integer, got {type(max_value).__name__}")
+
+    # Validate range
+    if min_value > max_value:
+        raise ValueError(f"min_value ({min_value}) must be less than or equal to max_value ({max_value})")
+
+    return random.randint(min_value, max_value)
+```
+
 ## File: utils/path_util.py
 ```python
 import logging
@@ -1736,6 +3237,298 @@ def resolve_path(path: Union[str, Path], base_dir: Union[Path, None] = None) -> 
             logger.debug(f"Resolved path '{path}' to '{candidate.resolve()}'")
             return candidate.resolve()
 
-    logger.debug(f"Could not resolve path: {path_obj}. Returning unresolved path.")
+    logger.warning(f"Failed to resolve path '{path}'. Returning as is.")
     return path_obj
+```
+
+## File: utils/string_utils.py
+```python
+"""
+String utility functions for common text operations.
+
+This module provides a collection of utility functions for string manipulation
+that follow CLEAN code principles:
+- Clear: Functions have descriptive names and docstrings
+- Logical: Each function has a single, well-defined purpose
+- Efficient: Operations are optimized for performance
+- Adaptable: Functions accept optional parameters for flexibility
+"""
+import re
+import unicodedata
+from typing import Optional
+
+
+def capitalize(text: str) -> str:
+    """
+    Capitalize the first letter of a string, preserving leading whitespace.
+
+    Args:
+        text: The string to capitalize.
+
+    Returns:
+        A string with the first non-space character capitalized.
+
+    Examples:
+        >>> capitalize("hello")
+        'Hello'
+        >>> capitalize("  hello")
+        '  Hello'
+        >>> capitalize("123abc")
+        '123abc'
+        >>> capitalize("")
+        ''
+    """
+    if not text:
+        return ""
+    
+    # If the string starts with non-alphabetic characters (except whitespace),
+    # return it unchanged
+    if text.strip() and not text.strip()[0].isalpha():
+        return text
+    
+    # Preserve leading whitespace and capitalize the first non-space character
+    leading_spaces = len(text) - len(text.lstrip())
+    return text[:leading_spaces] + text[leading_spaces:].capitalize()
+
+
+def slugify(text: str) -> str:
+    """
+    Convert text into a URL-friendly slug.
+
+    This function:
+    1. Converts to lowercase
+    2. Removes accents/diacritics
+    3. Replaces spaces and special characters with hyphens
+
+    Args:
+        text: The string to convert to a slug.
+
+    Returns:
+        URL-friendly slug.
+
+    Examples:
+        >>> slugify("Hello World!")
+        'hello-world'
+        >>> slugify("Héllo, Wörld!")
+        'hello-world'
+    """
+    if not text:
+        return ""
+
+    # Normalize and remove accents
+    text = unicodedata.normalize("NFKD", text.lower())
+    text = "".join(c for c in text if not unicodedata.combining(c))
+
+    # Replace non-alphanumeric characters with hyphens
+    text = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    
+    # Replace multiple hyphens with a single hyphen
+    text = re.sub(r"-+", "-", text)
+    
+    return text
+
+
+def truncate(text: str, length: int, suffix: str = "...") -> str:
+    """
+    Limit the length of a string and add a suffix if truncated.
+
+    Args:
+        text: The string to truncate.
+        length: Maximum allowed length before truncation.
+        suffix: String appended after truncation (default "...").
+
+    Returns:
+        Truncated string.
+
+    Examples:
+        >>> truncate("Hello World", 5)
+        'Hello...'
+        >>> truncate("Hello", 10)
+        'Hello'
+    """
+    if not text:
+        return ""
+
+    if length <= 0:
+        return suffix
+
+    return text if len(text) <= length else text[:length] + suffix
+
+
+def is_empty(text: Optional[str]) -> bool:
+    """
+    Check if a string is empty or contains only whitespace.
+
+    Args:
+        text: The string to check.
+
+    Returns:
+        True if empty or whitespace, False otherwise.
+
+    Raises:
+        TypeError: if text is None.
+
+    Examples:
+        >>> is_empty("   ")
+        True
+        >>> is_empty("Hello")
+        False
+    """
+    if text is None:
+        raise TypeError("Cannot check emptiness of None")
+
+    return not bool(text.strip())
+```
+
+## File: utils/validation_utils.py
+```python
+"""
+Validation utilities for common data formats.
+
+This module provides functions to validate common data formats such as
+email addresses, phone numbers, and URLs.
+"""
+import re
+from typing import Any
+
+
+def is_valid_email(email: Any) -> bool:
+    """
+    Validate if the input is a properly formatted email address.
+
+    Args:
+        email: The email address to validate.
+
+    Returns:
+        bool: True if the email is valid, False otherwise.
+    """
+    if not isinstance(email, str):
+        return False
+
+    # RFC 5322 compliant email regex pattern with additional validations
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}$'
+    
+    # Basic pattern match
+    if not re.match(pattern, email):
+        return False
+    
+    # Additional validations
+    if '..' in email:  # No consecutive dots
+        return False
+    if email.endswith('.'):  # No trailing dot
+        return False
+    if ' ' in email:  # No spaces
+        return False
+    
+    # Check domain part
+    domain = email.split('@')[1]
+    if domain.startswith('-') or domain.endswith('-'):  # No leading/trailing hyphens in domain
+        return False
+    
+    # Check for hyphens at the end of domain parts
+    domain_parts = domain.split('.')
+    for part in domain_parts:
+        if part.endswith('-'):
+            return False
+    
+    return True
+
+
+def is_valid_phone(phone: Any) -> bool:
+    """
+    Validate if the input is a properly formatted phone number.
+
+    Accepts various formats including:
+    - 10 digits: 1234567890
+    - Hyphenated: 123-456-7890
+    - Parentheses: (123) 456-7890
+    - International: +1 123-456-7890
+    - Dots: 123.456.7890
+    - Spaces: 123 456 7890
+
+    Args:
+        phone: The phone number to validate.
+
+    Returns:
+        bool: True if the phone number is valid, False otherwise.
+    """
+    if not isinstance(phone, str):
+        return False
+
+    # Check for specific invalid formats first
+    if phone == "":
+        return False
+    
+    # Check for spaces around hyphens
+    if " - " in phone:
+        return False
+    
+    # Check for missing space after parentheses in format like (123)456-7890
+    if re.search(r'\)[0-9]', phone):
+        return False
+    
+    # Remove all non-alphanumeric characters for normalization
+    normalized = re.sub(r'[^0-9+]', '', phone)
+    
+    # Check for letters in the phone number
+    if re.search(r'[a-zA-Z]', phone):
+        return False
+    
+    # Check for international format (starting with +)
+    if normalized.startswith('+'):
+        # International numbers should have at least 8 digits after the country code
+        return len(normalized) >= 9 and normalized[1:].isdigit()
+    
+    # For US/Canada numbers, expect 10 digits
+    return len(normalized) == 10 and normalized.isdigit()
+
+
+def is_valid_url(url: Any) -> bool:
+    """
+    Validate if the input is a properly formatted URL.
+
+    Validates URLs with http or https protocols.
+
+    Args:
+        url: The URL to validate.
+
+    Returns:
+        bool: True if the URL is valid, False otherwise.
+    """
+    if not isinstance(url, str):
+        return False
+
+    # Check for specific invalid formats first
+    if url == "":
+        return False
+    
+    # Check for spaces
+    if ' ' in url:
+        return False
+    
+    # Check for double dots
+    if '..' in url:
+        return False
+    
+    # Check for trailing dot
+    if url.endswith('.'):
+        return False
+    
+    # URL regex pattern that validates common URL formats
+    pattern = r'^(https?:\/\/)' + \
+              r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
+              r'(:\d+)?(\/[-a-zA-Z0-9%_.~#+]*)*' + \
+              r'(\?[;&a-zA-Z0-9%_.~+=-]*)?' + \
+              r'(#[-a-zA-Z0-9%_]+)?$'
+    
+    # Basic pattern match
+    if not re.match(pattern, url):
+        return False
+    
+    # Check for domain part
+    domain_part = url.split('://')[1].split('/')[0].split(':')[0]
+    if domain_part.startswith('-') or domain_part.endswith('-'):
+        return False
+    
+    return True
 ```
