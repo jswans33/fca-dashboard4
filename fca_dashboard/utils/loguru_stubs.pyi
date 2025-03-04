@@ -7,7 +7,7 @@ class Logger:
         sink: Union[TextIO, str, Callable, Dict[str, Any]],
         *,
         level: Optional[Union[str, int]] = None,
-        format: Optional[str] = None,
+        format: Optional[Union[str, Callable[[Dict[str, Any]], str]]] = None,
         filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
         colorize: Optional[bool] = None,
         serialize: Optional[bool] = None,

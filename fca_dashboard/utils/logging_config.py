@@ -8,9 +8,14 @@ and simplified configuration compared to the standard logging module.
 
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Callable, Dict, Optional, Union
 
 from loguru import logger  # type: ignore
+
+# Define a Record type for type hints
+Record = Dict[str, Any]
+# Define a FormatFunction type for type hints
+FormatFunction = Callable[[Record], str]
 
 
 def configure_logging(
@@ -18,7 +23,7 @@ def configure_logging(
     log_file: Optional[str] = None,
     rotation: str = "10 MB",
     retention: str = "1 month",
-    format_string: Optional[str] = None,
+    format_string: Optional[Union[str, Callable[[Record], str]]] = None,
 ) -> None:
     """
     Configure application logging with console and optional file output using Loguru.
@@ -35,28 +40,34 @@ def configure_logging(
 
     # Default format string if none provided
     if format_string is None:
-        format_string = (
-            "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-            "<level>{level: <8}</level> | "
-            "<cyan>{extra[name]}</cyan> | "
-            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-            "<level>{message}</level>"
-        )
+        # Define a custom format function that safely handles extra[name]
+        def safe_format(record: Record) -> str:
+            # Add the name from extra if available, otherwise use empty string
+            name = record["extra"].get("name", "")
+            name_part = f"<cyan>{name}</cyan> | " if name else ""
+
+            return (
+                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                "<level>{level: <8}</level> | "
+                f"{name_part}"
+                "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+                "<level>{message}</level>"
+            ).format_map(record)
+
+        format_string = safe_format
 
     # Add console handler
-    logger.add(sys.stderr, level=level.upper(), format=format_string, colorize=True)
+    logger.add(sys.stderr, level=level.upper(), format=format_string, colorize=True)  # type: ignore
 
     # Add file handler if log_file is provided
     if log_file:
-        # Ensure log directory exists
+        # Create the log directory if it doesn't exist
         log_path = Path(log_file)
-        log_dir = log_path.parent
-        if not log_dir.exists():
-            log_dir.mkdir(parents=True, exist_ok=True)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Add rotating file handler
-        logger.add(
-            log_file,
+        logger.add(  # type: ignore[arg-type]
+            str(log_path),
             level=level.upper(),
             format=format_string,
             rotation=rotation,
