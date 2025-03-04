@@ -78,35 +78,71 @@ CREATE TABLE MCAA_Classifications (
 );
 
 -------------------------------
--- 2. EQUIPMENT_CATEGORIES (Unified)
+-- 2. EQUIPMENT_CATEGORIES (Decoupled)
 -------------------------------
 CREATE TABLE Equipment_Categories (
     CategoryID SERIAL PRIMARY KEY,
-    OmniClassID INT NOT NULL,
-    UniFormatID INT NOT NULL,
-    MasterFormatID INT NOT NULL,
-    CatalogID INT NOT NULL,
-    MCAAID INT NOT NULL,
     CategoryName VARCHAR(100) NOT NULL,
-    CategoryDescription TEXT,
-    CONSTRAINT fk_ec_omnaclass FOREIGN KEY (OmniClassID)
-        REFERENCES OmniClass(OmniClassID) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_ec_unifromat FOREIGN KEY (UniFormatID)
-        REFERENCES UniFormat(UniFormatID) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_ec_masterformat FOREIGN KEY (MasterFormatID)
-        REFERENCES MasterFormat(MasterFormatID) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_ec_catalogsystem FOREIGN KEY (CatalogID)
-        REFERENCES CatalogSystem(CatalogID) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_ec_mcaa FOREIGN KEY (MCAAID)
+    CategoryDescription TEXT
+);
+
+-- Junction Tables for Classifications
+CREATE TABLE Equipment_Categories_OmniClass (
+    CategoryID INT NOT NULL,
+    OmniClassID INT NOT NULL,
+    PRIMARY KEY (CategoryID, OmniClassID),
+    CONSTRAINT fk_eco_category FOREIGN KEY (CategoryID)
+        REFERENCES Equipment_Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_eco_omniclass FOREIGN KEY (OmniClassID)
+        REFERENCES OmniClass(OmniClassID) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE Equipment_Categories_UniFormat (
+    CategoryID INT NOT NULL,
+    UniFormatID INT NOT NULL,
+    PRIMARY KEY (CategoryID, UniFormatID),
+    CONSTRAINT fk_ecu_category FOREIGN KEY (CategoryID)
+        REFERENCES Equipment_Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_ecu_unifornat FOREIGN KEY (UniFormatID)
+        REFERENCES UniFormat(UniFormatID) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE Equipment_Categories_MasterFormat (
+    CategoryID INT NOT NULL,
+    MasterFormatID INT NOT NULL,
+    PRIMARY KEY (CategoryID, MasterFormatID),
+    CONSTRAINT fk_ecm_category FOREIGN KEY (CategoryID)
+        REFERENCES Equipment_Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_ecm_masterformat FOREIGN KEY (MasterFormatID)
+        REFERENCES MasterFormat(MasterFormatID) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE Equipment_Categories_Catalog (
+    CategoryID INT NOT NULL,
+    CatalogID INT NOT NULL,
+    PRIMARY KEY (CategoryID, CatalogID),
+    CONSTRAINT fk_ecc_category FOREIGN KEY (CategoryID)
+        REFERENCES Equipment_Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_ecc_catalog FOREIGN KEY (CatalogID)
+        REFERENCES CatalogSystem(CatalogID) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE Equipment_Categories_MCAA (
+    CategoryID INT NOT NULL,
+    MCAAID INT NOT NULL,
+    PRIMARY KEY (CategoryID, MCAAID),
+    CONSTRAINT fk_ecmc_category FOREIGN KEY (CategoryID)
+        REFERENCES Equipment_Categories(CategoryID) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_ecmc_mcaa FOREIGN KEY (MCAAID)
         REFERENCES MCAA_Classifications(MCAAID) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
--- Indexes for performance on classification FKs
-CREATE INDEX idx_ec_omnaclass ON Equipment_Categories(OmniClassID);
-CREATE INDEX idx_ec_unifromat ON Equipment_Categories(UniFormatID);
-CREATE INDEX idx_ec_masterformat ON Equipment_Categories(MasterFormatID);
-CREATE INDEX idx_ec_catalog ON Equipment_Categories(CatalogID);
-CREATE INDEX idx_ec_mcaa ON Equipment_Categories(MCAAID);
+-- Create indexes for performance on junction tables
+CREATE INDEX idx_eco_omniclass ON Equipment_Categories_OmniClass(OmniClassID);
+CREATE INDEX idx_ecu_unifornat ON Equipment_Categories_UniFormat(UniFormatID);
+CREATE INDEX idx_ecm_masterformat ON Equipment_Categories_MasterFormat(MasterFormatID);
+CREATE INDEX idx_ecc_catalog ON Equipment_Categories_Catalog(CatalogID);
+CREATE INDEX idx_ecmc_mcaa ON Equipment_Categories_MCAA(MCAAID);
 
 -------------------------------
 -- 3. LOCATIONS
@@ -527,11 +563,16 @@ SELECT
     l.YCoordinate
 FROM Equipment e
 JOIN Equipment_Categories ec ON e.CategoryID = ec.CategoryID
-JOIN OmniClass oc ON ec.OmniClassID = oc.OmniClassID
-JOIN UniFormat uf ON ec.UniFormatID = uf.UniFormatID
-JOIN MasterFormat mf ON ec.MasterFormatID = mf.MasterFormatID
-JOIN CatalogSystem cs ON ec.CatalogID = cs.CatalogID
-JOIN MCAA_Classifications mc ON ec.MCAAID = mc.MCAAID
+LEFT JOIN Equipment_Categories_OmniClass eco ON ec.CategoryID = eco.CategoryID
+LEFT JOIN OmniClass oc ON eco.OmniClassID = oc.OmniClassID
+LEFT JOIN Equipment_Categories_UniFormat ecu ON ec.CategoryID = ecu.CategoryID
+LEFT JOIN UniFormat uf ON ecu.UniFormatID = uf.UniFormatID
+LEFT JOIN Equipment_Categories_MasterFormat ecm ON ec.CategoryID = ecm.CategoryID
+LEFT JOIN MasterFormat mf ON ecm.MasterFormatID = mf.MasterFormatID
+LEFT JOIN Equipment_Categories_Catalog ecc ON ec.CategoryID = ecc.CategoryID
+LEFT JOIN CatalogSystem cs ON ecc.CatalogID = cs.CatalogID
+LEFT JOIN Equipment_Categories_MCAA ecmc ON ec.CategoryID = ecmc.CategoryID
+LEFT JOIN MCAA_Classifications mc ON ecmc.MCAAID = mc.MCAAID
 JOIN Locations l ON e.LocationID = l.LocationID;
 
 -- View for equipment mapping details.
