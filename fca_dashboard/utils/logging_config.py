@@ -24,6 +24,7 @@ def configure_logging(
     rotation: str = "10 MB",
     retention: str = "1 month",
     format_string: Optional[Union[str, Callable[[Record], str]]] = None,
+    simple_format: bool = False,
 ) -> None:
     """
     Configure application logging with console and optional file output using Loguru.
@@ -34,27 +35,35 @@ def configure_logging(
         rotation: When to rotate the log file (e.g., "10 MB", "1 day")
         retention: How long to keep log files (e.g., "1 month", "1 year")
         format_string: Custom format string for log messages
+        simple_format: Use a simplified format for production environments
     """
     # Remove default handlers
     logger.remove()
 
     # Default format string if none provided
     if format_string is None:
-        # Define a custom format function that safely handles extra[name]
-        def safe_format(record: Record) -> str:
-            # Add the name from extra if available, otherwise use empty string
-            name = record["extra"].get("name", "")
-            name_part = f"<cyan>{name}</cyan> | " if name else ""
+        if simple_format:
+            # Simple format for production environments
+            def simple_format_fn(record: Record) -> str:
+                return "<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | <level>{message}</level>"
+            
+            format_string = simple_format_fn
+        else:
+            # Detailed format for development environments
+            def safe_format(record: Record) -> str:
+                # Add the name from extra if available, otherwise use empty string
+                name = record["extra"].get("name", "")
+                name_part = f"<cyan>{name}</cyan> | " if name else ""
 
-            return (
-                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-                "<level>{level: <8}</level> | "
-                f"{name_part}"
-                "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-                "<level>{message}</level>"
-            ).format_map(record)
+                return (
+                    "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                    "<level>{level: <8}</level> | "
+                    f"{name_part}"
+                    "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+                    "<level>{message}</level>"
+                ).format_map(record)
 
-        format_string = safe_format
+            format_string = safe_format
 
     # Add console handler
     logger.add(sys.stderr, level=level.upper(), format=format_string, colorize=True)  # type: ignore

@@ -112,8 +112,8 @@ def test_resolve_path_nonexistent(mock_logger: Any) -> None:
     resolved_path = resolve_path(nonexistent_path)
     assert isinstance(resolved_path, Path)
     assert resolved_path.name == nonexistent_path
-    # Check that a debug message was logged
-    mock_logger.debug.assert_called()
+    # Check that a warning message was logged (changed from debug to warning)
+    mock_logger.warning.assert_called()
 
 
 def test_resolve_path_with_base_dir() -> None:

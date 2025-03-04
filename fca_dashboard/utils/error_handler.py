@@ -7,8 +7,7 @@ the logging system.
 """
 
 import sys
-import traceback
-from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast
+from typing import Any, Callable, Dict, Type, TypeVar, cast
 
 from fca_dashboard.utils.logging_config import get_logger
 
@@ -205,7 +204,6 @@ class ErrorHandler:
         Returns:
             Wrapped function with error handling
         """
-        import inspect
         from typing import get_type_hints
 
         # Get the return type annotation of the function
@@ -216,6 +214,8 @@ class ErrorHandler:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
+                # Log the function name where the error occurred for easier debugging
+                self.logger.error(f"Error occurred in function '{func.__name__}'")
                 # Call handle_error to get the exit code and log the error
                 exit_code = self.handle_error(e)
                 

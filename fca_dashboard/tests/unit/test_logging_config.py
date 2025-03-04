@@ -128,6 +128,28 @@ def test_configure_logging_with_custom_format(temp_log_file: str) -> None:
         # The format is simplified, so we don't check for exact format
 
 
+def test_configure_logging_with_simple_format(temp_log_file: str) -> None:
+    """Test configuring logging with the simple format option."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging with simple format
+    configure_logging(level="INFO", log_file=temp_log_file, simple_format=True)
+
+    # Get a logger and log a message
+    log = get_logger("test_logger")
+    log.info("Test message with simple format")
+
+    # Force flush by removing handlers
+    logger.remove()
+
+    # Check that the log file contains the message
+    with open(temp_log_file, "r") as f:
+        log_content = f.read()
+        assert "Test message with simple format" in log_content
+        # We don't check the exact format, just that the message is there
+
+
 def test_get_logger_with_name(capfd: CaptureFixture) -> None:
     """Test getting a logger with a specific name."""
     # Remove any existing handlers

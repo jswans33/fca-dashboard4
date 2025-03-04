@@ -57,5 +57,5 @@ def resolve_path(path: Union[str, Path], base_dir: Union[Path, None] = None) -> 
             logger.debug(f"Resolved path '{path}' to '{candidate.resolve()}'")
             return candidate.resolve()
 
-    logger.debug(f"Could not resolve path: {path_obj}. Returning unresolved path.")
+    logger.warning(f"Failed to resolve path '{path}'. Returning as is.")
     return path_obj

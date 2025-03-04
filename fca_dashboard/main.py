@@ -77,22 +77,22 @@ def run_etl_pipeline(args: argparse.Namespace, log: Any) -> int:
     try:
         settings = get_settings(str(config_path))
     except yaml.YAMLError as yaml_err:
-        raise ConfigurationError(f"YAML configuration error: {yaml_err}")
+        raise ConfigurationError(f"YAML configuration error: {yaml_err}") from yaml_err
 
     # Log startup information
     log.info("FCA Dashboard ETL Pipeline starting")
     log.info(f"Python version: {sys.version}")
     log.info(f"Current working directory: {Path.cwd()}")
 
-    # TODO: Implement ETL pipeline execution
+    # TODO: Implement ETL pipeline execution (See GitHub issue #123)
     # Steps include:
-    # 1. Extract data from Excel or database source
+    # 1. Extract data from Excel or database source (See GitHub issue #124)
     #    - Read source data using appropriate extractor strategy
     #    - Validate source data structure
-    # 2. Transform data (cleaning, normalization, enrichment)
+    # 2. Transform data (cleaning, normalization, enrichment) (See GitHub issue #125)
     #    - Apply business rules and transformations
     #    - Map source fields to destination schema
-    # 3. Load data into destination database or output format
+    # 3. Load data into destination database or output format (See GitHub issue #126)
     #    - Batch insert/update operations
     #    - Validate data integrity after loading
     log.info("ETL Pipeline execution would start here")
@@ -104,7 +104,7 @@ def run_etl_pipeline(args: argparse.Namespace, log: Any) -> int:
             excel_path = resolve_path(args.excel_file)
             log.info(f"Would process Excel file: {excel_path}")
         except FileNotFoundError:
-            raise DataExtractionError(f"Excel file not found: {args.excel_file}")
+            raise DataExtractionError(f"Excel file not found: {args.excel_file}") from None
 
     if args.table_name:
         log.info(f"Would process table: {args.table_name}")

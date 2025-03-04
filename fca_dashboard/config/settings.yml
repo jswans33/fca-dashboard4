@@ -3,7 +3,7 @@ databases:
   sqlite:
     url: "sqlite:///fca_dashboard.db"
   postgresql:
-    url: "postgresql://user:password@localhost/fca_dashboard"
+    url: "${POSTGRES_URL}"
     
 # Pipeline settings
 pipeline_settings:
