@@ -128,7 +128,8 @@ def is_valid_url(url: Any) -> bool:
     
     # URL regex pattern that validates common URL formats
     pattern = r'^(https?:\/\/)' + \
-              r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
+              r'((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|' + \
+              r'(localhost)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))' + \
               r'(:\d+)?(\/[-a-zA-Z0-9%_.~#+]*)*' + \
               r'(\?[;&a-zA-Z0-9%_.~+=-]*)?' + \
               r'(#[-a-zA-Z0-9%_]+)?$'

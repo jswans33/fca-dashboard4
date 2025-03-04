@@ -1,0 +1,32 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-7.4.4, pluggy-1.5.0 -- C:\Repos\fca-dashboard4\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Repos\fca-dashboard4
+configfile: pytest.ini
+plugins: cov-4.1.0
+collecting ... collected 14 items
+
+tests\unit\test_validation_utils.py::TestEmailValidation::test_valid_emails PASSED [  7%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_invalid_emails PASSED [ 14%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_domain_parts_with_hyphens PASSED [ 21%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_none_input PASSED [ 28%]
+tests\unit\test_validation_utils.py::TestEmailValidation::test_non_string_input PASSED [ 35%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_valid_phone_numbers PASSED [ 42%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_invalid_phone_numbers PASSED [ 50%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_international_phone_formats PASSED [ 57%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_none_input PASSED [ 64%]
+tests\unit\test_validation_utils.py::TestPhoneValidation::test_non_string_input PASSED [ 71%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_valid_urls PASSED [ 78%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_invalid_urls PASSED [ 85%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_none_input PASSED [ 92%]
+tests\unit\test_validation_utils.py::TestUrlValidation::test_non_string_input PASSED [100%]
+
+---------- coverage: platform win32, python 3.12.6-final-0 -----------
+Name                        Stmts   Miss  Cover   Missing
+---------------------------------------------------------
+utils\validation_utils.py      50      3    94%   35, 37, 42
+---------------------------------------------------------
+TOTAL                          50      3    94%
+
+
+============================= 14 passed in 0.48s ==============================
