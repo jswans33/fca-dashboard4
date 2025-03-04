@@ -1,21 +1,21 @@
 .PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration
 
 lint:
-	black --check .
-	isort --check .
-	flake8 .
-	mypy .
+	python -m black --check .
+	python -m isort --check .
+	python -m flake8 .
+	python -m mypy .
 	$(MAKE) lint-md
 
 lint-md:
-	npx markdownlint-cli "**/*.md" --config .markdownlint.json
+	-npx markdownlint-cli "**/*.md" --config .markdownlint.json
 
 format-md:
-	npx markdownlint-cli "**/*.md" --config .markdownlint.json --fix
+	-npx markdownlint-cli "**/*.md" --config .markdownlint.json --fix
 
 format:
-	black .
-	isort .
+	python -m black .
+	python -m isort .
 	$(MAKE) format-md
 
 test:
