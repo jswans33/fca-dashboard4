@@ -1,9 +1,11 @@
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
 import yaml
 
-from fca_dashboard.main import main, parse_args
+from fca_dashboard.main import main, parse_args, run_etl_pipeline
+from fca_dashboard.utils.error_handler import ConfigurationError, DataExtractionError
 
 
 @patch("sys.argv", ["main.py", "--config", "config/settings.yml"])
@@ -90,14 +92,23 @@ def test_main_with_excel_file_and_table(
 @patch("fca_dashboard.main.get_logger")
 @patch("fca_dashboard.main.configure_logging")
 @patch("fca_dashboard.main.resolve_path")
+@patch("fca_dashboard.main.ErrorHandler")
 def test_main_file_not_found_error(
-    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
+    mock_error_handler_class: MagicMock,
+    mock_resolve_path: MagicMock,
+    mock_configure_logging: MagicMock,
+    mock_get_logger: MagicMock,
 ) -> None:
     """Test main function handling FileNotFoundError."""
     # Setup mocks
     mock_logger = MagicMock()
     mock_get_logger.return_value = mock_logger
     mock_resolve_path.return_value = Path("nonexistent_file.yml")
+    
+    # Setup error handler mock
+    mock_error_handler = MagicMock()
+    mock_error_handler.handle_error.return_value = 1
+    mock_error_handler_class.return_value = mock_error_handler
 
     # Simulate FileNotFoundError when trying to load settings
     with (
@@ -108,21 +119,32 @@ def test_main_file_not_found_error(
 
     # Verify
     assert exit_code == 1
-    mock_logger.error.assert_called_once()
-    assert "File not found" in mock_logger.error.call_args[0][0]
+    mock_error_handler.handle_error.assert_called_once()
+    # Verify the error passed to handle_error is a FileNotFoundError
+    args, _ = mock_error_handler.handle_error.call_args
+    assert isinstance(args[0], FileNotFoundError)
 
 
 @patch("fca_dashboard.main.get_logger")
 @patch("fca_dashboard.main.configure_logging")
 @patch("fca_dashboard.main.resolve_path")
+@patch("fca_dashboard.main.ErrorHandler")
 def test_main_yaml_error(
-    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
+    mock_error_handler_class: MagicMock,
+    mock_resolve_path: MagicMock,
+    mock_configure_logging: MagicMock,
+    mock_get_logger: MagicMock,
 ) -> None:
     """Test main function handling YAMLError."""
     # Setup mocks
     mock_logger = MagicMock()
     mock_get_logger.return_value = mock_logger
     mock_resolve_path.return_value = Path("invalid_yaml.yml")
+    
+    # Setup error handler mock
+    mock_error_handler = MagicMock()
+    mock_error_handler.handle_error.return_value = 2  # ConfigurationError code
+    mock_error_handler_class.return_value = mock_error_handler
 
     # Simulate YAMLError when trying to load settings
     with (
@@ -132,9 +154,12 @@ def test_main_yaml_error(
         exit_code = main()
 
     # Verify
-    assert exit_code == 1
-    mock_logger.error.assert_called_once()
-    assert "YAML configuration error" in mock_logger.error.call_args[0][0]
+    assert exit_code == 2  # ConfigurationError code
+    mock_error_handler.handle_error.assert_called_once()
+    # Verify the error passed to handle_error is a ConfigurationError
+    args, _ = mock_error_handler.handle_error.call_args
+    assert isinstance(args[0], ConfigurationError)
+    assert "YAML configuration error" in str(args[0])
 
 
 @patch("fca_dashboard.main.get_logger")
@@ -157,6 +182,86 @@ def test_main_unexpected_error(
         exit_code = main()
 
     # Verify
-    assert exit_code == 1
-    mock_logger.exception.assert_called_once()
-    assert "Unexpected error" in mock_logger.exception.call_args[0][0]
+    assert exit_code == 99  # Generic error code from ErrorHandler
+    # The error is now handled by ErrorHandler, not directly in main
+
+
+def test_run_etl_pipeline_success() -> None:
+    """Test that run_etl_pipeline runs successfully with valid arguments."""
+    # Setup mocks
+    mock_args = MagicMock()
+    mock_args.config = "config/settings.yml"
+    mock_args.excel_file = None
+    mock_args.table_name = None
+    mock_log = MagicMock()
+
+    with (
+        patch("fca_dashboard.main.resolve_path", return_value=Path("config/settings.yml")),
+        patch("fca_dashboard.main.get_settings", return_value={"databases.sqlite.url": "sqlite:///test.db"}),
+    ):
+        exit_code = run_etl_pipeline(mock_args, mock_log)
+
+    # Verify
+    assert exit_code == 0
+    assert mock_log.info.call_count >= 4  # Multiple info logs
+
+
+def test_run_etl_pipeline_configuration_error() -> None:
+    """Test that run_etl_pipeline raises ConfigurationError for YAML errors."""
+    # Setup mocks
+    mock_args = MagicMock()
+    mock_args.config = "invalid_config.yml"
+    mock_log = MagicMock()
+
+    with (
+        patch("fca_dashboard.main.resolve_path", return_value=Path("invalid_config.yml")),
+        patch("fca_dashboard.main.get_settings", side_effect=yaml.YAMLError("Invalid YAML")),
+        pytest.raises(ConfigurationError) as exc_info,
+    ):
+        run_etl_pipeline(mock_args, mock_log)
+
+    # Verify
+    assert "YAML configuration error" in str(exc_info.value)
+
+
+def test_run_etl_pipeline_excel_file_not_found() -> None:
+    """Test that run_etl_pipeline raises DataExtractionError for missing Excel files."""
+    # Setup mocks
+    mock_args = MagicMock()
+    mock_args.config = "config/settings.yml"
+    mock_args.excel_file = "nonexistent.xlsx"
+    mock_args.table_name = None
+    mock_log = MagicMock()
+
+    with (
+        patch("fca_dashboard.main.resolve_path", side_effect=[
+            Path("config/settings.yml"),  # First call for config file
+            FileNotFoundError("Excel file not found"),  # Second call for Excel file
+        ]),
+        patch("fca_dashboard.main.get_settings", return_value={"databases.sqlite.url": "sqlite:///test.db"}),
+        pytest.raises(DataExtractionError) as exc_info,
+    ):
+        run_etl_pipeline(mock_args, mock_log)
+
+    # Verify
+    assert "Excel file not found" in str(exc_info.value)
+
+
+def test_main_with_error_handler() -> None:
+    """Test that main uses ErrorHandler to handle exceptions."""
+    # Setup mocks
+    mock_error_handler = MagicMock()
+    mock_error_handler.handle_error.return_value = 42
+
+    with (
+        patch("fca_dashboard.main.ErrorHandler", return_value=mock_error_handler),
+        patch("fca_dashboard.main.run_etl_pipeline", side_effect=Exception("Test error")),
+        patch("fca_dashboard.main.configure_logging"),
+        patch("fca_dashboard.main.get_logger"),
+        patch("sys.argv", ["main.py"]),
+    ):
+        exit_code = main()
+
+    # Verify
+    assert exit_code == 42
+    mock_error_handler.handle_error.assert_called_once()

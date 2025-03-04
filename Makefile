@@ -37,7 +37,7 @@ install:
 	python -m pip install -r requirements.txt
 	python -m pip install -e .
 	
-git-commit:
+commit:
 	git add .
 	git commit -m "Update"
 	git push
