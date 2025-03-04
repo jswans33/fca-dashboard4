@@ -5,7 +5,6 @@ This module provides functionality for uploading files to specified destinations
 with features like duplicate handling, error handling, and logging.
 """
 
-import os
 import shutil
 import time
 from pathlib import Path

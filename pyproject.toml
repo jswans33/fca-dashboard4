@@ -51,6 +51,7 @@ omit = [
     "*/migrations/*",
     "*/venv/*",
     "*/.venv/*",
+    "*/examples/*",
 ]
 
 [tool.coverage.report]
@@ -81,6 +82,7 @@ exclude = [
     "__pycache__",
     "build",
     "dist",
+    "fca_dashboard/examples",
 ]
 
 # Same as Black.

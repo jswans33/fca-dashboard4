@@ -41,6 +41,9 @@ config/settings.py
 config/settings.yml
 coverage_output.txt
 coverage_report.txt
+examples/__init__.py
+examples/excel_extractor_example.py
+extractors/excel_extractor.py
 main.py
 repomix.config.json
 utils/__init__.py
@@ -53,6 +56,7 @@ utils/loguru_stubs.pyi
 utils/number_utils.py
 utils/path_util.py
 utils/string_utils.py
+utils/upload_util.py
 utils/validation_utils.py
 utils/validation_utils.py,cover
 ```
@@ -232,6 +236,11 @@ env:
   LOG_LEVEL: "INFO"
   DEBUG: true
 
+# File paths
+file_paths:
+  uploads_dir: "uploads"  # Directory for uploaded files (relative to project root)
+  extracts_dir: "extracts"  # Directory for extracted data (relative to project root)
+
 # Database settings
 databases:
   sqlite:
@@ -328,6 +337,230 @@ TOTAL                          50      3    94%
 
 
 ============================= 14 passed in 0.48s ==============================
+```
+
+## File: examples/__init__.py
+```python
+"""
+Examples package for the FCA Dashboard application.
+
+This package contains example scripts demonstrating how to use
+various components of the FCA Dashboard application.
+"""
+```
+
+## File: examples/excel_extractor_example.py
+```python
+"""
+Example script demonstrating the use of the Excel extractor.
+
+This script shows how to use the Excel extractor to load data from an Excel file
+into a pandas DataFrame and perform basic operations on it.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from fca_dashboard.config.settings import settings
+from fca_dashboard.extractors.excel_extractor import extract_excel_to_dataframe
+from fca_dashboard.utils.path_util import get_root_dir
+
+
+def main():
+    """
+    Demonstrate the Excel extractor functionality.
+    
+    This function creates a sample Excel file, extracts data from it,
+    and shows how to work with the resulting DataFrame.
+    """
+    try:
+        # Import pandas here to avoid import errors in the module
+        import pandas as pd
+        
+        # Create a directory for examples if it doesn't exist
+        examples_dir = get_root_dir() / "examples"
+        os.makedirs(examples_dir, exist_ok=True)
+        
+        # Create a sample Excel file
+        sample_data = {
+            "ID": [1, 2, 3, 4, 5],
+            "Product": ["Widget A", "Widget B", "Widget C", "Widget D", "Widget E"],
+            "Price": [10.99, 20.50, 15.75, 8.25, 30.00],
+            "InStock": [True, False, True, True, False],
+            "Category": ["Electronics", "Tools", "Electronics", "Office", "Tools"]
+        }
+        
+        # Create a DataFrame
+        df = pd.DataFrame(sample_data)
+        
+        # Save the DataFrame to an Excel file
+        sample_file = examples_dir / "sample_data.xlsx"
+        df.to_excel(sample_file, index=False)
+        print(f"Created sample Excel file: {sample_file}")
+        
+        # Extract data from the Excel file
+        print("\nExtracting data from Excel file...")
+        extracted_df = extract_excel_to_dataframe(sample_file, upload=True)
+        
+        # Display the extracted data
+        print("\nExtracted DataFrame:")
+        print(extracted_df)
+        
+        # Demonstrate filtering columns
+        print("\nExtracting only specific columns...")
+        columns_to_extract = ["ID", "Product", "Price"]
+        filtered_df = extract_excel_to_dataframe(sample_file, columns=columns_to_extract)
+        print("\nFiltered DataFrame:")
+        print(filtered_df)
+        
+        # Demonstrate basic DataFrame operations
+        print("\nPerforming basic DataFrame operations:")
+        
+        # Filter rows based on a condition
+        print("\n1. Filter products with price > 15:")
+        expensive_products = extracted_df[extracted_df["Price"] > 15]
+        print(expensive_products)
+        
+        # Group by a column and calculate statistics
+        print("\n2. Group by Category and calculate average price:")
+        category_stats = extracted_df.groupby("Category")["Price"].mean()
+        print(category_stats)
+        
+        # Sort the DataFrame
+        print("\n3. Sort by Price (descending):")
+        sorted_df = extracted_df.sort_values("Price", ascending=False)
+        print(sorted_df)
+        
+        print("\nExample completed successfully!")
+        
+    except ImportError as e:
+        print(f"Error importing required libraries: {e}")
+        print("Please ensure pandas and openpyxl are installed.")
+        return 1
+    except Exception as e:
+        print(f"Error in example: {e}")
+        return 1
+    
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+## File: extractors/excel_extractor.py
+```python
+"""
+Excel extractor module for the FCA Dashboard application.
+
+This module provides functionality for extracting data from Excel files
+and loading it into pandas DataFrames, with features like error handling,
+logging, and optional file upload.
+"""
+
+import os
+from pathlib import Path
+from typing import List, Optional, Union
+
+import pandas as pd
+from pandas.errors import EmptyDataError, ParserError
+
+from fca_dashboard.config.settings import settings
+from fca_dashboard.utils.error_handler import FCADashboardError
+from fca_dashboard.utils.logging_config import get_logger
+from fca_dashboard.utils.path_util import get_root_dir, resolve_path
+from fca_dashboard.utils.upload_util import upload_file
+
+
+class ExcelExtractionError(FCADashboardError):
+    """Exception raised for errors during Excel data extraction."""
+    pass
+
+
+def extract_excel_to_dataframe(
+    file_path: Union[str, Path],
+    sheet_name: Union[str, int] = 0,
+    columns: Optional[List[str]] = None,
+    upload: bool = False,
+    target_filename: Optional[str] = None,
+) -> pd.DataFrame:
+    """
+    Extract data from an Excel file into a pandas DataFrame.
+    
+    Args:
+        file_path: Path to the Excel file. Can be absolute or relative.
+        sheet_name: Name or index of the sheet to extract (default: 0, first sheet).
+        columns: Optional list of column names to extract. If None, extracts all columns.
+        upload: Whether to upload the file to the uploads directory.
+        target_filename: Optional filename to use when uploading. If None, uses the source filename.
+        
+    Returns:
+        pandas DataFrame containing the extracted data.
+        
+    Raises:
+        FileNotFoundError: If the source file does not exist.
+        ExcelExtractionError: If an error occurs during the extraction process.
+    """
+    logger = get_logger("excel_extractor")
+    
+    # Resolve the file path
+    source_path = resolve_path(file_path)
+    
+    # Validate source file
+    if not source_path.is_file():
+        logger.error(f"Source file not found: {source_path}")
+        raise FileNotFoundError(f"Source file not found: {source_path}")
+    
+    # Log the extraction operation
+    logger.info(f"Extracting data from Excel file: {source_path}")
+    
+    try:
+        # Read the Excel file into a DataFrame
+        df = pd.read_excel(source_path, sheet_name=sheet_name)
+        
+        # Filter columns if specified
+        if columns:
+            # Validate that all requested columns exist
+            missing_columns = [col for col in columns if col not in df.columns]
+            if missing_columns:
+                error_msg = f"Columns not found in Excel file: {missing_columns}"
+                logger.error(error_msg)
+                raise ExcelExtractionError(error_msg)
+            
+            # Select only the specified columns
+            df = df[columns]
+        
+        # Upload the file if requested
+        if upload:
+            # Get the uploads directory from settings
+            uploads_dir = get_root_dir() / settings.get("file_paths.uploads_dir", "uploads")
+            
+            # Ensure the uploads directory exists
+            os.makedirs(uploads_dir, exist_ok=True)
+            
+            # Upload the file
+            logger.info(f"Uploading Excel file to: {uploads_dir}")
+            upload_file(source_path, uploads_dir, target_filename)
+        
+        # Log success and return the DataFrame
+        logger.info(f"Successfully extracted {len(df)} rows from {source_path}")
+        return df
+    
+    except (EmptyDataError, ParserError) as e:
+        # Handle pandas-specific errors
+        error_msg = f"Error parsing Excel file {source_path}: {str(e)}"
+        logger.error(error_msg)
+        raise ExcelExtractionError(error_msg) from e
+    
+    except Exception as e:
+        # Handle any other errors
+        error_msg = f"Error extracting data from Excel file {source_path}: {str(e)}"
+        logger.error(error_msg)
+        raise ExcelExtractionError(error_msg) from e
 ```
 
 ## File: main.py
@@ -1788,6 +2021,91 @@ def is_empty(text: Optional[str]) -> bool:
         raise TypeError("Cannot check emptiness of None")
 
     return not bool(text.strip())
+```
+
+## File: utils/upload_util.py
+```python
+"""
+File upload utility module for the FCA Dashboard application.
+
+This module provides functionality for uploading files to specified destinations,
+with features like duplicate handling, error handling, and logging.
+"""
+
+import os
+import shutil
+import time
+from pathlib import Path
+from typing import Union
+
+from fca_dashboard.utils.error_handler import FCADashboardError
+from fca_dashboard.utils.logging_config import get_logger
+from fca_dashboard.utils.path_util import resolve_path
+
+
+class FileUploadError(FCADashboardError):
+    """Exception raised for errors during file upload operations."""
+    pass
+
+
+def upload_file(source: Union[str, Path], destination_dir: Union[str, Path], target_filename: str = None) -> bool:
+    """
+    Upload a file by copying it to the destination directory.
+    
+    Args:
+        source: Path to the file to upload. Can be absolute or relative.
+        destination_dir: Directory where the file should be uploaded. Can be absolute or relative.
+        target_filename: Optional filename to use in the destination. If None, uses the source filename.
+        
+    Returns:
+        True if the file was successfully uploaded.
+        
+    Raises:
+        FileNotFoundError: If the source file does not exist.
+        FileNotFoundError: If the destination directory does not exist.
+        FileUploadError: If an error occurs during the upload process.
+    """
+    logger = get_logger("upload_util")
+    
+    # Resolve paths to handle relative paths correctly
+    source_path = resolve_path(source)
+    dest_dir_path = resolve_path(destination_dir)
+    
+    # Validate source file
+    if not source_path.is_file():
+        logger.error(f"Source file not found: {source_path}")
+        raise FileNotFoundError(f"Source file not found: {source_path}")
+    
+    # Validate destination directory
+    if not dest_dir_path.is_dir():
+        logger.error(f"Destination directory not found: {dest_dir_path}")
+        raise FileNotFoundError(f"Destination directory not found: {dest_dir_path}")
+    
+    # Get the filename
+    filename = target_filename if target_filename else source_path.name
+    dest_path = dest_dir_path / filename
+    
+    # Handle duplicate filenames
+    if dest_path.exists():
+        logger.info(f"File already exists at destination: {dest_path}")
+        # Generate a new filename with timestamp
+        base_name = dest_path.stem
+        extension = dest_path.suffix
+        timestamp = int(time.time())
+        new_filename = f"{base_name}_{timestamp}{extension}"
+        dest_path = dest_dir_path / new_filename
+        logger.info(f"Renamed to: {dest_path}")
+    
+    try:
+        # Copy the file to the destination
+        logger.info(f"Uploading file {source_path} to {dest_path}")
+        shutil.copy(source_path, dest_path)
+        logger.info(f"Successfully uploaded file to {dest_path}")
+        return True
+    except Exception as e:
+        error_msg = f"Error uploading file {source_path} to {dest_path}: {str(e)}"
+        logger.error(error_msg)
+        raise FileUploadError(error_msg) from e
 ```
 
 ## File: utils/validation_utils.py

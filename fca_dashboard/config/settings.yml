@@ -4,6 +4,19 @@ env:
   LOG_LEVEL: "INFO"
   DEBUG: true
 
+# File paths
+file_paths:
+  uploads_dir: "uploads"  # Directory for uploaded files (relative to project root)
+  extracts_dir: "extracts"  # Directory for extracted data (relative to project root)
+  examples_dir: "examples"  # Directory for example files (relative to project root)
+  
+# Example settings
+examples:
+  excel:
+    sample_filename: "sample_data.xlsx"
+    columns_to_extract: ["ID", "Product", "Price"]
+    price_threshold: 15
+
 # Database settings
 databases:
   sqlite:

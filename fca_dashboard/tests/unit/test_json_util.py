@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 
@@ -81,7 +82,7 @@ def test_json_load_invalid_json():
         tmp.write("{invalid json}")
         path = tmp.name
 
-    with pytest.raises(Exception):
+    with pytest.raises(json.JSONDecodeError):
         json_load(path)
 
     os.unlink(path)

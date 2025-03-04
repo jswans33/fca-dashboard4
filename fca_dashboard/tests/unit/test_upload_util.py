@@ -7,8 +7,6 @@ fca_dashboard.utils.upload_util module.
 
 import os
 import tempfile
-import time
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -48,8 +46,7 @@ def test_upload_file_not_found() -> None:
     """Test upload with non-existent source file."""
     # Use a file path that doesn't exist
     non_existent_file = "nonexistent_file.txt"
-    with tempfile.TemporaryDirectory() as dest_dir:
-        with pytest.raises(FileNotFoundError):
+    with tempfile.TemporaryDirectory() as dest_dir, pytest.raises(FileNotFoundError):
             upload_file(non_existent_file, dest_dir)
 
 
@@ -84,8 +81,7 @@ def test_upload_file_copy_error(mock_copy) -> None:
     
     try:
         # Attempt to upload the file
-        with tempfile.TemporaryDirectory() as dest_dir:
-            with pytest.raises(FileUploadError):
+        with tempfile.TemporaryDirectory() as dest_dir, pytest.raises(FileUploadError):
                 upload_file(tmp_path, dest_dir)
     finally:
         # Clean up the temporary file
@@ -114,6 +110,8 @@ def test_upload_file_with_duplicate_handling() -> None:
             try:
                 # Create a copy of the file in the destination directory to simulate a duplicate upload
                 dest_file = os.path.join(dest_dir, filename)
+                # The first upload already created this file, so we don't need to create it again
+                assert os.path.exists(dest_file), "First upload should have created the file"
                 
                 # Second upload with the same filename (directly use the temp file but specify the target filename)
                 upload_file(tmp2_path, dest_dir, target_filename=filename)
