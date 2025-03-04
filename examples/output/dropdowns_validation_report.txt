@@ -1,0 +1,71 @@
+Validation Report for Sheet: dropdowns
+DataFrame Shape: 35 rows, 61 columns
+
+Missing Values Report:
+--------------------------------------------------
+  Unnamed: 0: 0.00% missing
+  Accessory: 0.00% missing
+  Air Compressor: 0.00% missing
+  Air Curtain: 0.00% missing
+  Air Dryer: 0.00% missing
+  Air Handling Unit: 0.00% missing
+  Air Receiver: 0.00% missing
+  Air Rotation Unit: 0.00% missing
+  Air Scoop: 0.00% missing
+  Air Separator: 0.00% missing
+  Baseboard Radiation: 0.00% missing
+  Boiler: 0.00% missing
+  Bypass Filter Feeder: 0.00% missing
+  Cabinet Unit Heater: 0.00% missing
+  Chiller: 0.00% missing
+  Compressor - Refrig.: 0.00% missing
+  Computer Room Air Conditioning: 0.00% missing
+  Condensing Unit: 0.00% missing
+  Condensing Unit - Refrig.: 0.00% missing
+  Convector: 0.00% missing
+  Cooling Tower: 0.00% missing
+  Coupon Rack: 0.00% missing
+  DI/RO Equipment: 0.00% missing
+  Direct Outside Air Unit: 0.00% missing
+  Domestic HW Generator: 0.00% missing
+  Domestic Water Booster Pump: 0.00% missing
+  Domestic Water Heater: 0.00% missing
+  Ductless Split System: 0.00% missing
+  Energy Recovery Ventilator: 0.00% missing
+  Evaporator: 0.00% missing
+  Expansion Tank: 0.00% missing
+  Fan: 0.00% missing
+  Fan Coil Unit: 0.00% missing
+  Fan Coil Unit - Refrig.: 0.00% missing
+  Fan Powered Box: 0.00% missing
+  Fixture: 0.00% missing
+  Furnace: 0.00% missing
+  Glycol Feeder: 0.00% missing
+  Grease Interceptor: 0.00% missing
+  Grease Trap: 0.00% missing
+  Heat Exchanger: 0.00% missing
+  Heat Exchanger - Refrig.: 0.00% missing
+  Heat Pump: 0.00% missing
+  Heat Trace: 0.00% missing
+  Humidifier: 0.00% missing
+  Infrared Gas Fired Heater: 0.00% missing
+  Make-up Air Unit: 0.00% missing
+  Pot Feeder: 0.00% missing
+  PTAC: 0.00% missing
+  Pump: 0.00% missing
+  Radiant Panel: 0.00% missing
+  Return Air Unit: 0.00% missing
+  Roof Top Unit: 0.00% missing
+  Sand/Oil Interceptor: 0.00% missing
+  Tank: 0.00% missing
+  Unit Heater: 0.00% missing
+  Unit Ventilator: 0.00% missing
+  Vacuum: 0.00% missing
+  VAV Box: 0.00% missing
+  Venturi VAV Box: 0.00% missing
+  Water Softener: 0.00% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 0
+

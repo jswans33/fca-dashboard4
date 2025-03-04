@@ -1,0 +1,92 @@
+Analysis Report for Sheet: dropdowns
+DataFrame Shape: 35 rows, 61 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: Unnamed: 0
+    Unique value count: 3
+    Null count: 0 (0.00%)
+    Unique values: nan, All, 1
+    Value counts (top 5):
+      nan: 33
+      All: 1
+      1: 1
+
+  Column: Accessory
+    Unique value count: 34
+    Null count: 0 (0.00%)
+
+  Column: Air Compressor
+    Unique value count: 3
+    Null count: 0 (0.00%)
+    Unique values: Air Cooled, Water Cooled, nan
+    Value counts (top 5):
+      nan: 33
+      Air Cooled: 1
+      Water Cooled: 1
+
+  Column: Air Curtain
+    Unique value count: 4
+    Null count: 0 (0.00%)
+    Unique values: Electric, Hot Water, No Heat, nan
+    Value counts (top 5):
+      nan: 32
+      Electric: 1
+      Hot Water: 1
+      No Heat: 1
+
+  Column: Air Dryer
+    Unique value count: 2
+    Null count: 0 (0.00%)
+    Unique values: Air Dryer, nan
+    Value counts (top 5):
+      nan: 34
+      Air Dryer: 1
+
+
+Text Analysis:
+--------------------------------------------------
+  Column: Unnamed: 0
+    Min length: 0
+    Max length: 3
+    Average length: 0.11
+    Empty strings: 33
+    Pattern analysis:
+      numeric: 1
+      alpha: 1
+
+  Column: Accessory
+    Min length: 0
+    Max length: 36
+    Average length: 13.66
+    Empty strings: 2
+    Pattern analysis:
+      alpha: 8
+      other: 25
+
+  Column: Air Compressor
+    Min length: 0
+    Max length: 12
+    Average length: 0.63
+    Empty strings: 33
+    Pattern analysis:
+      other: 2
+
+  Column: Air Curtain
+    Min length: 0
+    Max length: 9
+    Average length: 0.69
+    Empty strings: 32
+    Pattern analysis:
+      alpha: 1
+      other: 2
+
+  Column: Air Dryer
+    Min length: 0
+    Max length: 9
+    Average length: 0.26
+    Empty strings: 34
+    Pattern analysis:
+      other: 1
+
+

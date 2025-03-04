@@ -1,0 +1,66 @@
+Validation Report for Sheet: eq_ids
+DataFrame Shape: 1541 rows, 20 columns
+
+Missing Values Report:
+--------------------------------------------------
+  Lookup (for Uploader): 0.00% missing
+  Trade: 0.00% missing
+  Precon System: 0.00% missing
+  Operations System: 0.00% missing
+  Title: 0.00% missing
+  Drawing Abbreviation: 0.00% missing
+  Precon Tag: 0.00% missing
+  System Type ID: 0.00% missing
+  Asset Category: 0.00% missing
+  Equip Name ID: 0.00% missing
+  Sub System Type: 0.00% missing
+  Sub System ID: 0.00% missing
+  Sub System Class: 0.00% missing
+  Class ID: 0.00% missing
+  Equipment Size: 2.86% missing
+  Unit: 0.00% missing
+  Asset ID: 0.00% missing
+  Notes: 100.00% missing
+  Service ID: 0.00% missing
+  Service Life: 0.00% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 4
+  Duplicate indices: [183, 272, 765, 1305]
+
+Data Types Report:
+--------------------------------------------------
+  System Type ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Equip Name ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Sub System ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Class ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Equipment Size:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Asset ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Service ID:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Service Life:
+    Expected type: int
+    Current type: int64
+    Error count: 0
+

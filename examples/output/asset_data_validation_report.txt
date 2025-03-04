@@ -1,0 +1,231 @@
+Validation Report for Sheet: asset_data
+DataFrame Shape: 774 rows, 54 columns
+
+Missing Values Report:
+--------------------------------------------------
+  Asset Name: 0.00% missing
+  Asset Tag: 0.00% missing
+  Trade: 0.00% missing
+  Equip Served by: 0.00% missing
+  Vendor: 0.00% missing
+  Manufacturer: 0.00% missing
+  Model Number: 0.00% missing
+  Serial Number: 0.00% missing
+  Size: 27.26% missing
+  Unit: 0.00% missing
+  Motor HP: 27.13% missing
+  Estimated Operating Hours: 26.74% missing
+  USAssetID: 0.00% missing
+  System Category: 0.00% missing
+  Sub System Type: 0.00% missing
+  Sub System Classification: 0.00% missing
+  Asset Size (Rounded up): 26.87% missing
+  ID Unit: 0.00% missing
+  Service Life: 26.87% missing
+  Date Installed: 26.74% missing
+  Floor: 27.00% missing
+  Area: 0.00% missing
+  Room Number: 0.00% missing
+  Notes: 80.62% missing
+  Unnamed: 24: 100.00% missing
+  Unnamed: 25: 100.00% missing
+  Unnamed: 26: 0.00% missing
+  Unnamed: 27: 0.00% missing
+  Unnamed: 28: 0.00% missing
+  Unnamed: 29: 0.00% missing
+  Unnamed: 30: 0.00% missing
+  Unnamed: 31: 0.00% missing
+  Unnamed: 32: 100.00% missing
+  Unnamed: 33: 100.00% missing
+  Unnamed: 34: 100.00% missing
+  Unnamed: 35: 26.74% missing
+  Unnamed: 36: 26.74% missing
+  Unnamed: 37: 32.95% missing
+  Unnamed: 38: 32.95% missing
+  Unnamed: 39: 34.24% missing
+  Unnamed: 40: 37.47% missing
+  Unnamed: 41: 37.47% missing
+  Unnamed: 42: 37.60% missing
+  Unnamed: 43: 37.98% missing
+  Unnamed: 44: 57.36% missing
+  Unnamed: 45: 64.99% missing
+  Unnamed: 46: 64.99% missing
+  Unnamed: 47: 64.99% missing
+  Unnamed: 48: 64.99% missing
+  Unnamed: 49: 99.35% missing
+  Unnamed: 50: 99.35% missing
+  Unnamed: 51: 99.61% missing
+  Unnamed: 52: 99.61% missing
+  Unnamed: 53: 99.61% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 205
+  Duplicate indices: [568, 570, 571, 572, 573, 574, 575, 576, 577, 578] ... and 195 more
+
+Value Ranges Report:
+--------------------------------------------------
+  Size:
+    Below minimum: 0
+    Above maximum: 0
+    Total outside range: 0
+  Motor HP:
+    Below minimum: 0
+    Above maximum: 0
+    Total outside range: 0
+  Asset Size (Rounded up):
+    Below minimum: 0
+    Above maximum: 0
+    Total outside range: 0
+
+Data Types Report:
+--------------------------------------------------
+  Asset Name:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Asset Tag:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Manufacturer:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Size:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Motor HP:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Asset Size (Rounded up):
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Date Installed:
+    Expected type: date
+    Current type: datetime64[ns]
+    Error count: 0
+  Unnamed: 24:
+    Expected type: str
+    Current type: float64
+    Error count: 0
+  Unnamed: 25:
+    Expected type: str
+    Current type: float64
+    Error count: 0
+  Unnamed: 26:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 27:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 28:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 29:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 30:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 31:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Unnamed: 32:
+    Expected type: str
+    Current type: float64
+    Error count: 0
+  Unnamed: 33:
+    Expected type: str
+    Current type: float64
+    Error count: 0
+  Unnamed: 34:
+    Expected type: str
+    Current type: float64
+    Error count: 0
+  Unnamed: 35:
+    Expected type: str
+    Current type: float64
+    Error count: 567
+  Unnamed: 36:
+    Expected type: str
+    Current type: float64
+    Error count: 567
+  Unnamed: 37:
+    Expected type: str
+    Current type: float64
+    Error count: 519
+  Unnamed: 38:
+    Expected type: str
+    Current type: float64
+    Error count: 519
+  Unnamed: 39:
+    Expected type: str
+    Current type: float64
+    Error count: 509
+  Unnamed: 40:
+    Expected type: str
+    Current type: float64
+    Error count: 484
+  Unnamed: 41:
+    Expected type: str
+    Current type: float64
+    Error count: 484
+  Unnamed: 42:
+    Expected type: str
+    Current type: float64
+    Error count: 483
+  Unnamed: 43:
+    Expected type: str
+    Current type: float64
+    Error count: 480
+  Unnamed: 44:
+    Expected type: str
+    Current type: float64
+    Error count: 330
+  Unnamed: 45:
+    Expected type: str
+    Current type: float64
+    Error count: 271
+  Unnamed: 46:
+    Expected type: str
+    Current type: float64
+    Error count: 271
+  Unnamed: 47:
+    Expected type: str
+    Current type: float64
+    Error count: 271
+  Unnamed: 48:
+    Expected type: str
+    Current type: float64
+    Error count: 271
+  Unnamed: 49:
+    Expected type: str
+    Current type: float64
+    Error count: 5
+  Unnamed: 50:
+    Expected type: str
+    Current type: float64
+    Error count: 5
+  Unnamed: 51:
+    Expected type: str
+    Current type: float64
+    Error count: 3
+  Unnamed: 52:
+    Expected type: str
+    Current type: float64
+    Error count: 3
+  Unnamed: 53:
+    Expected type: str
+    Current type: float64
+    Error count: 3
+

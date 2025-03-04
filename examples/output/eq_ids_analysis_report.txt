@@ -1,0 +1,112 @@
+Analysis Report for Sheet: eq_ids
+DataFrame Shape: 1541 rows, 20 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: Lookup (for Uploader)
+    Unique value count: 1529
+    Null count: 0 (0.00%)
+
+  Column: Trade
+    Unique value count: 5
+    Null count: 0 (0.00%)
+    Unique values: PL, PF, SM, REF, nan
+    Value counts (top 5):
+      SM: 665
+      PF: 525
+      PL: 283
+      REF: 67
+      nan: 1
+
+  Column: Precon System
+    Unique value count: 21
+    Null count: 0 (0.00%)
+
+  Column: Operations System
+    Unique value count: 18
+    Null count: 0 (0.00%)
+    Unique values: Medical/Lab Gas, Condenser Water, Steam, SM Accessories, Domestic Water, Sanitary Waste, Natural Gas, Chilled, Condenser, Heating Water, Steam, Fuel Oil, Chilled, Condenser, Heating Water ... and 8 more
+    Value counts (top 5):
+      Fans: 281
+      Terminal Equipment: 222
+      Air Handling Units: 168
+      Domestic Water: 153
+      Chilled, Condenser, Heating Water: 121
+
+  Column: Title
+    Unique value count: 169
+    Null count: 0 (0.00%)
+
+
+Column Statistics Analysis:
+--------------------------------------------------
+  Column: Equipment Size
+    Min: 0.2
+    Max: 120000.0
+    Mean: 6906.446693386773
+    Median: 400.0
+    Standard deviation: 17180.839074151834
+    Q1 (25th percentile): 50.0
+    Q3 (75th percentile): 4000.0
+    IQR: 3950.0
+    Outliers count: 253
+
+  Column: Service Life
+    Min: 10
+    Max: 35
+    Mean: 19.18170019467878
+    Median: 20.0
+    Standard deviation: 3.8204103221432804
+    Q1 (25th percentile): 15.0
+    Q3 (75th percentile): 20.0
+    IQR: 5.0
+    Outliers count: 18
+
+
+Text Analysis:
+--------------------------------------------------
+  Column: Lookup (for Uploader)
+    Min length: 14
+    Max length: 76
+    Average length: 35.41
+    Empty strings: 0
+    Pattern analysis:
+      alphanumeric: 97
+      other: 1444
+
+  Column: Trade
+    Min length: 0
+    Max length: 3
+    Average length: 2.04
+    Empty strings: 1
+    Pattern analysis:
+      alpha: 1540
+
+  Column: Precon System
+    Min length: 8
+    Max length: 58
+    Average length: 21.56
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 44
+      other: 1497
+
+  Column: Operations System
+    Min length: 4
+    Max length: 40
+    Average length: 13.74
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 512
+      other: 1029
+
+  Column: Title
+    Min length: 4
+    Max length: 38
+    Average length: 15.95
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 147
+      other: 1394
+
+

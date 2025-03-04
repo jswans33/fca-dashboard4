@@ -1,0 +1,14 @@
+Validation Report for Sheet: cobie
+DataFrame Shape: 202 rows, 4 columns
+
+Missing Values Report:
+--------------------------------------------------
+  Unnamed: 0: 100.00% missing
+  D20: 0.00% missing
+  D20 - PLUMBING: 0.00% missing
+  D20 - PLUMBING.1: 0.00% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 0
+

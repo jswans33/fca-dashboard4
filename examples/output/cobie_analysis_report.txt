@@ -1,0 +1,55 @@
+Analysis Report for Sheet: cobie
+DataFrame Shape: 202 rows, 4 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: Unnamed: 0
+    Unique value count: 0
+    Null count: 202 (100.00%)
+    Unique values: 
+    Value counts (top 5):
+
+  Column: D20
+    Unique value count: 201
+    Null count: 0 (0.00%)
+
+  Column: D20 - PLUMBING
+    Unique value count: 156
+    Null count: 0 (0.00%)
+
+  Column: D20 - PLUMBING.1
+    Unique value count: 202
+    Null count: 0 (0.00%)
+
+
+Column Statistics Analysis:
+--------------------------------------------------
+
+Text Analysis:
+--------------------------------------------------
+  Column: D20
+    Min length: 3
+    Max length: 8
+    Average length: 7.46
+    Empty strings: 0
+    Pattern analysis:
+      alphanumeric: 202
+
+  Column: D20 - PLUMBING
+    Min length: 0
+    Max length: 40
+    Average length: 18.38
+    Empty strings: 44
+    Pattern analysis:
+      alpha: 12
+      other: 146
+
+  Column: D20 - PLUMBING.1
+    Min length: 10
+    Max length: 50
+    Average length: 32.97
+    Empty strings: 0
+    Pattern analysis:
+      other: 202
+
+
