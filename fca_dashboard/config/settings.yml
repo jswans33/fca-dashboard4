@@ -26,6 +26,14 @@ medtronics:
   columns_to_extract: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
   drop_na_columns: ["asset name"]  # Drop rows where these columns have NaN values
 
+# Wichita Animal Shelter pipeline settings
+wichita:
+  input_file: "uploads/Asset_List Wichita Animal Shelter (1).csv"
+  output_dir: "outputs/pipeline/wichita"
+  db_name: "wichita_assets.db"
+  columns_to_extract: []  # Empty list means use all columns
+  drop_na_columns: ["Asset Name", "Asset Category Name"]  # Drop rows where these columns have NaN values
+
 # Excel utilities settings
 excel_utils:
   extraction:

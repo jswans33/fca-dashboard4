@@ -59,18 +59,34 @@ def get_sqlite_table_schema(
         
     Returns:
         A string containing the schema of the table.
+        
+    Raises:
+        Exception: If the table does not exist.
     """
     logger = get_logger("sqlite_utils")
     
     # Create a SQLAlchemy engine
     engine = create_engine(connection_string)
     
-    # Get the schema of the table
+    # Check if the table exists
     with engine.connect() as conn:
+        result = conn.execute(text(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"))
+        if not result.fetchone():
+            error_msg = f"Table '{table_name}' does not exist in the database"
+            logger.error(error_msg)
+            raise Exception(error_msg)
+        
+        # Get the schema of the table
         result = conn.execute(text(f"PRAGMA table_info({table_name})"))
         columns = []
         for row in result:
             columns.append(f"{row[1]} {row[2]}")
+        
+        if not columns:
+            error_msg = f"Table '{table_name}' exists but has no columns"
+            logger.error(error_msg)
+            raise Exception(error_msg)
+            
         schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
     
     logger.info(f"Successfully retrieved schema for SQLite table {table_name}")

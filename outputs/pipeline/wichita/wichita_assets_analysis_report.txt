@@ -1,0 +1,189 @@
+Analysis Report for Wichita Animal Shelter Asset List
+DataFrame Shape: 46 rows, 36 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: Building Name
+    Unique value count: 1
+    Null count: 0 (0.00%)
+    Unique values: Wichita Animal Shelter
+    Value counts (top 5):
+      Wichita Animal Shelter: 46
+
+  Column: Asset Category Name
+    Unique value count: 4
+    Null count: 0 (0.00%)
+    Unique values: Terminal & Package Units, HVAC Distribution Systems, Plumbing, Cooling Systems
+    Value counts (top 5):
+      HVAC Distribution Systems: 25
+      Terminal & Package Units: 17
+      Plumbing: 3
+      Cooling Systems: 1
+
+  Column: Type
+    Unique value count: 9
+    Null count: 0 (0.00%)
+    Unique values: Unit Heater Infrared, Rooftop A/C Gas Heat, Fan System Roof Exhaust, Energy Recovery Unit, Water Heater Gas, Split Ductless System Indoor Unit, Split Ductless System Outdoor Unit, Humidifier, Unit Heater Electric
+    Value counts (top 5):
+      Rooftop A/C Gas Heat: 13
+      Fan System Roof Exhaust: 10
+      Humidifier: 7
+      Energy Recovery Unit: 6
+      Unit Heater Infrared: 4
+
+  Column: Floor
+    Unique value count: 2
+    Null count: 0 (0.00%)
+    Unique values: Main Floor, Roof Plan
+    Value counts (top 5):
+      Roof Plan: 29
+      Main Floor: 17
+
+  Column: Room Number
+    Unique value count: 20
+    Null count: 10 (21.74%)
+    Unique values: Sally Port B21, Lobby A01, Admin Staff A20, CMH C02/C03, CMH C04/C05, CMH C06/C07, CMH C08/C09, CMH C10/C11, FMH C23/C35, CMH C22 ... and 10 more
+    Value counts (top 5):
+      Sally Port B21: 6
+      Mechanical B14: 3
+      CMH C04/C05: 2
+      CMH C02/C03: 2
+      Control Room A06: 2
+
+  Column: Manufacturer
+    Unique value count: 7
+    Null count: 5 (10.87%)
+    Unique values: Modine, Trane, Greenheck, RenewAire, Renew Aire, Carel, Raywall
+    Value counts (top 5):
+      Trane: 13
+      Greenheck: 10
+      Carel: 7
+      Modine: 4
+      RenewAire: 4
+
+
+Column Statistics Analysis:
+--------------------------------------------------
+  Column: Cost
+    Min: 2000.0
+    Max: 20000.0
+    Mean: 9723.684210526315
+    Median: 9000.0
+    Standard deviation: 6940.575340686387
+    Q1 (25th percentile): 2625.0
+    Q3 (75th percentile): 18000.0
+    IQR: 15375.0
+    Outliers count: 0
+
+  Column: Service Life
+    Min: 13
+    Max: 20
+    Mean: 16.043478260869566
+    Median: 15.0
+    Standard deviation: 2.128708755603635
+    Q1 (25th percentile): 15.0
+    Q3 (75th percentile): 15.0
+    IQR: 0.0
+    Outliers count: 11
+
+  Column: Supply Fan Motor Size
+    Min: 0.0
+    Max: 7.5
+    Mean: 1.6247999999999998
+    Median: 1.0
+    Standard deviation: 1.884743837589961
+    Q1 (25th percentile): 0.0
+    Q3 (75th percentile): 3.0
+    IQR: 3.0
+    Outliers count: 0
+
+  Column: Return Fan Motor Size
+    Min: 0.1
+    Max: 0.75
+    Mean: 0.5503125
+    Median: 0.625
+    Standard deviation: 0.23826084270535658
+    Q1 (25th percentile): 0.4575
+    Q3 (75th percentile): 0.75
+    IQR: 0.2925
+    Outliers count: 0
+
+  Column: Belt Quantity
+    Min: 0
+    Max: 1
+    Mean: 0.32608695652173914
+    Median: 0.0
+    Standard deviation: 0.47395957755848783
+    Q1 (25th percentile): 0.0
+    Q3 (75th percentile): 1.0
+    IQR: 1.0
+    Outliers count: 0
+
+  Column: Filter Quantity
+    Min: 0
+    Max: 2
+    Mean: 0.5434782608695652
+    Median: 0.0
+    Standard deviation: 0.7213112054255525
+    Q1 (25th percentile): 0.0
+    Q3 (75th percentile): 1.0
+    IQR: 1.0
+    Outliers count: 0
+
+
+Text Analysis:
+--------------------------------------------------
+  Column: Asset Name
+    Min length: 14
+    Max length: 32
+    Average length: 19.04
+    Empty strings: 0
+    Pattern analysis:
+      other: 46
+
+  Column: Asset Category Name
+    Min length: 8
+    Max length: 25
+    Average length: 23.30
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 3
+      other: 43
+
+  Column: Type
+    Min length: 10
+    Max length: 34
+    Average length: 19.46
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 7
+      other: 39
+
+  Column: Manufacturer
+    Min length: 0
+    Max length: 10
+    Average length: 6.02
+    Empty strings: 5
+    Pattern analysis:
+      alpha: 39
+      other: 2
+
+  Column: Model
+    Min length: 0
+    Max length: 28
+    Average length: 13.63
+    Empty strings: 5
+    Pattern analysis:
+      alpha: 1
+      alphanumeric: 7
+      other: 33
+
+  Column: Description
+    Min length: 0
+    Max length: 19
+    Average length: 10.85
+    Empty strings: 2
+    Pattern analysis:
+      other: 44
+
+

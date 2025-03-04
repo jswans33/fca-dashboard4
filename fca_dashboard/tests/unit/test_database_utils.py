@@ -51,21 +51,29 @@ def test_save_dataframe_to_database_sqlite():
         
         # Verify the data was saved correctly
         engine = create_engine(connection_string)
+        rows = []
         with engine.connect() as conn:
             result = conn.execute(text("SELECT * FROM test_table"))
             rows = result.fetchall()
+        
+        # Dispose of the engine to close all connections
+        engine.dispose()
             
-            # Check the number of rows
-            assert len(rows) == 3
+        # Check the number of rows
+        assert len(rows) == 3
             
-            # Check the values in the first row
-            assert rows[0][0] == 1
-            assert rows[0][1] == "Alice"
-            assert rows[0][2] == 25
+        # Check the values in the first row
+        assert rows[0][0] == 1
+        assert rows[0][1] == "Alice"
+        assert rows[0][2] == 25
     finally:
         # Clean up the temporary database file
         if os.path.exists(tmp_path):
-            os.unlink(tmp_path)
+            try:
+                os.unlink(tmp_path)
+            except PermissionError:
+                # On Windows, files might still be in use by another process
+                print(f"Warning: Could not delete file {tmp_path} - it may be in use by another process")
 
 
 def test_get_table_schema_sqlite():
@@ -92,6 +100,9 @@ def test_get_table_schema_sqlite():
         # Get the schema of the table
         schema = get_table_schema(connection_string, "test_table")
         
+        # Dispose of the engine to close all connections
+        engine.dispose()
+        
         # Check that the schema contains the column names
         assert "ID" in schema
         assert "Name" in schema
@@ -102,7 +113,11 @@ def test_get_table_schema_sqlite():
     finally:
         # Clean up the temporary database file
         if os.path.exists(tmp_path):
-            os.unlink(tmp_path)
+            try:
+                os.unlink(tmp_path)
+            except PermissionError:
+                # On Windows, files might still be in use by another process
+                print(f"Warning: Could not delete file {tmp_path} - it may be in use by another process")
 
 
 def test_save_dataframe_to_sqlite():
@@ -132,21 +147,29 @@ def test_save_dataframe_to_sqlite():
         
         # Verify the data was saved correctly
         engine = create_engine(connection_string)
+        rows = []
         with engine.connect() as conn:
             result = conn.execute(text("SELECT * FROM test_table"))
             rows = result.fetchall()
+        
+        # Dispose of the engine to close all connections
+        engine.dispose()
             
-            # Check the number of rows
-            assert len(rows) == 3
+        # Check the number of rows
+        assert len(rows) == 3
             
-            # Check the values in the first row
-            assert rows[0][0] == 1
-            assert rows[0][1] == "Alice"
-            assert rows[0][2] == 25
+        # Check the values in the first row
+        assert rows[0][0] == 1
+        assert rows[0][1] == "Alice"
+        assert rows[0][2] == 25
     finally:
         # Clean up the temporary database file
         if os.path.exists(tmp_path):
-            os.unlink(tmp_path)
+            try:
+                os.unlink(tmp_path)
+            except PermissionError:
+                # On Windows, files might still be in use by another process
+                print(f"Warning: Could not delete file {tmp_path} - it may be in use by another process")
 
 
 def test_get_sqlite_table_schema():
@@ -173,6 +196,9 @@ def test_get_sqlite_table_schema():
         # Get the schema of the table
         schema = get_sqlite_table_schema(connection_string, "test_table")
         
+        # Dispose of the engine to close all connections
+        engine.dispose()
+        
         # Check that the schema contains the column names
         assert "ID" in schema
         assert "Name" in schema
@@ -183,7 +209,11 @@ def test_get_sqlite_table_schema():
     finally:
         # Clean up the temporary database file
         if os.path.exists(tmp_path):
-            os.unlink(tmp_path)
+            try:
+                os.unlink(tmp_path)
+            except PermissionError:
+                # On Windows, files might still be in use by another process
+                print(f"Warning: Could not delete file {tmp_path} - it may be in use by another process")
 
 
 def test_database_error():
@@ -205,18 +235,26 @@ def test_database_error():
         )
     
     # Test with an invalid table name
-    with pytest.raises(Exception):
-        # Create a temporary SQLite database
-        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as tmp:
-            tmp_path = tmp.name
+    # Create a temporary SQLite database
+    with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as tmp:
+        tmp_path = tmp.name
+    
+    try:
+        # Create a SQLite connection string
+        connection_string = f"sqlite:///{tmp_path}"
         
-        try:
-            # Create a SQLite connection string
-            connection_string = f"sqlite:///{tmp_path}"
-            
-            # Try to get the schema of a non-existent table
+        # Create an empty database
+        engine = create_engine(connection_string)
+        engine.dispose()
+        
+        # Try to get the schema of a non-existent table
+        with pytest.raises(Exception):
             get_table_schema(connection_string, "non_existent_table")
-        finally:
-            # Clean up the temporary database file
-            if os.path.exists(tmp_path):
+    finally:
+        # Clean up the temporary database file
+        if os.path.exists(tmp_path):
+            try:
                 os.unlink(tmp_path)
+            except PermissionError:
+                # On Windows, files might still be in use by another process
+                print(f"Warning: Could not delete file {tmp_path} - it may be in use by another process")
