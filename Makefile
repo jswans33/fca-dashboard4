@@ -19,24 +19,24 @@ format:
 	$(MAKE) format-md
 
 test:
-	pytest fca_dashboard/tests/
+	python -m pytest fca_dashboard/tests/
 
 coverage:
-	pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+	python -m pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
 	@echo "HTML coverage report generated in htmlcov/"
 	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
 
 test-unit:
-	pytest fca_dashboard/tests/unit/
+	python -m pytest fca_dashboard/tests/unit/
 
 test-integration:
-	pytest fca_dashboard/tests/integration/
+	python -m pytest fca_dashboard/tests/integration/
 
 install:
 	python -m pip install --upgrade pip
-	pip install -r requirements.txt
-	pip install -e .
-
+	python -m pip install -r requirements.txt
+	python -m pip install -e .
+	
 git-commit:
 	git add .
 	git commit -m "Update"
@@ -44,7 +44,7 @@ git-commit:
 
 # Run the ETL pipeline with default settings
 run:
-	python fca_dashboard/main.py --config fca_dashboard/config/settings.yml
+	python -m fca_dashboard.main --config fca_dashboard/config/settings.yml
 
 # Clean up generated files
 clean:
