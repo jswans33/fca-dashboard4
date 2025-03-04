@@ -18,7 +18,7 @@ from sqlalchemy import create_engine, text
 
 from fca_dashboard.config.settings import Settings
 from fca_dashboard.mappers.mapper_factory import MapperFactory
-from fca_dashboard.mappers.medtronics_mapper import MedtronicsMapper
+from fca_dashboard.mappers.medtronics_mapper import MappingError, MedtronicsMapper
 from fca_dashboard.utils.database.sqlite_staging_manager import SQLiteStagingManager
 from fca_dashboard.utils.logging_config import get_logger
 
@@ -304,8 +304,22 @@ class TestMapperStagingIntegration:
             # Missing required columns
         })
         
-        # Step 4: Map the DataFrame
-        mapped_df = mapper.map_dataframe(problematic_data)
+        # Step 4: Map the DataFrame - this should raise a MappingError
+        with pytest.raises(MappingError) as excinfo:
+            mapper.map_dataframe(problematic_data)
+        
+        # Verify the error message
+        assert "Error mapping Medtronics data: Source DataFrame is missing required columns" in str(excinfo.value)
+        
+        # Create a minimal valid DataFrame for testing the rest of the workflow
+        valid_data = pd.DataFrame({
+            'asset_name': ['Air Handler', 'Chiller', 'Boiler'],
+            'asset_tag': ['AHU-001', 'CH-001', 'B-001'],
+            'serial_number': ['SN123', 'SN456', 'SN789']  # Add required column
+        })
+        
+        # Map the valid DataFrame
+        mapped_df = mapper.map_dataframe(valid_data)
         
         # Step 5: Save the mapped DataFrame to staging
         batch_id = f'TEST-BATCH-{datetime.now().strftime("%Y%m%d%H%M%S")}'

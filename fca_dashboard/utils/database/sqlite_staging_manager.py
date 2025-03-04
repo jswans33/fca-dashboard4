@@ -201,36 +201,57 @@ class SQLiteStagingManager:
         
         Raises:
             DatabaseError: If an error occurs while saving to the staging table.
+            ValueError: If the DataFrame is None or empty.
         """
+        if df is None:
+            error_msg = "Cannot save None DataFrame to staging table"
+            self.logger.error(error_msg)
+            raise ValueError(error_msg)
+            
+        if df.empty:
+            self.logger.warning("DataFrame is empty, no rows will be saved to staging table")
+            return
+            
         try:
             # Create a database engine
             engine = self.connection_factory(connection_string)
             
-            # Use the mapper factory to get the appropriate mapper
-            try:
-                from fca_dashboard.mappers.mapper_factory import mapper_factory
-                mapper = mapper_factory.create_mapper(source_system, self.logger)
-                
-                # Map the DataFrame using the mapper
-                self.logger.info(f"Mapping DataFrame using {source_system} mapper")
-                staging_df = mapper.map_dataframe(df)
-                self.logger.info(f"Successfully mapped DataFrame with columns: {list(staging_df.columns)}")
-            except ImportError:
-                # If mapper module is not available, use the old approach
-                self.logger.warning("Mapper module not available, using direct column mapping")
+            # Check if the DataFrame is already mapped (has been processed by a mapper)
+            if isinstance(df, pd.DataFrame) and any(col in df.columns for col in ['equipment_type', 'equipment_tag', 'category_name']):
+                self.logger.info("DataFrame appears to be already mapped, using as-is")
                 staging_df = df.copy()
-                
-                # Fix column names by replacing spaces with underscores
-                staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
-                self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
-            except Exception as e:
-                self.logger.error(f"Error using mapper: {str(e)}")
-                self.logger.warning("Falling back to direct column mapping")
-                staging_df = df.copy()
-                
-                # Fix column names by replacing spaces with underscores
-                staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
-                self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
+            else:
+                # Use the mapper factory to get the appropriate mapper
+                try:
+                    from fca_dashboard.mappers.mapper_factory import mapper_factory
+                    mapper = mapper_factory.create_mapper(source_system, self.logger)
+                    
+                    # Map the DataFrame using the mapper
+                    self.logger.info(f"Mapping DataFrame using {source_system} mapper")
+                    staging_df = mapper.map_dataframe(df)
+                    self.logger.info(f"Successfully mapped DataFrame with columns: {list(staging_df.columns)}")
+                except ImportError as e:
+                    # If mapper module is not available, use the old approach
+                    self.logger.warning(f"Mapper module not available: {str(e)}, using direct column mapping")
+                    staging_df = df.copy()
+                    
+                    # Fix column names by replacing spaces with underscores
+                    staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
+                    self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
+                except Exception as e:
+                    self.logger.error(f"Error using mapper: {str(e)}")
+                    self.logger.warning("Falling back to direct column mapping")
+                    staging_df = df.copy()
+                    
+                    # Fix column names by replacing spaces with underscores
+                    staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
+                    self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
+            
+            # Validate that the DataFrame has at least some required columns
+            required_columns = ['equipment_tag', 'equipment_type', 'serial_number']
+            missing_required = [col for col in required_columns if col not in staging_df.columns]
+            if missing_required:
+                self.logger.warning(f"DataFrame is missing some recommended columns: {missing_required}")
             
             # Add metadata columns
             staging_df['source_system'] = source_system
@@ -252,9 +273,32 @@ class SQLiteStagingManager:
             
             self.logger.info(f"Valid columns in equipment_staging table: {valid_columns}")
             
+            # Log all columns in the mapped DataFrame
+            self.logger.info(f"Mapped DataFrame columns: {list(staging_df.columns)}")
+            
+            # Check for columns that will be filtered out
+            filtered_out_columns = [col for col in staging_df.columns if col not in valid_columns]
+            if filtered_out_columns:
+                self.logger.warning(f"The following columns will be filtered out because they don't exist in the staging table: {filtered_out_columns}")
+                
+                # Check if any critical columns are being filtered out
+                critical_columns = ['equipment_tag', 'equipment_type', 'serial_number']
+                critical_filtered = [col for col in critical_columns if col in filtered_out_columns]
+                if critical_filtered:
+                    error_msg = f"Critical columns are being filtered out: {critical_filtered}. This may cause issues with downstream processing."
+                    self.logger.error(error_msg)
+            
             # Filter out columns that don't exist in the table
             valid_staging_df = staging_df[[col for col in staging_df.columns if col in valid_columns]]
             
+            # Log the columns that will be saved to the staging table
+            self.logger.info(f"Columns that will be saved to staging table: {list(valid_staging_df.columns)}")
+            
+            # Verify we have at least some data to save
+            if valid_staging_df.empty:
+                self.logger.warning("After filtering, no valid columns remain. No data will be saved.")
+                return
+                
             # Save the DataFrame to the staging table
             valid_staging_df.to_sql(
                 name='equipment_staging',

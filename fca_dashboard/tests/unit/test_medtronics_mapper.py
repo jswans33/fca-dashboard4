@@ -122,7 +122,8 @@ class TestMedtronicsMapper:
         df = pd.DataFrame({
             'asset name': ['Air Handler', 'Chiller'],
             'asset tag': ['AHU-001', 'CH-001'],
-            'model number': ['Model A', 'Model B']
+            'model number': ['Model A', 'Model B'],
+            'serial number': ['SN123', 'SN456']  # Add required serial_number column
         })
         
         # Create a mapper
@@ -135,11 +136,13 @@ class TestMedtronicsMapper:
         assert "equipment_type" in mapped_df.columns
         assert "equipment_tag" in mapped_df.columns
         assert "model" in mapped_df.columns
+        assert "serial_number" in mapped_df.columns
         
         # Verify the values were mapped correctly
         assert mapped_df["equipment_type"].tolist() == ['Air Handler', 'Chiller']
         assert mapped_df["equipment_tag"].tolist() == ['AHU-001', 'CH-001']
         assert mapped_df["model"].tolist() == ['Model A', 'Model B']
+        assert mapped_df["serial_number"].tolist() == ['SN123', 'SN456']
     
     def test_map_dataframe_error(self, mock_logger):
         """Test error handling when mapping a DataFrame."""
