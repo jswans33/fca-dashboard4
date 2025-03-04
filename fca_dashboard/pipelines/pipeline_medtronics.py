@@ -15,14 +15,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import pandas as pd
 
 from fca_dashboard.config.settings import settings
+from fca_dashboard.utils.database import (
+    get_table_schema,
+    save_dataframe_to_database,
+)
 from fca_dashboard.utils.excel import (
     analyze_column_statistics,
     analyze_excel_structure,
     analyze_text_columns,
     analyze_unique_values,
     extract_excel_with_config,
-    get_database_schema,
-    save_excel_to_database,
     validate_dataframe,
 )
 from fca_dashboard.utils.logging_config import get_logger
@@ -364,7 +366,7 @@ class MedtronicsPipeline:
         
         # Export the data to the database
         table_name = self.sheet_name.lower().replace(" ", "_")
-        save_excel_to_database(
+        save_dataframe_to_database(
             df=df,
             table_name=table_name,
             connection_string=connection_string,
@@ -375,7 +377,7 @@ class MedtronicsPipeline:
         
         # Get the schema of the table
         try:
-            schema = get_database_schema(connection_string, table_name)
+            schema = get_table_schema(connection_string, table_name)
             self.logger.info(f"Database schema:\n{schema}")
             
             # Save the schema to a file

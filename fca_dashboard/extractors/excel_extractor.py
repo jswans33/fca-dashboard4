@@ -15,6 +15,9 @@ from pandas.errors import EmptyDataError, ParserError
 
 from fca_dashboard.config.settings import settings
 from fca_dashboard.extractors.base_extractor import DataExtractor, ExtractionError, extractor_factory
+
+# Alias for backward compatibility
+ExcelExtractionError = ExtractionError
 from fca_dashboard.utils.excel import get_excel_file_type, is_excel_file
 from fca_dashboard.utils.path_util import get_root_dir, resolve_path
 from fca_dashboard.utils.upload_util import upload_file

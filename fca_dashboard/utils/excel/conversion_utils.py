@@ -1,8 +1,8 @@
 """
 Conversion utility module for Excel operations.
 
-This module provides utilities for converting Excel files to other formats,
-merging Excel files, and saving Excel data to databases.
+This module provides utilities for converting Excel files to other formats
+and merging Excel files.
 """
 
 import os
@@ -210,6 +210,8 @@ def save_excel_to_database(
     """
     Save a DataFrame to a database table.
     
+    This function is a bridge to the database utilities module.
+    
     Args:
         df: The DataFrame to save.
         table_name: The name of the table to save to.
@@ -225,22 +227,16 @@ def save_excel_to_database(
     logger = get_logger("excel_utils")
     
     try:
-        import sqlalchemy
-        
-        # Create the engine
-        engine = sqlalchemy.create_engine(connection_string)
-        
-        # Save the DataFrame to the database
-        df.to_sql(
-            name=table_name,
-            con=engine,
+        from fca_dashboard.utils.database.base import save_dataframe_to_database
+        save_dataframe_to_database(
+            df=df,
+            table_name=table_name,
+            connection_string=connection_string,
             schema=schema,
             if_exists=if_exists,
             index=index,
             **kwargs
         )
-        
-        logger.info(f"Successfully saved {len(df)} rows to table {table_name}")
     except Exception as e:
         error_msg = f"Error saving DataFrame to database table {table_name}: {str(e)}"
         logger.error(error_msg)
@@ -254,8 +250,10 @@ def get_database_schema(
     """
     Get the schema of a database table.
     
+    This function is a bridge to the database utilities module.
+    
     Args:
-        connection_string: The SQLAlchemy connection string.
+        connection_string: The database connection string.
         table_name: The name of the table to get the schema for.
         
     Returns:
@@ -267,42 +265,8 @@ def get_database_schema(
     logger = get_logger("excel_utils")
     
     try:
-        import sqlalchemy
-        
-        # Create the engine
-        engine = sqlalchemy.create_engine(connection_string)
-        
-        # Get the schema of the table
-        with engine.connect() as conn:
-            # For SQLite
-            if connection_string.startswith('sqlite'):
-                from sqlalchemy import text
-                result = conn.execute(text(f"PRAGMA table_info({table_name})"))
-                columns = []
-                for row in result:
-                    columns.append(f"{row[1]} {row[2]}")
-                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
-            # For PostgreSQL
-            elif connection_string.startswith('postgresql'):
-                from sqlalchemy import text
-                result = conn.execute(text(f"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{table_name}'"))
-                columns = []
-                for row in result:
-                    columns.append(f"{row[0]} {row[1]}")
-                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
-            # For MySQL
-            elif connection_string.startswith('mysql'):
-                from sqlalchemy import text
-                result = conn.execute(text(f"DESCRIBE {table_name}"))
-                columns = []
-                for row in result:
-                    columns.append(f"{row[0]} {row[1]}")
-                schema = f"CREATE TABLE {table_name} (\n    " + ",\n    ".join(columns) + "\n);"
-            else:
-                schema = f"Schema for {table_name} not available for this database type"
-        
-        logger.info(f"Successfully retrieved schema for table {table_name}")
-        return schema
+        from fca_dashboard.utils.database.base import get_table_schema
+        return get_table_schema(connection_string, table_name)
     except Exception as e:
         error_msg = f"Error getting schema for table {table_name}: {str(e)}"
         logger.error(error_msg)
