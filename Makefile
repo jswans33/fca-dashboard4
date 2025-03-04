@@ -32,6 +32,10 @@ test-unit:
 test-integration:
 	python -m pytest fca_dashboard/tests/integration/
 
+# Run SQLite staging tests specifically
+test-sqlite-staging:
+	python -m pytest fca_dashboard/tests/unit/test_sqlite_staging_manager.py fca_dashboard/tests/integration/test_sqlite_staging_integration.py -v
+
 install:
 	python -m pip install --upgrade pip
 	python -m pip install -r requirements.txt
@@ -45,6 +49,10 @@ commit:
 # Run the ETL pipeline with default settings
 run:
 	python -m fca_dashboard.main --config fca_dashboard/config/settings.yml
+
+# Run the SQLite staging example
+run-sqlite-staging:
+	python -m fca_dashboard.examples.sqlite_staging_example
 
 # Clean up generated files
 clean:
