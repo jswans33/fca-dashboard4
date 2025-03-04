@@ -121,3 +121,38 @@ tables:
       tag: "Tag"
       name: "Name"
       description: "Description"
+
+# Mapper settings
+mappers:
+  registry:
+    # Additional mappers can be registered here
+    # Format: "SourceSystem": "module.path.ClassName"
+  medtronics:
+    column_mapping:
+      asset_name: "equipment_type"
+      asset_tag: "equipment_tag"
+      model_number: "model"
+      serial_number: "serial_number"
+      system_category: "category_name"
+      sub_system_type: "mcaa_subsystem_type"
+      sub_system_classification: "mcaa_subsystem_classification"
+      date_installed: "install_date"
+      room_number: "room"
+      size: "capacity"
+      motor_hp: "attributes"
+      estimated_operating_hours: "attributes"
+      service_life: "estimated_service_life_years"
+      floor: "floor"
+      area: "other_location_info"
+      notes: "attributes"
+  wichita:
+    column_mapping:
+      Asset_Name: "equipment_type"
+      Asset_Tag: "equipment_tag"
+      Manufacturer: "manufacturer"
+      Model: "model"
+      Serial_Number: "serial_number"
+      Asset_Category_Name: "category_name"
+      Asset_Type: "equipment_type"
+      Location: "other_location_info"
+      Install_Date: "install_date"

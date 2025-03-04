@@ -65,8 +65,9 @@ def query_pending_items(staging_results):
     # Create a SQLiteStagingManager
     staging_manager = SQLiteStagingManager()
     
-    # Get the connection string
-    connection_string = staging_results["connection_string"]
+    # Create the connection string
+    db_path = staging_results["db_path"]
+    connection_string = f"sqlite:///{db_path}"
     
     # Get pending items
     pending_items = staging_manager.get_pending_items(connection_string)
@@ -87,8 +88,9 @@ def process_pending_items(staging_results, pending_items):
     # Create a SQLiteStagingManager
     staging_manager = SQLiteStagingManager()
     
-    # Get the connection string
-    connection_string = staging_results["connection_string"]
+    # Create the connection string
+    db_path = staging_results["db_path"]
+    connection_string = f"sqlite:///{db_path}"
     
     # Process each pending item
     for index, item in pending_items.iterrows():
@@ -143,8 +145,9 @@ def clear_old_processed_items(staging_results):
     # Create a SQLiteStagingManager
     staging_manager = SQLiteStagingManager()
     
-    # Get the connection string
-    connection_string = staging_results["connection_string"]
+    # Create the connection string
+    db_path = staging_results["db_path"]
+    connection_string = f"sqlite:///{db_path}"
     
     # Get the retention days from settings
     retention_days = settings.get("databases.staging.processed_retention_days", 30)

@@ -206,8 +206,31 @@ class SQLiteStagingManager:
             # Create a database engine
             engine = self.connection_factory(connection_string)
             
-            # Make a copy of the DataFrame to avoid modifying the original
-            staging_df = df.copy()
+            # Use the mapper factory to get the appropriate mapper
+            try:
+                from fca_dashboard.mappers.mapper_factory import mapper_factory
+                mapper = mapper_factory.create_mapper(source_system, self.logger)
+                
+                # Map the DataFrame using the mapper
+                self.logger.info(f"Mapping DataFrame using {source_system} mapper")
+                staging_df = mapper.map_dataframe(df)
+                self.logger.info(f"Successfully mapped DataFrame with columns: {list(staging_df.columns)}")
+            except ImportError:
+                # If mapper module is not available, use the old approach
+                self.logger.warning("Mapper module not available, using direct column mapping")
+                staging_df = df.copy()
+                
+                # Fix column names by replacing spaces with underscores
+                staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
+                self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
+            except Exception as e:
+                self.logger.error(f"Error using mapper: {str(e)}")
+                self.logger.warning("Falling back to direct column mapping")
+                staging_df = df.copy()
+                
+                # Fix column names by replacing spaces with underscores
+                staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
+                self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
             
             # Add metadata columns
             staging_df['source_system'] = source_system
@@ -220,14 +243,20 @@ class SQLiteStagingManager:
             for col in ['attributes', 'maintenance_data', 'project_data',
                        'document_data', 'qc_data', 'raw_source_data']:
                 if col in staging_df.columns and staging_df[col].notna().any():
-                    staging_df[col] = staging_df[col].apply(lambda x: json.dumps(x) if x is not None else None)
+                    staging_df[col] = staging_df[col].apply(lambda x: json.dumps(x) if isinstance(x, (dict, list)) else x)
             
-            # Fix column names by replacing spaces with underscores
-            staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
-            self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
+            # Get a list of valid columns in the equipment_staging table
+            with engine.connect() as conn:
+                result = conn.execute(text("PRAGMA table_info(equipment_staging)"))
+                valid_columns = [row[1] for row in result.fetchall()]
+            
+            self.logger.info(f"Valid columns in equipment_staging table: {valid_columns}")
+            
+            # Filter out columns that don't exist in the table
+            valid_staging_df = staging_df[[col for col in staging_df.columns if col in valid_columns]]
             
             # Save the DataFrame to the staging table
-            staging_df.to_sql(
+            valid_staging_df.to_sql(
                 name='equipment_staging',
                 con=engine,
                 if_exists='append',
@@ -235,7 +264,7 @@ class SQLiteStagingManager:
                 **kwargs
             )
             
-            self.logger.info(f"Successfully saved {len(staging_df)} rows to SQLite staging table")
+            self.logger.info(f"Successfully saved {len(valid_staging_df)} rows to SQLite staging table")
         except Exception as e:
             error_msg = f"Error saving DataFrame to SQLite staging table: {str(e)}"
             self.logger.error(error_msg)
