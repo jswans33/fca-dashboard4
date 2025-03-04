@@ -48,12 +48,21 @@ class SQLiteStagingManager:
         if schema_path:
             self.schema_path = schema_path
         else:
-            # Get the default schema path
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            self.schema_path = os.path.join(
-                current_dir, 
-                '..', '..', 'db', 'staging', 'schema', 'staging_schema_sqlite.sql'
-            )
+            # Try to get the schema path from settings
+            from fca_dashboard.config.settings import settings
+            settings_schema_path = settings.get("databases.staging.schema_path")
+            
+            if settings_schema_path:
+                # Resolve the path relative to the project root
+                from fca_dashboard.utils.path_util import resolve_path
+                self.schema_path = resolve_path(settings_schema_path)
+            else:
+                # Use the default schema path
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                self.schema_path = os.path.join(
+                    current_dir,
+                    '..', '..', 'db', 'staging', 'schema', 'staging_schema_sqlite.sql'
+                )
     
     def _default_connection_factory(self, connection_string: str):
         """
@@ -129,7 +138,7 @@ class SQLiteStagingManager:
             self.logger.error(error_msg)
             raise DatabaseError(error_msg) from e
     
-    def clear_processed_items(self, connection_string: str, days_to_keep: int = 7) -> int:
+    def clear_processed_items(self, connection_string: str, days_to_keep: int = None) -> int:
         """
         Clear processed items from the staging table that are older than the specified number of days.
         
@@ -144,6 +153,11 @@ class SQLiteStagingManager:
             DatabaseError: If an error occurs while clearing processed items.
         """
         try:
+            # If days_to_keep is not provided, try to get it from settings
+            if days_to_keep is None:
+                from fca_dashboard.config.settings import settings
+                days_to_keep = settings.get("databases.staging.processed_retention_days", 7)
+            
             # Create a database engine
             engine = self.connection_factory(connection_string)
             
@@ -203,10 +217,14 @@ class SQLiteStagingManager:
             staging_df['is_processed'] = 0
             
             # Convert any JSON columns to strings
-            for col in ['attributes', 'maintenance_data', 'project_data', 
+            for col in ['attributes', 'maintenance_data', 'project_data',
                        'document_data', 'qc_data', 'raw_source_data']:
                 if col in staging_df.columns and staging_df[col].notna().any():
                     staging_df[col] = staging_df[col].apply(lambda x: json.dumps(x) if x is not None else None)
+            
+            # Fix column names by replacing spaces with underscores
+            staging_df.columns = [col.replace(' ', '_') if isinstance(col, str) else col for col in staging_df.columns]
+            self.logger.info(f"Normalized column names: {list(staging_df.columns)}")
             
             # Save the DataFrame to the staging table
             staging_df.to_sql(
@@ -348,7 +366,7 @@ def reset_error_items(connection_string: str) -> int:
     """
     return _default_manager.reset_error_items(connection_string)
 
-def clear_processed_items(connection_string: str, days_to_keep: int = 7) -> int:
+def clear_processed_items(connection_string: str, days_to_keep: int = None) -> int:
     """
     Clear processed items from the staging table that are older than the specified number of days.
     

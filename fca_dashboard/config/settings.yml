@@ -25,6 +25,12 @@ medtronics:
   sheet_name: "Asset Data"
   columns_to_extract: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
   drop_na_columns: ["asset name"]  # Drop rows where these columns have NaN values
+  # Staging configuration
+  staging:
+    enabled: true
+    db_path: "outputs/pipeline/medtronic/staging.db"
+    source_system: "Medtronics"
+    batch_id_prefix: "MEDTRONICS-BATCH-"
 
 # Wichita Animal Shelter pipeline settings
 wichita:
@@ -33,6 +39,12 @@ wichita:
   db_name: "wichita_assets.db"
   columns_to_extract: []  # Empty list means use all columns
   drop_na_columns: ["Asset Name", "Asset Category Name"]  # Drop rows where these columns have NaN values
+  # Staging configuration
+  staging:
+    enabled: true
+    db_path: "outputs/pipeline/wichita/staging.db"
+    source_system: "Wichita"
+    batch_id_prefix: "WICHITA-BATCH-"
 
 # Excel utilities settings
 excel_utils:
@@ -90,6 +102,11 @@ databases:
     url: "sqlite:///fca_dashboard.db"
   postgresql:
     url: "${POSTGRES_URL}"
+  staging:
+    schema_path: "fca_dashboard/db/staging/schema/staging_schema_sqlite.sql"
+    batch_size: 1000
+    error_retry_limit: 3
+    processed_retention_days: 30
     
 # Pipeline settings
 pipeline_settings:

@@ -50,9 +50,17 @@ commit:
 run:
 	python -m fca_dashboard.main --config fca_dashboard/config/settings.yml
 
+run-medtronic:
+	python -m fca_dashboard.pipelines.pipeline_medtronics
+
+
 # Run the SQLite staging example
 run-sqlite-staging:
 	python -m fca_dashboard.examples.sqlite_staging_example
+
+# Run the Medtronics staging example
+run-medtronics-staging:
+	python -m fca_dashboard.examples.medtronics_staging_example
 
 # Clean up generated files
 clean:

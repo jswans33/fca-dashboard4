@@ -7,6 +7,7 @@ analyzes and validates it, and then exports it to a SQLite database.
 
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 # Add the project root to the Python path
@@ -19,6 +20,7 @@ from fca_dashboard.utils.database import (
     get_table_schema,
     save_dataframe_to_database,
 )
+from fca_dashboard.utils.database.sqlite_staging_manager import SQLiteStagingManager
 from fca_dashboard.utils.excel import (
     analyze_column_statistics,
     analyze_excel_structure,
@@ -66,10 +68,27 @@ class MedtronicsPipeline:
         # Get columns to drop NaN values from settings
         self.drop_na_columns = settings.get("medtronics.drop_na_columns", [])
         
+        # Get staging configuration from settings
+        self.staging_config = settings.get("medtronics.staging", {})
+        
+        # Set default values if not provided in settings
+        if "enabled" not in self.staging_config:
+            self.staging_config["enabled"] = True
+        if "db_path" not in self.staging_config:
+            self.staging_config["db_path"] = os.path.join(self.output_dir, "staging.db")
+        if "source_system" not in self.staging_config:
+            self.staging_config["source_system"] = "Medtronics"
+        if "batch_id_prefix" not in self.staging_config:
+            self.staging_config["batch_id_prefix"] = "MEDTRONICS-BATCH-"
+        
+        # Create a SQLiteStagingManager instance
+        self.staging_manager = SQLiteStagingManager()
+        
         # Initialize data storage
         self.extracted_data = None
         self.analysis_results = None
         self.validation_results = None
+        self.staging_results = None
     
     def extract(self):
         """
@@ -342,6 +361,106 @@ class MedtronicsPipeline:
         
         return results
     
+    def stage_data(self, df):
+        """
+        Stage the data in the SQLite staging database.
+        
+        Args:
+            df: The DataFrame to stage.
+            
+        Returns:
+            A dictionary containing the staging results.
+        """
+        self.logger.info(f"Staging data in SQLite staging database")
+        
+        if not self.staging_config.get("enabled", True):
+            self.logger.info("Staging is disabled in configuration, skipping")
+            return {
+                "status": "skipped",
+                "message": "Staging is disabled in configuration"
+            }
+        
+        try:
+            # Create the output directory if it doesn't exist
+            output_dir = resolve_path(self.output_dir)
+            os.makedirs(output_dir, exist_ok=True)
+            
+            # Get the staging database path
+            db_path = self.staging_config.get("db_path", os.path.join(output_dir, "staging.db"))
+            
+            # Initialize the staging database if it doesn't exist
+            if not os.path.exists(db_path):
+                self.logger.info(f"Initializing staging database at {db_path}")
+                self.staging_manager.initialize_db(db_path)
+            
+            # Create the connection string
+            connection_string = f"sqlite:///{db_path}"
+            
+            # Generate a batch ID
+            batch_id_prefix = self.staging_config.get("batch_id_prefix", "MEDTRONICS-BATCH-")
+            batch_id = f"{batch_id_prefix}{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            
+            # Get the source system name
+            source_system = self.staging_config.get("source_system", "Medtronics")
+            
+            # Prepare the data for staging
+            staging_df = df.copy()
+            
+            # Add any additional metadata columns needed for staging
+            # For example, you might want to add equipment-specific columns
+            if 'equipment_tag' not in staging_df.columns and 'asset_id' in staging_df.columns:
+                staging_df['equipment_tag'] = staging_df['asset_id']
+            
+            # Convert any JSON-like columns to actual JSON
+            for col in staging_df.columns:
+                if col.endswith('_data') or col in ['attributes', 'metadata']:
+                    if staging_df[col].notna().any():
+                        # If the column contains dictionaries or lists, convert to JSON
+                        if isinstance(staging_df[col].iloc[0], (dict, list)):
+                            self.logger.info(f"Converting column {col} to JSON format")
+                            staging_df[col] = staging_df[col].apply(lambda x: x if pd.isna(x) else x)
+            
+            # Save the data to the staging table
+            self.logger.info(f"Saving {len(staging_df)} rows to staging table")
+            self.staging_manager.save_dataframe_to_staging(
+                df=staging_df,
+                connection_string=connection_string,
+                source_system=source_system,
+                import_batch_id=batch_id
+            )
+            
+            # Get the count of pending items
+            pending_items = self.staging_manager.get_pending_items(connection_string)
+            pending_count = len(pending_items)
+            
+            self.logger.info(f"Successfully staged {len(staging_df)} rows, {pending_count} pending items")
+            
+            # Store the staging results
+            self.staging_results = {
+                "db_path": db_path,
+                "connection_string": connection_string,
+                "batch_id": batch_id,
+                "source_system": source_system,
+                "rows_staged": len(staging_df),
+                "pending_items": pending_count
+            }
+            
+            return {
+                "status": "success",
+                "message": f"Successfully staged {len(staging_df)} rows",
+                "db_path": db_path,
+                "connection_string": connection_string,
+                "batch_id": batch_id,
+                "pending_items": pending_count
+            }
+        except Exception as e:
+            error_msg = f"Error staging data: {str(e)}"
+            self.logger.error(error_msg, exc_info=True)
+            return {
+                "status": "error",
+                "message": error_msg
+            }
+    
     def export(self, df):
         """
         Export the data to a SQLite database.
@@ -607,6 +726,24 @@ class MedtronicsPipeline:
                     "message": f"Error validating data: {str(e)}"
                 }
             
+            # Stage data
+            try:
+                staging_results = self.stage_data(df)
+                if staging_results["status"] == "error":
+                    self.logger.error(f"Error staging data: {staging_results['message']}")
+                    return {
+                        "status": "error",
+                        "message": f"Error staging data: {staging_results['message']}"
+                    }
+                elif staging_results["status"] == "skipped":
+                    self.logger.info(f"Staging skipped: {staging_results['message']}")
+            except Exception as e:
+                self.logger.error(f"Error staging data: {str(e)}", exc_info=True)
+                return {
+                    "status": "error",
+                    "message": f"Error staging data: {str(e)}"
+                }
+            
             # Export data
             try:
                 db_path = self.export(df)
@@ -630,16 +767,28 @@ class MedtronicsPipeline:
             self.logger.info("Medtronics Asset Data Pipeline completed successfully")
             
             # Return results
+            result_data = {
+                "rows": len(df),
+                "columns": len(df.columns),
+                "db_path": db_path,
+                "sheet_name": self.sheet_name.lower().replace(" ", "_"),
+                "report_paths": report_paths
+            }
+            
+            # Add staging information if available
+            if self.staging_results:
+                result_data["staging"] = {
+                    "db_path": self.staging_results["db_path"],
+                    "batch_id": self.staging_results["batch_id"],
+                    "source_system": self.staging_results["source_system"],
+                    "rows_staged": self.staging_results["rows_staged"],
+                    "pending_items": self.staging_results["pending_items"]
+                }
+            
             return {
                 "status": "success",
                 "message": "Pipeline completed successfully",
-                "data": {
-                    "rows": len(df),
-                    "columns": len(df.columns),
-                    "db_path": db_path,
-                    "sheet_name": self.sheet_name.lower().replace(" ", "_"),
-                    "report_paths": report_paths
-                }
+                "data": result_data
             }
         except Exception as e:
             self.logger.error(f"Unexpected error in pipeline: {str(e)}", exc_info=True)
@@ -677,6 +826,16 @@ def main():
                 with open(schema_path, "r") as f:
                     schema = f.read()
                 print(schema)
+            
+            # Print staging information if available
+            if 'staging' in results['data']:
+                print(f"\nStaging Information:")
+                staging = results['data']['staging']
+                print(f"  Staging Database: {staging['db_path']}")
+                print(f"  Batch ID: {staging['batch_id']}")
+                print(f"  Source System: {staging['source_system']}")
+                print(f"  Rows Staged: {staging['rows_staged']}")
+                print(f"  Pending Items: {staging['pending_items']}")
             
             print(f"\nReports:")
             for report_type, report_path in results['data']['report_paths'].items():
