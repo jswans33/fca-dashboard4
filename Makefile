@@ -1,18 +1,22 @@
-.PHONY: lint test format install run clean init-db coverage test-unit test-integration
+.PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration
 
 lint:
-
 	black --check .
 	isort --check .
 	flake8 .
 	mypy .
+	$(MAKE) lint-md
 
 lint-md:
 	npx markdownlint-cli "**/*.md" --config .markdownlint.json
 
+format-md:
+	npx markdownlint-cli "**/*.md" --config .markdownlint.json --fix
+
 format:
 	black .
 	isort .
+	$(MAKE) format-md
 
 test:
 	pytest fca_dashboard/tests/

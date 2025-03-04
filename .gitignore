@@ -192,4 +192,10 @@ __pycache__
 *.pyz.1
 *.pywz.1 
 
+# Temporary files
+*.temp
+*.log
+*.bak
 
+#node_modules
+node_modules/
