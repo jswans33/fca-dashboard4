@@ -7,6 +7,7 @@ It follows the Single Responsibility Principle by focusing solely on data loadin
 
 import pandas as pd
 from typing import Optional
+import yaml
 
 
 def load_and_preprocess_data(data_path: Optional[str] = None) -> pd.DataFrame:
@@ -21,7 +22,26 @@ def load_and_preprocess_data(data_path: Optional[str] = None) -> pd.DataFrame:
     """
     # Use default path if none provided
     if data_path is None:
-        data_path = "C:/Repos/fca-dashboard4/fca_dashboard/classifier/ingest/eq_ids.csv"
+        # Try to load from settings
+        try:
+            from fca_dashboard.utils.path_util import get_config_path, resolve_path
+            
+            settings_path = get_config_path("settings.yml")
+            with open(settings_path, 'r') as file:
+                settings = yaml.safe_load(file)
+                
+            data_path = settings.get('classifier', {}).get('data_paths', {}).get('training_data')
+            if not data_path:
+                # Fallback to default path
+                data_path = "fca_dashboard/classifier/ingest/eq_ids.csv"
+            
+            # Resolve the path to ensure it exists
+            data_path = str(resolve_path(data_path))
+        except Exception as e:
+            print(f"Warning: Could not load settings: {e}")
+            from pathlib import Path
+            # Use absolute path as fallback
+            data_path = str(Path(__file__).resolve().parent / "ingest" / "eq_ids.csv")
     
     # Read CSV file using pandas
     try:

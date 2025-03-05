@@ -24,15 +24,58 @@ def build_enhanced_model() -> Pipeline:
     Returns:
         Pipeline: Scikit-learn pipeline with preprocessor and classifier
     """
+    # Try to load settings from configuration file
+    try:
+        import yaml
+        from fca_dashboard.utils.path_util import get_config_path
+        
+        settings_path = get_config_path("settings.yml")
+        with open(settings_path, 'r') as file:
+            settings = yaml.safe_load(file)
+            
+        # Get TF-IDF settings
+        tfidf_settings = settings.get('classifier', {}).get('tfidf', {})
+        max_features = tfidf_settings.get('max_features', 5000)
+        ngram_range = tuple(tfidf_settings.get('ngram_range', [1, 3]))
+        min_df = tfidf_settings.get('min_df', 2)
+        max_df = tfidf_settings.get('max_df', 0.9)
+        use_idf = tfidf_settings.get('use_idf', True)
+        sublinear_tf = tfidf_settings.get('sublinear_tf', True)
+        
+        # Get Random Forest settings
+        rf_settings = settings.get('classifier', {}).get('model', {}).get('random_forest', {})
+        n_estimators = rf_settings.get('n_estimators', 200)
+        max_depth = rf_settings.get('max_depth', None)
+        min_samples_split = rf_settings.get('min_samples_split', 2)
+        min_samples_leaf = rf_settings.get('min_samples_leaf', 1)
+        class_weight = rf_settings.get('class_weight', 'balanced_subsample')
+        random_state = rf_settings.get('random_state', 42)
+    except Exception as e:
+        print(f"Warning: Could not load settings: {e}")
+        # Use default values if settings cannot be loaded
+        max_features = 5000
+        ngram_range = (1, 3)
+        min_df = 2
+        max_df = 0.9
+        use_idf = True
+        sublinear_tf = True
+        
+        n_estimators = 200
+        max_depth = None
+        min_samples_split = 2
+        min_samples_leaf = 1
+        class_weight = 'balanced_subsample'
+        random_state = 42
+    
     # Text feature processing
     text_features = Pipeline([
         ('tfidf', TfidfVectorizer(
-            max_features=5000, 
-            ngram_range=(1, 3),  # Include more n-grams for better feature extraction
-            min_df=2,            # Ignore very rare terms
-            max_df=0.9,          # Ignore very common terms
-            use_idf=True,
-            sublinear_tf=True    # Apply sublinear scaling to term frequencies
+            max_features=max_features,
+            ngram_range=ngram_range,  # Include more n-grams for better feature extraction
+            min_df=min_df,            # Ignore very rare terms
+            max_df=max_df,            # Ignore very common terms
+            use_idf=use_idf,
+            sublinear_tf=sublinear_tf  # Apply sublinear scaling to term frequencies
         ))
     ])
     
@@ -59,12 +102,12 @@ def build_enhanced_model() -> Pipeline:
         ('preprocessor', preprocessor),
         ('clf', MultiOutputClassifier(
             RandomForestClassifier(
-                n_estimators=200,    # More trees for better generalization
-                max_depth=None,      # Allow trees to grow deeply
-                min_samples_split=2, # Default value
-                min_samples_leaf=1,  # Default value
-                class_weight='balanced_subsample',  # Additional protection against imbalance
-                random_state=42
+                n_estimators=n_estimators,    # More trees for better generalization
+                max_depth=max_depth,          # Allow trees to grow deeply
+                min_samples_split=min_samples_split, # Default value
+                min_samples_leaf=min_samples_leaf,   # Default value
+                class_weight=class_weight,    # Additional protection against imbalance
+                random_state=random_state
             )
         ))
     ])
