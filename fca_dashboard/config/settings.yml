@@ -190,6 +190,24 @@ generator:
       'Title': 'OmniClass_Title'
       'Definition': 'Description'
 
+  # OmniClass description generator settings
+  omniclass_description_generator:
+    input_file: 'fca_dashboard/generator/ingest/omniclass.csv'
+    output_file: 'fca_dashboard/generator/ingest/omniclass_with_descriptions.csv'
+    batch_size: 50
+    description_column: 'Description'
+    api:
+      model: 'claude-3-haiku-20240307'
+      max_tokens: 1024
+      temperature: 0.2
+      retries: 3
+      delay: 5
+    system_prompt: |
+      You are an expert in construction and building systems with deep knowledge of OmniClass classification.
+      Your task is to write clear, concise descriptions for OmniClass codes.
+      Each description should explain what the item is in plain English, suitable for non-experts.
+      Keep descriptions factual, informative, and under 100 characters when possible.
+
 # Table mappings
 tables:
   equipment:

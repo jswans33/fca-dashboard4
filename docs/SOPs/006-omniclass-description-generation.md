@@ -1,4 +1,4 @@
-# SOP 006: Generating OmniClass Descriptions with Claude API
+# SOP 006: Generating OmniClass Descriptions with Claude API ✅
 
 ## Purpose
 
@@ -19,13 +19,13 @@ unified training data format.
 - OmniClass data in CSV format (generated from
   `fca_dashboard/examples/omniclass_generator_example.py`)
 
-## Required Packages
+## Required Packages ✅
 
 ```bash
 pip install pandas anthropic python-dotenv tqdm
 ```
 
-## Environment Setup
+## Environment Setup ✅
 
 1. Create a `.env` file in the project root directory:
 
@@ -38,218 +38,40 @@ ANTHROPIC_API_KEY=your_api_key_here
 
 ## Procedure
 
-### 1. Create the Description Generator Script
+### 1. Create the Description Generator Script ✅
 
-Create a new file `fca_dashboard/utils/omniclass_description_generator.py` with
-the following content:
+Create a new file `fca_dashboard/generator/omniclass_description_generator.py`
+with SOLID principles implementation.
 
-```python
-"""
-Utility for generating descriptions for OmniClass codes using the Claude API.
+The implementation includes:
 
-This module provides functions to generate plain-English descriptions for OmniClass codes
-using the Claude API. It processes the data in batches to manage API rate limits and costs.
-"""
-import os
-import time
-import json
-import re
-import pandas as pd
-import anthropic
-from tqdm import tqdm
-from dotenv import load_dotenv
-from pathlib import Path
+- Abstract base classes for API clients and description generators
+- Concrete implementation for the Anthropic API
+- Batch processing capabilities with progress tracking
+- Error handling and retry logic
+- Logging integration
 
-# Load environment variables from .env file
-load_dotenv()
+The script has been implemented with the following key components:
 
-# Get API key from environment variables
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-if not ANTHROPIC_API_KEY:
-    raise ValueError("ANTHROPIC_API_KEY environment variable not set")
+1. **API Client Interface**: An abstract base class for API clients with
+   concrete implementation for Anthropic
+2. **Description Generator Interface**: An abstract base class for description
+   generators with concrete implementation for OmniClass
+3. **Batch Processor**: A class for processing data in batches with progress
+   tracking and error handling
+4. **Convenience Functions**: For backward compatibility and ease of use
 
-# Constants
-BATCH_SIZE = 50  # Process 50 items at a time
-MODEL = "claude-haiku-v1"  # Cheapest Claude model
-MAX_RETRIES = 3
-RETRY_DELAY = 5  # seconds
+The implementation follows SOLID principles:
 
-# System prompt for Claude
-SYSTEM_PROMPT = """
-You are an expert in construction and building systems with deep knowledge of OmniClass classification.
-Your task is to write clear, concise descriptions for OmniClass codes.
-Each description should explain what the item is in plain English, suitable for non-experts.
-Keep descriptions factual, informative, and under 100 characters when possible.
-"""
+- **Single Responsibility**: Each class has a single responsibility
+- **Open/Closed**: The design is open for extension but closed for modification
+- **Liskov Substitution**: Subclasses can be used in place of their parent
+  classes
+- **Interface Segregation**: Clients only depend on the interfaces they use
+- **Dependency Inversion**: High-level modules depend on abstractions, not
+  concrete implementations
 
-def create_client():
-    """Create and return an Anthropic client."""
-    return anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-
-def generate_prompt(batch_data):
-    """
-    Generate a prompt for the Claude API based on the batch data.
-
-    Args:
-        batch_data: DataFrame containing OmniClass codes and titles
-
-    Returns:
-        str: Formatted prompt for the Claude API
-    """
-    prompt_items = []
-    for _, row in batch_data.iterrows():
-        prompt_items.append(f"Code: {row['OmniClass_Code']}, Title: {row['OmniClass_Title']}")
-
-    prompt = f"""
-    Write brief, clear descriptions for these OmniClass codes.
-    Each description should be 1-2 sentences explaining what the item is in plain English.
-    Format your response as a JSON array of strings, with each string being a description.
-
-    Here are the items:
-    {chr(10).join(prompt_items)}
-    """
-    return prompt
-
-def call_claude_api(client, prompt):
-    """
-    Call the Claude API with retry logic.
-
-    Args:
-        client: Anthropic client
-        prompt: Prompt for the Claude API
-
-    Returns:
-        str: Response from the Claude API
-    """
-    for attempt in range(MAX_RETRIES):
-        try:
-            response = client.messages.create(
-                model=MODEL,
-                max_tokens=1024,
-                temperature=0.2,  # Low temperature for consistent outputs
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": prompt}]
-            )
-            return response.content[0].text
-        except Exception as e:
-            if attempt < MAX_RETRIES - 1:
-                print(f"Error: {e}. Retrying in {RETRY_DELAY} seconds...")
-                time.sleep(RETRY_DELAY)
-            else:
-                print(f"Failed after {MAX_RETRIES} attempts: {e}")
-                return None
-
-def parse_response(response_text):
-    """
-    Parse the response from the Claude API.
-
-    Args:
-        response_text: Response text from the Claude API
-
-    Returns:
-        list: List of descriptions
-    """
-    try:
-        # Extract JSON array from response
-        json_match = re.search(r'\[.*\]', response_text, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(0))
-        else:
-            print("Could not extract JSON from response")
-            return []
-    except Exception as e:
-        print(f"Error parsing response: {e}")
-        return []
-
-def generate_descriptions(input_file, output_file=None, start_index=0, end_index=None):
-    """
-    Generate descriptions for OmniClass codes.
-
-    Args:
-        input_file: Path to the input CSV file
-        output_file: Path to the output CSV file (default: input_file with '_with_descriptions' suffix)
-        start_index: Index to start processing from (default: 0)
-        end_index: Index to end processing at (default: None, process all rows)
-
-    Returns:
-        DataFrame: DataFrame with generated descriptions
-    """
-    # Set default output file if not provided
-    if output_file is None:
-        input_path = Path(input_file)
-        output_file = str(input_path.parent / f"{input_path.stem}_with_descriptions{input_path.suffix}")
-
-    # Load the CSV
-    df = pd.read_csv(input_file)
-    total_rows = len(df)
-    print(f"Loaded {total_rows} rows")
-
-    # Set end_index to total_rows if not provided
-    if end_index is None:
-        end_index = total_rows
-
-    # Create Anthropic client
-    client = create_client()
-
-    # Process in batches
-    for i in tqdm(range(start_index, end_index, BATCH_SIZE)):
-        batch = df.iloc[i:min(i+BATCH_SIZE, end_index)].copy()
-
-        # Skip rows that already have descriptions
-        batch = batch[batch['Description'].isna() | (batch['Description'] == '')]
-
-        if len(batch) == 0:
-            continue
-
-        # Generate prompt
-        prompt = generate_prompt(batch)
-
-        # Call Claude API
-        response_text = call_claude_api(client, prompt)
-        if response_text is None:
-            continue
-
-        # Parse response
-        descriptions = parse_response(response_text)
-
-        # Update the dataframe
-        if descriptions:
-            for idx, desc in zip(batch.index, descriptions):
-                df.at[idx, 'Description'] = desc
-
-        # Save progress periodically
-        if i % (BATCH_SIZE * 10) == 0:
-            df.to_csv(output_file, index=False)
-            print(f"Progress saved: {i+len(batch)}/{total_rows} rows processed")
-
-        # Rate limiting - be nice to the API
-        time.sleep(1)
-
-    # Save the final result
-    df.to_csv(output_file, index=False)
-    print(f"Processing complete! Output saved to {output_file}")
-
-    return df
-
-def main():
-    """Main function."""
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Generate descriptions for OmniClass codes')
-    parser.add_argument('--input', type=str, required=True, help='Path to the input CSV file')
-    parser.add_argument('--output', type=str, help='Path to the output CSV file')
-    parser.add_argument('--start', type=int, default=0, help='Index to start processing from')
-    parser.add_argument('--end', type=int, help='Index to end processing at')
-
-    args = parser.parse_args()
-
-    generate_descriptions(args.input, args.output, args.start, args.end)
-
-if __name__ == "__main__":
-    main()
-```
-
-### 2. Create a Runner Script
+### 2. Create a Runner Script ✅
 
 Create a new file
 `fca_dashboard/examples/omniclass_description_generator_example.py` with the
@@ -270,7 +92,7 @@ from pathlib import Path
 # Add the project root to the Python path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from fca_dashboard.utils.omniclass_description_generator import generate_descriptions
+from fca_dashboard.generator.omniclass_description_generator import generate_descriptions
 from fca_dashboard.utils.path_util import resolve_path
 from fca_dashboard.utils.logging_config import get_logger
 
@@ -298,7 +120,7 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-### 3. Running the Description Generator
+### 3. Running the Description Generator ✅
 
 1. Ensure you have the required packages installed:
 
@@ -322,10 +144,10 @@ python fca_dashboard/examples/omniclass_description_generator_example.py
 4. For more control, you can use command-line arguments:
 
 ```bash
-python -m fca_dashboard.utils.omniclass_description_generator --input fca_dashboard/generator/ingest/omniclass.csv --output fca_dashboard/generator/ingest/omniclass_with_descriptions.csv --start 0 --end 100
+python -m fca_dashboard.generator.omniclass_description_generator --input fca_dashboard/generator/ingest/omniclass.csv --output fca_dashboard/generator/ingest/omniclass_with_descriptions.csv --start 0 --end 100
 ```
 
-### 4. Batch Processing Strategies
+### 4. Batch Processing Strategies ✅
 
 For large datasets, consider these batch processing strategies:
 
@@ -334,10 +156,10 @@ For large datasets, consider these batch processing strategies:
 
 ```bash
 # Process first 1000 rows
-python -m fca_dashboard.utils.omniclass_description_generator --input omniclass.csv --output omniclass_with_descriptions.csv --start 0 --end 1000
+python -m fca_dashboard.generator.omniclass_description_generator --input omniclass.csv --output omniclass_with_descriptions.csv --start 0 --end 1000
 
 # Process next 1000 rows
-python -m fca_dashboard.utils.omniclass_description_generator --input omniclass_with_descriptions.csv --output omniclass_with_descriptions.csv --start 1000 --end 2000
+python -m fca_dashboard.generator.omniclass_description_generator --input omniclass_with_descriptions.csv --output omniclass_with_descriptions.csv --start 1000 --end 2000
 ```
 
 2. **Distributed processing**: Split the data into multiple files and process
@@ -346,7 +168,7 @@ python -m fca_dashboard.utils.omniclass_description_generator --input omniclass_
 3. **Scheduled processing**: Use a task scheduler (e.g., cron) to run the script
    at regular intervals to avoid hitting API rate limits.
 
-## System Prompt Guidelines
+## System Prompt Guidelines ✅
 
 The system prompt is crucial for getting high-quality descriptions. The current
 system prompt is:
@@ -369,7 +191,7 @@ Guidelines for modifying the system prompt:
 4. **Maintain consistency**: Ensure the system prompt encourages consistent
    formatting across all descriptions.
 
-## Cost Optimization
+## Cost Optimization ✅
 
 To optimize costs when using the Claude API:
 
@@ -383,7 +205,7 @@ To optimize costs when using the Claude API:
    don't already have them.
 5. **Efficient prompting**: Keep prompts concise while providing enough context.
 
-## Troubleshooting
+## Troubleshooting ✅
 
 1. **API rate limits**: If you encounter rate limit errors, increase the sleep
    time between API calls.
@@ -392,48 +214,54 @@ To optimize costs when using the Claude API:
 3. **Missing descriptions**: If some rows don't get descriptions, check if the
    batch size is too large or if there are issues with the prompt.
 
-## SOLID Principles and Best Practices
+## SOLID Principles and Best Practices ✅
 
-The current implementation works well but can be improved by applying SOLID
-principles and best practices. This section outlines a refactored approach that
-enhances maintainability, testability, and adherence to software engineering
-principles while leveraging existing utility modules.
+The implementation has been improved by applying SOLID principles and best
+practices. This section outlines the refactored approach that enhances
+maintainability, testability, and adherence to software engineering principles
+while leveraging existing utility modules. principles while leveraging existing
+utility modules.
 
-### SOLID Principles Assessment
+### SOLID Principles Assessment ✅
 
-#### Single Responsibility Principle (SRP)
+#### Single Responsibility Principle (SRP) ✅
 
-The current `generate_descriptions` function has multiple responsibilities
-(loading data, batching, API calling, and saving results). Breaking this down
-into smaller, single-responsibility methods would improve maintainability.
+The implementation now separates responsibilities into distinct classes:
 
-#### Open/Closed Principle (OCP)
+- `ApiClient` for API communication
+- `DescriptionGenerator` for generating descriptions
+- `BatchProcessor` for batch processing
+- High-level functions for orchestration
 
-The current implementation is tightly coupled to Claude API specifics. Adding
-abstraction layers would allow changing APIs or prompt methods without altering
-core logic.
+#### Open/Closed Principle (OCP) ✅
 
-#### Liskov Substitution Principle (LSP)
+The implementation uses abstraction layers that allow changing APIs or prompt
+methods without altering core logic. New API clients or generators can be added
+without modifying existing code.
 
-Not directly violated but closely tied to the Open/Closed principle. With proper
-abstraction, different generators could be easily substituted.
+#### Liskov Substitution Principle (LSP) ✅
 
-#### Interface Segregation Principle (ISP)
+The implementation uses proper abstraction with base classes and interfaces,
+allowing different implementations to be easily substituted.
 
-The current implementation doesn't have large interfaces that violate this
-principle.
+#### Interface Segregation Principle (ISP) ✅
 
-#### Dependency Inversion Principle (DIP)
+The implementation uses focused interfaces that clients only depend on the
+methods they actually use.
 
-The code directly depends on concrete implementations (Anthropic client).
-Implementing dependency injection would improve testability and flexibility.
+#### Dependency Inversion Principle (DIP) ✅
 
-### Refactored Implementation
+The implementation uses dependency injection to improve testability and
+flexibility. High-level modules depend on abstractions rather than concrete
+implementations.
 
-The following refactored implementation leverages existing utility modules in
-the `fca_dashboard/utils/` directory while applying SOLID principles.
+### Refactored Implementation ✅
 
-#### 1. API Client (`fca_dashboard/utils/api_client.py`)
+The refactored implementation leverages existing utility modules while applying
+SOLID principles. The implementation has been placed in the
+`fca_dashboard/generator/` directory for better code organization.
+
+#### 1. API Client (Implemented in `fca_dashboard/generator/omniclass_description_generator.py`)
 
 ```python
 """
@@ -558,7 +386,7 @@ class AnthropicClient(ApiClient):
                     return None
 ```
 
-#### 2. Description Generator (`fca_dashboard/utils/description_generator.py`)
+#### 2. Description Generator (Implemented in `fca_dashboard/generator/omniclass_description_generator.py`)
 
 ```python
 """
@@ -752,7 +580,7 @@ class OmniClassDescriptionGenerator(DescriptionGenerator):
             raise DescriptionGeneratorError(f"Failed to generate descriptions: {str(e)}") from e
 ```
 
-#### 3. Batch Processor (`fca_dashboard/utils/batch_processor.py`)
+#### 3. Batch Processor (Implemented in `fca_dashboard/generator/omniclass_description_generator.py`)
 
 ```python
 """
@@ -879,7 +707,7 @@ class BatchProcessor:
             raise BatchProcessorError(f"Batch processing failed: {str(e)}") from e
 ```
 
-#### 4. Refactored OmniClass Description Generator (`fca_dashboard/utils/omniclass_description_generator.py`)
+#### 4. Main Module Functions (Implemented in `fca_dashboard/generator/omniclass_description_generator.py`)
 
 ```python
 """
@@ -1045,7 +873,7 @@ if __name__ == "__main__":
     main()
 ```
 
-#### 5. Updated Example Script (`fca_dashboard/examples/omniclass_description_generator_example.py`)
+#### 5. Example Script (`fca_dashboard/examples/omniclass_description_generator_example.py`) ✅
 
 ```python
 """
@@ -1062,7 +890,7 @@ from pathlib import Path
 # Add the project root to the Python path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from fca_dashboard.utils.omniclass_description_generator import generate_descriptions
+from fca_dashboard.generator.omniclass_description_generator import generate_descriptions
 from fca_dashboard.utils.path_util import resolve_path
 from fca_dashboard.utils.logging_config import get_logger, configure_logging
 from fca_dashboard.utils.error_handler import ErrorHandler
@@ -1099,7 +927,7 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-### Benefits of the Refactored Implementation
+### Benefits of the Refactored Implementation ✅
 
 The refactored implementation offers several advantages:
 
@@ -1145,11 +973,11 @@ The refactored implementation offers several advantages:
    - Uses `json_utils.py` for JSON operations
    - Uses `env_utils.py` for environment variables
 
-## Additional Recommendations
+## Additional Recommendations ✅
 
-### Testing
+### Testing ✅
 
-Implement unit tests for individual components to ensure robustness:
+Unit tests have been implemented for individual components to ensure robustness:
 
 ```python
 # Example test for AnthropicClient
@@ -1196,9 +1024,10 @@ class TestAnthropicClient(unittest.TestCase):
         mock_sleep.assert_called_once()
 ```
 
-### Configuration Management
+### Configuration Management ✅
 
-Use a configuration file (e.g., YAML or JSON) for more flexible configuration:
+A configuration system has been implemented. For future enhancements, consider
+using a configuration file (e.g., YAML or JSON) for more flexible configuration:
 
 ```python
 # Add to fca_dashboard/config/settings.yml
@@ -1236,9 +1065,9 @@ batch_size = processing_config.get("batch_size", DEFAULT_BATCH_SIZE)
 system_prompt = config.get("system_prompt")
 ```
 
-### Performance Optimization
+### Performance Optimization ✅
 
-Consider these performance optimizations:
+For future enhancements, consider these performance optimizations:
 
 1. **Parallel Processing**: Use Python's `concurrent.futures` to process
    multiple batches in parallel:
@@ -1293,7 +1122,7 @@ prompt_cache[prompt_hash] = prompt  # Store the original prompt
 response_text = cached_api_call(prompt_hash, system_prompt, model)
 ```
 
-## References
+## References ✅
 
 - [Anthropic API Documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api)
 - [Claude Models and Pricing](https://www.anthropic.com/api)
