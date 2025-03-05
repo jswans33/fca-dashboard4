@@ -168,6 +168,13 @@ pipeline_settings:
   batch_size: 5000
   log_level: '${LOG_LEVEL}' # Uses the environment variable from env section
 
+# Sample pipeline settings (for examples)
+sample:
+  output_dir: 'outputs/pipeline/sample'
+  db_name: 'sample_assets.db'
+  columns_to_extract: [] # Empty list means use all columns
+  drop_na_columns: ['id', 'name'] # Drop rows where these columns have NaN values
+
 # Table mappings
 tables:
   equipment:
