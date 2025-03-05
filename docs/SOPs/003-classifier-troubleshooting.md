@@ -2,7 +2,10 @@
 
 ## Purpose
 
-This procedure documents the steps to troubleshoot and resolve common issues when running the equipment classifier example in the FCA Dashboard project. It provides comprehensive guidance for diagnosing and fixing issues related to the classifier implementation, dependencies, and execution environment.
+This procedure documents the steps to troubleshoot and resolve common issues
+when running the equipment classifier example in the FCA Dashboard project. It
+provides comprehensive guidance for diagnosing and fixing issues related to the
+classifier implementation, dependencies, and execution environment.
 
 ## Scope
 
@@ -29,10 +32,8 @@ This SOP covers:
 
 - Check installation status:
   - $ python -m fca_dashboard.utils.verify_classifier
-  
 - Install missing dependency:
   - $ python -m pip install scikit-learn matplotlib seaborn imbalanced-learn
-  
 - Run Classifier Example
   - Run python -m fca_dashboard.examples.classifier_example
 
@@ -41,9 +42,11 @@ This SOP covers:
 ### 1. Diagnosing Module Import Errors
 
 1. Identify the correct module path format:
+
    - Use dot notation for module paths, not slashes
    - Correct: `python -m fca_dashboard.examples.classifier_example`
-   - Incorrect: `python -m fca_dashboard/fca_dashboard.examples.classifier_example`
+   - Incorrect:
+     `python -m fca_dashboard/fca_dashboard.examples.classifier_example`
    - Incorrect: `python fca_dashboard/examples/classifier_example.py`
 
 2. Verify the package is installed in development mode:
@@ -52,7 +55,9 @@ This SOP covers:
    pip install -e .
    ```
 
-   This step is crucial for allowing the package to be imported using absolute imports. Without this step, you may encounter `ModuleNotFoundError` when trying to import modules from the package.
+   This step is crucial for allowing the package to be imported using absolute
+   imports. Without this step, you may encounter `ModuleNotFoundError` when
+   trying to import modules from the package.
 
 3. Use the Makefile's `install` target to ensure proper installation:
 
@@ -61,6 +66,7 @@ This SOP covers:
    ```
 
 4. Check if you're using the correct Python interpreter:
+
    - Different terminals or IDEs might use different Python environments
    - Verify which Python is being used with:
 
@@ -76,12 +82,13 @@ This SOP covers:
      ```
 
 5. Verify virtual environment activation:
+
    - On Windows:
 
      ```bash
      # Activate the environment
      .\.venv\Scripts\activate
-     
+
      # Verify activation (should show (.venv) at the start of your prompt)
      # Also check Python path
      where python
@@ -92,13 +99,15 @@ This SOP covers:
      ```bash
      # Activate the environment
      source .venv/bin/activate
-     
+
      # Verify activation
      which python
      ```
 
 6. Check for conflicting installations:
-   - Sometimes having the package installed both in development mode and via pip can cause conflicts
+
+   - Sometimes having the package installed both in development mode and via pip
+     can cause conflicts
    - Uninstall any global installations of the package:
 
      ```bash
@@ -131,19 +140,25 @@ This SOP covers:
    ```
 
 3. For specific package issues:
+
    - NumPy: `pip uninstall -y numpy && pip install numpy`
    - SciPy: `pip uninstall -y scipy && pip install scipy`
    - Matplotlib: `pip uninstall -y matplotlib && pip install matplotlib`
-   - Pillow (required by matplotlib): `pip uninstall -y pillow && pip install pillow`
-   - Kiwisolver (dependency of matplotlib): `pip uninstall -y kiwisolver && pip install kiwisolver`
+   - Pillow (required by matplotlib):
+     `pip uninstall -y pillow && pip install pillow`
+   - Kiwisolver (dependency of matplotlib):
+     `pip uninstall -y kiwisolver && pip install kiwisolver`
 
 4. For circular import issues:
+
    - Reinstall the affected package and its dependencies
    - Check for version compatibility between packages
 
 5. Common visualization dependency issues:
+
    - Matplotlib and its dependencies often cause issues due to C extensions
-   - If you see errors related to C extensions (e.g., `_cext`, `_multiarray_umath`), try:
+   - If you see errors related to C extensions (e.g., `_cext`,
+     `_multiarray_umath`), try:
 
      ```bash
      # Reinstall the package with --force-reinstall to rebuild C extensions
@@ -158,14 +173,17 @@ This SOP covers:
      ```
 
 6. Python version compatibility:
+
    - Some packages may have issues with specific Python versions
    - Check the package documentation for supported Python versions
    - Consider downgrading to a more stable Python version if needed
 
 7. Operating system-specific issues:
+
    - Windows:
      - Visual C++ build tools might be required for some packages
-     - Install from: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+     - Install from:
+       <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
    - Linux:
      - Development libraries might be missing
      - Install with: `sudo apt-get install python3-dev` (Ubuntu/Debian)
@@ -174,6 +192,7 @@ This SOP covers:
      - Install with: `xcode-select --install`
 
 8. Verify package installation:
+
    - Check if packages are correctly installed:
 
      ```bash
@@ -196,7 +215,7 @@ This SOP covers:
    ```yaml
    classifier:
      data_paths:
-       training_data: "fca_dashboard/classifier/ingest/eq_ids.csv"
+       training_data: 'fca_dashboard/classifier/ingest/eq_ids.csv'
    ```
 
 2. Verify the file exists:
@@ -204,18 +223,20 @@ This SOP covers:
    ```bash
    # On Windows
    dir fca_dashboard\classifier\ingest\eq_ids.csv
-   
+
    # On Unix/Linux/macOS
    ls -la fca_dashboard/classifier/ingest/eq_ids.csv
    ```
 
-3. If the file is missing, check alternative locations or restore from repository:
+3. If the file is missing, check alternative locations or restore from
+   repository:
+
    - Check if the file exists in a different location:
 
      ```bash
      # On Windows
      dir /s /b eq_ids.csv
-     
+
      # On Unix/Linux/macOS
      find . -name eq_ids.csv
      ```
@@ -229,12 +250,13 @@ This SOP covers:
    - Check if the file is in a different format (e.g., .xlsx instead of .csv)
 
 4. Verify the data file format and content:
+
    - Check if the CSV file is properly formatted:
 
      ```bash
      # View the first few lines
      head -n 5 fca_dashboard/classifier/ingest/eq_ids.csv
-     
+
      # On Windows
      type fca_dashboard\classifier\ingest\eq_ids.csv | more
      ```
@@ -249,6 +271,7 @@ This SOP covers:
      ```
 
 5. Check file permissions:
+
    - Ensure the file has read permissions:
 
      ```bash
@@ -257,88 +280,91 @@ This SOP covers:
      ```
 
 6. Create a sample data file if needed:
-   - If the original data file is unavailable, create a minimal sample file for testing
+   - If the original data file is unavailable, create a minimal sample file for
+     testing
    - See the project documentation for the required format and columns
 
 ### 4. Creating a Simplified Version Without Visualizations
 
-If visualization dependencies (matplotlib, seaborn) are causing issues, create a simplified version of the classifier example:
+If visualization dependencies (matplotlib, seaborn) are causing issues, create a
+simplified version of the classifier example:
 
-1. Create a simplified version of the classifier example that doesn't rely on matplotlib or seaborn:
+1. Create a simplified version of the classifier example that doesn't rely on
+   matplotlib or seaborn:
 
    ```python
    # fca_dashboard/examples/classifier_example_simple.py
    """
    Simplified Example Usage of Equipment Classification Package
-   
+
    This script demonstrates the core functionality of the equipment classification package
    without the visualization components.
    """
-   
+
    import os
    import yaml
    from pathlib import Path
-   
+
    # Import from the classifier package
    from fca_dashboard.classifier import (
        train_enhanced_model,
        predict_with_enhanced_model
    )
-   
+
    # Import path utilities
    from fca_dashboard.utils.path_util import get_config_path, resolve_path
-   
-   
+
+
    def load_settings():
        """Load settings from the configuration file"""
        settings_path = get_config_path("settings.yml")
-       
+
        try:
            with open(settings_path, 'r') as file:
                return yaml.safe_load(file)
        except FileNotFoundError:
            raise FileNotFoundError(f"Could not find settings file at: {settings_path}")
-   
-   
+
+
    def main():
        """Main function demonstrating the usage of the equipment classification package"""
        # Load settings
        settings = load_settings()
        classifier_settings = settings.get('classifier', {})
-       
+
        # Get data path from settings
        data_path = classifier_settings.get('data_paths', {}).get('training_data')
        if not data_path:
            print("Warning: Training data path not found in settings, using default path")
            data_path = "fca_dashboard/classifier/ingest/eq_ids.csv"
-       
+
        # Get output paths from settings
        example_settings = classifier_settings.get('examples', {})
        output_dir = example_settings.get('output_dir', 'fca_dashboard/examples/classifier/outputs')
        prediction_file = example_settings.get('prediction_file',
                                            os.path.join(output_dir, 'example_prediction.txt'))
-       
+
        # Create output directory if it doesn't exist
        os.makedirs(output_dir, exist_ok=True)
-       
+
        # Train enhanced model using the CSV file
        print(f"Training the model using data from: {data_path}")
        model, df = train_enhanced_model(data_path)
-       
+
        # Example prediction with service life
        description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
        service_life = 20.0  # Example service life in years
-       
+
        print("\nMaking a prediction for:")
        print(f"Description: {description}")
        print(f"Service Life: {service_life} years")
-       
+
        prediction = predict_with_enhanced_model(model, description, service_life)
-       
+
        print("\nEnhanced Prediction:")
        for key, value in prediction.items():
            print(f"{key}: {value}")
-   
+
        # Save prediction results to file
        print(f"\nSaving prediction results to {prediction_file}")
        with open(prediction_file, 'w') as f:
@@ -350,8 +376,8 @@ If visualization dependencies (matplotlib, seaborn) are causing issues, create a
            f.write("Prediction:\n")
            for key, value in prediction.items():
                f.write(f"  {key}: {value}\n")
-   
-   
+
+
    if __name__ == "__main__":
        main()
    ```
@@ -381,23 +407,23 @@ Create a verification script to check if all necessary components are in place:
    # fca_dashboard/utils/verify_classifier.py
    """
    Classifier Verification Script
-   
+
    This script verifies that all necessary components are in place to run the classifier example.
    It checks for required packages, data files, and module imports.
    """
-   
+
    import os
    import sys
    import importlib
    import pandas as pd
    from pathlib import Path
-   
-   
+
+
    def check_package_versions():
        """Check if all required packages are installed and compatible."""
        print("Checking package versions...")
        all_ok = True
-       
+
        # Check numpy
        try:
            import numpy
@@ -405,7 +431,7 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ numpy: Not installed")
            all_ok = False
-       
+
        # Check pandas
        try:
            import pandas
@@ -413,7 +439,7 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ pandas: Not installed")
            all_ok = False
-       
+
        # Check scikit-learn
        try:
            import sklearn
@@ -421,7 +447,7 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ scikit-learn: Not installed")
            all_ok = False
-       
+
        # Check matplotlib
        try:
            import matplotlib
@@ -429,7 +455,7 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ matplotlib: Not installed")
            all_ok = False
-       
+
        # Check seaborn
        try:
            import seaborn
@@ -437,7 +463,7 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ seaborn: Not installed")
            all_ok = False
-       
+
        # Check imbalanced-learn
        try:
            import imblearn
@@ -445,33 +471,33 @@ Create a verification script to check if all necessary components are in place:
        except ImportError:
            print("✗ imbalanced-learn: Not installed")
            all_ok = False
-       
+
        return all_ok
-   
-   
+
+
    def check_data_file():
        """Check if the training data file exists."""
        # Try to load from settings
        try:
            import yaml
            from fca_dashboard.utils.path_util import get_config_path, resolve_path
-           
+
            settings_path = get_config_path("settings.yml")
            with open(settings_path, 'r') as file:
                settings = yaml.safe_load(file)
-               
+
            data_path = settings.get('classifier', {}).get('data_paths', {}).get('training_data')
            if not data_path:
                # Fallback to default path
                data_path = "fca_dashboard/classifier/ingest/eq_ids.csv"
-           
+
            # Resolve the path to ensure it exists
            data_path = str(resolve_path(data_path))
        except Exception as e:
            print(f"Warning: Could not load settings: {e}")
            # Use absolute path as fallback
            data_path = str(Path(__file__).resolve().parent.parent / "classifier" / "ingest" / "eq_ids.csv")
-       
+
        print(f"\nChecking data file: {data_path}")
        if os.path.exists(data_path):
            print(f"✓ Data file exists: {data_path}")
@@ -485,20 +511,20 @@ Create a verification script to check if all necessary components are in place:
        else:
            print(f"✗ Data file not found: {data_path}")
            return False
-   
-   
+
+
    def check_module_imports():
        """Check if all required module imports work correctly."""
        print("\nChecking module imports...")
        all_ok = True
-       
+
        modules_to_check = [
            ('fca_dashboard.classifier', 'train_enhanced_model'),
            ('fca_dashboard.classifier', 'predict_with_enhanced_model'),
            ('fca_dashboard.utils.path_util', 'get_config_path'),
            ('fca_dashboard.utils.path_util', 'resolve_path'),
        ]
-       
+
        for module_name, attr_name in modules_to_check:
            try:
                module = importlib.import_module(module_name)
@@ -514,27 +540,27 @@ Create a verification script to check if all necessary components are in place:
            except Exception as e:
                print(f"✗ Unexpected error with {module_name}: {e}")
                all_ok = False
-       
+
        return all_ok
-   
-   
+
+
    def main():
        """Run all verification checks."""
        print("=" * 60)
        print("CLASSIFIER EXAMPLE VERIFICATION")
        print("=" * 60)
-       
+
        packages_ok = check_package_versions()
        data_ok = check_data_file()
        imports_ok = check_module_imports()
-       
+
        print("\n" + "=" * 60)
        print("VERIFICATION SUMMARY")
        print("=" * 60)
        print(f"Packages: {'✓ OK' if packages_ok else '✗ Issues found'}")
        print(f"Data file: {'✓ OK' if data_ok else '✗ Issues found'}")
        print(f"Module imports: {'✓ OK' if imports_ok else '✗ Issues found'}")
-       
+
        if packages_ok and data_ok and imports_ok:
            print("\nAll checks passed! You can run the classifier example with:")
            print("\n    python -m fca_dashboard.examples.classifier_example")
@@ -542,8 +568,8 @@ Create a verification script to check if all necessary components are in place:
        else:
            print("\nSome checks failed. Please fix the issues before running the classifier example.")
            return 1
-   
-   
+
+
    if __name__ == "__main__":
        sys.exit(main())
    ```
@@ -563,32 +589,32 @@ If persistent issues occur, create a clean environment setup script:
    ```batch
    @echo off
    echo Setting up a clean environment for the classifier example...
-   
+
    :: Create a new virtual environment
    echo Creating a new virtual environment...
    python -m venv .venv-classifier
-   
+
    :: Activate the virtual environment
    echo Activating the virtual environment...
    call .venv-classifier\Scripts\activate
-   
+
    :: Install dependencies
    echo Installing dependencies...
    pip install --upgrade pip
    pip install -r requirements.txt
    pip install -e .
-   
+
    :: Verify installation
    echo Verifying installation...
    python -c "import numpy; import pandas; import sklearn; import matplotlib; import seaborn; import imblearn; print('All packages imported successfully!')"
-   
+
    :: Run the classifier example
    echo Running the classifier example...
    python -m fca_dashboard.examples.classifier_example
-   
+
    :: Deactivate the virtual environment
    call deactivate
-   
+
    echo Done!
    ```
 
@@ -600,10 +626,13 @@ If persistent issues occur, create a clean environment setup script:
 
 ### 7. Interpreting Model Output and Warnings
 
-When running the classifier, you may encounter various warnings and outputs that need interpretation:
+When running the classifier, you may encounter various warnings and outputs that
+need interpretation:
 
 1. Understanding classification reports:
-   - The classifier outputs detailed classification reports for each target variable
+
+   - The classifier outputs detailed classification reports for each target
+     variable
    - Key metrics to look for:
      - Precision: Ratio of true positives to all predicted positives
      - Recall: Ratio of true positives to all actual positives
@@ -615,7 +644,9 @@ When running the classifier, you may encounter various warnings and outputs that
      - Feature representation problems
 
 2. Common warnings and their meanings:
+
    - `UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples`:
+
      - **Cause**: Some classes have no predicted samples in the test set
      - **Solution**: This is often normal for rare classes. Consider:
        - Using stratified sampling to ensure all classes appear in test set
@@ -623,6 +654,7 @@ When running the classifier, you may encounter various warnings and outputs that
        - Using a different evaluation metric for highly imbalanced classes
 
    - `ConvergenceWarning: Liblinear failed to converge, increase the number of iterations`:
+
      - **Cause**: The model optimization algorithm didn't reach convergence
      - **Solution**:
        - Increase max_iter parameter in the model
@@ -631,15 +663,19 @@ When running the classifier, you may encounter various warnings and outputs that
 
    - `DataConversionWarning: A column-vector y was passed when a 1d array was expected`:
      - **Cause**: Format mismatch in target variable
-     - **Solution**: Convert y to 1D array with `y = y.ravel()` or `y = np.ravel(y)`
+     - **Solution**: Convert y to 1D array with `y = y.ravel()` or
+       `y = np.ravel(y)`
 
 3. Interpreting model performance:
+
    - Overall accuracy above 0.95 is excellent for this classifier
    - Pay attention to performance on minority classes
    - Check for classes with consistently low performance across metrics
-   - Compare performance across different target variables (Equipment_Category, System_Type, etc.)
+   - Compare performance across different target variables (Equipment_Category,
+     System_Type, etc.)
 
 4. Analyzing misclassifications:
+
    - The classifier may output information about misclassified samples
    - Look for patterns in misclassifications:
      - Are certain classes frequently confused with each other?
@@ -663,6 +699,7 @@ When running the classifier, you may encounter various warnings and outputs that
 If you need to improve the classifier's performance:
 
 1. Feature engineering improvements:
+
    - Add more domain-specific features:
      - Extract more information from equipment descriptions
      - Include additional numerical features (e.g., dimensions, capacity)
@@ -673,6 +710,7 @@ If you need to improve the classifier's performance:
      - Apply domain-specific text normalization
 
 2. Model selection and tuning:
+
    - Try different classification algorithms:
      - Random Forest
      - Gradient Boosting
@@ -684,6 +722,7 @@ If you need to improve the classifier's performance:
      - Consider cross-validation strategies
 
 3. Handling class imbalance:
+
    - The current implementation uses RandomOverSampler
    - Alternative approaches:
      - SMOTE (Synthetic Minority Over-sampling Technique)
@@ -692,6 +731,7 @@ If you need to improve the classifier's performance:
    - Evaluate impact on minority class performance
 
 4. Ensemble methods:
+
    - Combine multiple models for better performance:
      - Voting classifiers
      - Stacking
@@ -699,6 +739,7 @@ If you need to improve the classifier's performance:
    - Especially effective for hierarchical classification tasks
 
 5. Performance monitoring:
+
    - Track model performance over time
    - Implement monitoring for:
      - Data drift
@@ -729,56 +770,78 @@ If you need to improve the classifier's performance:
    ```
 
 3. Check that the output files are created:
-   - Prediction file: `fca_dashboard/examples/classifier/outputs/example_prediction.txt`
+   - Prediction file:
+     `fca_dashboard/examples/classifier/outputs/example_prediction.txt`
 
 ## Troubleshooting
 
 ### Module Import Errors
 
 1. **ModuleNotFoundError: No module named 'fca_dashboard/fca_dashboard'**
+
    - **Cause**: Using slashes instead of dots in module path
    - **Solution**: Use `python -m fca_dashboard.examples.classifier_example`
-   - **Example**: If you see this error when running `python -m fca_dashboard/examples/classifier_example.py`, change to `python -m fca_dashboard.examples.classifier_example`
+   - **Example**: If you see this error when running
+     `python -m fca_dashboard/examples/classifier_example.py`, change to
+     `python -m fca_dashboard.examples.classifier_example`
 
 2. **ModuleNotFoundError: No module named 'fca_dashboard'**
+
    - **Cause**: Package not installed in development mode
    - **Solution**: Run `pip install -e .` or `make install`
-   - **Verification**: After installation, verify with `pip list | grep fca-dashboard`
+   - **Verification**: After installation, verify with
+     `pip list | grep fca-dashboard`
 
 3. **ImportError: attempted relative import with no known parent package**
+
    - **Cause**: Running a script directly instead of as a module
    - **Solution**: Use `python -m` syntax to run the script as a module
-   - **Example**: Change `python fca_dashboard/examples/classifier_example.py` to `python -m fca_dashboard.examples.classifier_example`
+   - **Example**: Change `python fca_dashboard/examples/classifier_example.py`
+     to `python -m fca_dashboard.examples.classifier_example`
 
 4. **ImportError: cannot import name 'X' from 'Y'**
    - **Cause**: Missing or incorrect implementation of the imported item
-   - **Solution**: Check that the imported item exists in the specified module and is spelled correctly
+   - **Solution**: Check that the imported item exists in the specified module
+     and is spelled correctly
    - **Verification**: Inspect the module file to confirm the item exists
 
 ### Package Compatibility Issues
 
-1. **ImportError: cannot import name '_imaging' from 'PIL'**
+1. **ImportError: cannot import name '\_imaging' from 'PIL'**
+
    - **Cause**: Pillow installation issue
-   - **Solution**: Reinstall Pillow with `pip uninstall -y pillow && pip install pillow`
+   - **Solution**: Reinstall Pillow with
+     `pip uninstall -y pillow && pip install pillow`
    - **Alternative**: Try `pip install --force-reinstall pillow`
 
-2. **ModuleNotFoundError: No module named 'numpy._core._multiarray_umath'**
+2. **ModuleNotFoundError: No module named 'numpy.\_core.\_multiarray_umath'**
+
    - **Cause**: NumPy installation issue
-   - **Solution**: Reinstall NumPy with `pip uninstall -y numpy && pip install numpy`
+   - **Solution**: Reinstall NumPy with
+     `pip uninstall -y numpy && pip install numpy`
    - **Alternative**: Try a specific version: `pip install numpy==1.23.5`
 
-3. **ImportError: cannot import name '_c_internal_utils' from 'matplotlib'**
+3. **ImportError: cannot import name '\_c_internal_utils' from 'matplotlib'**
+
    - **Cause**: Matplotlib installation issue
-   - **Solution**: Reinstall matplotlib with `pip uninstall -y matplotlib && pip install matplotlib`
-   - **Verification**: Check if matplotlib works with `python -c "import matplotlib; print(matplotlib.__version__)"`
+   - **Solution**: Reinstall matplotlib with
+     `pip uninstall -y matplotlib && pip install matplotlib`
+   - **Verification**: Check if matplotlib works with
+     `python -c "import matplotlib; print(matplotlib.__version__)"`
 
-4. **ModuleNotFoundError: No module named 'kiwisolver._cext'**
+4. **ModuleNotFoundError: No module named 'kiwisolver.\_cext'**
+
    - **Cause**: Kiwisolver installation issue (dependency of matplotlib)
-   - **Solution**: Reinstall kiwisolver with `pip uninstall -y kiwisolver && pip install kiwisolver`
-   - **Details**: This is a common issue when C extensions aren't properly compiled. The reinstallation forces a rebuild of the C extensions.
-   - **Alternative**: If reinstallation doesn't work, try `pip install --force-reinstall --no-binary kiwisolver kiwisolver`
+   - **Solution**: Reinstall kiwisolver with
+     `pip uninstall -y kiwisolver && pip install kiwisolver`
+   - **Details**: This is a common issue when C extensions aren't properly
+     compiled. The reinstallation forces a rebuild of the C extensions.
+   - **Alternative**: If reinstallation doesn't work, try
+     `pip install --force-reinstall --no-binary kiwisolver kiwisolver`
 
-5. **ValueError: numpy.ndarray size changed, may indicate binary incompatibility**
+5. **ValueError: numpy.ndarray size changed, may indicate binary
+   incompatibility**
+
    - **Cause**: Version mismatch between NumPy and packages that depend on it
    - **Solution**: Reinstall all scientific packages in the correct order:
 
@@ -790,16 +853,21 @@ If you need to improve the classifier's performance:
 ### Data File Issues
 
 1. **FileNotFoundError: Could not find settings file**
+
    - **Cause**: Settings file not found at expected location
    - **Solution**: Verify the path to settings.yml is correct
-   - **Verification**: Check the actual path with `python -c "from fca_dashboard.utils.path_util import get_config_path; print(get_config_path('settings.yml'))"`
+   - **Verification**: Check the actual path with
+     `python -c "from fca_dashboard.utils.path_util import get_config_path; print(get_config_path('settings.yml'))"`
 
 2. **FileNotFoundError: Could not find data file**
+
    - **Cause**: Training data file not found at expected location
    - **Solution**: Verify the path to eq_ids.csv is correct in settings.yml
-   - **Verification**: Use the verification script to check data file availability
+   - **Verification**: Use the verification script to check data file
+     availability
 
 3. **UnicodeDecodeError when reading CSV file**
+
    - **Cause**: Encoding issues in the data file
    - **Solution**: Specify the correct encoding when reading the file:
 
@@ -808,6 +876,7 @@ If you need to improve the classifier's performance:
      ```
 
 4. **pandas.errors.ParserError: Error tokenizing data**
+
    - **Cause**: CSV format issues (delimiters, quotes, etc.)
    - **Solution**: Inspect the file and specify the correct parameters:
 
@@ -818,25 +887,33 @@ If you need to improve the classifier's performance:
 ### Visualization Issues
 
 1. **ImportError: matplotlib or seaborn related errors**
+
    - **Cause**: Issues with visualization dependencies
-   - **Solution**: Use the simplified version without visualizations: `make run-classifier-simple`
-   - **Alternative**: Fix the visualization dependencies as described in the "Package Compatibility Issues" section
+   - **Solution**: Use the simplified version without visualizations:
+     `make run-classifier-simple`
+   - **Alternative**: Fix the visualization dependencies as described in the
+     "Package Compatibility Issues" section
 
 2. **RuntimeError: Python is not installed as a framework (macOS)**
+
    - **Cause**: macOS-specific matplotlib issue
-   - **Solution**: Create a file at `~/.matplotlib/matplotlibrc` with the content:
+   - **Solution**: Create a file at `~/.matplotlib/matplotlibrc` with the
+     content:
 
      ```
      backend: TkAgg
      ```
 
-3. **UserWarning: Matplotlib is currently using agg, which is a non-GUI backend**
+3. **UserWarning: Matplotlib is currently using agg, which is a non-GUI
+   backend**
    - **Cause**: Running in an environment without display capabilities
-   - **Solution**: Use `plt.savefig()` instead of `plt.show()` or set a different backend
+   - **Solution**: Use `plt.savefig()` instead of `plt.show()` or set a
+     different backend
 
 ### Model Training and Prediction Issues
 
 1. **ValueError: Input contains NaN, infinity or a value too large**
+
    - **Cause**: Missing or invalid values in the input data
    - **Solution**: Clean the data before training:
 
@@ -846,6 +923,7 @@ If you need to improve the classifier's performance:
      ```
 
 2. **MemoryError during model training**
+
    - **Cause**: Dataset too large for available memory
    - **Solution**: Reduce dataset size or use incremental learning:
 
@@ -855,6 +933,7 @@ If you need to improve the classifier's performance:
      ```
 
 3. **UndefinedMetricWarning: Precision/recall is ill-defined**
+
    - **Cause**: Some classes have no predicted samples in the test set
    - **Solution**: This is normal for rare classes. Use stratified sampling:
 
@@ -866,22 +945,27 @@ If you need to improve the classifier's performance:
 ### Virtual Environment Issues
 
 1. **Virtual environment not activating properly**
+
    - **Cause**: Incorrect activation command or path
    - **Solution**:
      - Windows: `.\.venv\Scripts\activate`
      - Unix/Linux/macOS: `source .venv/bin/activate`
-   - **Verification**: Check if the environment is active with `which python` or `where python`
+   - **Verification**: Check if the environment is active with `which python` or
+     `where python`
 
 2. **Packages installed in wrong environment**
    - **Cause**: Installing packages without activating the virtual environment
-   - **Solution**: Ensure the virtual environment is activated before installing packages
-   - **Verification**: Check the installation path with `pip show <package-name>`
+   - **Solution**: Ensure the virtual environment is activated before installing
+     packages
+   - **Verification**: Check the installation path with
+     `pip show <package-name>`
 
 ### Environment-Specific Issues
 
 #### Windows-Specific Issues
 
 1. **Path length limitations**
+
    - **Cause**: Windows has a 260-character path length limit
    - **Solution**: Use shorter paths or enable long path support:
 
@@ -891,6 +975,7 @@ If you need to improve the classifier's performance:
      ```
 
 2. **Command prompt encoding issues**
+
    - **Cause**: Default encoding may not support all characters
    - **Solution**: Set UTF-8 encoding:
 
@@ -899,27 +984,31 @@ If you need to improve the classifier's performance:
      ```
 
 3. **Backslash vs. forward slash in paths**
-   - **Cause**: Windows uses backslashes in paths, but Python often expects forward slashes
+
+   - **Cause**: Windows uses backslashes in paths, but Python often expects
+     forward slashes
    - **Solution**: Use raw strings or double backslashes:
 
      ```python
      # Raw string
      path = r"C:\Repos\fca-dashboard4\fca_dashboard"
-     
+
      # Double backslashes
      path = "C:\\Repos\\fca-dashboard4\\fca_dashboard"
-     
+
      # Forward slashes (usually works in Python)
      path = "C:/Repos/fca-dashboard4/fca_dashboard"
      ```
 
 4. **DLL load failed errors**
    - **Cause**: Missing Visual C++ Redistributable
-   - **Solution**: Install the appropriate Visual C++ Redistributable from Microsoft
+   - **Solution**: Install the appropriate Visual C++ Redistributable from
+     Microsoft
 
 #### macOS-Specific Issues
 
 1. **Matplotlib framework issues**
+
    - **Cause**: macOS requires matplotlib to be installed as a framework
    - **Solution**: Create a matplotlibrc file:
 
@@ -929,6 +1018,7 @@ If you need to improve the classifier's performance:
      ```
 
 2. **XCode dependency issues**
+
    - **Cause**: Some packages require XCode command-line tools
    - **Solution**: Install with:
 
@@ -937,6 +1027,7 @@ If you need to improve the classifier's performance:
      ```
 
 3. **OpenSSL issues**
+
    - **Cause**: macOS may use its own SSL libraries
    - **Solution**: Install OpenSSL via Homebrew:
 
@@ -949,18 +1040,20 @@ If you need to improve the classifier's performance:
 #### Linux-Specific Issues
 
 1. **Missing system libraries**
+
    - **Cause**: Some Python packages require system libraries
    - **Solution**: Install required development packages:
 
      ```bash
      # Ubuntu/Debian
      sudo apt-get install python3-dev build-essential
-     
+
      # CentOS/RHEL
      sudo yum install python3-devel gcc
      ```
 
 2. **Permission issues**
+
    - **Cause**: Insufficient permissions to access files or directories
    - **Solution**: Adjust permissions:
 

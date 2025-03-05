@@ -1,33 +1,33 @@
 # Environment settings
 env:
-  ENVIRONMENT: "development"  # Default environment (can be overridden by OS environment variables)
-  LOG_LEVEL: "INFO"
+  ENVIRONMENT: 'development' # Default environment (can be overridden by OS environment variables)
+  LOG_LEVEL: 'INFO'
   DEBUG: true
 
 # File paths
 file_paths:
-  uploads_dir: "uploads"  # Directory for uploaded files (relative to project root)
-  extracts_dir: "extracts"  # Directory for extracted data (relative to project root)
-  examples_dir: "examples"  # Directory for example files (relative to project root)
-  
+  uploads_dir: 'uploads' # Directory for uploaded files (relative to project root)
+  extracts_dir: 'extracts' # Directory for extracted data (relative to project root)
+  examples_dir: 'examples' # Directory for example files (relative to project root)
+
 # Example settings
 examples:
   excel:
-    sample_filename: "sample_data.xlsx"
-    columns_to_extract: ["ID", "Product", "Price"]
+    sample_filename: 'sample_data.xlsx'
+    columns_to_extract: ['ID', 'Product', 'Price']
     price_threshold: 15
-  
+
 # Classifier settings
 classifier:
   data_paths:
-    training_data: "fca_dashboard/classifier/ingest/eq_ids.csv"
+    training_data: 'fca_dashboard/classifier/ingest/eq_ids.csv'
   model:
     random_forest:
       n_estimators: 200
       max_depth: null
       min_samples_split: 2
       min_samples_leaf: 1
-      class_weight: "balanced_subsample"
+      class_weight: 'balanced_subsample'
       random_state: 42
   tfidf:
     max_features: 5000
@@ -37,74 +37,100 @@ classifier:
     use_idf: true
     sublinear_tf: true
   output:
-    visualizations_dir: "outputs"
-    equipment_category_distribution: "outputs/equipment_category_distribution.png"
-    system_type_distribution: "outputs/system_type_distribution.png"
+    visualizations_dir: 'outputs'
+    equipment_category_distribution: 'outputs/equipment_category_distribution.png'
+    system_type_distribution: 'outputs/system_type_distribution.png'
   examples:
-    output_dir: "fca_dashboard/examples/classifier/outputs"
-    prediction_file: "fca_dashboard/examples/classifier/outputs/example_prediction.txt"
-    equipment_category_distribution: "fca_dashboard/examples/classifier/outputs/equipment_category_distribution.png"
-    system_type_distribution: "fca_dashboard/examples/classifier/outputs/system_type_distribution.png"
+    output_dir: 'fca_dashboard/examples/classifier/outputs'
+    prediction_file: 'fca_dashboard/examples/classifier/outputs/example_prediction.txt'
+    equipment_category_distribution: 'fca_dashboard/examples/classifier/outputs/equipment_category_distribution.png'
+    system_type_distribution: 'fca_dashboard/examples/classifier/outputs/system_type_distribution.png'
 
 # Medtronics pipeline settings
 medtronics:
-  input_file: "uploads/Medtronics - Asset Log Uploader.xlsx"
-  output_dir: "outputs/pipeline/medtronic"
-  db_name: "medtronics_assets.db"
-  sheet_name: "Asset Data"
-  columns_to_extract: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
-  drop_na_columns: ["asset name"]  # Drop rows where these columns have NaN values
+  input_file: 'uploads/Medtronics - Asset Log Uploader.xlsx'
+  output_dir: 'outputs/pipeline/medtronic'
+  db_name: 'medtronics_assets.db'
+  sheet_name: 'Asset Data'
+  columns_to_extract:
+    [
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+    ]
+  drop_na_columns: ['asset name'] # Drop rows where these columns have NaN values
   # Staging configuration
   staging:
     enabled: true
-    db_path: "outputs/pipeline/medtronic/staging.db"
-    source_system: "Medtronics"
-    batch_id_prefix: "MEDTRONICS-BATCH-"
+    db_path: 'outputs/pipeline/medtronic/staging.db'
+    source_system: 'Medtronics'
+    batch_id_prefix: 'MEDTRONICS-BATCH-'
 
 # Wichita Animal Shelter pipeline settings
 wichita:
-  input_file: "uploads/Asset_List Wichita Animal Shelter (1).csv"
-  output_dir: "outputs/pipeline/wichita"
-  db_name: "wichita_assets.db"
-  columns_to_extract: []  # Empty list means use all columns
-  drop_na_columns: ["Asset Name", "Asset Category Name"]  # Drop rows where these columns have NaN values
+  input_file: 'uploads/Asset_List Wichita Animal Shelter (1).csv'
+  output_dir: 'outputs/pipeline/wichita'
+  db_name: 'wichita_assets.db'
+  columns_to_extract: [] # Empty list means use all columns
+  drop_na_columns: ['Asset Name', 'Asset Category Name'] # Drop rows where these columns have NaN values
   # Staging configuration
   staging:
     enabled: true
-    db_path: "outputs/pipeline/wichita/staging.db"
-    source_system: "Wichita"
-    batch_id_prefix: "WICHITA-BATCH-"
+    db_path: 'outputs/pipeline/wichita/staging.db'
+    source_system: 'Wichita'
+    batch_id_prefix: 'WICHITA-BATCH-'
 
 # Excel utilities settings
 excel_utils:
   extraction:
     default:
-      header_row: null  # Auto-detect
+      header_row: null # Auto-detect
       drop_empty_rows: true
       clean_column_names: true
       strip_whitespace: true
       convert_dtypes: true
     asset_data:
-      header_row: 6  # We know the header starts at row 7 (index 6)
+      header_row: 6 # We know the header starts at row 7 (index 6)
     eq_ids:
-      header_row: 0  # Header is in the first row
+      header_row: 0 # Header is in the first row
     cobie:
-      header_row: 2  # Header is in the third row
+      header_row: 2 # Header is in the third row
     dropdowns:
-      header_row: 0  # Header is in the first row
-  
+      header_row: 0 # Header is in the first row
+
   validation:
     default:
       missing_values:
-        threshold: 0.5  # Allow up to 50% missing values
-        columns: null  # Check all columns
+        threshold: 0.5 # Allow up to 50% missing values
+        columns: null # Check all columns
       duplicate_rows:
-        subset: null  # Check all columns for duplicates
+        subset: null # Check all columns for duplicates
       data_types:
-        date_columns: ["date", "scheduled delivery date", "actual on-site date"]
-        numeric_columns: ["motor hp", "size"]
-        string_columns: ["equipment name", "equipment tag id", "manufacturer"]
-        boolean_columns: ["o&m received", "attic stock"]
+        date_columns: ['date', 'scheduled delivery date', 'actual on-site date']
+        numeric_columns: ['motor hp', 'size']
+        string_columns: ['equipment name', 'equipment tag id', 'manufacturer']
+        boolean_columns: ['o&m received', 'attic stock']
     asset_data:
       value_ranges:
         motor hp:
@@ -112,14 +138,14 @@ excel_utils:
           max: 1000
         size:
           min: 0
-          max: null  # No upper limit
+          max: null # No upper limit
     eq_ids:
-      required_columns: ["Lookup (for Uploader)", "Trade", "Precon System"]
-  
+      required_columns: ['Lookup (for Uploader)', 'Trade', 'Precon System']
+
   analysis:
     default:
       unique_values:
-        max_unique_values: 20  # Maximum number of unique values to include in the result
+        max_unique_values: 20 # Maximum number of unique values to include in the result
       column_statistics:
         include_outliers: true
       text_analysis:
@@ -128,28 +154,28 @@ excel_utils:
 # Database settings
 databases:
   sqlite:
-    url: "sqlite:///fca_dashboard.db"
+    url: 'sqlite:///fca_dashboard.db'
   postgresql:
-    url: "${POSTGRES_URL}"
+    url: '${POSTGRES_URL}'
   staging:
-    schema_path: "fca_dashboard/db/staging/schema/staging_schema_sqlite.sql"
+    schema_path: 'fca_dashboard/db/staging/schema/staging_schema_sqlite.sql'
     batch_size: 1000
     error_retry_limit: 3
     processed_retention_days: 30
-    
+
 # Pipeline settings
 pipeline_settings:
   batch_size: 5000
-  log_level: "${LOG_LEVEL}"  # Uses the environment variable from env section
-  
+  log_level: '${LOG_LEVEL}' # Uses the environment variable from env section
+
 # Table mappings
 tables:
   equipment:
-    mapping_type: "direct"
+    mapping_type: 'direct'
     column_mappings:
-      tag: "Tag"
-      name: "Name"
-      description: "Description"
+      tag: 'Tag'
+      name: 'Name'
+      description: 'Description'
 
 # Mapper settings
 mappers:
@@ -158,30 +184,39 @@ mappers:
     # Format: "SourceSystem": "module.path.ClassName"
   medtronics:
     column_mapping:
-      asset_name: "equipment_type"
-      asset_tag: "equipment_tag"
-      model_number: "model"
-      serial_number: "serial_number"
-      system_category: "category_name"
-      sub_system_type: "mcaa_subsystem_type"
-      sub_system_classification: "mcaa_subsystem_classification"
-      date_installed: "install_date"
-      room_number: "room"
-      size: "capacity"
-      motor_hp: "attributes"
-      estimated_operating_hours: "attributes"
-      service_life: "estimated_service_life_years"
-      floor: "floor"
-      area: "other_location_info"
-      notes: "attributes"
+      asset_name: 'equipment_type'
+      asset_tag: 'equipment_tag'
+      model_number: 'model'
+      serial_number: 'serial_number'
+      system_category: 'category_name'
+      sub_system_type: 'mcaa_subsystem_type'
+      sub_system_classification: 'mcaa_subsystem_classification'
+      date_installed: 'install_date'
+      room_number: 'room'
+      size: 'capacity'
+      motor_hp: 'attributes'
+      estimated_operating_hours: 'attributes'
+      service_life: 'estimated_service_life_years'
+      floor: 'floor'
+      area: 'other_location_info'
+      notes: 'attributes'
+      # Additional mappings for all columns
+      trade: 'attributes'
+      equip_served_by: 'attributes'
+      vendor: 'manufacturer'
+      manufacturer: 'manufacturer'
+      unit: 'attributes'
+      usassetid: 'equipment_tag'
+      asset_size_rounded_up: 'attributes'
+      id_unit: 'attributes'
   wichita:
     column_mapping:
-      Asset_Name: "equipment_type"
-      Asset_Tag: "equipment_tag"
-      Manufacturer: "manufacturer"
-      Model: "model"
-      Serial_Number: "serial_number"
-      Asset_Category_Name: "category_name"
-      Asset_Type: "equipment_type"
-      Location: "other_location_info"
-      Install_Date: "install_date"
+      Asset_Name: 'equipment_type'
+      Asset_Tag: 'equipment_tag'
+      Manufacturer: 'manufacturer'
+      Model: 'model'
+      Serial_Number: 'serial_number'
+      Asset_Category_Name: 'category_name'
+      Asset_Type: 'equipment_type'
+      Location: 'other_location_info'
+      Install_Date: 'install_date'

@@ -129,13 +129,28 @@ class MedtronicsMapper(BaseMapper):
                 if src_col in staging_df.columns:
                     mapped_df[dest_col] = staging_df[src_col]
             
-            # Handle special columns that need to be converted to JSON
-            json_columns = ["motor_hp", "estimated_operating_hours", "notes"]
+            # Get all columns that are in the source DataFrame but not in the mapping
+            mapped_columns = set(mapped_df.columns)
+            source_columns = set(staging_df.columns)
+            unmapped_columns = source_columns - mapped_columns
+            
+            # Remove columns that are already mapped (to avoid duplicates)
+            unmapped_columns = [col for col in unmapped_columns if col not in self._column_mapping.keys()]
+            
+            self.logger.info(f"Found {len(unmapped_columns)} unmapped columns: {unmapped_columns}")
+            
+            # Store all unmapped columns in the attributes field
             attributes = {}
             
+            # First, handle explicitly defined JSON columns
+            json_columns = ["motor_hp", "estimated_operating_hours", "notes"]
             for col in json_columns:
                 if col in staging_df.columns:
-                    # Add to attributes dictionary
+                    attributes[col] = staging_df[col].to_dict()
+            
+            # Then, handle all remaining unmapped columns
+            for col in unmapped_columns:
+                if col in staging_df.columns:
                     attributes[col] = staging_df[col].to_dict()
             
             # If we have attributes, add them as a JSON column
