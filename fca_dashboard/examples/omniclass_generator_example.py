@@ -203,7 +203,7 @@ def extract_all_omniclass_data():
     
     # Extract OmniClass data using the generator
     input_dir = settings.get("generator.omniclass.input_dir", "files/omniclass_tables")
-    output_file = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/omniclass.csv")
+    output_file = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/unified_training_data.csv")
     file_pattern = settings.get("generator.omniclass.file_pattern", "*.xlsx")
     
     # Get column mapping from settings
@@ -222,9 +222,10 @@ def extract_all_omniclass_data():
     for original, mapped in column_mapping.items():
         print(f"  - {original} -> {mapped}")
     
+    # Extract data but don't save to the original output file
     combined_df = extract_omniclass_data(
         input_dir=input_dir,
-        output_file=output_file,
+        output_file=None,  # Don't save the original output
         file_pattern=file_pattern
     )
     
@@ -253,14 +254,13 @@ def extract_all_omniclass_data():
     print("\nSample data:")
     print(combined_df.sample(min(5, len(combined_df))).to_string())
     
-    # Save a copy of the data in the unified training data format
-    unified_output_file = output_file.replace(".csv", "_unified.csv")
-    unified_output_path = resolve_path(unified_output_file)
+    # Save the data in the unified training data format
+    unified_output_path = resolve_path(output_file)
     
     # Create a new DataFrame with the unified structure
     # First, identify which columns might contain OmniClass codes, titles, and descriptions
     # Look for columns that might contain OmniClass codes (typically formatted like XX-XX XX XX)
-    ode_columns = [col for col in combined_df.columns if isinstance(col, str) and
+    code_columns = [col for col in combined_df.columns if isinstance(col, str) and
                    (col.count('-') > 0 or col.count(' ') > 0) and
                    any(c.isdigit() for c in col)]
     
@@ -424,17 +424,14 @@ def main():
     logger.info("Step 2: Extracting data from all OmniClass files and creating unified training data")
     combined_df = extract_all_omniclass_data()
     
-    # Show the path to the output files
-    output_path = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/omniclass.csv")
+    # Show the path to the output file
+    output_path = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/unified_training_data.csv")
     output_file = resolve_path(output_path)
-    unified_output_path = resolve_path(output_path.replace(".csv", "_unified.csv"))
     
-    logger.info(f"Original output file saved to: {output_file}")
-    logger.info(f"Unified training data saved to: {unified_output_path}")
+    logger.info(f"Unified training data saved to: {output_file}")
     
-    print(f"\nOutput files:")
-    print(f"  - Original: {output_file}")
-    print(f"  - Unified: {unified_output_path}")
+    print(f"\nOutput file:")
+    print(f"  - Unified training data: {output_file}")
     
     logger.info("OmniClass Generator Example completed successfully")
     return 0

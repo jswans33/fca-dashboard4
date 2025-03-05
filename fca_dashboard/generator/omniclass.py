@@ -208,10 +208,12 @@ def extract_omniclass_data(
     from fca_dashboard.utils.data_cleaning_utils import standardize_column_names
     combined_df = standardize_column_names(combined_df, column_mapping=column_mapping)
     
-    # Save to CSV
-    combined_df.to_csv(output_file, index=False)
-    
-    logger.info(f"Saved {len(combined_df)} rows to {output_file}")
+    # Save to CSV if output_file is not None
+    if output_file is not None:
+        combined_df.to_csv(output_file, index=False)
+        logger.info(f"Saved {len(combined_df)} rows to {output_file}")
+    else:
+        logger.info(f"Skipping saving to CSV as output_file is None")
     
     return combined_df
 

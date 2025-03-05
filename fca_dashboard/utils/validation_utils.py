@@ -215,8 +215,11 @@ def is_valid_omniclass_data(data: Union[str, pd.DataFrame], required_columns: Op
     # Check OmniClass_Code format if the column exists
     if 'OmniClass_Code' in df.columns:
         # OmniClass codes can follow various patterns like XX-XX XX XX or XX-XX XX XX XX
-        # We'll use a more flexible pattern that allows for variations
-        invalid_codes = df[~df['OmniClass_Code'].str.match(r'^\d{2}-\d{2}([ ]\d{2})*$', na=True)]
+        # We'll use a more flexible pattern that allows for variations and optional suffixes
+        # The pattern allows for:
+        # - Basic format: XX-XX XX XX
+        # - With suffix: XX-XX XX XX-N (where N is a number)
+        invalid_codes = df[~df['OmniClass_Code'].str.match(r'^\d{2}-\d{2}([ ]\d{2})*(-\d+)?$', na=True)]
         if not invalid_codes.empty:
             errors.append(f"Found {len(invalid_codes)} rows with invalid OmniClass_Code format")
             stats['invalid_code_count'] = len(invalid_codes)
