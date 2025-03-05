@@ -79,7 +79,7 @@ medtronics:
       'W',
       'X',
     ]
-  drop_na_columns: ['asset name'] # Drop rows where these columns have NaN values
+  drop_na_columns: ['asset name', 'Asset Tag', 'Asset ID', 'USAssetID'] # Drop rows where these columns have NaN values
   # Staging configuration
   staging:
     enabled: true

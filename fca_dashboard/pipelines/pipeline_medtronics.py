@@ -185,7 +185,7 @@ class MedtronicsPipeline:
             df.columns = [col.lower() for col in df.columns]
             self.logger.info(f"Normalized column names: {list(df.columns)}")
         
-        # Drop rows with NaN values in specified columns
+        # Drop rows with NaN values or placeholder values in specified columns
         if self.drop_na_columns and df is not None:
             original_row_count = len(df)
             
@@ -196,9 +196,27 @@ class MedtronicsPipeline:
             existing_cols = [col for col in drop_na_columns_lower if col in df.columns]
             
             if existing_cols:
+                # First drop rows with NaN values
                 self.logger.info(f"Dropping rows with NaN values in columns: {existing_cols}")
                 df = df.dropna(subset=existing_cols)
-                self.logger.info(f"Dropped {original_row_count - len(df)} rows with NaN values")
+                dropped_count = original_row_count - len(df)
+                self.logger.info(f"Dropped {dropped_count} rows with NaN values")
+                
+                # Now filter out rows with placeholder values like "NO ID"
+                current_count = len(df)
+                placeholder_values = ['no id', 'none', 'n/a', 'unknown', '']
+                
+                # Create a mask for each column to identify rows with placeholder values
+                for col in existing_cols:
+                    if col in df.columns:
+                        # Convert values to lowercase for case-insensitive comparison
+                        mask = df[col].astype(str).str.lower().isin(placeholder_values)
+                        if mask.any():
+                            self.logger.info(f"Dropping {mask.sum()} rows with placeholder values in column '{col}'")
+                            df = df[~mask]
+                
+                total_dropped = original_row_count - len(df)
+                self.logger.info(f"Total rows dropped: {total_dropped} ({dropped_count} NaN, {total_dropped - dropped_count} placeholder values)")
             else:
                 self.logger.warning(f"None of the specified columns for dropping NaN values exist in the DataFrame")
                 self.logger.warning(f"Available columns: {list(df.columns)}")
