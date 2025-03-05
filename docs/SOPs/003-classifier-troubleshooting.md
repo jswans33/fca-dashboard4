@@ -25,6 +25,17 @@ This SOP covers:
 - Familiarity with the project structure
 - Understanding of machine learning concepts (for advanced troubleshooting)
 
+## Quick Start
+
+- Check installation status:
+  - $ python -m fca_dashboard.utils.verify_classifier
+  
+- Install missing dependency:
+  - $ python -m pip install scikit-learn matplotlib seaborn imbalanced-learn
+  
+- Run Classifier Example
+  - Run python -m fca_dashboard.examples.classifier_example
+
 ## Procedure
 
 ### 1. Diagnosing Module Import Errors
@@ -973,7 +984,7 @@ If you need to improve the classifier's performance:
 
 ## Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-03-04 | ETL Team | Initial version |
-| 1.1 | 2025-03-04 | ETL Team | Expanded troubleshooting sections, added environment-specific issues, added detailed examples and verification steps, expanded references |
+| Version | Date       | Author   | Changes                                                                                                                                   |
+| ------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0     | 2025-03-04 | ETL Team | Initial version                                                                                                                           |
+| 1.1     | 2025-03-04 | ETL Team | Expanded troubleshooting sections, added environment-specific issues, added detailed examples and verification steps, expanded references |
