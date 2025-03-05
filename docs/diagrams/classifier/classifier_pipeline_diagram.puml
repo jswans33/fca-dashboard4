@@ -1,0 +1,199 @@
+@startuml "Equipment Classifier Pipeline"
+
+' Define the styles
+skinparam packageStyle rectangle
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam arrowColor black
+skinparam activityBackgroundColor lightblue
+skinparam activityBorderColor black
+skinparam noteBackgroundColor lightyellow
+skinparam noteBorderColor black
+skinparam arrowFontSize 12
+
+' Title
+title Equipment Classifier - Data Processing Pipeline
+
+' Start
+start
+
+' Data Loading
+partition "Data Loading" {
+  :Load CSV data from file;
+  note right: Default path: fca_dashboard/classifier/ingest/eq_ids.csv
+  
+  :Handle encoding issues;
+  note right: Try UTF-8 first, then Latin-1
+  
+  :Clean column names;
+  note right: Remove whitespace, standardize names
+  
+  :Fill missing values;
+  note right: Empty strings for text, 0 for numeric
+}
+
+' Feature Engineering
+partition "Feature Engineering" {
+  :Extract primary classification columns;
+  note right
+    Equipment_Category = Asset Category
+    Uniformat_Class = System Type ID
+    System_Type = Precon System
+  end note
+  
+  :Create combined text features;
+  note right
+    Combine multiple fields:
+    - Asset Category
+    - Equip Name ID
+    - Sub System Type
+    - Sub System ID
+    - Title
+    - Precon System
+    - Operations System
+    - Sub System Class
+    - Drawing Abbreviation
+  end note
+  
+  :Add service life as numeric feature;
+  note right: service_life = Service Life (filled with 0 if missing)
+  
+  :Create hierarchical categories;
+  note right
+    Equipment_Type = Asset Category + '-' + Equip Name ID
+    System_Subtype = Precon System + '-' + Operations System
+  end note
+}
+
+' Data Preparation
+partition "Data Preparation" {
+  :Prepare features and targets;
+  note right
+    X = DataFrame with:
+    - combined_features
+    - service_life
+    
+    y = DataFrame with:
+    - Equipment_Category
+    - Uniformat_Class
+    - System_Type
+    - Equipment_Type
+    - System_Subtype
+  end note
+  
+  :Split into training and test sets;
+  note right: 70% training, 30% testing
+  
+  :Handle class imbalance;
+  note right
+    Use RandomOverSampler to duplicate minority classes
+    Create composite key for multi-output classification
+  end note
+}
+
+' Model Building
+partition "Model Building" {
+  :Create text feature pipeline;
+  note right
+    TfidfVectorizer with:
+    - max_features = 5000
+    - ngram_range = (1, 3)
+    - min_df = 2
+    - max_df = 0.9
+    - use_idf = True
+    - sublinear_tf = True
+  end note
+  
+  :Create numeric feature pipeline;
+  note right: StandardScaler for service_life
+  
+  :Combine with ColumnTransformer;
+  note right
+    Preprocessor with:
+    - text transformer for 'combined_features'
+    - numeric transformer for 'service_life'
+  end note
+  
+  :Build RandomForest classifier;
+  note right
+    MultiOutputClassifier with RandomForestClassifier:
+    - n_estimators = 200
+    - class_weight = 'balanced_subsample'
+    - random_state = 42
+  end note
+}
+
+' Model Training
+partition "Model Training" {
+  :Train model on resampled data;
+  note right: model.fit(X_train_resampled, y_train_resampled)
+  
+  :Evaluate model on test data;
+  note right
+    Generate classification reports
+    Calculate accuracy metrics
+    Analyze "Other" category performance
+  end note
+  
+  :Analyze feature importance;
+  note right
+    Extract feature importance from RandomForest
+    Identify top features for each classification
+  end note
+  
+  :Analyze misclassifications;
+  note right
+    Examine false positives and false negatives
+    Focus on "Other" category performance
+  end note
+}
+
+' Prediction
+partition "Prediction" {
+  :Receive input description and service life;
+  note right
+    Input:
+    - Text description of equipment
+    - Service life value (optional)
+  end note
+  
+  :Preprocess input data;
+  note right
+    Create DataFrame with:
+    - combined_features = description
+    - service_life = service_life value
+  end note
+  
+  :Make prediction with model;
+  note right: model.predict(input_data)
+  
+  :Extract classification results;
+  note right
+    Results:
+    - Equipment_Category
+    - Uniformat_Class
+    - System_Type
+    - Equipment_Type
+    - System_Subtype
+  end note
+  
+  :Map to MasterFormat class;
+  note right
+    Use enhanced_masterformat_mapping function:
+    1. Try equipment-specific mapping
+    2. Try primary mapping
+    3. Fall back to general mapping
+  end note
+  
+  :Return prediction results;
+  note right
+    Final output:
+    - All classification results
+    - MasterFormat_Class code
+  end note
+}
+
+' End
+stop
+
+@enduml

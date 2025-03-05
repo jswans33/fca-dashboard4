@@ -52,17 +52,21 @@ This SOP covers:
 4. Check if you're using the correct Python interpreter:
    - Different terminals or IDEs might use different Python environments
    - Verify which Python is being used with:
+
      ```bash
      which python  # On Unix/Linux/macOS
      where python  # On Windows
      ```
+
    - Ensure you're using the Python from your virtual environment:
+
      ```
      # Should show a path like .venv/bin/python or .venv\Scripts\python.exe
      ```
 
 5. Verify virtual environment activation:
    - On Windows:
+
      ```bash
      # Activate the environment
      .\.venv\Scripts\activate
@@ -71,7 +75,9 @@ This SOP covers:
      # Also check Python path
      where python
      ```
+
    - On Unix/Linux/macOS:
+
      ```bash
      # Activate the environment
      source .venv/bin/activate
@@ -83,10 +89,13 @@ This SOP covers:
 6. Check for conflicting installations:
    - Sometimes having the package installed both in development mode and via pip can cause conflicts
    - Uninstall any global installations of the package:
+
      ```bash
      pip uninstall fca-dashboard
      ```
+
    - Then reinstall in development mode:
+
      ```bash
      pip install -e .
      ```
@@ -124,12 +133,15 @@ This SOP covers:
 5. Common visualization dependency issues:
    - Matplotlib and its dependencies often cause issues due to C extensions
    - If you see errors related to C extensions (e.g., `_cext`, `_multiarray_umath`), try:
+
      ```bash
      # Reinstall the package with --force-reinstall to rebuild C extensions
      pip uninstall -y matplotlib
      pip install --force-reinstall matplotlib
      ```
+
    - For persistent issues, try installing pre-built binaries:
+
      ```bash
      pip install --only-binary=:all: matplotlib
      ```
@@ -142,7 +154,7 @@ This SOP covers:
 7. Operating system-specific issues:
    - Windows:
      - Visual C++ build tools might be required for some packages
-     - Install from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+     - Install from: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
    - Linux:
      - Development libraries might be missing
      - Install with: `sudo apt-get install python3-dev` (Ubuntu/Debian)
@@ -152,11 +164,14 @@ This SOP covers:
 
 8. Verify package installation:
    - Check if packages are correctly installed:
+
      ```bash
      pip list | grep matplotlib
      pip show matplotlib
      ```
+
    - Try importing the package in a Python interpreter:
+
      ```python
      import matplotlib
      print(matplotlib.__version__)
@@ -185,6 +200,7 @@ This SOP covers:
 
 3. If the file is missing, check alternative locations or restore from repository:
    - Check if the file exists in a different location:
+
      ```bash
      # On Windows
      dir /s /b eq_ids.csv
@@ -192,14 +208,18 @@ This SOP covers:
      # On Unix/Linux/macOS
      find . -name eq_ids.csv
      ```
+
    - Restore from Git repository if available:
+
      ```bash
      git checkout -- fca_dashboard/classifier/ingest/eq_ids.csv
      ```
+
    - Check if the file is in a different format (e.g., .xlsx instead of .csv)
 
 4. Verify the data file format and content:
    - Check if the CSV file is properly formatted:
+
      ```bash
      # View the first few lines
      head -n 5 fca_dashboard/classifier/ingest/eq_ids.csv
@@ -207,7 +227,9 @@ This SOP covers:
      # On Windows
      type fca_dashboard\classifier\ingest\eq_ids.csv | more
      ```
+
    - Verify the file has the expected columns:
+
      ```python
      import pandas as pd
      df = pd.read_csv("fca_dashboard/classifier/ingest/eq_ids.csv")
@@ -217,6 +239,7 @@ This SOP covers:
 
 5. Check file permissions:
    - Ensure the file has read permissions:
+
      ```bash
      # On Unix/Linux/macOS
      chmod +r fca_dashboard/classifier/ingest/eq_ids.csv
@@ -747,6 +770,7 @@ If you need to improve the classifier's performance:
 5. **ValueError: numpy.ndarray size changed, may indicate binary incompatibility**
    - **Cause**: Version mismatch between NumPy and packages that depend on it
    - **Solution**: Reinstall all scientific packages in the correct order:
+
      ```bash
      pip uninstall -y numpy scipy pandas scikit-learn
      pip install numpy scipy pandas scikit-learn
@@ -767,6 +791,7 @@ If you need to improve the classifier's performance:
 3. **UnicodeDecodeError when reading CSV file**
    - **Cause**: Encoding issues in the data file
    - **Solution**: Specify the correct encoding when reading the file:
+
      ```python
      df = pd.read_csv("path/to/file.csv", encoding='latin1')  # or try 'utf-8', 'cp1252', etc.
      ```
@@ -774,6 +799,7 @@ If you need to improve the classifier's performance:
 4. **pandas.errors.ParserError: Error tokenizing data**
    - **Cause**: CSV format issues (delimiters, quotes, etc.)
    - **Solution**: Inspect the file and specify the correct parameters:
+
      ```python
      df = pd.read_csv("path/to/file.csv", delimiter=',', quoting=csv.QUOTE_MINIMAL)
      ```
@@ -788,6 +814,7 @@ If you need to improve the classifier's performance:
 2. **RuntimeError: Python is not installed as a framework (macOS)**
    - **Cause**: macOS-specific matplotlib issue
    - **Solution**: Create a file at `~/.matplotlib/matplotlibrc` with the content:
+
      ```
      backend: TkAgg
      ```
@@ -801,6 +828,7 @@ If you need to improve the classifier's performance:
 1. **ValueError: Input contains NaN, infinity or a value too large**
    - **Cause**: Missing or invalid values in the input data
    - **Solution**: Clean the data before training:
+
      ```python
      import numpy as np
      df = df.replace([np.inf, -np.inf], np.nan).dropna()
@@ -809,6 +837,7 @@ If you need to improve the classifier's performance:
 2. **MemoryError during model training**
    - **Cause**: Dataset too large for available memory
    - **Solution**: Reduce dataset size or use incremental learning:
+
      ```python
      # Sample the dataset
      df = df.sample(frac=0.5, random_state=42)
@@ -817,6 +846,7 @@ If you need to improve the classifier's performance:
 3. **UndefinedMetricWarning: Precision/recall is ill-defined**
    - **Cause**: Some classes have no predicted samples in the test set
    - **Solution**: This is normal for rare classes. Use stratified sampling:
+
      ```python
      from sklearn.model_selection import StratifiedKFold
      skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
@@ -843,6 +873,7 @@ If you need to improve the classifier's performance:
 1. **Path length limitations**
    - **Cause**: Windows has a 260-character path length limit
    - **Solution**: Use shorter paths or enable long path support:
+
      ```
      # In PowerShell as Administrator
      Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
@@ -851,6 +882,7 @@ If you need to improve the classifier's performance:
 2. **Command prompt encoding issues**
    - **Cause**: Default encoding may not support all characters
    - **Solution**: Set UTF-8 encoding:
+
      ```
      chcp 65001
      ```
@@ -858,6 +890,7 @@ If you need to improve the classifier's performance:
 3. **Backslash vs. forward slash in paths**
    - **Cause**: Windows uses backslashes in paths, but Python often expects forward slashes
    - **Solution**: Use raw strings or double backslashes:
+
      ```python
      # Raw string
      path = r"C:\Repos\fca-dashboard4\fca_dashboard"
@@ -878,6 +911,7 @@ If you need to improve the classifier's performance:
 1. **Matplotlib framework issues**
    - **Cause**: macOS requires matplotlib to be installed as a framework
    - **Solution**: Create a matplotlibrc file:
+
      ```
      # ~/.matplotlib/matplotlibrc
      backend: TkAgg
@@ -886,6 +920,7 @@ If you need to improve the classifier's performance:
 2. **XCode dependency issues**
    - **Cause**: Some packages require XCode command-line tools
    - **Solution**: Install with:
+
      ```bash
      xcode-select --install
      ```
@@ -893,6 +928,7 @@ If you need to improve the classifier's performance:
 3. **OpenSSL issues**
    - **Cause**: macOS may use its own SSL libraries
    - **Solution**: Install OpenSSL via Homebrew:
+
      ```bash
      brew install openssl
      export LDFLAGS="-L/usr/local/opt/openssl/lib"
@@ -904,6 +940,7 @@ If you need to improve the classifier's performance:
 1. **Missing system libraries**
    - **Cause**: Some Python packages require system libraries
    - **Solution**: Install required development packages:
+
      ```bash
      # Ubuntu/Debian
      sudo apt-get install python3-dev build-essential
@@ -915,6 +952,7 @@ If you need to improve the classifier's performance:
 2. **Permission issues**
    - **Cause**: Insufficient permissions to access files or directories
    - **Solution**: Adjust permissions:
+
      ```bash
      chmod -R 755 fca_dashboard
      ```
