@@ -1,28 +1,3 @@
-"""
-Enhanced Equipment Classification Model
-
-This module implements a machine learning pipeline for classifying equipment based on text descriptions
-and numeric features. Key features include:
-
-1. Combined Text and Numeric Features:
-   - Uses a ColumnTransformer to incorporate both text features (via TF-IDF) and numeric features
-     (like service_life) into a single model.
-
-2. Improved Handling of Imbalanced Classes:
-   - Uses RandomOverSampler instead of SMOTE for text data, which duplicates existing samples
-     rather than creating synthetic samples that don't correspond to meaningful text.
-   - Also uses class_weight='balanced_subsample' in the RandomForestClassifier for additional
-     protection against class imbalance.
-
-3. Better Evaluation Metrics:
-   - Uses f1_macro scoring for hyperparameter optimization, which is more appropriate for
-     imbalanced classes than accuracy.
-   - Provides detailed analysis of "Other" category performance.
-
-4. Feature Importance Analysis:
-   - Analyzes the importance of both text and numeric features in classifying equipment.
-"""
-
 # Standard library imports
 from collections import Counter
 from typing import Dict, List, Tuple, Optional, Union, Any
@@ -32,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from imblearn.over_sampling import SMOTE, RandomOverSampler
+from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -133,23 +108,15 @@ def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
 def handle_class_imbalance(X: Union[pd.DataFrame, np.ndarray], y: pd.DataFrame) -> Tuple[Union[pd.DataFrame, np.ndarray], pd.DataFrame]:
     """
     Handle class imbalance to give proper weight to "Other" categories
-    
-    This function uses RandomOverSampler instead of SMOTE because:
-    1. It's more appropriate for text data
-    2. It duplicates existing samples rather than creating synthetic samples
-    3. The duplicated samples maintain the original text meaning
-    
-    For numeric-only data, SMOTE might still be preferable, but for text or mixed data,
-    RandomOverSampler is generally a better choice.
     """
     # Check class distribution
     for col in y.columns:
         print(f"\nClass distribution for {col}:")
         print(y[col].value_counts())
     
-    # Use RandomOverSampler to duplicate minority class samples
-    # This is more appropriate for text data than SMOTE
-    oversample = RandomOverSampler(sampling_strategy='auto', random_state=42)
+    # For demonstration, let's use SMOTE to oversample minority classes
+    # In a real implementation, you'd need to tune this for your specific data
+    oversample = SMOTE(sampling_strategy='auto', random_state=42)
     X_resampled, y_resampled = oversample.fit_resample(X, y)
     
     print("\nAfter oversampling:")
@@ -196,8 +163,6 @@ def build_enhanced_model() -> Pipeline:
     )
     
     # Complete pipeline with feature processing and classifier
-    # Note: We use both RandomOverSampler (applied earlier) and class_weight='balanced_subsample'
-    # for a two-pronged approach to handling imbalanced classes
     pipeline = Pipeline([
         ('preprocessor', preprocessor),
         ('clf', MultiOutputClassifier(
@@ -206,7 +171,7 @@ def build_enhanced_model() -> Pipeline:
                 max_depth=None,      # Allow trees to grow deeply
                 min_samples_split=2, # Default value
                 min_samples_leaf=1,  # Default value
-                class_weight='balanced_subsample',  # Additional protection against imbalance
+                class_weight='balanced_subsample',  # Handle imbalanced classes
                 random_state=42
             )
         ))
@@ -518,41 +483,54 @@ def train_enhanced_model(data_path: Optional[str] = None) -> Tuple[Pipeline, pd.
     # 5. Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     
-    # 6. Handle class imbalance using RandomOverSampler instead of SMOTE
-    # RandomOverSampler is more appropriate for text data as it duplicates existing samples
-    # rather than creating synthetic samples that don't correspond to meaningful text
-    print("Handling class imbalance with RandomOverSampler...")
+    # 6. Handle class imbalance using SMOTE
+    print("Handling class imbalance with SMOTE...")
+    # We need to convert the DataFrame to a format suitable for SMOTE
+    # SMOTE requires a 2D array of numeric features
+    # We'll create a temporary TF-IDF representation of the text features
+    temp_vectorizer = TfidfVectorizer(max_features=1000)  # Simplified for SMOTE
+    X_train_text_features = temp_vectorizer.fit_transform(X_train['combined_features'])
     
-    # Apply RandomOverSampler directly to the DataFrame
-    # This will duplicate minority class samples rather than creating synthetic samples
-    oversampler = RandomOverSampler(random_state=42)
+    # Combine with numeric features
+    X_train_numeric = X_train[['service_life']].values
+    X_train_combined = np.hstack((X_train_text_features.toarray(), X_train_numeric))
     
-    # We need to convert the DataFrame to a format suitable for RandomOverSampler
-    # For this, we'll create a temporary unique ID for each sample
-    X_train_with_id = X_train.copy()
-    X_train_with_id['temp_id'] = range(len(X_train_with_id))
+    # Apply SMOTE to the combined features
+    X_train_resampled_array, y_train_resampled = handle_class_imbalance(X_train_combined, y_train)
     
-    # Fit and transform using the oversampler
-    # We use the ID column as the feature for oversampling, but the actual resampling
-    # is based on the class distribution in y_train
-    X_resampled_ids, y_train_resampled = oversampler.fit_resample(
-        X_train_with_id[['temp_id']], y_train
-    )
+    # After SMOTE, we need to properly reconstruct the DataFrame for our pipeline
+    # The challenge is that SMOTE creates synthetic samples that don't have original text
+    # We need to separate the numeric features from the synthetic samples
     
-    # Map the resampled IDs back to the original DataFrame rows
-    # This effectively duplicates rows from the original DataFrame
-    X_train_resampled = pd.DataFrame(columns=X_train.columns)
-    for idx in X_resampled_ids['temp_id']:
-        X_train_resampled = pd.concat([X_train_resampled, X_train.iloc[[idx]]], ignore_index=True)
+    # Get the number of features from the TF-IDF vectorizer
+    n_text_features = X_train_text_features.shape[1]
     
-    # Print statistics about the resampling
+    # Extract the service_life values from the resampled array (last column)
+    resampled_service_life = X_train_resampled_array[:, -1].reshape(-1, 1)
+    
+    # For the text features, we have two options:
+    # 1. Use the original text for original samples and empty strings for synthetic samples
+    # 2. Try to reconstruct text from TF-IDF (difficult and imprecise)
+    
+    # We'll use option 1 for simplicity and clarity
+    # First, determine which samples are original and which are synthetic
     original_sample_count = X_train.shape[0]
-    total_resampled_count = X_train_resampled.shape[0]
+    total_resampled_count = X_train_resampled_array.shape[0]
+    
+    # Create a DataFrame with the right structure for our pipeline
+    X_train_resampled = pd.DataFrame(columns=['combined_features', 'service_life'])
+    
+    # For original samples, use the original text
+    if original_sample_count <= total_resampled_count:
+        X_train_resampled['combined_features'] = list(X_train['combined_features']) + [''] * (total_resampled_count - original_sample_count)
+    else:
+        X_train_resampled['combined_features'] = list(X_train['combined_features'][:total_resampled_count])
+    
+    # Use the resampled service_life values for all samples
+    X_train_resampled['service_life'] = resampled_service_life
+    
     print(f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}")
     print(f"Shape of X_train_resampled: {X_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}")
-    
-    # Verify that the shapes match
-    assert X_train_resampled.shape[0] == y_train_resampled.shape[0], "Mismatch in sample counts after resampling"
     
     # 7. Build enhanced model
     print("Building enhanced model...")
