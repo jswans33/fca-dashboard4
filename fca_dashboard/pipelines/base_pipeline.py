@@ -17,6 +17,7 @@ from fca_dashboard.config.settings import settings
 from fca_dashboard.utils.logging_config import get_logger
 from fca_dashboard.utils.path_util import resolve_path
 from fca_dashboard.utils.pipeline_util import clear_output_directory, get_pipeline_output_dir
+from fca_dashboard.utils.verification_util import verify_pipeline_output
 
 
 class BasePipeline(ABC):
@@ -56,10 +57,14 @@ class BasePipeline(ABC):
         self.columns_to_extract = settings.get(f"{pipeline_name}.columns_to_extract", [])
         self.drop_na_columns = settings.get(f"{pipeline_name}.drop_na_columns", [])
         
+        # Get verification configuration from settings
+        self.verification_config = settings.get(f"{pipeline_name}.verification", {})
+        
         # Initialize data storage
         self.extracted_data = None
         self.analysis_results = None
         self.validation_results = None
+        self.verification_results = None
     
     def clear_output_directory(self, preserve_db: bool = True, preserve_files: Optional[List[str]] = None) -> List[str]:
         """
@@ -157,6 +162,59 @@ class BasePipeline(ABC):
             The path to the exported data.
         """
         pass
+    
+    def verify(self, table_name: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Verify the pipeline output.
+        
+        This method verifies the pipeline output against the verification configuration.
+        
+        Args:
+            table_name: The name of the table to verify. If None, uses the pipeline name.
+            
+        Returns:
+            A dictionary containing the verification results.
+        """
+        self.logger.info(f"Verifying pipeline output")
+        
+        # If no verification configuration is provided, use default configuration
+        if not self.verification_config:
+            # Default verification configuration
+            self.verification_config = {
+                "no_placeholder_values": {
+                    "columns": self.drop_na_columns,
+                    "placeholder_values": ['no id', 'none', 'n/a', 'unknown', '']
+                },
+                "no_null_values": {
+                    "columns": self.drop_na_columns
+                }
+            }
+            self.logger.info(f"Using default verification configuration: {self.verification_config}")
+        
+        # If table_name is not provided, use a default table name
+        if table_name is None:
+            # For Medtronics pipeline, the table name is "asset_data"
+            if self.pipeline_name == "medtronics":
+                table_name = "asset_data"
+            # For Wichita pipeline, the table name is "wichita_assets"
+            elif self.pipeline_name == "wichita":
+                table_name = "wichita_assets"
+            else:
+                # Default to pipeline_name_assets
+                table_name = f"{self.pipeline_name}_assets"
+        
+        # Verify the pipeline output
+        self.verification_results = verify_pipeline_output(
+            self.pipeline_name,
+            self.db_name,
+            table_name,
+            self.verification_config,
+            self.output_dir,
+            self.analysis_results,
+            self.validation_results
+        )
+        
+        return self.verification_results
     
     def save_reports(self, df: pd.DataFrame) -> Dict[str, str]:
         """
@@ -406,18 +464,49 @@ class BasePipeline(ABC):
                     "message": f"Error saving reports: {str(e)}"
                 }
             
+            # Verify the pipeline output
+            try:
+                # For Medtronics pipeline, the table name is "asset_data"
+                if self.pipeline_name == "medtronics":
+                    table_name = "asset_data"
+                # For Wichita pipeline, the table name is "wichita_assets"
+                elif self.pipeline_name == "wichita":
+                    table_name = "wichita_assets"
+                else:
+                    # Extract table name from the database path
+                    table_name = os.path.splitext(os.path.basename(db_path))[0]
+                    if table_name == self.db_name.replace('.db', ''):
+                        # If the table name is the same as the database name, use a default table name
+                        table_name = f"{self.pipeline_name}_assets"
+                
+                verification_results = self.verify(table_name)
+                self.logger.info(f"Verification completed: {len(verification_results.get('verifications', {}))} checks performed")
+            except Exception as e:
+                self.logger.error(f"Error verifying pipeline output: {str(e)}", exc_info=True)
+                # Continue with the pipeline even if verification fails
+                verification_results = {
+                    "status": "error",
+                    "message": f"Error verifying pipeline output: {str(e)}"
+                }
+            
             self.logger.info(f"{self.pipeline_name.capitalize()} Pipeline completed successfully")
             
-            # Return results
+            # Prepare result data
+            result_data = {
+                "rows": len(df),
+                "columns": len(df.columns),
+                "db_path": db_path,
+                "report_paths": report_paths
+            }
+            
+            # Add verification results if available
+            if verification_results:
+                result_data["verification"] = verification_results
+            
             return {
                 "status": "success",
                 "message": "Pipeline completed successfully",
-                "data": {
-                    "rows": len(df),
-                    "columns": len(df.columns),
-                    "db_path": db_path,
-                    "report_paths": report_paths
-                }
+                "data": result_data
             }
         except Exception as e:
             self.logger.error(f"Unexpected error in pipeline: {str(e)}", exc_info=True)

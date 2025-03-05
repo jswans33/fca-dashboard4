@@ -1,0 +1,156 @@
+Analysis Report for Medtronics Pipeline
+DataFrame Shape: 566 rows, 24 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: asset name
+    Unique value count: 18
+    Null count: 0 (0.00%)
+    Unique values: Exhaust Fan, Fan Powered Box, Gas Water Heater, Lab Air Compressor, Lead Free Expansion Tank, Expansion Tank, Pump, Rooftop Unit, Terminal Unit VAV (no reheat), Terminal Unit VAV ... and 8 more
+    Value counts (top 5):
+      Terminal Unit VAV: 262
+      Fan Powered Box: 150
+      Terminal Unit VAV (no reheat): 55
+      VRF Split System: 47
+      VRF Condensing Unit: 19
+
+  Column: asset tag
+    Unique value count: 564
+    Null count: 0 (0.00%)
+
+  Column: trade
+    Unique value count: 4
+    Null count: 0 (0.00%)
+    Unique values: Sheetmetal, Plumbing, Pipefitting, nan
+    Value counts (top 5):
+      Sheetmetal: 545
+      Pipefitting: 11
+      Plumbing: 9
+      nan: 1
+
+  Column: equip served by
+    Unique value count: 13
+    Null count: 0 (0.00%)
+    Unique values: Kitchen Exhaust/Make-up Air, Exhaust Fan, VAV Terminal, Fan Powered, Water Heaters, Commercial, Gas, Air Compressor, Expansion Tank, Circulating Pump, End Suction, Rooftop A/C, VAV Terminal, Split Systems Air Cooled Condensing Unit ... and 3 more
+    Value counts (top 5):
+      VAV Terminal: 317
+      VAV Terminal, Fan Powered: 150
+      Fan Coil A/C, Duct Mnt, Two Pipe: 47
+      Split Systems Air Cooled Condensing Unit: 19
+      Air Compressor: 8
+
+  Column: vendor
+    Unique value count: 5
+    Null count: 0 (0.00%)
+    Unique values: Air Purification Co., Long Building Technologies, Trane, Western Mechanical, nan
+    Value counts (top 5):
+      Air Purification Co.: 495
+      nan: 56
+      Trane: 9
+      Long Building Technologies: 4
+      Western Mechanical: 2
+
+
+Column Statistics Analysis:
+--------------------------------------------------
+  Column: size
+    Min: 2.0
+    Max: 35000.0
+    Mean: 1145.588809946714
+    Median: 770.0
+    Standard deviation: 2352.5540550551464
+    Q1 (25th percentile): 380.0
+    Q3 (75th percentile): 1500.0
+    IQR: 1120.0
+    Outliers count: 12
+
+  Column: motor hp
+    Min: 0.0
+    Max: 150.0
+    Mean: 5.912954143801066
+    Median: 2.68
+    Standard deviation: 11.315380722615467
+    Q1 (25th percentile): 0.0
+    Q3 (75th percentile): 9.400100000000002
+    IQR: 9.400100000000002
+    Outliers count: 15
+
+  Column: estimated operating hours
+    Min: 2500.0
+    Max: 6000.0
+    Mean: 4467.256637168141
+    Median: 5000.0
+    Standard deviation: 1235.6583278437136
+    Q1 (25th percentile): 2500.0
+    Q3 (75th percentile): 5000.0
+    IQR: 2500.0
+    Outliers count: 0
+
+  Column: asset size (rounded up)
+    Min: 0.5
+    Max: 10000.0
+    Mean: 1117.2597173144877
+    Median: 1000.0
+    Standard deviation: 1088.6642036719743
+    Q1 (25th percentile): 400.0
+    Q3 (75th percentile): 1500.0
+    IQR: 1100.0
+    Outliers count: 5
+
+  Column: service life
+    Min: 10.0
+    Max: 20.0
+    Mean: 19.372791519434628
+    Median: 20.0
+    Standard deviation: 1.7611043344483903
+    Q1 (25th percentile): 20.0
+    Q3 (75th percentile): 20.0
+    IQR: 0.0
+    Outliers count: 67
+
+
+Text Analysis:
+--------------------------------------------------
+  Column: asset name
+    Min length: 0
+    Max length: 30
+    Average length: 17.43
+    Empty strings: 1
+    Pattern analysis:
+      alpha: 4
+      other: 561
+
+  Column: asset tag
+    Min length: 0
+    Max length: 16
+    Average length: 11.16
+    Empty strings: 1
+    Pattern analysis:
+      other: 565
+
+  Column: trade
+    Min length: 0
+    Max length: 11
+    Average length: 9.97
+    Empty strings: 1
+    Pattern analysis:
+      alpha: 565
+
+  Column: equip served by
+    Min length: 0
+    Max length: 40
+    Average length: 18.40
+    Empty strings: 1
+    Pattern analysis:
+      other: 565
+
+  Column: vendor
+    Min length: 0
+    Max length: 26
+    Average length: 17.82
+    Empty strings: 56
+    Pattern analysis:
+      alpha: 9
+      other: 501
+
+

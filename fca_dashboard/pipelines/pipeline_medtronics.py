@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import pandas as pd
 
 from fca_dashboard.config.settings import settings
+from fca_dashboard.pipelines import BasePipeline
 from fca_dashboard.utils.database import (
     get_table_schema,
     save_dataframe_to_database,
@@ -29,11 +30,10 @@ from fca_dashboard.utils.excel import (
     extract_excel_with_config,
     validate_dataframe,
 )
-from fca_dashboard.utils.logging_config import get_logger
-from fca_dashboard.utils.path_util import get_root_dir, resolve_path
+from fca_dashboard.utils.path_util import resolve_path
 
 
-class MedtronicsPipeline:
+class MedtronicsPipeline(BasePipeline):
     """
     Pipeline for processing Medtronics Asset Data.
     
@@ -43,30 +43,11 @@ class MedtronicsPipeline:
     
     def __init__(self):
         """Initialize the pipeline."""
-        self.logger = get_logger("medtronics_pipeline")
-        
-        # Get file paths from settings
-        self.input_file = settings.get("medtronics.input_file", "uploads/Medtronics - Asset Log Uploader.xlsx")
-        self.output_dir = settings.get("medtronics.output_dir", "outputs/pipeline/medtronic")
-        self.db_name = settings.get("medtronics.db_name", "medtronics_assets.db")
+        # Call the parent class constructor with the pipeline name
+        super().__init__("medtronics")
         
         # Get sheet name from settings
         self.sheet_name = settings.get("medtronics.sheet_name", "Asset Data")
-        
-        # Get extraction configuration from settings
-        self.extraction_config = settings.get("excel_utils.extraction", {})
-        
-        # Get validation configuration from settings
-        self.validation_config = settings.get("excel_utils.validation", {})
-        
-        # Get analysis configuration from settings
-        self.analysis_config = settings.get("excel_utils.analysis", {})
-        
-        # Get columns to extract from settings
-        self.columns_to_extract = settings.get("medtronics.columns_to_extract", [])
-        
-        # Get columns to drop NaN values from settings
-        self.drop_na_columns = settings.get("medtronics.drop_na_columns", [])
         
         # Get staging configuration from settings
         self.staging_config = settings.get("medtronics.staging", {})
@@ -81,13 +62,21 @@ class MedtronicsPipeline:
         if "batch_id_prefix" not in self.staging_config:
             self.staging_config["batch_id_prefix"] = "MEDTRONICS-BATCH-"
         
+        # Set up verification configuration
+        self.verification_config = {
+            "no_placeholder_values": {
+                "columns": ["usassetid", "asset tag"],
+                "placeholder_values": ["no id", "none", "n/a", "unknown", ""]
+            },
+            "no_null_values": {
+                "columns": ["usassetid", "asset tag", "asset name"]
+            }
+        }
+        
         # Create a SQLiteStagingManager instance
         self.staging_manager = SQLiteStagingManager()
         
-        # Initialize data storage
-        self.extracted_data = None
-        self.analysis_results = None
-        self.validation_results = None
+        # Initialize staging results
         self.staging_results = None
     
     def extract(self):
@@ -528,292 +517,31 @@ class MedtronicsPipeline:
         
         return db_path
     
-    def save_reports(self, df):
-        """
-        Save analysis and validation reports.
-        
-        Args:
-            df: The DataFrame that was analyzed and validated.
-            
-        Returns:
-            A dictionary containing the paths to the report files.
-        """
-        self.logger.info(f"Saving analysis and validation reports")
-        
-        # Create the output directory if it doesn't exist
-        output_dir = resolve_path(self.output_dir)
-        os.makedirs(output_dir, exist_ok=True)
-        
-        # Initialize a dictionary to store the report paths
-        report_paths = {}
-        
-        # Save analysis report
-        if self.analysis_results:
-            analysis_report_path = os.path.join(output_dir, f"{self.sheet_name.lower().replace(' ', '_')}_analysis_report.txt")
-            
-            with open(analysis_report_path, "w") as f:
-                f.write(f"Analysis Report for Sheet: {self.sheet_name}\n")
-                f.write(f"DataFrame Shape: {df.shape[0]} rows, {df.shape[1]} columns\n\n")
-                
-                # Write unique values report
-                if 'unique_values' in self.analysis_results:
-                    f.write("Unique Values Analysis:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    unique_values = self.analysis_results['unique_values']
-                    for col, res in unique_values.items():
-                        f.write(f"  Column: {col}\n")
-                        f.write(f"    Unique value count: {res['count']}\n")
-                        f.write(f"    Null count: {res['null_count']} ({res['null_percentage'] * 100:.2f}%)\n")
-                        
-                        if 'values' in res:
-                            f.write(f"    Unique values: {', '.join(res['values'][:10])}")
-                            if len(res['values']) > 10:
-                                f.write(f" ... and {len(res['values']) - 10} more")
-                            f.write("\n")
-                        
-                        if 'value_counts' in res:
-                            f.write(f"    Value counts (top 5):\n")
-                            sorted_counts = sorted(res['value_counts'].items(), key=lambda x: x[1], reverse=True)
-                            for val, count in sorted_counts[:5]:
-                                f.write(f"      {val}: {count}\n")
-                        
-                        f.write("\n")
-                    
-                    f.write("\n")
-                
-                # Write column statistics report
-                if 'column_statistics' in self.analysis_results:
-                    f.write("Column Statistics Analysis:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    column_stats = self.analysis_results['column_statistics']
-                    for col, stats in column_stats.items():
-                        f.write(f"  Column: {col}\n")
-                        f.write(f"    Min: {stats['min']}\n")
-                        f.write(f"    Max: {stats['max']}\n")
-                        f.write(f"    Mean: {stats['mean']}\n")
-                        f.write(f"    Median: {stats['median']}\n")
-                        f.write(f"    Standard deviation: {stats['std']}\n")
-                        f.write(f"    Q1 (25th percentile): {stats['q1']}\n")
-                        f.write(f"    Q3 (75th percentile): {stats['q3']}\n")
-                        f.write(f"    IQR: {stats['iqr']}\n")
-                        f.write(f"    Outliers count: {stats['outliers_count']}\n")
-                        f.write("\n")
-                    
-                    f.write("\n")
-                
-                # Write text analysis report
-                if 'text_analysis' in self.analysis_results:
-                    f.write("Text Analysis:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    text_analysis = self.analysis_results['text_analysis']
-                    for col, analysis in text_analysis.items():
-                        f.write(f"  Column: {col}\n")
-                        f.write(f"    Min length: {analysis['min_length']}\n")
-                        f.write(f"    Max length: {analysis['max_length']}\n")
-                        f.write(f"    Average length: {analysis['avg_length']:.2f}\n")
-                        f.write(f"    Empty strings: {analysis['empty_count']}\n")
-                        
-                        if 'pattern_analysis' in analysis:
-                            f.write(f"    Pattern analysis:\n")
-                            for pattern, count in analysis['pattern_analysis'].items():
-                                if count > 0:
-                                    f.write(f"      {pattern}: {count}\n")
-                        
-                        f.write("\n")
-                    
-                    f.write("\n")
-            
-            self.logger.info(f"Analysis report saved to {analysis_report_path}")
-            report_paths['analysis_report'] = analysis_report_path
-        
-        # Save validation report
-        if self.validation_results:
-            validation_report_path = os.path.join(output_dir, f"{self.sheet_name.lower().replace(' ', '_')}_validation_report.txt")
-            
-            with open(validation_report_path, "w") as f:
-                f.write(f"Validation Report for Sheet: {self.sheet_name}\n")
-                f.write(f"DataFrame Shape: {df.shape[0]} rows, {df.shape[1]} columns\n\n")
-                
-                # Write missing values report
-                if "missing_values" in self.validation_results:
-                    f.write("Missing Values Report:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    missing_values = self.validation_results["missing_values"]
-                    for col, pct in missing_values.items():
-                        f.write(f"  {col}: {pct * 100:.2f}% missing\n")
-                    
-                    f.write("\n")
-                
-                # Write duplicate rows report
-                if "duplicate_rows" in self.validation_results:
-                    f.write("Duplicate Rows Report:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    duplicate_rows = self.validation_results["duplicate_rows"]
-                    f.write(f"  Duplicate rows: {duplicate_rows['duplicate_count']}\n")
-                    
-                    if duplicate_rows["duplicate_count"] > 0:
-                        f.write(f"  Duplicate indices: {duplicate_rows['duplicate_indices'][:10]}")
-                        if len(duplicate_rows["duplicate_indices"]) > 10:
-                            f.write(f" ... and {len(duplicate_rows['duplicate_indices']) - 10} more")
-                        f.write("\n")
-                    
-                    f.write("\n")
-                
-                # Write value ranges report
-                if "value_ranges" in self.validation_results:
-                    f.write("Value Ranges Report:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    value_ranges = self.validation_results["value_ranges"]
-                    for col, res in value_ranges.items():
-                        f.write(f"  {col}:\n")
-                        f.write(f"    Below minimum: {res['below_min']}\n")
-                        f.write(f"    Above maximum: {res['above_max']}\n")
-                        f.write(f"    Total outside range: {res['total_outside_range']}\n")
-                    
-                    f.write("\n")
-                
-                # Write data types report
-                if "data_types" in self.validation_results:
-                    f.write("Data Types Report:\n")
-                    f.write("-" * 50 + "\n")
-                    
-                    data_types = self.validation_results["data_types"]
-                    for col, res in data_types.items():
-                        f.write(f"  {col}:\n")
-                        f.write(f"    Expected type: {res['expected_type']}\n")
-                        f.write(f"    Current type: {res['current_type']}\n")
-                        f.write(f"    Error count: {res['error_count']}\n")
-                    
-                    f.write("\n")
-            
-            self.logger.info(f"Validation report saved to {validation_report_path}")
-            report_paths['validation_report'] = validation_report_path
-        
-        return report_paths
-    
-    def run(self):
+    def run(self, clear_output=False, preserve_db=True):
         """
         Run the pipeline.
         
+        Args:
+            clear_output: Whether to clear the output directory before running
+            preserve_db: Whether to preserve database files when clearing output
+            
         Returns:
             A dictionary containing the results of the pipeline.
         """
-        try:
-            self.logger.info("Starting Medtronics Asset Data Pipeline")
-            
-            # Extract data
-            try:
-                df = self.extract()
-                
-                if df is None or len(df) == 0:
-                    self.logger.error(f"No data extracted from sheet '{self.sheet_name}'")
-                    return {
-                        "status": "error",
-                        "message": f"No data extracted from sheet '{self.sheet_name}'"
-                    }
-            except Exception as e:
-                self.logger.error(f"Error extracting data: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error extracting data: {str(e)}"
-                }
-            
-            # Analyze data
-            try:
-                analysis_results = self.analyze(df)
-            except Exception as e:
-                self.logger.error(f"Error analyzing data: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error analyzing data: {str(e)}"
-                }
-            
-            # Validate data
-            try:
-                validation_results = self.validate(df)
-            except Exception as e:
-                self.logger.error(f"Error validating data: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error validating data: {str(e)}"
-                }
-            
-            # Stage data
-            try:
-                staging_results = self.stage_data(df)
-                if staging_results["status"] == "error":
-                    self.logger.error(f"Error staging data: {staging_results['message']}")
-                    return {
-                        "status": "error",
-                        "message": f"Error staging data: {staging_results['message']}"
-                    }
-                elif staging_results["status"] == "skipped":
-                    self.logger.info(f"Staging skipped: {staging_results['message']}")
-            except Exception as e:
-                self.logger.error(f"Error staging data: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error staging data: {str(e)}"
-                }
-            
-            # Export data
-            try:
-                db_path = self.export(df)
-            except Exception as e:
-                self.logger.error(f"Error exporting data: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error exporting data: {str(e)}"
-                }
-            
-            # Save reports
-            try:
-                report_paths = self.save_reports(df)
-            except Exception as e:
-                self.logger.error(f"Error saving reports: {str(e)}", exc_info=True)
-                return {
-                    "status": "error",
-                    "message": f"Error saving reports: {str(e)}"
-                }
-            
-            self.logger.info("Medtronics Asset Data Pipeline completed successfully")
-            
-            # Return results
-            result_data = {
-                "rows": len(df),
-                "columns": len(df.columns),
-                "db_path": db_path,
-                "sheet_name": self.sheet_name.lower().replace(" ", "_"),
-                "report_paths": report_paths
+        # Call the base class run method
+        base_result = super().run(clear_output, preserve_db)
+        
+        # If the pipeline was successful, add staging information to the result
+        if base_result["status"] == "success" and self.staging_results:
+            base_result["data"]["staging"] = {
+                "db_path": self.staging_results["db_path"],
+                "batch_id": self.staging_results["batch_id"],
+                "source_system": self.staging_results["source_system"],
+                "rows_staged": self.staging_results["rows_staged"],
+                "pending_items": self.staging_results["pending_items"]
             }
-            
-            # Add staging information if available
-            if self.staging_results:
-                result_data["staging"] = {
-                    "db_path": self.staging_results["db_path"],
-                    "batch_id": self.staging_results["batch_id"],
-                    "source_system": self.staging_results["source_system"],
-                    "rows_staged": self.staging_results["rows_staged"],
-                    "pending_items": self.staging_results["pending_items"]
-                }
-            
-            return {
-                "status": "success",
-                "message": "Pipeline completed successfully",
-                "data": result_data
-            }
-        except Exception as e:
-            self.logger.error(f"Unexpected error in pipeline: {str(e)}", exc_info=True)
-            return {
-                "status": "error",
-                "message": f"Unexpected error in pipeline: {str(e)}"
-            }
+        
+        return base_result
 
 
 def main():

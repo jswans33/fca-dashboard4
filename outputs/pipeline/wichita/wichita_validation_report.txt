@@ -1,4 +1,4 @@
-Validation Report for Wichita Animal Shelter Asset List
+Validation Report for Wichita Pipeline
 DataFrame Shape: 46 rows, 36 columns
 
 Missing Values Report:
