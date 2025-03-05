@@ -1,0 +1,367 @@
+number,title,mf_number,explanation,parent_number
+D20,PLUMBING,22 00 00,,
+D2010,Domestic Water Distribution,,,D20
+D2010.10,Facility Potable-Water Storage Tanks,22 12 00,Tanks for storage of potable water serving a facility,D2010
+D2010.20,Domestic Water Equipment,22 11 23,Equipment for domestic water distribution system,D2010
+D2010.20,Domestic Water Pumps,22 11 23,Equipment for domestic water distribution system,D2010
+D2010.20,Domestic Water Softeners,22 31 00,Equipment for the softening of domestic water,D2010
+D2010.20,Domestic Water Filtration Equipment,22 32 00,Equipment for the filtering of domestic water,D2010
+D2010.20,Electric Domestic Water Heaters,22 33 00,Equipment to heat domestic water,D2010
+D2010.20,Fuel-Fired Domestic Water Heaters,22 34 00,Equipment to heat domestic water,D2010
+D2010.20,Domestic Water Heat Exchangers,22 35 00,Equipment to heat domestic water by means of heat exchange,D2010
+D2010.40,Domestic Water Piping,22 11 16,Piping valves and specialties for domestic water distribution,D2010
+D2010.40,Domestic Water Piping Specialties,22 11 19,Water service from structure to utility water service line,D2010
+D2010.60,Plumbing Fixtures,22 40 00,Terminal devices on the domestic water plumbing system,D2010
+D2010.60,Residential Water Closets,22 41 13,Residential plumbing fixtures,D2010
+D2010.60,Residential Urinals,22 41 13,Residential plumbing fixtures,D2010
+D2010.60,Residential Bidets,22 41 13,Residential plumbing fixtures,D2010
+D2010.60,Residential Lavatories,22 41 16,Residential plumbing fixtures,D2010
+D2010.60,Residential Sinks,22 41 16,Residential plumbing fixtures,D2010
+D2010.60,Residential Bathtubs,22 41 19,Residential plumbing fixtures,D2010
+D2010.60,Residential Showers,22 41 23,Residential plumbing fixtures,D2010
+D2010.60,Residential Disposers,22 41 26,Residential plumbing fixtures,D2010
+D2010.60,Residential Laundry Trays,22 41 36,Residential plumbing fixtures,D2010
+D2010.60,Residential Plumbing Fixture Trim,22 41 39,Residential plumbing fixtures,D2010
+D2010.60,Commercial Water Closets,22 42 13,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Urinals,22 42 13,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Bidets,22 42 13,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Lavatories,22 42 16,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Sinks,22 42 16,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Bathtubs,22 42 19,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Showers,22 42 23,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Disposers,22 42 26,Commercial plumbing fixtures,D2010
+D2010.60,Shampoo Bowls,22 42 29,Commercial plumbing fixtures,D2010
+D2010.60,Wash Fountains,22 42 33,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Laundry Trays,22 42 36,Commercial plumbing fixtures,D2010
+D2010.60,Commercial Plumbing Fixture Trim,22 42 39,Commercial plumbing fixtures,D2010
+D2010.60,Flushometers,22 42 43,Commercial plumbing fixtures,D2010
+D2010.60,Healthcare Water Closets,22 43 13,Healthcare plumbing fixtures,D2010
+D2010.60,Healthcare Sinks,22 43 16,Healthcare plumbing fixtures,D2010
+D2010.60,Healthcare Bathtubs,22 43 19,Healthcare plumbing fixtures,D2010
+D2010.60,Healthcare Showers,22 43 23,Healthcare plumbing fixtures,D2010
+D2010.60,Healthcare Faucets,22 43 39,Healthcare plumbing fixtures,D2010
+D2010.60,Healthcare Flushometers,22 43 43,Healthcare plumbing fixtures,D2010
+D2010.60,Emergency Showers,22 45 13,Emergency plumbing fixtures,D2010
+D2010.60,Eyewash Equipment,22 45 16,Emergency plumbing fixtures,D2010
+D2010.60,Eye/Face Wash Equipment,22 45 26,Emergency plumbing fixtures,D2010
+D2010.60,Hand-Held Emergency Drench Hoses,22 45 29,Emergency plumbing fixtures,D2010
+D2010.60,Combination Emergency Fixture Units,22 45 33,Emergency plumbing fixtures,D2010
+D2010.60,Emergency Fixture Water-Tempering Equipment,22 45 36,Emergency plumbing fixtures,D2010
+D2010.60,Security Water Closets,22 46 13,Security plumbing fixtures,D2010
+D2010.60,Security Urinals,22 46 13,Security plumbing fixtures,D2010
+D2010.60,Security Lavatories,22 46 16,Security plumbing fixtures,D2010
+D2010.60,Security Sinks,22 46 16,Security plumbing fixtures,D2010
+D2010.60,Security Plumbing Fixture Trim,22 46 39,Security plumbing fixtures,D2010
+D2010.60,Security Flushometers,22 46 43,Security plumbing fixtures,D2010
+D2010.60,Security Plumbing Fixture Supports,22 46 53,Security plumbing fixtures,D2010
+D2010.60,Drinking Fountains,22 47 13,Drinking fountains and water coolers,D2010
+D2010.60,Remote Water Coolers,22 47 23,Drinking fountains and water coolers,D2010
+D2010.90,Mechanical Metal Supports,05 45 13,Common work results for plumbing,D2010
+D2010.90,Common Work Results for Plumbing,22 05 00,Common work results for plumbing,D2010
+D2010.90,Expansion Fittings and Loops,22 05 16,Common work results for plumbing,D2010
+D2010.90,Meters and Gages,22 05 19,Common work results for plumbing,D2010
+D2010.90,Valves,22 05 23,Common work results for plumbing,D2010
+D2010.90,Hangers and Supports,22 05 29,Common work results for plumbing,D2010
+D2010.90,Heat Tracing,22 05 33,Common work results for plumbing,D2010
+D2010.90,Vibration and Seismic Controls,22 05 48,Common work results for plumbing,D2010
+D2010.90,Identification,22 05 53,Common work results for plumbing,D2010
+D2010.90,Insulation,22 07 00,Common work results for plumbing,D2010
+D2010.90,Instrumentation and Controls,22 09 00,Common work results for plumbing,D2010
+D2020,Sanitary Drainage,,,D20
+D2020.10,Sanitary Waste Interceptors,22 13 23,Interceptors and separators,D2020
+D2020.10,Sanitary Waste Separators,22 13 26,Interceptors and separators,D2020
+D2020.10,Sanitary Sewerage Pumps,22 13 29,Sewerage pumps,D2020
+D2020.10,Packaged Sewerage Pump Units,22 13 33,Sewerage pumps,D2020
+D2020.10,Packaged Submersible Sewerage Pump Units,22 13 36,Sewerage pumps,D2020
+D2020.10,Facility Packaged Sewerage Pumping Stations,22 13 43,Sewerage pumps,D2020
+D2020.10,Facility Septic Tanks,22 13 53,Septic tanks,D2020
+D2020.30,Sanitary Sewerage Piping,22 13 13,Sanitary waste and vent piping systems,D2020
+D2020.30,Sanitary Waste and Vent Piping,22 13 16,Sanitary piping to utility sewer,D2020
+D2020.30,Sanitary Waste Piping Specialties,22 13 19,Sanitary waste piping specialties,D2020
+D2020.30,Sanitary Drains,22 13 19.13,Sanitary drains,D2020
+D2020.30,Floor Drains,22 13 19.23,Floor drains,D2020
+D2020.30,Grease Removal Devices,22 13 19.26,Grease removal devices,D2020
+D2020.30,Backwater Valves,22 13 19.33,Backwater valves,D2020
+D2020.30,Air-Admittance Valves,22 13 19.36,Air-admittance valves,D2020
+D2020.30,Sanitary Drainage Manholes,22 05 73,Sanitary drainage manholes,D2020
+D2020.30,Sanitary Drainage Piping Cleanouts,22 05 76,Sanitary drainage piping cleanouts,D2020
+D2020.30,Fats Oils and Grease Disposal Systems,22 13 19.23,Fats oils and grease disposal systems,D2020
+D2020.90,Sanitary Drainage Components,05 45 13,Facility stormwater drainage and gray water systems,D2020
+D2020.90,Mechanical Metal Supports,05 45 13,Common work results for sanitary drainage,D2020
+D2020.90,Common Work Results for Plumbing,22 05 00,Common work results for sanitary drainage,D2020
+D2020.90,Expansion Fittings and Loops,22 05 16,Common work results for sanitary drainage,D2020
+D2020.90,Meters and Gages,22 05 19,Common work results for sanitary drainage,D2020
+D2020.90,Valves,22 05 23,Common work results for sanitary drainage,D2020
+D2020.90,Hangers and Supports,22 05 29,Common work results for sanitary drainage,D2020
+D2020.90,Heat Tracing,22 05 33,Common work results for sanitary drainage,D2020
+D2020.90,Vibration and Seismic Controls,22 05 48,Common work results for sanitary drainage,D2020
+D2020.90,Identification,22 05 53,Common work results for sanitary drainage,D2020
+D2020.90,Insulation,22 07 00,Common work results for sanitary drainage,D2020
+D2020.90,Instrumentation and Controls,22 09 00,Common work results for sanitary drainage,D2020
+D2030,Building Support Plumbing Systems,,,D20
+D2030.10,Stormwater Drainage Equipment,22 14 33,Drainage and sump pumps for stormwater system,D2030
+D2030.10,Stormwater Drainage Pumps,22 14 36,Stormwater drainage pumps,D2030
+D2030.10,Stormwater Drainage Sump Pumps,22 14 29,Stormwater drainage sump pumps,D2030
+D2030.10,Rainwater Storage Tanks,22 14 53,Rainwater storage tanks,D2030
+D2030.20,Stormwater Drainage Piping,22 14 13,Storm drainage piping system,D2030
+D2030.20,Rainwater Leaders,22 14 16,Rainwater leaders,D2030
+D2030.20,Stormwater Drainage Piping Specialties,22 14 23,Stormwater drainage piping specialties,D2030
+D2030.20,Stormwater Drainage Manholes,22 05 73,Stormwater drainage manholes,D2030
+D2030.20,Stormwater Drainage Piping Cleanouts,22 05 76,Stormwater drainage piping cleanouts,D2030
+D2030.30,Facility Stormwater Drains,22 14 26,Various types of drains to collect storm water,D2030
+D2030.30,Area Drains,22 14 26.13,Area drains for stormwater collection,D2030
+D2030.30,Roof Drains,22 14 26.16,Roof drains for stormwater collection,D2030
+D2030.30,Trench Drains,22 14 26.40,Trench drains for stormwater collection,D2030
+D2030.60,Gray Water Systems,22 13 63,Process support plumbing systems for gray water,D2030
+D2030.60,Gray Water Tanks,22 13 63.10,Gray water storage tanks,D2030
+D2030.60,Gray Water Equipment,22 13 63.20,Gray water processing equipment,D2030
+D2030.60,Gray Water Treatment Equipment,22 13 63.30,Gray water treatment systems,D2030
+D2030.60,Gray Water Piping System,22 13 63.40,Gray water distribution piping,D2030
+D2030.60,Gray Water Specialties,22 13 63.50,Gray water system specialties,D20
+D2030.90,Mechanical Metal Supports,05 45 13,Common work results for building support plumbing,D2030
+D2030.90,Common Work Results for Plumbing,22 05 00,Common work results for building support plumbing,D2030
+D2030.90,Expansion Fittings and Loops,22 05 16,Common work results for building support plumbing,D2030
+D2030.90,Meters and Gages,22 05 19,Common work results for building support plumbing,D2030
+D2030.90,Valves,22 05 23,Common work results for building support plumbing,D2030
+D2030.90,Hangers and Supports,22 05 29,Common work results for building support plumbing,D2030
+D2030.90,Heat Tracing,22 05 33,Common work results for building support plumbing,D2030
+D2030.90,Vibration and Seismic Controls,22 05 48,Common work results for building support plumbing,D2030
+D2030.90,Identification,22 05 53,Common work results for building support plumbing,D2030
+D2030.90,Insulation,22 07 00,Common work results for building support plumbing,D2030
+D2030.90,Instrumentation and Controls,22 09 00,Common work results for building support plumbing,D2030
+D2050,General Service Compressed-Air,,,D20
+D2050,General Service Compressed-Air Performance Requirements,01 86 16,Performance requirements for compressed air systems,D2050
+D2050.10,General Service Compressed-Air Piping,22 15 13,Compressed air piping,D2050
+D2050.20,General Service Compressed-Air Valves,22 15 16,Compressed air valves,D2050
+D2050.30,General Service Packaged Air Compressors and Receivers,22 15 19,Packaged air compressors and receivers,D2050
+D2050.30,General Service Packaged Air Compressors,22 15 19,Packaged air compressors and receivers,D2050
+D2060,Process Support Plumbing Systems,,,D20
+D2060.10,Compressed-Air Systems,22 61 00,Laboratory and healthcare compressed-air systems,D2060
+D2060.10,Compressed-Air Piping,22 61 13,Compressed air piping systems,D2060
+D2060.10,Compressed-Air Equipment,22 61 19,Compressed air equipment,D2060
+D2060.10,Compressed-Air Systems Performance Requirements,01 86 16,Performance requirements for compressed air systems,D2060
+D2060.10,Laboratory Air Operating Pressure,01 86 16,Laboratory air operating pressure requirements,D2060
+D2060.10,Medical Air Operating Pressure,01 86 16,Medical air operating pressure requirements,D2060
+D2060.10,Dental Air Operating Pressure,01 86 16,Dental air operating pressure requirements,D2060
+D2060.10,Instrument Air Operating Pressure,01 86 16,Instrument air operating pressure requirements,D2060
+D2060.10,Medical Laboratory Air Operating Pressure,01 86 16,Medical laboratory air operating pressure requirements,D2060
+D2060.10,Air Capacity,01 86 16,Air capacity requirements,D2060
+D2060.20,Vacuum Systems,22 62 00,Laboratory and healthcare vacuum systems,D2060
+D2060.20,Laboratory Vacuum Operation,01 86 16,Laboratory vacuum systems,D2060
+D2060.20,Dental Vacuum Operation,01 86 16,Dental vacuum systems,D2060
+D2060.20,Oral-Evacuation Vacuum Operation,01 86 16,Oral-evacuation vacuum systems,D2060
+D2060.20,Vacuum Piping,22 62 13,Vacuum system piping,D2060
+D2060.20,Vacuum Equipment,22 62 19,Vacuum system equipment,D2060
+D2060.20,Waste Anesthesia-Gas Piping,22 62 23,Waste anesthesia-gas piping systems,D2060
+D2060.20,Vacuum Systems Performance Requirements,01 86 16,Performance requirements for vacuum systems,D2060
+D2060.20,Healthcare Laboratory Vacuum Operation Level,01 86 16,Healthcare laboratory vacuum requirements,D2060
+D2060.20,Medical Surgical Vacuum Operation Level,01 86 16,Medical surgical vacuum requirements,D2060
+D2060.20,Waste Anesthetic Gas Disposal Vacuum Operation Level,01 86 16,Waste anesthetic gas disposal requirements,D2060
+D2060.30,Gas Systems,22 63 00,Laboratory and healthcare gas systems,D2060
+D2060.30,Gas Piping,22 63 13,Gas piping systems,D2060
+D2060.30,Gas Storage Tanks,22 63 19,Gas storage tanks,D2060
+D2060.30,Gas Systems Performance Requirements,01 86 16,Performance requirements for gas systems,D2060
+D2060.30,Medical Carbon Dioxide Operating Pressure,01 86 16,Medical carbon dioxide pressure requirements,D2060
+D2060.30,Medical Helium Operating Pressure,01 86 16,Medical helium pressure requirements,D2060
+D2060.30,Medical Nitrogen Operating Pressure,01 86 16,Medical nitrogen pressure requirements,D2060
+D2060.30,Medical Nitrous Oxide Operating Pressure,01 86 16,Medical nitrous oxide pressure requirements,D2060
+D2060.30,Medical Oxygen Operating Pressure,01 86 16,Medical oxygen pressure requirements,D2060
+D2060.40,Chemical-Waste Systems,22 66 00,Laboratory and healthcare chemical-waste systems,D2060
+D2060.40,Laboratory Chemical-Waste Piping,22 66 53,Laboratory chemical waste piping,D2060
+D2060.40,Healthcare Chemical-Waste Piping,22 66 70,Healthcare chemical waste piping,D2060
+D2060.40,Chemical-Waste Tanks,22 66 83,Chemical waste tanks,D2060
+D2060.40,Chemical-Waste Systems Performance Requirements,01 86 16,Performance requirements for chemical waste systems,D2060
+D2060.40,Single-Wall Piping Pressure Rating,01 86 16,Single-wall piping pressure requirements,D2060
+D2060.40,Double-Containment Piping Pressure Rating,01 86 16,Double-containment piping pressure requirements,D2060
+D2060.40,Field-Fabrication Containment-Piping Pressure Rating,01 86 16,Field-fabrication containment piping requirements,D2060
+D2060.50,Processed Water Systems,22 67 00,Processed water distribution systems,D2060
+D2060.50,Processed Water Piping,22 67 13,Processed water piping systems,D2060
+D2060.50,Processed Water Equipment,22 67 19,Processed water equipment,D2060
+D2060.50,Processed Water Systems Performance Requirements,01 86 16,Performance requirements for processed water systems,D2060
+D2060.50,Deionized-Water Piping Operating Pressure,01 86 16,Deionized water piping pressure requirements,D2060
+D2060.50,Distilled-Water Piping Operating Pressure,01 86 16,Distilled water piping pressure requirements,D2060
+D2060.50,Reagent-Water Piping Operating Pressure,01 86 16,Reagent water piping pressure requirements,D2060
+D2060.50,Reverse-Osmosis-Water Piping Operating Pressure,01 86 16,Reverse osmosis water piping pressure requirements,D2060
+D2060.90,Mechanical Metal Supports,05 45 13,Common work results for process support plumbing,D2060
+D2060.90,Healthcare Metal Supports,05 45 23,Healthcare metal supports,D2060
+D2060.90,Common Work Results for Plumbing,22 05 00,Common work results for process support plumbing,D2060
+D2060.90,Valves,22 05 23,Process support plumbing valves,D2060
+D2060.90,Hangers and Supports,22 05 29,Process support plumbing hangers and supports,D2060
+D2060.90,Heat Tracing,22 05 33,Process support plumbing heat tracing,D2060
+D2060.90,Vibration and Seismic Controls,22 05 48,Process support plumbing vibration and seismic controls,D2060
+D2060.90,Identification,22 05 53,Process support plumbing identification,D2060
+D2060.90,Insulation,22 07 00,Process support plumbing insulation,D2060
+D2060.90,Instrumentation and Controls,22 09 00,Process support plumbing instrumentation and controls,D2060
+D30,HVAC,23 00 00,,
+D3010,Facility Fuel Systems,,,D30
+D3010.10,Fuel Piping,23 11 00,Fuel piping and specialties,D3010
+D3010.30,Fuel Pumps,23 12 00,Facility fuel pumps,D3010
+D3010.30,Facility Fuel-Oil Pumps,23 12 13,Facility fuel-oil pumps,D3010
+D3010.30,Facility Gasoline Dispensing Pumps,23 12 16,Facility gasoline dispensing pumps,D3010
+D3010.50,Fuel Storage Tanks,23 13 00,Facility fuel storage tanks,D3010
+D3020,Heating Systems,,,D30
+D3020.10,Heat Generation,23 51 00,Heat transfer equipment,D3020
+D3020.10,Breechings Chimneys and Stacks,23 51 00,Breechings chimneys and stacks,D3020
+D3020.10,Fuel-Fired Heating Boilers,23 52 00,Fuel-fired boilers for hot water and steam,D3020
+D3020.10,Electric Heating Boilers,23 52 13,Electric boilers for hot water and steam,D3020
+D3020.10,Heating Boiler Feedwater Equipment,23 53 00,Equipment to remove oxygen and gases in boiler feed,D3020
+D3020.10,Boiler Feedwater Pumps,23 53 13,Boiler feedwater pumps,D3020
+D3020.10,Deaerators,23 53 16,Deaerators for boiler feedwater,D3020
+D3020.10,Furnaces,23 54 00,Fuel-fired and electric furnaces,D3020
+D3020.10,Solar Heat Generation,23 56 00,Equipment powered by solar energy,D3020
+D3020.10,Heating Solar Collectors,23 56 13,Solar collectors for heating,D3020
+D3020.10,Packaged Solar Heating Equipment,23 56 16,Packaged solar heating systems,D3020
+D3020.10,Fuel-Fired Heaters,23 55 00,Fuel-fired radiant and unit heaters,D3020
+D3020.10,Heat Exchangers for HVAC,23 57 00,Equipment for heat transfer between mediums,D3020
+D3020.30,Thermal Heat Storage,23 71 13,Thermal energy storage for heating,D3020
+D3020.70,Decentralized Heating Equipment,23 80 00,Electric and hydronic heating equipment,D3020
+D3020.70,Valance Heating Units,23 82 13,Valance heating units,D3020
+D3020.70,Chilled Beams,23 82 14,Chilled beam systems,D3020
+D3020.70,Air Coils,23 82 16,Air handling coils,D3020
+D3020.70,Fan Coil Units,23 82 19,Fan coil units,D3020
+D3020.70,Unit Ventilators,23 82 23,Unit ventilator systems,D3020
+D3020.70,Induction Units,23 82 26,Induction unit systems,D3020
+D3020.70,Radiators,23 82 29,Radiator units,D3020
+D3020.70,Convectors,23 82 33,Convector units,D3020
+D3020.70,Finned-Tube Radiation Heaters,23 82 36,Finned tube radiation heaters,D3020
+D3020.70,Unit Heaters,23 82 39,Unit heaters,D3020
+D3020.70,Radiant Heating Units,23 83 00,Electric cables or panels and hydronic piping,D3020
+D3020.90,Heating System Components,05 45 13,Heating system supplementary components,D3020
+D3030,Cooling Systems,,,D30
+D3030.10,Central Cooling,23 60 00,Central cooling equipment and systems,D3030
+D3030.10,Refrigerant Compressors,23 61 00,Various type compressors for refrigeration,D3030
+D3030.10,Refrigerant Condensers,23 63 00,Condensing units for heat rejection,D3030
+D3030.10,Packaged Compressor and Condenser Units,23 62 00,Combined compressor and condenser units,D3030
+D3030.10,Water Chillers,23 64 00,Various types of chillers for space cooling,D3030
+D3030.10,Cooling Towers,23 65 00,Factory and field-fabricated cooling towers,D3030
+D3030.30,Evaporative Air-Cooling,23 76 00,Evaporative cooling equipment,D3030
+D3030.50,Thermal Cooling Storage,23 71 00,Thermal energy storage for cooling,D3030
+D3030.50,Chilled-Water Thermal Storage,23 71 16,Chilled-water thermal storage systems,D3030
+D3030.50,Ice Storage,23 71 19,Ice storage systems,D3030
+D3030.70,Decentralized Cooling,23 80 00,Decentralized cooling equipment,D3030
+D3030.70,Packaged Terminal Air-Conditioners,23 81 13,Packaged terminal AC units,D3030
+D3030.70,Room Air-Conditioners,23 81 16,Room AC units,D3030
+D3030.70,Self-Contained Air-Conditioners,23 81 19,Self-contained AC units,D3030
+D3030.70,Computer-Room Air-Conditioners,23 81 23,Computer-room AC units,D3030
+D3030.70,Split-System Air-Conditioners,23 81 26,Split-system AC units,D3030
+D3030.70,Air-Source Heat Pumps,23 81 43,Air-source heat pump systems,D3030
+D3030.70,Water-Source Heat Pumps,23 81 46,Water-source heat pump systems,D3030
+D3030.70,Valance Cooling Units,23 82 13,Valance cooling units,D3030
+D3030.70,Chilled Beams,23 82 14,Chilled beam systems,D3030
+D3030.70,Air Coils,23 82 16,Air handling coils,D3030
+D3030.70,Fan Coil Units,23 82 19,Fan coil units,D3030
+D3030.70,Unit Ventilators,23 82 23,Unit ventilator systems,D3030
+D3030.70,Induction Units,23 82 26,Induction unit systems,D3030
+D3030.70,Convectors,23 82 33,Convector units,D3030
+D3030.90,Cooling System Components,05 45 13,Cooling system supplementary components,D3030
+D3050,Facility HVAC Distribution Systems,,,D30
+D3050,Facility HVAC Distribution Systems Performance Requirements,01 86 19,Performance requirements for HVAC distribution,D3050
+D3050.10,Facility Hydronic Distribution,01 86 19,Hydronic distribution systems,D3050
+D3050.10,Hydronic Piping System,23 21 13,Hydronic piping systems,D3050
+D3050.10,Hydronic Pumps,23 21 23,Hydronic system pumps,D3050
+D3050.10,Water Treatment for Hydronic Systems,23 25 00,Water treatment for hydronic systems,D3050
+D3050.10,Hydronic Distribution Performance Requirements,01 86 19,Performance requirements for hydronic systems,D3050
+D3050.10,Hot-Water Heating Piping Working Pressure and Temperature,01 86 19,Hot water heating piping requirements,D3050
+D3050.10,Chilled-Water Piping Working Pressure and Temperature,01 86 19,Chilled water piping requirements,D3050
+D3050.10,Dual-Temperature Heating and Cooling Water Piping Working Pressure and Temperature,01 86 19,Dual-temperature piping requirements,D3050
+D3050.10,Condenser-Water Piping Working Pressure and Temperature,01 86 19,Condenser water piping requirements,D3050
+D3050.10,Glycol Cooling-Water Piping Working Pressure and Temperature,01 86 19,Glycol cooling water piping requirements,D3050
+D3050.10,Makeup-Water Piping Working Pressure and Temperature,01 86 19,Makeup water piping requirements,D3050
+D3050.10,Condensate-Drain Piping Working Temperature,01 86 19,Condensate drain piping requirements,D3050
+D3050.10,Blowdown-Drain Piping Working Temperature,01 86 19,Blowdown drain piping requirements,D3050
+D3050.10,Air-Vent Piping Temperature,01 86 19,Air vent piping requirements,D3050
+D3050.10,Hydronic Pumps Capacities,01 86 19,Hydronic pump capacity requirements,D3050
+D3050.30,Facility Steam Distribution,01 86 19,Steam distribution systems,D3050
+D3050.30,Steam Condensate Pumps,23 22 23,Steam condensate pumping systems,D3050
+D3050.30,Steam Piping,23 22 13,Steam distribution piping,D3050
+D3050.30,Water Treatment for Steam Systems,23 25 19,Steam system water treatment,D3050
+D3050.30,Steam Distribution Performance Requirements,01 86 19,Performance requirements for steam systems,D3050
+D3050.30,High Pressure Steam Piping Working Pressure,01 86 19,High pressure steam piping requirements,D3050
+D3050.30,Low Pressure Steam Piping Working Pressure,01 86 19,Low pressure steam piping requirements,D3050
+D3050.30,Condensate Piping Working Pressure and Temperature,01 86 19,Condensate piping requirements,D3050
+D3050.30,Makeup-Water Piping Working Pressure and Temperature,01 86 19,Makeup water piping requirements,D3050
+D3050.30,Steam Condensate Pump Capacity,01 86 19,Steam condensate pump requirements,D3050
+D3050.50,HVAC Air Distribution,01 86 19,Air distribution systems,D3050
+D3050.50,Indoor Central-Station Air-Handling Units,23 73 00,Central air handling units,D3050
+D3050.50,Packaged Outdoor HVAC Equipment,23 74 00,Packaged outdoor HVAC equipment,D3050
+D3050.50,Custom-Packaged Outdoor HVAC Equipment,23 75 00,Custom packaged outdoor HVAC equipment,D3050
+D3050.50,HVAC Air Distribution Components,23 30 00,Ducts accessories fans and air outlets,D3050
+D3050.50,HVAC Fans,23 34 00,HVAC system fans,D3050
+D3050.50,HVAC Ducts and Casings,23 31 00,HVAC ductwork and casings,D3050
+D3050.50,Air Plenums and Chases,23 32 00,Air plenums and chases,D3050
+D3050.50,Air Duct Accessories,23 33 00,Air duct accessories,D3050
+D3050.50,Air Terminal Units,23 36 00,Air terminal units,D3050
+D3050.50,Air Outlets and Inlets,23 37 00,Air outlets and inlets,D3050
+D3050.50,HVAC Air Cleaning Devices,23 40 00,Air cleaning devices,D3050
+D3050.50,Particulate Air Filtration,23 41 00,Particulate air filtration,D3050
+D3050.50,Gas-Phase Air Filtration,23 42 00,Gas phase air filtration,D3050
+D3050.50,Electronic Air Cleaners,23 43 00,Electronic air cleaners,D3050
+D3050.50,Humidity Control,23 84 00,Equipment for humidity control,D3050
+D3050.50,HVAC Air Distribution Performance Requirements,01 86 19,Performance requirements for air distribution,D3050
+D3050.50,Sustainable Design Requirements,01 86 19,Sustainable design requirements for air distribution,D3050
+D3050.50,Fan Total Airflow and External Static Pressure,01 86 19,Fan performance requirements,D3050
+D3050.50,Pressure Class Seal Class and Leakage Class for Supply Ducts,01 86 19,Supply duct classification requirements,D3050
+D3050.50,Pressure Class Seal Class and Leakage Class for Return Ducts,01 86 19,Return duct classification requirements,D3050
+D3050.50,Filtration Efficiency,01 86 19,Air filtration efficiency requirements,D3050
+D3060,Ventilation,,,D30
+D3060,Ventilation Performance Requirements,01 86 19,Performance requirements for ventilation systems,D3060
+D3060,Sustainable Design Requirements,01 86 19,Sustainable design requirements for ventilation,D3060
+D3060,Fan Total Airflow and External Static Pressure,01 86 19,Fan performance requirements for ventilation,D3060
+D3060,Pressure Class Seal Class and Leakage Class for Exhaust Ducts,01 86 19,Exhaust duct classification requirements,D3060
+D3060.10,Supply Air,23 34 00,Supply air systems,D3060
+D3060.10,Supply Air Ducts and Casings,23 31 00,Supply air ductwork,D3060
+D3060.10,Supply Air Plenums and Chases,23 32 00,Supply air plenums,D3060
+D3060.10,Supply Air Duct Accessories,23 33 00,Supply duct accessories,D3060
+D3060.10,Supply Air Terminal Units,23 36 00,Supply terminal units,D3060
+D3060.10,Supply Air Outlets,23 37 00,Supply air outlets,D3060
+D3060.20,Return Air,23 34 00,Return air systems,D3060
+D3060.20,Return Air Ducts and Casings,23 31 00,Return air ductwork,D3060
+D3060.20,Return Air Plenums and Chases,23 32 00,Return air plenums,D3060
+D3060.20,Return Air Duct Accessories,23 33 00,Return duct accessories,D3060
+D3060.20,Return Air Outlets and Inlets,23 37 00,Return air grilles,D3060
+D3060.30,Exhaust Air,23 35 00,Exhaust air systems,D3060
+D3060.30,Sawdust Collection Systems,23 35 13.13,Sawdust collection,D3060
+D3060.30,Engine Exhaust Systems,23 35 16,Engine exhaust,D3060
+D3060.30,Ventilation Hoods,23 38 00,Ventilation hood systems,D3060
+D3060.30,Commercial Kitchen Hoods,23 38 13,Kitchen exhaust hoods,D3060
+D3060.30,Fume Hood Exhaust,23 38 16,Laboratory fume hoods,D3060
+D3060.30,Exhaust Air HVAC Fans,23 34 00,Exhaust fans,D3060
+D3060.30,Exhaust Air Ducts and Casings,23 31 00,Exhaust ductwork,D3060
+D3060.30,Exhaust Air Plenums and Chases,23 32 00,Exhaust plenums,D3060
+D3060.30,Exhaust Air Duct Accessories,23 33 00,Exhaust duct accessories,D3060
+D3060.30,Exhaust Air Inlets,23 37 00,Exhaust air inlets,D3060
+D3060.40,Outside Air,23 34 00,Outside air systems,D3060
+D3060.40,Outside Air Ducts and Casings,23 31 00,Outside air ductwork,D3060
+D3060.40,Outside Air Plenums and Chases,23 32 00,Outside air plenums,D3060
+D3060.40,Outside Air Duct Accessories,23 33 00,Outside air duct accessories,D3060
+D3060.40,Outside Air Terminal Units,23 36 00,Outside air terminals,D3060
+D3060.40,Outside Air Outlets and Inlets,23 37 00,Outside air grilles,D3060
+D3060.60,Air-to-Air Energy Recovery,23 72 00,Energy recovery systems,D3060
+D3060.70,HVAC Air Cleaning,23 40 00,Air filtration systems,D3060
+D3060.90,Ventilation Components,05 45 13,Ventilation supplementary components,D3060
+D3060.90,Mechanical Metal Supports,05 45 13,Common work results for ventilation,D3060
+D3060.90,Common Work Results for HVAC,23 05 00,Common work results for ventilation,D3060
+D3060.90,Hangers and Supports,23 05 29,Hangers and supports for ventilation,D3060
+D3060.90,Vibration and Seismic Controls,23 05 48,Vibration and seismic controls for ventilation,D3060
+D3060.90,Identification,23 05 53,Identification for ventilation systems,D3060
+D3060.90,Anti-Microbial Coatings,23 05 63,Anti-microbial coatings for ventilation,D3060
+D3060.90,Anti-Microbial Ultraviolet Emitters,23 05 66,UV emitters for ventilation systems,D3060
+D3060.90,Testing Adjusting and Balancing,23 05 93,Testing and balancing for ventilation,D3060
+D3060.90,Insulation,23 07 00,Insulation for ventilation systems,D3060
+D3060.90,Instrumentation and Control,23 09 00,Controls for ventilation systems,D3060
+D3070,Special Purpose HVAC Systems,,,D30
+D3070,Special Purpose HVAC Systems Performance Requirements,01 86 19,Performance requirements for special purpose HVAC,D3070
+D3070.10,Snow Melting,23 83 13,Snow melting systems,D3070
+D3070.10,Radiant-Heating Electric Cables,23 83 13,Electric cables for snow melting,D3070
+D3070.10,Radiant-Heating Hydronic Piping,23 83 16,Hydronic piping for snow melting,D3070
+D3070.10,Snow Melting Performance Requirements,01 86 19,Performance requirements for snow melting systems,D3070
+D3070.10,Radiant-Heating Electric Cables,23 83 13,Electric cables for snow melting,D3070
+D3070.10,Radiant-Heating Hydronic Piping,23 83 16,Hydronic piping for snow melting,D3070
+D3070.90,Mechanical Metal Supports,05 45 13,Common work results for special purpose HVAC,D3070
+D3070.90,Common Work Results for HVAC,23 05 00,Common work results for special purpose HVAC,D3070
+D3070.90,Hangers and Supports,23 05 29,Hangers and supports for special purpose HVAC,D3070
+D3070.90,Vibration and Seismic Controls,23 05 48,Vibration and seismic controls for special purpose HVAC,D3070
+D3070.90,Identification,23 05 53,Identification for special purpose HVAC,D3070
+D3070.90,Testing Adjusting and Balancing,23 05 93,Testing and balancing for special purpose HVAC,D3070
+D3070.90,Insulation,23 07 00,Insulation for special purpose HVAC,D3070
+D3070.90,Instrumentation and Control,23 09 00,Controls for special purpose HVAC,D3070

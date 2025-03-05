@@ -1,0 +1,91 @@
+number,title,mf_number,explanation,parent_number
+D2010.90,Mechanical Metal Supports,05 45 13,Common work results for plumbing,D2010
+D2010.90,Common Work Results for Plumbing,22 05 00,Common work results for plumbing,D2010
+D2010.90,Expansion Fittings and Loops,22 05 16,Common work results for plumbing,D2010
+D2010.90,Meters and Gages,22 05 19,Common work results for plumbing,D2010
+D2010.90,Valves,22 05 23,Common work results for plumbing,D2010
+D2010.90,Hangers and Supports,22 05 29,Common work results for plumbing,D2010
+D2010.90,Heat Tracing,22 05 33,Common work results for plumbing,D2010
+D2010.90,Vibration and Seismic Controls,22 05 48,Common work results for plumbing,D2010
+D2010.90,Identification,22 05 53,Common work results for plumbing,D2010
+D2010.90,Insulation,22 07 00,Common work results for plumbing,D2010
+D2010.90,Instrumentation and Controls,22 09 00,Common work results for plumbing,D2010
+
+D2020.90,Mechanical Metal Supports,05 45 13,Common work results for sanitary drainage,D2020
+D2020.90,Common Work Results for Plumbing,22 05 00,Common work results for sanitary drainage,D2020
+D2020.90,Expansion Fittings and Loops,22 05 16,Common work results for sanitary drainage,D2020
+D2020.90,Meters and Gages,22 05 19,Common work results for sanitary drainage,D2020
+D2020.90,Valves,22 05 23,Common work results for sanitary drainage,D2020
+D2020.90,Hangers and Supports,22 05 29,Common work results for sanitary drainage,D2020
+D2020.90,Heat Tracing,22 05 33,Common work results for sanitary drainage,D2020
+D2020.90,Vibration and Seismic Controls,22 05 48,Common work results for sanitary drainage,D2020
+D2020.90,Identification,22 05 53,Common work results for sanitary drainage,D2020
+D2020.90,Insulation,22 07 00,Common work results for sanitary drainage,D2020
+D2020.90,Instrumentation and Controls,22 09 00,Common work results for sanitary drainage,D2020
+
+D2020.30,Fats Oils and Grease Disposal Systems,22 13 19.23,Fats oils and grease disposal systems,D2020
+
+D2030.60,Gray Water Tanks,22 13 63.10,Gray water storage tanks,D2030
+D2030.60,Gray Water Equipment,22 13 63.20,Gray water processing equipment,D2030
+D2030.60,Gray Water Treatment Equipment,22 13 63.30,Gray water treatment systems,D2030
+D2030.60,Gray Water Piping System,22 13 63.40,Gray water distribution piping,D2030
+D2030.60,Gray Water Specialties,22 13 63.50,Gray water system specialties,D2030
+
+D2030.90,Mechanical Metal Supports,05 45 13,Common work results for building support plumbing,D2030
+D2030.90,Common Work Results for Plumbing,22 05 00,Common work results for building support plumbing,D2030
+D2030.90,Expansion Fittings and Loops,22 05 16,Common work results for building support plumbing,D2030
+D2030.90,Meters and Gages,22 05 19,Common work results for building support plumbing,D2030
+D2030.90,Valves,22 05 23,Common work results for building support plumbing,D2030
+D2030.90,Hangers and Supports,22 05 29,Common work results for building support plumbing,D2030
+D2030.90,Heat Tracing,22 05 33,Common work results for building support plumbing,D2030
+D2030.90,Vibration and Seismic Controls,22 05 48,Common work results for building support plumbing,D2030
+D2030.90,Identification,22 05 53,Common work results for building support plumbing,D2030
+D2030.90,Insulation,22 07 00,Common work results for building support plumbing,D2030
+D2030.90,Instrumentation and Controls,22 09 00,Common work results for building support plumbing,D2030
+
+D2050,General Service Compressed-Air Performance Requirements,01 86 16,Performance requirements for compressed air systems,D2050
+D2050.30,General Service Packaged Air Compressors and Receivers,22 15 19,Packaged air compressors and receivers,D2050
+
+D2060.10,Compressed-Air Systems Performance Requirements,01 86 16,Performance requirements for compressed air systems,D2060
+D2060.10,Laboratory Air Operating Pressure,01 86 16,Laboratory air operating pressure requirements,D2060
+D2060.10,Medical Air Operating Pressure,01 86 16,Medical air operating pressure requirements,D2060
+D2060.10,Dental Air Operating Pressure,01 86 16,Dental air operating pressure requirements,D2060
+D2060.10,Instrument Air Operating Pressure,01 86 16,Instrument air operating pressure requirements,D2060
+D2060.10,Medical Laboratory Air Operating Pressure,01 86 16,Medical laboratory air operating pressure requirements,D2060
+D2060.10,Air Capacity,01 86 16,Air capacity requirements,D2060
+
+D2060.20,Vacuum Systems Performance Requirements,01 86 16,Performance requirements for vacuum systems,D2060
+D2060.20,Healthcare Laboratory Vacuum Operation Level,01 86 16,Healthcare laboratory vacuum requirements,D2060
+D2060.20,Medical Surgical Vacuum Operation Level,01 86 16,Medical surgical vacuum requirements,D2060
+D2060.20,Waste Anesthetic Gas Disposal Vacuum Operation Level,01 86 16,Waste anesthetic gas disposal requirements,D2060
+
+D2060.30,Gas Systems Performance Requirements,01 86 16,Performance requirements for gas systems,D2060
+D2060.30,Medical Carbon Dioxide Operating Pressure,01 86 16,Medical carbon dioxide pressure requirements,D2060
+D2060.30,Medical Helium Operating Pressure,01 86 16,Medical helium pressure requirements,D2060
+D2060.30,Medical Nitrogen Operating Pressure,01 86 16,Medical nitrogen pressure requirements,D2060
+D2060.30,Medical Nitrous Oxide Operating Pressure,01 86 16,Medical nitrous oxide pressure requirements,D2060
+D2060.30,Medical Oxygen Operating Pressure,01 86 16,Medical oxygen pressure requirements,D2060
+
+D2060.40,Chemical-Waste Systems Performance Requirements,01 86 16,Performance requirements for chemical waste systems,D2060
+D2060.40,Single-Wall Piping Pressure Rating,01 86 16,Single-wall piping pressure requirements,D2060
+D2060.40,Double-Containment Piping Pressure Rating,01 86 16,Double-containment piping pressure requirements,D2060
+D2060.40,Field-Fabrication Containment-Piping Pressure Rating,01 86 16,Field-fabrication containment piping requirements,D2060
+
+D2060.50,Processed Water Systems Performance Requirements,01 86 16,Performance requirements for processed water systems,D2060
+D2060.50,Deionized-Water Piping Operating Pressure,01 86 16,Deionized water piping pressure requirements,D2060
+D2060.50,Distilled-Water Piping Operating Pressure,01 86 16,Distilled water piping pressure requirements,D2060
+D2060.50,Reagent-Water Piping Operating Pressure,01 86 16,Reagent water piping pressure requirements,D2060
+D2060.50,Reverse-Osmosis-Water Piping Operating Pressure,01 86 16,Reverse osmosis water piping pressure requirements,D2060
+
+D2060.90,Mechanical Metal Supports,05 45 13,Common work results for process support plumbing,D2060
+D2060.90,Healthcare Metal Supports,05 45 23,Healthcare metal supports,D2060
+D2060.90,Common Work Results for Plumbing,22 05 00,Common work results for process support plumbing,D2060
+D2060.90,Valves,22 05 23,Process support plumbing valves,D2060
+D2060.90,Hangers and Supports,22 05 29,Process support plumbing hangers and supports,D2060
+D2060.90,Heat Tracing,22 05 33,Process support plumbing heat tracing,D2060
+D2060.90,Vibration and Seismic Controls,22 05 48,Process support plumbing vibration and seismic controls,D2060
+D2060.90,Identification,22 05 53,Process support plumbing identification,D2060
+D2060.90,Insulation,22 07 00,Process support plumbing insulation,D2060
+D2060.90,Instrumentation and Controls,22 09 00,Process support plumbing instrumentation and controls,D2060
+
+Would you like me to start checking D30 HVAC sections next?

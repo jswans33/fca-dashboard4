@@ -1,0 +1,723 @@
+﻿MF,ITEM,Column1,Column2
+22 00 00,Plumbing,D20,PLUMBING
+22 01 00,Operation and Maintenance of Plumbing,,
+22 01 10,Operation and Maintenance of Plumbing Piping and Pumps,,
+22 01 10 16,Video Piping Inspections,,
+22 01 10 51,Plumbing Piping Cleaning,,
+22 01 10 61,Plumbing Piping Repairs,,
+22 01 10 62,Plumbing Piping Relining,,
+22 01 30,Operation and Maintenance of Plumbing Equipment,,
+22 01 40,Operation and Maintenance of Plumbing Fixtures,,
+22 01 50,Operation and Maintenance of Pool and Fountain Plumbing Systems,,
+22 01 60,Operation and Maintenance of Laboratory and Healthcare Systems,,
+22 05 00,Common Work Results for Plumbing,D2060.90,Common Work Results for Plumbing
+22 05 05,Selective Demolition for Plumbing,,
+22 05 13,Common Motor Requirements for Plumbing Equipment,,
+22 05 16,Expansion Fittings and Loops for Plumbing Piping,D2030.90,Expansion Fittings and Loops
+22 05 17,Sleeves and Sleeve Seals for Plumbing Piping,,
+22 05 19,Meters and Gauges for Plumbing Piping,D2030.90,Meters and Gages
+22 05 23,General-Duty Valves for Plumbing Piping,D2060.90,Valves
+22 05 29,Hangers and Supports for Plumbing Piping and Equipment,D2060.90,Hangers and Supports
+22 05 33,Heat Tracing for Plumbing Piping,D2060.90,Heat Tracing
+22 05 48,Vibration and Seismic Controls for Plumbing Piping and Equipment,D2060.90,Vibration and Seismic Controls
+22 05 48 13,Vibration Controls for Plumbing Piping and Equipment,,
+22 05 53,Identification for Plumbing Piping and Equipment,D2060.90,Identification
+22 05 73,Facility Drainage Manholes,D2030.20,Stormwater Drainage Manholes
+22 05 76,Facility Drainage Piping Cleanouts,D2030.20,Stormwater Drainage Piping Cleanouts
+22 06 00,Schedules for Plumbing,,
+22 06 10,Schedules for Plumbing Piping and Pumps,,
+22 06 10 13,Plumbing Pump Schedule,,
+22 06 12,Schedules for Facility Potable Water Storage,,
+22 06 15,Schedules for General Service Compressed-Air Equipment,,
+22 06 30,Schedules for Plumbing Equipment,,
+22 06 30 13,Domestic Water Heater Schedule,,
+22 06 40,Schedules for Plumbing Fixtures,,
+22 06 40 13,Plumbing Fixture Schedule,,
+22 06 50,Schedules for Pool and Fountain Plumbing Systems,,
+22 06 60,Schedules for Laboratory and Healthcare Systems,,
+22 07 00,Plumbing Insulation,D2060.90,Insulation
+22 07 16,Plumbing Equipment Insulation,,
+22 07 19,Plumbing Piping Insulation,,
+22 08 00,Commissioning of Plumbing,,
+22 09 00,Instrumentation and Control for Plumbing,D2060.90,Instrumentation and Controls
+22 09 63,Medical Gas Alarms,,
+22 10 00,Plumbing Piping,,
+22 11 00,Facility Water Distribution,,
+22 11 13,Facility Water Distribution Piping,,
+22 11 16,Domestic Water Piping,D2010.40,Domestic Water Piping
+22 11 17,Gray-Water Piping,,
+22 11 19,Domestic Water Piping Specialties,D2010.40,Domestic Water Piping Specialties
+22 11 23,Domestic Water Pumps,D2010.20,Domestic Water Pumps
+22 11 23 13,Domestic-Water Packaged Booster Pumps,,
+22 11 23 23,Domestic-Water In-Line Pumps,,
+22 11 23 26,"Close-Coupled, Horizontally Mounted, In-Line Centrifugal Domestic-Water Pumps",,
+22 11 23 29,"Close-Coupled, Vertically Mounted, In-Line Centrifugal Domestic-Water Pumps",,
+22 11 23 33,"Separately Coupled, In-Line Centrifugal Domestic-Water Pumps",,
+22 11 23 36,"Separately Coupled, Horizontally Mounted, In-Line Centrifugal Domestic-Water Pumps",,
+22 11 23 43,"Domestic-Water, Base-Mounted Pumps",,
+22 11 63,Gray-Water Pumps,,
+22 12 00,Facility Potable-Water Storage Tanks,D2010.10,Facility Potable-Water Storage Tanks
+22 12 13,"Facility Roof-Mounted, Potable-Water Storage Tanks",,
+22 12 16,"Facility Elevated, Potable-Water Storage Tanks",,
+22 12 19,"Facility Ground-Mounted, Potable-Water Storage Tanks",,
+22 12 21,Facility Underground Potable-Water Storage Tanks,,
+22 12 23,Facility Indoor Potable-Water Storage Tanks,,
+22 12 23 13,"Facility Steel, Indoor Potable-Water Storage Pressure Tanks",,
+22 12 23 16,"Facility Steel, Indoor Potable-Water Storage Non-Pressure Tanks",,
+22 12 23 23,"Facility Plastic, Indoor Potable-Water Storage Pressure Tanks",,
+22 12 23 26,"Facility Plastic, Indoor Potable-Water Storage Non-Pressure Tanks",,
+22 13 00,Facility Sanitary Sewerage,,
+22 13 13,Facility Sanitary Sewers,D2020.30,Sanitary Sewerage Piping
+22 13 16,Sanitary Waste and Vent Piping,D2020.30,Sanitary Waste and Vent Piping
+22 13 19,Sanitary Waste Piping Specialties,D2020.30,Sanitary Waste Piping Specialties
+22 13 19 13,Sanitary Drains,,
+22 13 19 23,"Fats, Oils, and Grease Disposal Systems",,
+22 13 19 26,Grease Removal Devices,,
+22 13 19 33,Backwater Valves,,
+22 13 19 36,Air-Admittance Valves,,
+22 13 23,Sanitary Waste Interceptors,D2020.10,Sanitary Waste Interceptors
+22 13 26,Sanitary Waste Separators,D2020.10,Sanitary Waste Separators
+22 13 29,Sanitary Sewerage Pumps,D2020.10,Sanitary Sewerage Pumps
+22 13 29 13,"Wet-Pit-Mounted, Vertical Sewerage Pumps",,
+22 13 29 16,Submersible Sewerage Pumps,,
+22 13 29 23,Sewerage Pump Reverse-Flow Assemblies,,
+22 13 29 33,Sewerage Pump Basins and Pits,,
+22 13 33,"Packaged, Submersible Sewerage Pump Units",D2020.10,Packaged Sewerage Pump Units
+22 13 36,"Packaged, Wastewater Pump Units",D2020.10,Packaged Submersible Sewerage Pump Units
+22 13 43,Facility Packaged Sewage Pumping Stations,D2020.10,Facility Packaged Sewerage Pumping Stations
+22 13 43 13,Facility Dry-Well Packaged Sewage Pumping Stations,,
+22 13 43 16,Facility Wet-Well Packaged Sewage Pumping Stations,,
+22 13 63,Facility Gray Water Tanks,D2030.60,Gray Water Systems
+22 14 00,Facility Storm Drainage,,
+22 14 13,Facility Storm Drainage Piping,D2030.20,Stormwater Drainage Piping
+22 14 16,Rainwater Leaders,D2030.20,Rainwater Leaders
+22 14 19,Sump Pump Discharge Piping,,
+22 14 23,Storm Drainage Piping Specialties,D2030.20,Stormwater Drainage Piping Specialties
+22 14 26,Facility Storm Drains,D2030.30,Facility Stormwater Drains
+22 14 26 13,Roof Drains,,
+22 14 26 16,Facility Area Drains,,
+22 14 26 19,Facility Trench Drains,,
+22 14 29,Sump Pumps,D2030.10,Stormwater Drainage Sump Pumps
+22 14 29 13,"Wet-Pit-Mounted, Vertical Sump Pumps",,
+22 14 29 16,Submersible Sump Pumps,,
+22 14 29 19,Sump-Pump Basins and Pits,,
+22 14 33,"Packaged, Pedestal Drainage Pump Units",D2030.10,Stormwater Drainage Equipment
+22 14 36,"Packaged, Submersible, Drainage Pump Units",D2030.10,Stormwater Drainage Pumps
+22 14 53,Rainwater Storage Tanks,D2030.10,Rainwater Storage Tanks
+22 14 63,Facility Storm-Water Retention Tanks,,
+22 15 00,General Service Compressed-Air Systems,,
+22 15 13,General Service Compressed-Air Piping,D2050.10,General Service Compressed-Air Piping
+22 15 16,General Service Compressed-Air Valves,D2050.20,General Service Compressed-Air Valves
+22 15 19,General Service Packaged Air Compressors and Receivers,D2050.30,General Service Packaged Air Compressors
+22 15 19 13,General Service Packaged Reciprocating Air Compressors,,
+22 15 19 16,General Service Packaged Liquid-Ring Air Compressors,,
+22 15 19 19,General Service Packaged Rotary-Screw Air Compressors,,
+22 15 19 23,General Service Packaged Sliding-Vane Air Compressors,,
+22 30 00,Plumbing Equipment,,
+22 31 00,Domestic Water Softeners,D2010.20,Domestic Water Softeners
+22 31 13,Residential Domestic Water Softeners,,
+22 31 16,Commercial Domestic Water Softeners,,
+22 32 00,Domestic Water Filtration Equipment,D2010.20,Domestic Water Filtration Equipment
+22 32 13,Domestic-Water Bag-Type Filters,,
+22 32 16,Domestic-Water Freestanding Cartridge Filters,,
+22 32 19,Domestic-Water Off-Floor Cartridge Filters,,
+22 32 23,Domestic-Water Carbon Filters,,
+22 32 26,Domestic-Water Sand Filters,,
+22 32 26 13,Domestic-Water Circulating Sand Filters,,
+22 32 26 16,Domestic-Water Multimedia Sand Filters,,
+22 32 26 19,Domestic-Water Greensand Filters,,
+22 33 00,Electric Domestic Water Heaters,D2010.20,Electric Domestic Water Heaters
+22 33 13,Instantaneous Electric Domestic Water Heaters,,
+22 33 13 13,"Flow-Control, Instantaneous Electric Domestic Water Heaters",,
+22 33 13 16,"Thermostat-Control, Instantaneous Electric Domestic Water Heaters",,
+22 33 30,"Residential, Electric Domestic Water Heaters",,
+22 33 30 13,"Residential, Small-Capacity Electric Domestic Water Heaters",,
+22 33 30 16,"Residential, Storage Electric Domestic Water Heaters",,
+22 33 30 23,"Residential, Collector-to-Tank, Solar-Electric Domestic Water Heaters",,
+22 33 30 26,"Residential, Collector-to-Tank, Heat-Exchanger-Coil, Solar-Electric Domestic Water Heaters",,
+22 33 33,Light-Commercial Electric Domestic Water Heaters,,
+22 33 36,Commercial Domestic Water Electric Booster Heaters,,
+22 33 36 13,Commercial Domestic Water Electric Booster Heaters,,
+22 33 36 16,Commercial Storage Electric Domestic Water Heaters,,
+22 34 00,Fuel-Fired Domestic Water Heaters,D2010.20,Fuel-Fired Domestic Water Heaters
+22 34 13,"Instantaneous, Tankless, Gas Domestic Water Heaters",,
+22 34 30,Residential Gas Domestic Water Heaters,,
+22 34 30 13,"Residential, Atmospheric, Gas Domestic Water Heaters",,
+22 34 30 16,"Residential, Direct-Vent, Gas Domestic Water Heaters",,
+22 34 30 19,"Residential, Power-Vent, Gas Domestic Water Heaters",,
+22 34 36,Commercial Gas Domestic Water Heaters,,
+22 34 36 13,"Commercial, Atmospheric, Gas Domestic Water Heaters",,
+22 34 36 16,"Commercial, Power-Burner, Gas Domestic Water Heaters",,
+22 34 36 19,"Commercial, Power-Vent, Gas Domestic Water Heaters",,
+22 34 36 23,"Commercial, High-Efficiency, Gas Domestic Water Heaters",,
+22 34 36 26,"Commercial, Coil-Type, Finned-Tube, Gas Domestic Water Heaters",,
+22 34 36 29,"Commercial, Grid-Type, Finned-Tube, Gas Domestic Water Heaters",,
+22 34 46,Oil-Fired Domestic Water Heaters,,
+22 34 46 13,"Large-Capacity, Oil-Fired Domestic Water Heaters",,
+22 34 56,Dual-Fuel-Fired Domestic Water Heaters,,
+22 35 00,Domestic Water Heat Exchangers,D2010.20,Domestic Water Heat Exchangers
+22 35 13,Instantaneous Domestic Water Heat Exchangers,,
+22 35 13 13,"Heating-Fluid-in-Coil, Instantaneous Domestic Water Heat Exchangers",,
+22 35 13 16,"Domestic-Water-in-Coil, Instantaneous Domestic Water Heat Exchangers",,
+22 35 13 19,"Heating-Fluid-in-U-Tube-Coil, Instantaneous Domestic Water Heat Exchangers",,
+22 35 23,"Circulating, Domestic Water Heat Exchangers",,
+22 35 23 13,"Circulating, Compact Domestic Water Heat Exchangers",,
+22 35 23 16,"Circulating, Storage Domestic Water Heat Exchangers",,
+22 35 29,"Noncirculating, Domestic Water Heat Exchangers",,
+22 35 29 13,"Noncirculating, Compact Domestic Water Heat Exchangers",,
+22 35 29 16,"Noncirculating, Storage Domestic Water Heat Exchangers",,
+22 35 36,Domestic Water Brazed-Plate Heat Exchangers,,
+22 35 39,Domestic Water Frame-and-Plate Heat Exchangers,,
+22 35 43,Domestic Water Heat Reclaimers,,
+22 36 00,Domestic Water Preheaters,,
+22 36 13,Solar Domestic Water Preheaters,,
+22 36 23,Geothermal Domestic Water Preheaters,,
+22 40 00,Plumbing Fixtures,D2010.60,Plumbing Fixtures
+22 41 00,Residential Plumbing Fixtures,,
+22 41 13,"Residential Water Closets, Urinals, and Bidets",D2010.60,Residential Bidets
+22 41 13 13,Residential Water Closets,,
+22 41 13 16,Residential Urinals,,
+22 41 13 19,Residential Bidets,,
+22 41 16,Residential Lavatories and Sinks,D2010.60,Residential Sinks
+22 41 16 13,Residential Lavatories,,
+22 41 16 16,Residential Sinks,,
+22 41 19,Residential Bathtubs,D2010.60,Residential Bathtubs
+22 41 23,Residential Showers,D2010.60,Residential Showers
+22 41 26,Residential Disposers,D2010.60,Residential Disposers
+22 41 36,Residential Laundry Trays,D2010.60,Residential Laundry Trays
+22 41 39,"Residential Faucets, Supplies, and Trim",D2010.60,Residential Plumbing Fixture Trim
+22 42 00,Commercial Plumbing Fixtures,,
+22 42 13,"Commercial Water Closets, Urinals, and Bidets",D2010.60,Commercial Bidets
+22 42 13 13,Commercial Water Closets,,
+22 42 13 16,Commercial Urinals,,
+22 42 16,Commercial Lavatories and Sinks,D2010.60,Commercial Sinks
+22 42 16 13,Commercial Lavatories,,
+22 42 16 16,Commercial Sinks,,
+22 42 19,Commercial Bathtubs,D2010.60,Commercial Bathtubs
+22 42 23,Commercial Showers,D2010.60,Commercial Showers
+22 42 26,Commercial Disposers,D2010.60,Commercial Disposers
+22 42 29,Shampoo Bowls,D2010.60,Shampoo Bowls
+22 42 33,Wash Fountains,D2010.60,Wash Fountains
+22 42 36,Commercial Laundry Trays,D2010.60,Commercial Laundry Trays
+22 42 39,Commercial Faucets,D2010.60,Commercial Plumbing Fixture Trim
+22 42 43,Flushometers,D2010.60,Flushometers
+22 43 00,Healthcare Plumbing Fixtures,,
+22 43 13,Healthcare Water Closets,D2010.60,Healthcare Water Closets
+22 43 16,Healthcare Sinks,D2010.60,Healthcare Sinks
+22 43 19,Healthcare Bathtubs,D2010.60,Healthcare Bathtubs
+22 43 23,Healthcare Showers,D2010.60,Healthcare Showers
+22 43 39,Healthcare Faucets,D2010.60,Healthcare Faucets
+22 43 43,Healthcare Plumbing Fixture Flushometers,D2010.60,Healthcare Flushometers
+22 45 00,Emergency Plumbing Fixtures,,
+22 45 13,Emergency Showers,D2010.60,Emergency Showers
+22 45 16,Eyewash Equipment,D2010.60,Eyewash Equipment
+22 45 19,Self-Contained Eyewash Equipment,,
+22 45 23,Personal Eyewash Equipment,,
+22 45 26,Eye/Face Wash Equipment,D2010.60,Eye/Face Wash Equipment
+22 45 29,Hand-Held Emergency Drench Hoses,D2010.60,Hand-Held Emergency Drench Hoses
+22 45 33,Combination Emergency Fixture Units,D2010.60,Combination Emergency Fixture Units
+22 45 36,Emergency Fixture Water-Tempering Equipment,D2010.60,Emergency Fixture Water-Tempering Equipment
+22 46 00,Security Plumbing Fixtures,,
+22 46 13,Security Water Closets and Urinals,D2010.60,Security Urinals
+22 46 13 13,Security Water Closets,,
+22 46 13 16,Security Urinals,,
+22 46 16,Security Lavatories and Sinks,D2010.60,Security Sinks
+22 46 16 13,Security Lavatories,,
+22 46 16 16,Security Sinks,,
+22 46 19,Security Showers,,
+22 46 39,"Security Faucets, Supplies, and Trim",D2010.60,Security Plumbing Fixture Trim
+22 46 43,Security Plumbing Fixture Flushometers,D2010.60,Security Flushometers
+22 46 53,Security Plumbing Fixture Supports,D2010.60,Security Plumbing Fixture Supports
+22 47 00,Drinking Fountains and Water Coolers,,
+22 47 13,Drinking Fountains,D2010.60,Drinking Fountains
+22 47 16,Pressure Water Coolers,,
+22 47 19,Water-Station Water Coolers,,
+22 47 23,Remote Water Coolers,D2010.60,Remote Water Coolers
+22 50 00,Pool and Fountain Plumbing Systems,,
+22 51 00,Swimming Pool Plumbing Systems,,
+22 51 13,Swimming Pool Piping,,
+22 51 16,Swimming Pool Pumps,,
+22 51 19,Swimming Pool Water Treatment Equipment,,
+22 51 23,Swimming Pool Equipment Controls,,
+22 52 00,Fountain Plumbing Systems,,
+22 52 13,Fountain Piping,,
+22 52 16,Fountain Pumps,,
+22 52 19,Fountain Water Treatment Equipment,,
+22 52 19 13,Electronic Fountain Water Conditioning Equipment,,
+22 52 23,Fountain Equipment Controls,,
+22 60 00,Gas and Vacuum Systems for Laboratory and Healthcare Facilities,,
+22 61 00,Compressed-Air Systems for Laboratory and Healthcare Facilities,D2060.10,Compressed-Air Systems
+22 61 13,Compressed-Air Piping for Laboratory and Healthcare Facilities,D2060.10,Compressed-Air Piping
+22 61 13 53,Laboratory Compressed-Air Piping,,
+22 61 13 70,Healthcare Compressed-Air Piping,,
+22 61 13 74,Dental Compressed-Air Piping,,
+22 61 19,Compressed-Air Equipment for Laboratory and Healthcare Facilities,D2060.10,Compressed-Air Equipment
+22 61 19 53,Laboratory Compressed-Air Equipment,,
+22 61 19 70,Healthcare Compressed-Air Equipment,,
+22 61 19 74,Dental Compressed-Air Equipment,,
+22 62 00,Vacuum Systems for Laboratory and Healthcare Facilities,D2060.20,Vacuum Systems
+22 62 13,Vacuum Piping for Laboratory and Healthcare Facilities,D2060.20,Vacuum Piping
+22 62 13 53,Laboratory Vacuum Piping,,
+22 62 13 70,"Healthcare, Surgical Vacuum Piping",,
+22 62 13 74,Dental Vacuum Piping,,
+22 62 19,Vacuum Equipment for Laboratory and Healthcare Facilities,D2060.20,Vacuum Equipment
+22 62 19 53,Laboratory Vacuum Equipment,,
+22 62 19 70,Healthcare Vacuum Equipment,,
+22 62 19 74,Dental Vacuum and Evacuation Equipment,,
+22 62 23,Waste Anesthesia-Gas Piping,D2060.20,Waste Anesthesia-Gas Piping
+22 63 00,Gas Systems for Laboratory and Healthcare Facilities,D2060.30,Gas Systems
+22 63 13,Gas Piping for Laboratory and Healthcare Facilities,D2060.30,Gas Piping
+22 63 13 53,Laboratory Gas Piping,,
+22 63 13 70,Healthcare Gas Piping,,
+22 63 19,Gas Storage Tanks for Laboratory and Healthcare Facilities,D2060.30,Gas Storage Tanks
+22 63 19 53,Laboratory Gas Storage Tanks,,
+22 63 19 70,Healthcare Gas Storage Tanks,,
+22 66 00,Chemical-Waste Systems for Laboratory and Healthcare Facilities,D2060.40,Chemical-Waste Systems
+22 66 53,Laboratory Chemical-Waste and Vent Piping,D2060.40,Laboratory Chemical-Waste Piping
+22 66 70,Healthcare Chemical-Waste and Vent Piping,D2060.40,Healthcare Chemical-Waste Piping
+22 66 83,Chemical-Waste Tanks,D2060.40,Chemical-Waste Tanks
+22 66 83 13,Chemical-Waste Dilution Tanks,,
+22 66 83 16,Chemical-Waste Neutralization Tanks,,
+22 67 00,Processed Water Systems for Laboratory and Healthcare Facilities,D2060.50,Processed Water Systems
+22 67 13,Processed Water Piping for Laboratory and Healthcare Facilities,D2060.50,Processed Water Piping
+22 67 13 13,Distilled-Water Piping,,
+22 67 13 16,Reverse-Osmosis Water Piping,,
+22 67 13 19,Deionized-Water Piping,,
+22 67 19,Processed Water Equipment for Laboratory and Healthcare Facilities,D2060.50,Processed Water Equipment
+22 67 19 13,Distilled-Water Equipment,,
+22 67 19 16,Reverse-Osmosis Water Equipment,,
+22 67 19 19,Deionized-Water Equipment,,
+23 00 00,"Heating, Ventilating, and Air Conditioning (HVAC)",D30,HVAC
+23 01 00,Operation and Maintenance of HVAC Systems,,
+23 01 10,Operation and Maintenance of Facility Fuel Systems,,
+23 01 20,Operation and Maintenance of HVAC Piping and Pumps,,
+23 01 30,Operation and Maintenance of HVAC Air Distribution,,
+23 01 30 51,HVAC Air-Distribution System Cleaning,,
+23 01 50,Operation and Maintenance of Central Heating Equipment,,
+23 01 60,Operation and Maintenance of Central Cooling Equipment,,
+23 01 60 71,Refrigerant Recovery/Recycling,,
+23 01 70,Operation and Maintenance of Central HVAC Equipment,,
+23 01 80,Operation and Maintenance of Decentralized HVAC Equipment,,
+23 01 90,Diagnostic Systems for HVAC,,
+23 05 00,Common Work Results for HVAC,D3070.90,Common Work Results for HVAC
+23 05 05,"Selective Demolition for Heating, Ventilating, and Air Conditioning (HVAC)",,
+23 05 13,Common Motor Requirements for HVAC Equipment,,
+23 05 16,Expansion Fittings and Loops for HVAC Piping,,
+23 05 17,Sleeves and Sleeve Seals for HVAC Piping,,
+23 05 19,Meters and Gauges for HVAC Piping,,
+23 05 23,General-Duty Valves for HVAC Piping,,
+23 05 29,Hangers and Supports for HVAC Piping and Equipment,D3070.90,Hangers and Supports
+23 05 33,Heat Tracing for HVAC Piping,,
+23 05 48,Vibration and Seismic Controls for HVAC,D3070.90,Vibration and Seismic Controls
+23 05 48 13,Vibration Controls for HVAC,,
+23 05 53,Identification for HVAC Piping and Equipment,D3070.90,Identification
+23 05 63,Anti-Microbial Coatings for HVAC Ducts and Equipment,D3060.90,Anti-Microbial Coatings
+23 05 66,Anti-Microbial Ultraviolet Emitters for HVAC Ducts and Equipment,D3060.90,Anti-Microbial Ultraviolet Emitters
+23 05 93,"Testing, Adjusting, and Balancing for HVAC",D3070.90,Testing Adjusting and Balancing
+23 06 00,Schedules for HVAC,,
+23 06 10,Schedules for Facility Fuel Service Systems,,
+23 06 20,Schedules for HVAC Piping and Pumps,,
+23 06 20 13,Hydronic Pump Schedule,,
+23 06 30,Schedules for HVAC Air Distribution,,
+23 06 30 13,HVAC Fan Schedule,,
+23 06 30 16,Air Terminal Unit Schedule,,
+23 06 30 19,Air Outlet and Inlet Schedule,,
+23 06 30 23,HVAC Air Cleaning Device Schedule,,
+23 06 50,Schedules for Central Heating Equipment,,
+23 06 50 13,Heating Boiler Schedule,,
+23 06 60,Schedules for Central Cooling Equipment,,
+23 06 60 13,Refrigerant Condenser Schedule,,
+23 06 60 16,Packaged Water Chiller Schedule,,
+23 06 70,Schedules for Central HVAC Equipment,,
+23 06 70 13,"Indoor, Central-Station Air-Handling Unit Schedule",,
+23 06 70 16,Packaged Outdoor HVAC Equipment Schedule,,
+23 06 80,Schedules for Decentralized HVAC Equipment,,
+23 06 80 13,Decentralized Unitary HVAC Equipment Schedule,,
+23 06 80 16,Convection Heating and Cooling Unit Schedule,,
+23 06 80 19,Radiant Heating and Cooling Unit Schedule,,
+23 07 00,HVAC Insulation,D3070.90,Insulation
+23 07 13,Duct Insulation,,
+23 07 16,HVAC Equipment Insulation,,
+23 07 19,HVAC Piping Insulation,,
+23 08 00,Commissioning of HVAC,,
+23 09 00,Instrumentation and Control for HVAC,D3070.90,Instrumentation and Control
+23 09 13,Instrumentation and Control Devices for HVAC,,
+23 09 13 13,Actuators and Operators,,
+23 09 13 23,Sensors and Transmitters,,
+23 09 13 33,Control Valves,,
+23 09 13 43,Control Dampers,,
+23 09 23,Direct-Digital Control System for HVAC,,
+23 09 23 11,Control Valves,,
+23 09 23 12,Control Dampers,,
+23 09 23 13,Energy Meters,,
+23 09 23 14,Flow Instruments,,
+23 09 23 16,Gas Instruments,,
+23 09 23 17,Level Instruments,,
+23 09 23 18,Leak Detection Instruments,,
+23 09 23 19,Moisture Instruments,,
+23 09 23 21,Motion Instruments,,
+23 09 23 22,Position Instruments,,
+23 09 23 23,Pressure Instruments,,
+23 09 23 24,Speed Instruments,,
+23 09 23 27,Temperature Instruments,,
+23 09 23 33,Vibration Instruments,,
+23 09 23 43,Weather Stations,,
+23 09 33,Electric and Electronic Control System for HVAC,,
+23 09 43,Pneumatic Control System for HVAC,,
+23 09 53,Pneumatic and Electric Control System for HVAC,,
+23 09 93,Sequence of Operations for HVAC Controls,,
+23 09 93 11,Sequence of Operation for HVAC DDC,,
+23 10 00,Facility Fuel Systems,,
+23 11 00,Facility Fuel Piping,D3010.10,Fuel Piping
+23 11 13,Facility Fuel-Oil Piping,,
+23 11 16,Facility Gasoline Piping,,
+23 11 23,Facility Natural-Gas Piping,,
+23 11 26,Facility Liquefied-Petroleum Gas Piping,,
+23 12 00,Facility Fuel Pumps,D3010.30,Fuel Pumps
+23 12 13,Facility Fuel-Oil Pumps,D3010.30,Facility Fuel-Oil Pumps
+23 12 16,Facility Gasoline Dispensing Pumps,D3010.30,Facility Gasoline Dispensing Pumps
+23 12 26,Facility Liquefied-Petroleum Gas Pumps,,
+23 13 00,Facility Fuel-Storage Tanks,D3010.50,Fuel Storage Tanks
+23 13 13,"Facility Underground Fuel-Oil, Storage Tanks",,
+23 13 13 13,"Double-Wall Steel, Underground Fuel-Oil, Storage Tanks",,
+23 13 13 16,"Composite, Steel, Underground Fuel-Oil, Storage Tanks",,
+23 13 13 19,"Jacketed, Steel, Underground Fuel-Oil, Storage Tanks",,
+23 13 13 23,"Glass-Fiber-Reinforced-Plastic, Underground Fuel-Oil, Storage Tanks",,
+23 13 13 33,Fuel-Oil Storage Tank Pumps,,
+23 13 23,"Facility Aboveground Fuel-Oil, Storage Tanks",,
+23 13 23 13,"Vertical, Steel, Aboveground Fuel-Oil, Storage Tanks",,
+23 13 23 16,"Horizontal, Steel, Aboveground Fuel-Oil, Storage Tanks",,
+23 13 23 19,"Containment-Dike, Steel, Aboveground Fuel-Oil, Storage Tanks",,
+23 13 23 23,"Insulated, Steel, Aboveground Fuel-Oil, Storage Tanks",,
+23 13 23 26,"Concrete-Vaulted, Steel, Aboveground Fuel-Oil, Storage Tanks",,
+23 13 26,Facility Aboveground Liquefied-Petroleum Gas Storage Tanks,,
+23 20 00,HVAC Piping and Pumps,,
+23 21 00,Hydronic Piping and Pumps,,
+23 21 13,Hydronic Piping,D3050.10,Hydronic Piping System
+23 21 13 13,Underground Hydronic Piping,,
+23 21 13 23,Aboveground Hydronic Piping,,
+23 21 13 33,Ground-Loop Heat-Pump Piping,,
+23 21 16,Hydronic Piping Specialties,,
+23 21 23,Hydronic Pumps,D3050.10,Hydronic Pumps
+23 21 23 13,In-Line Centrifugal Hydronic Pumps,,
+23 21 23 16,"Base-Mounted, Centrifugal Hydronic Pumps",,
+23 21 23 19,"Vertical-Mounted, Double-Suction Centrifugal Hydronic Pumps",,
+23 21 23 23,Vertical-Turbine Hydronic Pumps,,
+23 21 29,Automatic Condensate Pump Units,,
+23 22 00,Steam and Condensate Piping and Pumps,,
+23 22 13,Steam and Condensate Piping,D3050.30,Steam Piping
+23 22 13 13,Underground Steam and Condensate Piping,,
+23 22 13 23,Aboveground Steam and Condensate Piping,,
+23 22 16,Steam and Condensate Piping Specialties,,
+23 22 23,Steam Condensate Pumps,D3050.30,Steam Condensate Pumps
+23 22 23 13,Electric-Driven Steam Condensate Pumps,,
+23 22 23 23,Pressure-Powered Steam Condensate Pumps,,
+23 23 00,Refrigerant Piping,,
+23 23 13,Refrigerant Piping Valves,,
+23 23 16,Refrigerant Piping Specialties,,
+23 23 19,Refrigerant Safety Relief Valve Discharge Piping,,
+23 23 23,Refrigerants,,
+23 24 00,Internal-Combustion Engine Piping,,
+23 24 13,Internal-Combustion Engine Remote-Radiator Coolant Piping,,
+23 24 16,Internal-Combustion Engine Exhaust Piping,,
+23 25 00,HVAC Water Treatment,D3050.10,Water Treatment for Hydronic Systems
+23 25 13,Water Treatment for Closed-Loop Hydronic Systems,,
+23 25 16,Water Treatment for Open Hydronic Systems,,
+23 25 19,Water Treatment for Steam System Feedwater,D3050.30,Water Treatment for Steam Systems
+23 25 23,Water Treatment for Humidification Steam System Feedwater,,
+23 25 26,Electronic Water Conditioning for HVAC Systems,,
+23 25 33,HVAC Makeup-Water Filtration Equipment,,
+23 30 00,HVAC Air Distribution,D3050.50,HVAC Air Distribution Components
+23 31 00,HVAC Ducts and Casings,D3060.40,Outside Air Ducts and Casings
+23 31 13,Metal Ducts,,
+23 31 13 13,Rectangular Metal Ducts,,
+23 31 13 16,Round and Flat-Oval Spiral Ducts,,
+23 31 13 19,Metal Duct Fittings,,
+23 31 16,Nonmetal Ducts,,
+23 31 16 13,Fibrous-Glass Ducts,,
+23 31 16 16,Thermoset Fiberglass-Reinforced Plastic Ducts,,
+23 31 16 19,PVC Ducts,,
+23 31 16 26,Concrete Ducts,,
+23 31 19,HVAC Casings,,
+23 32 00,Air Plenums and Chases,D3060.40,Outside Air Plenums and Chases
+23 32 13,"Fabricated, Metal Air Plenums",,
+23 32 33,Air-Distribution Ceiling Plenums,,
+23 32 36,Air-Distribution Floor Plenums,,
+23 32 39,Air-Distribution Wall Plenums,,
+23 32 43,Air-Distribution Chases Formed by General Construction,,
+23 32 48,Acoustical Air Plenums,,
+23 33 00,Air Duct Accessories,D3060.40,Outside Air Duct Accessories
+23 33 13,Dampers,,
+23 33 13 13,Volume-Control Dampers,,
+23 33 13 16,Fire Dampers,,
+23 33 13 19,Smoke-Control Dampers,,
+23 33 13 23,Backdraft Dampers,,
+23 33 19,Duct Silencers,,
+23 33 23,Turning Vanes,,
+23 33 33,Duct-Mounting Access Doors,,
+23 33 38,Duct Security Bars,,
+23 33 43,Flexible Connectors,,
+23 33 46,Flexible Ducts,,
+23 33 53,Duct Liners,,
+23 34 00,HVAC Fans,D3060.40,Outside Air
+23 34 13,Axial HVAC Fans,,
+23 34 16,Centrifugal HVAC Fans,,
+23 34 23,HVAC Power Ventilators,,
+23 34 33,Air Curtains,,
+23 34 39,"High-Volume, Low-Speed Propeller Fans",,
+23 35 00,Special Exhaust Systems,D3060.30,Exhaust Air
+23 35 13,Dust Collection Systems,,
+23 35 13 13,Sawdust Collection Systems,,
+23 35 16,Engine Exhaust Systems,D3060.30,Engine Exhaust Systems
+23 35 16 13,Positive-Pressure Engine Exhaust Systems,,
+23 35 16 16,Mechanical Engine Exhaust Systems,,
+23 35 33,Listed Kitchen Ventilation Exhaust System,,
+23 36 00,Air Terminal Units,D3060.40,Outside Air Terminal Units
+23 36 13,Constant-Air-Volume Units,,
+23 36 16,Variable-Air-Volume Units,,
+23 37 00,Air Outlets and Inlets,D3060.40,Outside Air Outlets and Inlets
+23 37 13,"Diffusers, Registers, and Grilles",,
+23 37 13 43,Security Registers and Grilles,,
+23 37 16,Fabric Air Distribution Devices,,
+23 37 23,HVAC Gravity Ventilators,,
+23 37 23 13,HVAC Gravity Dome Ventilators,,
+23 37 23 16,HVAC Gravity Louvered-Penthouse Ventilators,,
+23 37 23 19,HVAC Gravity Upblast Ventilators,,
+23 38 00,Ventilation Hoods,D3060.30,Ventilation Hoods
+23 38 13,Commercial-Kitchen Hoods,D3060.30,Commercial Kitchen Hoods
+23 38 13 13,Listed Commercial-Kitchen Hoods,,
+23 38 13 16,Standard Commercial-Kitchen Hoods,,
+23 38 16,Fume Hoods,D3060.30,Fume Hood Exhaust
+23 40 00,HVAC Air Cleaning Devices,D3060.70,HVAC Air Cleaning
+23 41 00,Particulate Air Filtration,D3050.50,Particulate Air Filtration
+23 41 13,Panel Air Filters,,
+23 41 16,Renewable-Media Air Filters,,
+23 41 19,Washable Air Filters,,
+23 41 23,Extended Surface Filters,,
+23 41 33,High-Efficiency Particulate Filtration,,
+23 41 43,Ultra-Low Penetration Filtration,,
+23 41 46,Super Ultra-Low Penetration Filtration,,
+23 42 00,Gas-Phase Air Filtration,D3050.50,Gas-Phase Air Filtration
+23 42 13,Activated-Carbon Air Filtration,,
+23 42 16,Chemically-Impregnated Adsorption Air Filtration,,
+23 42 19,Catalytic-Adsorption Air Filtration,,
+23 43 00,Electronic Air Cleaners,D3050.50,Electronic Air Cleaners
+23 43 13,Washable Electronic Air Cleaners,,
+23 43 16,Agglomerator Electronic Air Cleaners,,
+23 43 23,Self-Contained Electronic Air Cleaners,,
+23 50 00,Central Heating Equipment,,
+23 51 00,"Breechings, Chimneys, and Stacks",D3020.10,Breechings Chimneys and Stacks
+23 51 13,Draft Control Devices,,
+23 51 13 11,Draft Control Fans,,
+23 51 13 13,Draft-Induction Fans,,
+23 51 13 16,Vent Dampers,,
+23 51 13 19,Barometric Dampers,,
+23 51 16,Fabricated Breechings and Accessories,,
+23 51 19,Fabricated Stacks,,
+23 51 23,Gas Vents,,
+23 51 33,Insulated Sectional Chimneys,,
+23 51 43,Flue-Gas Filtration Equipment,,
+23 51 43 13,Gaseous Filtration,,
+23 51 43 16,Particulate Filtration,,
+23 52 00,Heating Boilers,D3020.10,Fuel-Fired Heating Boilers
+23 52 13,Electric Boilers,D3020.10,Electric Heating Boilers
+23 52 16,Condensing Boilers,,
+23 52 16 13,Stainless-Steel Condensing Boilers,,
+23 52 16 16,Aluminum Condensing Boilers,,
+23 52 17,Low Mass Boilers,,
+23 52 19,Pulse Combustion Boilers,,
+23 52 23,Cast-Iron Boilers,,
+23 52 33,Water-Tube Boilers,,
+23 52 33 13,Finned Water-Tube Boilers,,
+23 52 33 14,Flexible Water-Tube Boilers,,
+23 52 33 16,Steel Water-Tube Boilers,,
+23 52 33 19,Copper Water-Tube Boilers,,
+23 52 39,Fire-Tube Boilers,,
+23 52 39 13,Scotch Marine Boilers,,
+23 52 39 16,Steel Fire-Tube Boilers,,
+23 52 83,Boiler Blowdown Systems,,
+23 53 00,Heating Boiler Feedwater Equipment,D3020.10,Heating Boiler Feedwater Equipment
+23 53 13,Boiler Feedwater Pumps,D3020.10,Boiler Feedwater Pumps
+23 53 16,Deaerators,D3020.10,Deaerators
+23 54 00,Furnaces,D3020.10,Furnaces
+23 54 13,Electric-Resistance Furnaces,,
+23 54 16,Fuel-Fired Furnaces,,
+23 54 16 13,Gas-Fired Furnaces,,
+23 54 16 16,Oil-Fired Furnaces,,
+23 55 00,Fuel-Fired Heaters,D3020.10,Fuel-Fired Heaters
+23 55 13,Fuel-Fired Duct Heaters,,
+23 55 13 13,Oil-Fired Duct Heaters,,
+23 55 13 16,Gas-Fired Duct Heaters,,
+23 55 23,Gas-Fired Radiant Heaters,,
+23 55 23 13,Low-Intensity Gas-Fired Radiant Heaters,,
+23 55 23 16,High-Intensity Gas-Fired Radiant Heaters,,
+23 55 33,Fuel-Fired Unit Heaters,,
+23 55 33 13,Oil-Fired Unit Heaters,,
+23 55 33 16,Gas-Fired Unit Heaters,,
+23 56 00,Solar Energy Heating Equipment,D3020.10,Solar Heat Generation
+23 56 13,Heating Solar Collectors,D3020.10,Heating Solar Collectors
+23 56 13 13,Heating Solar Flat-Plate Collectors,,
+23 56 13 16,Heating Solar Concentrating Collectors,,
+23 56 13 19,Heating Solar Vacuum-Tube Collectors,,
+23 56 16,Packaged Solar Heating Equipment,D3020.10,Packaged Solar Heating Equipment
+23 56 23,Solar Air-Heating Panels,,
+23 57 00,Heat Exchangers for HVAC,D3020.10,Heat Exchangers for HVAC
+23 57 13,Steam-to-Steam Heat Exchangers,,
+23 57 16,Steam-to-Water Heat Exchangers,,
+23 57 19,Liquid-to-Liquid Heat Exchangers,,
+23 57 19 13,"Plate-Type, Liquid-to-Liquid Heat Exchangers",,
+23 57 19 16,"Shell-Type, Liquid-to-Liquid Heat Exchangers",,
+23 57 33,Direct Geoexchange Heat Exchangers,,
+23 60 00,Central Cooling Equipment,D3030.10,Central Cooling
+23 61 00,Refrigerant Compressors,D3030.10,Refrigerant Compressors
+23 61 13,Centrifugal Refrigerant Compressors,,
+23 61 13 13,Non-Condensable Gas Purge Equipment,,
+23 61 16,Reciprocating Refrigerant Compressors,,
+23 61 19,Scroll Refrigerant Compressors,,
+23 61 23,Rotary-Screw Refrigerant Compressors,,
+23 62 00,Packaged Compressor and Condenser Units,D3030.10,Packaged Compressor and Condenser Units
+23 62 13,Packaged Air-Cooled Refrigerant Compressor and Condenser Units,,
+23 62 23,Packaged Water-Cooled Refrigerant Compressor and Condenser Units,,
+23 62 46,Packaged Variable-Refrigerant-Flow Air-Conditioning Systems,,
+23 63 00,Refrigerant Condensers,D3030.10,Refrigerant Condensers
+23 63 13,Air-Cooled Refrigerant Condensers,,
+23 63 23,Water-Cooled Refrigerant Condensers,,
+23 63 33,Evaporative Refrigerant Condensers,,
+23 64 00,Packaged Water Chillers,D3030.10,Water Chillers
+23 64 13,Absorption Water Chillers,,
+23 64 13 13,Direct-Fired Absorption Water Chillers,,
+23 64 13 16,Indirect-Fired Absorption Water Chillers,,
+23 64 16,Centrifugal Water Chillers,,
+23 64 16 13,Air-Cooled Centrifugal Water Chillers,,
+23 64 16 16,Water-Cooled Centrifugal Water Chillers,,
+23 64 19,Reciprocating Water Chillers,,
+23 64 23,Scroll Water Chillers,,
+23 64 23 13,Air-Cooled Scroll Water Chillers,,
+23 64 23 16,Water-Cooled Scroll Water Chillers,,
+23 64 26,Rotary-Screw Water Chillers,,
+23 64 26 13,"Air-Cooled, Rotary-Screw Water Chillers",,
+23 64 26 16,"Water-Cooled, Rotary-Screw Water Chillers",,
+23 64 33,Modular Water Chillers,,
+23 64 33 13,"Air-Cooled, Modular Water Chillers",,
+23 64 33 16,"Water-Cooled, Modular Water Chillers",,
+23 65 00,Cooling Towers,D3030.10,Cooling Towers
+23 65 13,Forced-Draft Cooling Towers,,
+23 65 13 13,"Open-Circuit, Forced-Draft Cooling Towers",,
+23 65 13 16,"Closed-Circuit, Forced-Draft Cooling Towers",,
+23 65 14,Induced-Draft Cooling Towers,,
+23 65 14 13,"Open-Circuit, Induced-Draft Counterflow Cooling Towers",,
+23 65 14 14,"Open-Circuit, Induced-Draft Crossflow Cooling Towers",,
+23 65 14 16,"Closed-Circuit, Induced-Draft Counterflow Cooling Towers",,
+23 65 14 17,"Closed-Circuit, Induced-Draft Combined-Flow Cooling Towers",,
+23 65 16,Natural-Draft Cooling Towers,,
+23 65 23,Field-Erected Cooling Towers,,
+23 65 33,Liquid Coolers,,
+23 70 00,Central HVAC Equipment,,
+23 71 00,Thermal Storage,D3030.50,Thermal Cooling Storage
+23 71 13,Thermal Heat Storage,D3020.30,Thermal Heat Storage
+23 71 13 13,Room Storage Heaters for Thermal Storage,,
+23 71 13 16,Heat-Pump Boosters for Thermal Storage,,
+23 71 13 19,Central Furnace Heat-Storage Units,,
+23 71 13 23,Pressurized-Water Thermal Storage Tanks,,
+23 71 16,Chilled-Water Thermal Storage,D3030.50,Chilled-Water Thermal Storage
+23 71 19,Ice Storage,D3030.50,Ice Storage
+23 71 19 13,Internal Ice-on-Coil Thermal Storage,,
+23 71 19 16,External Ice-on-Coil Thermal Storage,,
+23 71 19 19,Encapsulated-Ice Thermal Storage,,
+23 71 19 23,Ice-Harvesting Thermal Storage,,
+23 71 19 26,Ice-Slurry Thermal Storage,,
+23 72 00,Air-to-Air Energy Recovery Equipment,D3060.60,Air-to-Air Energy Recovery
+23 72 13,Heat-Wheel Air-to-Air Energy-Recovery Equipment,,
+23 72 16,Heat-Pipe Air-to-Air Energy-Recovery Equipment,,
+23 72 19,Fixed-Plate Air-to-Air Energy-Recovery Equipment,,
+23 72 23,Packaged Air-to-Air Energy-Recovery Units,,
+23 73 00,Indoor Central-Station Air-Handling Units,D3050.50,Indoor Central-Station Air-Handling Units
+23 73 13,Modular Indoor Central-Station Air-Handling Units,,
+23 73 23,Custom Indoor Central-Station Air-Handling Units,,
+23 73 33,Indoor Indirect Fuel-Fired Heating and Ventilating Units,,
+23 73 33 13,Indoor Indirect Oil-Fired Heating and Ventilating Units,,
+23 73 33 16,Indoor Indirect Gas-Fired Heating and Ventilating Units,,
+23 73 39,"Indoor, Direct Gas-Fired Heating and Ventilating Units",,
+23 74 00,Packaged Outdoor HVAC Equipment,D3050.50,Packaged Outdoor HVAC Equipment
+23 74 13,"Packaged, Outdoor, Central-Station Air-Handling Units",,
+23 74 16,Packaged Rooftop Air-Conditioning Units,,
+23 74 16 11,"Packaged, Small-Capacity, Rooftop Air-Conditioning Units",,
+23 74 16 12,"Packaged, Intermediate-Capacity, Rooftop Air-Conditioning Units",,
+23 74 16 13,"Packaged, Large-Capacity, Rooftop Air-Conditioning Units",,
+23 74 23,"Packaged, Outdoor, Heating-Only Makeup-Air Units",,
+23 74 23 13,"Packaged, Direct-Fired, Outdoor, Heating-Only Makeup-Air Units",,
+23 74 23 16,"Packaged, Indirect-Fired, Outdoor, Heating-Only Makeup-Air Units",,
+23 74 33,Dedicated Outdoor-Air Units,,
+23 75 00,Custom-Packaged Outdoor HVAC Equipment,D3050.50,Custom-Packaged Outdoor HVAC Equipment
+23 75 13,"Custom-Packaged, Outdoor, Central-Station Air-Handling Units",,
+23 75 16,"Custom-Packaged, Rooftop Air-Conditioning Units",,
+23 75 23,"Custom-Packaged, Outdoor, Heating and Ventilating Makeup-Air Units",,
+23 75 33,"Custom-Packaged, Outdoor, Heating and Cooling Makeup Air-Conditioners",,
+23 76 00,Evaporative Air-Cooling Equipment,D3030.30,Evaporative Air-Cooling
+23 76 13,Direct Evaporative Air Coolers,,
+23 76 16,Indirect Evaporative Air Coolers,,
+23 76 19,Combined Direct and Indirect Evaporative Air Coolers,,
+23 80 00,Decentralized HVAC Equipment,D3030.70,Decentralized Cooling
+23 81 00,Decentralized Unitary HVAC Equipment,,
+23 81 13,Packaged Terminal Air-Conditioners,D3030.70,Packaged Terminal Air-Conditioners
+23 81 13 11,"Packaged Terminal Air-Conditioners, Through-Wall Units",,
+23 81 13 12,"Packaged Terminal Air-Conditioners, Freestanding Units",,
+23 81 13 13,"Packaged Terminal Air-Conditioners, Outdoor, Wall-Mounted Units",,
+23 81 16,Room Air-Conditioners,D3030.70,Room Air-Conditioners
+23 81 19,Self-Contained Air-Conditioners,D3030.70,Self-Contained Air-Conditioners
+23 81 19 13,Small-Capacity Self-Contained Air-Conditioners,,
+23 81 19 16,Large-Capacity Self-Contained Air-Conditioners,,
+23 81 23,Computer-Room Air-Conditioners,D3030.70,Computer-Room Air-Conditioners
+23 81 23 11,"Small-Capacity, Computer-Room Air-Conditioners, Floor Mounted Units",,
+23 81 23 12,"Large-Capacity, Computer-Room Air-Conditioners, Floor-Mounted Units",,
+23 81 23 13,"Computer-Room Air-Conditioners, Ceiling Mounted Units",,
+23 81 23 14,"Computer-Room Air-Conditioners, Console Units",,
+23 81 23 16,"Computer-Room Air-Conditioners, Rack Mounted, Space-Cooling Units",,
+23 81 23 18,"Computer-Room, Rack-Cooling Equipment",,
+23 81 26,Split-System Air-Conditioners,D3030.70,Split-System Air-Conditioners
+23 81 26 13,Small-Capacity Split-System Air-Conditioners,,
+23 81 26 16,Large-Capacity Split-System Air-Conditioners,,
+23 81 29,Variable Refrigerant Flow HVAC Systems,,
+23 81 43,Air-Source Unitary Heat Pumps,D3030.70,Air-Source Heat Pumps
+23 81 46,Water-Source Unitary Heat Pumps,D3030.70,Water-Source Heat Pumps
+23 81 49,Ground-Source Unitary Heat Pumps,,
+23 82 00,Convection Heating and Cooling Units,,
+23 82 13,Valance Heating and Cooling Units,D3030.70,Valance Cooling Units
+23 82 14,Chilled Beams,D3030.70,Chilled Beams
+23 82 16,Air Coils,D3030.70,Air Coils
+23 82 16 11,Hydronic Air Coils,,
+23 82 16 12,Steam Air Coils,,
+23 82 16 13,Refrigerant Air Coils,,
+23 82 16 14,Electric-Resistance Air Coils,,
+23 82 19,Fan Coil Units,D3030.70,Fan Coil Units
+23 82 23,Unit Ventilators,D3030.70,Unit Ventilators
+23 82 26,Induction Units,D3030.70,Induction Units
+23 82 29,Radiators,D3020.70,Radiators
+23 82 33,Convectors,D3030.70,Convectors
+23 82 36,Finned-Tube Radiation Heaters,D3020.70,Finned-Tube Radiation Heaters
+23 82 39,Unit Heaters,D3020.70,Unit Heaters
+23 82 39 13,Cabinet Unit Heaters,,
+23 82 39 16,Propeller Unit Heaters,,
+23 82 39 19,Wall and Ceiling Unit Heaters,,
+23 82 41,Water-to-Water Heat Pumps,,
+23 83 00,Radiant Heating and Cooling Units,D3020.70,Radiant Heating Units
+23 83 13,Radiant-Heating Electric Cables,D3070.10,Radiant-Heating Electric Cables
+23 83 13 16,Radiant-Heating Electric Mats,,
+23 83 16,Radiant Heating and Cooling Hydronic Piping,D3070.10,Radiant-Heating Hydronic Piping
+23 83 23,Radiant-Heating Electric Panels,,
+23 83 26,Radiant Heating and Cooling Hydronic Panels,,
+23 83 33,Electric Radiant Heaters,,
+23 84 00,Humidity Control Equipment,D3050.50,Humidity Control
+23 84 13,Humidifiers,,
+23 84 13 13,Heated-Pan Humidifiers,,
+23 84 13 16,Wetted-Element Humidifiers,,
+23 84 13 19,Atomizing Humidifiers,,
+23 84 13 23,Direct-Steam-Injection Humidifiers,,
+23 84 13 26,"Jacketed, Steam Humidifiers",,
+23 84 13 29,Self-Contained Steam Humidifiers,,
+23 84 13 33,Portable Humidifiers,,
+23 84 16,Mechanical Dehumidification Units,,
+23 84 16 13,"Outdoor, Mechanical Dehumidification Units",,
+23 84 16 16,"Indoor, Mechanical Dehumidification Units",,
+23 84 16 33,Portable Dehumidifiers,,
+23 84 19,Desiccant Dehumidification Units,,

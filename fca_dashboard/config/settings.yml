@@ -175,6 +175,21 @@ sample:
   columns_to_extract: [] # Empty list means use all columns
   drop_na_columns: ['id', 'name'] # Drop rows where these columns have NaN values
 
+# Generator configuration
+generator:
+  # General generator settings
+  output_dir: 'fca_dashboard/generator/ingest'
+
+  # OmniClass generator settings
+  omniclass:
+    input_dir: 'files/omniclass_tables'
+    output_file: 'fca_dashboard/generator/ingest/omniclass.csv'
+    file_pattern: '*.xlsx'
+    column_mapping:
+      'Number': 'OmniClass_Code'
+      'Title': 'OmniClass_Title'
+      'Definition': 'Description'
+
 # Table mappings
 tables:
   equipment:

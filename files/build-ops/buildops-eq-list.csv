@@ -1,0 +1,331 @@
+Fixture, Other, Access Panel
+Tank, Acid Neutralization, All
+Fixture, Waste & Vent, Air Admittance Valve
+Air Compressor, Air Cooled, Receiver
+Air Compressor, Air Cooled, Screw
+Air Compressor, Water Cooled, Centrifugal
+Air Compressor, Water Cooled, Screw
+Air Curtain, Electric, All
+Air Curtain, Hot Water, All
+Air Curtain, No Heat, All
+Air Dryer, Air Dryer, Desiccant
+Air Dryer, Air Dryer, Refrigerated
+Air Handling Unit, Chilled Water, Heating Water, Custom
+Air Handling Unit, Chilled Water, Heating Water, Packaged
+Air Handling Unit, DX, Gas-Fired, Custom
+Air Handling Unit, DX, Gas-Fired, Packaged
+Air Handling Unit, DX, Heating Water, Custom
+Air Handling Unit, DX, Heating Water, Packaged
+Air Handling Unit, Other, Custom
+Air Handling Unit, Other, Packaged
+Air Receiver, Air Receiver, All
+Air Rotation Unit, Chilled Water, Electric Heat, Packaged
+Air Rotation Unit, Chilled Water, Gas-Fired, Packaged
+Air Rotation Unit, Chilled Water, Heating Water, Packaged
+Air Rotation Unit, Chilled Water, No Heat, Packaged
+Air Rotation Unit, DX-Air Cooled, Electric Heat, Packaged
+Air Rotation Unit, DX-Air Cooled, Gas-Fired, Packaged
+Air Rotation Unit, DX-Air Cooled, Heating Water, Packaged
+Air Rotation Unit, DX-Air Cooled, No Heat, Packaged
+Air Rotation Unit, DX-Water Cooled, Electric Heat, Packaged
+Air Rotation Unit, DX-Water Cooled, Gas-Fired, Packaged
+Air Rotation Unit, DX-Water Cooled, Heating Water, Packaged
+Air Rotation Unit, DX-Water Cooled, No Heat, Packaged
+Air Rotation Unit, No Cooling, Electric Heat, Packaged
+Air Rotation Unit, No Cooling, Gas-Fired, Packaged
+Air Rotation Unit, No Cooling, Heating Water, Packaged
+Air Rotation Unit, No Cooling, No Heat, Packaged
+Air Scoop, All, Flanged
+Air Scoop, All, Threaded
+Air Separator, All, Flanged
+Air Separator, All, Threaded
+Accessory, Alarm Panel, All
+Fixture, Roof Drains, Area Drain
+Baseboard Radiation, Electric, With Cover
+Baseboard Radiation, Hot Water, Open (Without Cover)
+Baseboard Radiation, Hot Water, With Cover
+Accessory, Basket Strainer, All
+Accessory, Blow Down, Floor Mounted
+Accessory, Deaerator, with Pumps
+Accessory, Feed System, with Pumps
+Fixture, Domestic Water, Bottle Filling Station
+Bypass Filter Feeder, All, All
+Cabinet Unit Heater, Electric, Floor Mounted
+Cabinet Unit Heater, Hot Water, Floor Mounted
+Cabinet Unit Heater, Steam, Floor Mounted
+Chiller, Air Cooled, Package with Pump
+Chiller, Air Cooled, Reciprocating
+Chiller, Air Cooled, Screw
+Chiller, Air Cooled, Scroll
+Chiller, Water Cooled, Absorption
+Chiller, Water Cooled, Centrifugal
+Chiller, Water Cooled, Modular
+Chiller, Water Cooled, Reciprocating
+Chiller, Water Cooled, Screw
+Chiller, Water Cooled, Scroll
+Fixture, Domestic Water, Clinical Service Sink
+Compressor - Refrig., Air Cooled, Reciprocating
+Compressor - Refrig., Water Cooled, Screw
+Computer Room Air Conditioning, Direct Expansion, Condenser
+Computer Room Air Conditioning, Direct Expansion, Evaporator - Ceiling Mounted
+Computer Room Air Conditioning, Direct Expansion, Evaporator - Floor Mounted
+Computer Room Air Conditioning, Direct Expansion, Pump Package
+Computer Room Air Conditioning, Water Cooled, Ceiling Mounted
+Computer Room Air Conditioning, Water Cooled, Floor Mounted
+Accessory, Cooler, Condensate
+Accessory, Condensate Lift Station, All
+Pump, Condensate, Duplex
+Pump, Condensate, Simplex
+Accessory, Condenser Water Filtration, All
+Condensing Unit, Air Cooled, Direct Expansion
+Condensing Unit, Air Cooled, Reciprocating
+Condensing Unit, Evaporative, Direct Expansion
+Condensing Unit, Evaporative Fluid Cooler, Direct Expansion
+Condensing Unit, Water Cooled, Direct Expansion
+Condensing Unit, Water Cooled, Reciprocating
+Condensing Unit - Refrig., Air Cooled, Direct Expansion
+Condensing Unit - Refrig., Evaporative, Direct Expansion
+Condensing Unit - Refrig., Water Cooled, Direct Expansion
+Accessory, Control Damper, All
+Convector, Hot Water, All
+Cooling Tower, Closed Circuit - Indoor, Centrifugal Fan
+Cooling Tower, Closed Circuit - Outdoor, Axial Fan
+Cooling Tower, Closed Circuit - Outdoor, Centrifugal Fan
+Cooling Tower, Open Cell, Axial Fan
+Cooling Tower, Open Cell, Axial Fiberglass Fan
+Cooling Tower, Open Cell, Centrifugal Fan
+Coupon Rack, Black Iron, All
+Coupon Rack, PVC, All
+Tank, Steam, Deaerator
+Fixture, Roof Drains, Deck Drain
+DI/RO Equipment, Deionization Unit, All
+Fan, Destratification, Propeller
+Accessory, DI Filtration, All
+Accessory, Dialysis Box, All
+Direct Outside Air Unit, Indoor, Packaged
+Direct Outside Air Unit, Outdoor, Packaged
+Accessory, Remote Chiller, Domestic Water
+Domestic HW Generator, Hot Water, Domestic Water
+Domestic Water Booster Pump, Duplex, No Receiver
+Domestic Water Booster Pump, Duplex, Receiver
+Domestic Water Booster Pump, Triplex, No Receiver
+Domestic Water Booster Pump, Triplex, Receiver
+Pump, Inline, Domestic Water
+Domestic Water Heater, Electric, Heat Pump
+Domestic Water Heater, Electric, Horizontal Tank
+Domestic Water Heater, Electric, Instantaneous
+Domestic Water Heater, Electric, Vertical Tank
+Domestic Water Heater, Gas-Fired, Instantaneous
+Domestic Water Heater, Gas-Fired, Tank
+Domestic Water Heater, Steam, Instantaneous
+Domestic Water Heater, Steam, Tank
+Tank, With Heat Exchanger, Storage, Above Ground
+Fixture, Roof Drains, Downspout/Conductor Nozzle
+Dual Duct Mixing Box, Standard Mixing, All
+Ductless Split System, Direct Expansion, Electric Heat
+Ductless Split System, Direct Expansion, No Electric Heat
+Fan, Dust Collector, Utility Set
+Fan, Dust Collector, All
+Fixture, Domestic Water, Electric Water Cooler
+Pump, Sump Pump, Duplex
+Pump, Sump Pump, Simplex
+Fixture, Domestic Water, Emergency Eye Wash
+Fixture, Domestic Water, Emergency Eye Wash/Shower
+Accessory, Emergency Power Off, All
+Fixture, Domestic Water, Emergency Shower
+Energy Recovery Ventilator, Indoor, Packaged
+Energy Recovery Ventilator, Outdoor, Packaged
+Evaporator, Direct Expansion, All
+Expansion Tank, All, Flanged
+Expansion Tank, Bladder, Floor Mounted
+Expansion Tank, Bladder, In-Line
+Expansion Tank, Without Bladder, Floor Mounted
+Expansion Tank, Without Bladder, In-Line
+Expansion Tank, All, Threaded
+Fan Coil Unit, Direct Expansion, Ceiling Mounted
+Fan Coil Unit, Direct Expansion, Floor Mounted
+Fan Coil Unit, Hot Water, Horizontal
+Fan Coil Unit, Hot Water, Vertical
+Fan Coil Unit - Refrig., Direct Expansion, All
+Fan Coil Unit - Refrig., Direct Expansion, Ceiling Mounted
+Fan Coil Unit - Refrig., Direct Expansion, Wall Mounted
+Fan Powered Box, Electric, All
+Fan Powered Box, Hot Water, All
+Pump, Steam, Feedwater
+Tank, Steam, Flash, Above Ground
+Fixture, Waste & Vent, Floor Clean Out
+Fixture, Waste & Vent, Floor Drain
+Fixture, Waste & Vent, Floor Sink
+Accessory, Flue Piping, All
+Pump, Fuel Oil, All
+Tank, Fuel Oil, Above Ground
+Tank, Fuel Oil, Below Ground
+Furnace, Electric, All
+Furnace, Gas-Fired, All
+Fixture, Waste & Vent, Garbage Disposal
+Fan, General Exhaust, Axial
+Fan, General Exhaust, Ceiling Mounted
+Fan, General Exhaust, Centrifugal
+Fan, General Exhaust, Upblast
+Fan, General Exhaust, Utility Set
+Fan, General Exhaust, Vane Axial
+Glycol Feeder, All, All
+Fixture, Waste & Vent, Grade Clean Out
+Accessory, Grilles, Registers, Diffusers, Laminar Flow
+Accessory, Grilles, Registers, Diffusers, Laminar Flow with HEPA Filters
+Fan, Grease Exhaust, Upblast
+Fan, Grease Exhaust, Utility Set
+Grease Interceptor, Grease Interceptor, All
+Grease Trap, Grease Trap, Polyethylene
+Grease Trap, Grease Trap, Steel
+Accessory, Grilles, Registers, Diffusers, All
+Fixture, Domestic Water, Grooming Tub
+Heat Exchanger - Refrig., All, Shell and Tube
+Heat Exchanger, Hydronic, Plate and Frame
+Heat Exchanger, Hydronic, SHARC
+Heat Exchanger, Hydronic, Shell and Tube
+Heat Exchanger, Steam, Shell and Tube
+Heat Pump, Air Cooled, Horizontal
+Heat Pump, Air Cooled, Vertical
+Heat Trace, Electric, All
+Boiler, Hot Water, Cast Iron Sectional
+Boiler, Hot Water, Copper Water Tube
+Boiler, Hot Water, Electric
+Boiler, Hot Water, Packaged Fire Tube
+Boiler, Hot Water, Packaged Flexible Water Tube
+Boiler, Hot Water, Packaged, Fire Tube, Condensing
+Fixture, Domestic Water, Hose Bib
+Fixture, Waste & Vent, Hub Drain
+Humidifier, Electric, All
+Humidifier, Steam, All
+Pump, Electronic Metering, All
+Pump, End Suction, All
+Pump, Inline, All
+Pump, Split Case, All
+Pump, Vertical Turbine, All
+Fixture, Domestic Water, Ice Maker Box
+Infrared Gas Fired Heater, Electric, All
+Infrared Gas Fired Heater, Gas-Fired, All
+Accessory, Intake Hood, All
+Fan, Isolation Exhaust, Utility Set
+Fan, Kitchen Exhaust, Inline
+Fan, Kitchen Exhaust, Upblast
+Fan, Kitchen Exhaust, Utility Set
+Fixture, Domestic Water, Kitchen Sink
+Fan, Lab Exhaust, Utility Set
+Fan, Lab Exhaust, Utility Set, High Plume
+Fixture, Domestic Water, Lavatory
+Accessory, Life Safety Damper, All
+Accessory, Louver, All
+Make-up Air Unit, Gas-Fired, Direct Fired
+Make-up Air Unit, Gas-Fired, Indirect Fired
+Make-up Air Unit, Hot Water, Chilled Water
+Make-up Air Unit, Hot Water, Evaporative
+Accessory, Manifold, All
+Accessory, Manual Volume Damper, All
+Accessory, Meter, All
+Fixture, Domestic Water, Mixing Valve
+Fixture, Domestic Water, Mop Sink Basin
+Nitrogen, Air Cooled, Screw
+Accessory, Outlet, All
+Fixture, Roof Drains, Overflow Drain
+Fixture, Roof Drains, Overflow Roof Drain
+Accessory, Owner Furnished Equipment Connection, All
+DI/RO Equipment, Ozone Generator, All
+Accessory, Polishing System, All
+Pot Feeder, Bladder, Floor Mounted
+Pot Feeder, Bladder, In-Line
+Pot Feeder, Without Bladder, Floor Mounted
+Pot Feeder, Without Bladder, In-Line
+Accessory, Pressure Reducing Valve, Hydronic
+Accessory, Pressure Reducing Valve, Medical/Lab Gas
+Accessory, Pressure Reducing Valve, Natural Gas
+Accessory, Pressure Reducing Valve, Steam
+Tank, Pressure Vessel, All
+Tank, Propane, Storage, Above Ground
+PTAC, Hot Water, All
+Radiant Panel, Electric, Ceiling Mounted
+Radiant Panel, Hot Water, Ceiling Mounted
+Accessory, Pressure Reducing Valve, Domestic Water
+Return Air Unit, Indoor, Packaged
+DI/RO Equipment, Reverse Osmosis, All
+DI/RO Equipment, Inline, RO Water
+DI/RO Equipment, RO Water, Storage, Above Ground
+Fixture, Roof Drains, Roof Drain
+Fixture, Roof Drains, Roof Drain Outlet
+Accessory, Roof Hood, All
+Fixture, Domestic Water, Roof Hydrant
+Roof Top Unit, Chilled Water, Gas-Fired, Custom
+Roof Top Unit, Chilled Water, Gas-Fired, Packaged
+Roof Top Unit, Chilled Water, Heating Water, Custom
+Roof Top Unit, Chilled Water, Heating Water, Packaged
+Roof Top Unit, DX, Electric, Packaged
+Roof Top Unit, DX, Gas-Fired, Custom
+Roof Top Unit, DX, Gas-Fired, Packaged
+Roof Top Unit, DX, Heating Water, Custom
+Roof Top Unit, DX, Heating Water, Packaged
+Roof Top Unit, Heat Pump, Packaged
+Roof Top Unit, Other, Custom
+Roof Top Unit, Other, Packaged
+Sand/Oil Interceptor, Sand/Oil Interceptor, All
+Rear Door Cooler, Water Cooled, Server
+Fixture, Domestic Water, Service Sink
+Pump, Sewage Ejector Pump, Duplex
+Pump, Sewage Ejector Pump, Grinder Only
+Pump, Sewage Ejector Pump, Simplex
+Fixture, Domestic Water, Shower
+Accessory, Grilles, Registers, Diffusers, Sidewall Grille
+Fixture, Domestic Water, Sink
+Accessory, Grilles, Registers, Diffusers, Slot Diffuser
+Fan, Smoke Exhaust, Inline
+Fan, Smoke Exhaust, Utility Set
+Accessory, Sound Attenuator, All
+Accessory, Sound Boot, All
+Accessory, Trap, Specialty
+Fan, Supply Fan, Inline
+Fan, Supply Fan, Utility Set
+Boiler, Steam, Cast Iron Sectional
+Boiler, Steam, Copper Water Tube
+Boiler, Steam, Electric
+Boiler, Steam, Packaged Fire Tube
+Boiler, Steam, Packaged Flexible Water Tube
+Boiler, Steam, Packaged Water Tube "D" Style Steam Generators
+Accessory, Trap, Steam
+Tank, Domestic Water, No HX, Storage, Above Ground
+Tank, Horizontal, Storage, Above Ground
+Tank, Vertical, Storage, Underground
+Fan, Transfer, Inline
+Accessory, Pump, Fuel Oil Transfer
+Accessory, Trap, Guard
+Accessory, Trap, Primer
+Fixture, Waste & Vent, Trench Drain
+Unit Heater, Electric, Ceiling Mounted
+Unit Heater, Gas-Fired, Ceiling Mounted
+Unit Heater, Hot Water, Ceiling Mounted
+Unit Heater, Steam, Ceiling Mounted
+Unit Ventilator, Hot Water, Ceiling Mounted
+Unit Ventilator, Hot Water, Floor Mounted
+Fixture, Domestic Water, Urinal
+Fixture, Domestic Water, Utility Tub
+Vacuum, Vacuum, All
+Accessory, Variable Frequency Drive, All
+VAV Box, Electric, All
+VAV Box, Hot Water, All
+VAV Box, No Heat, All
+Venturi VAV Box, Electric, Venturi Valve
+Venturi VAV Box, Hot Water, Venturi Valve
+Venturi VAV Box, No Heat, Venturi Valve
+Fixture, Domestic Water, Wall Box
+Fixture, Waste & Vent, Wall Clean Out
+Fixture, Domestic Water, Wall Hydrant
+Fixture, Domestic Water, Wash Fountain
+Fixture, Domestic Water, Washer Wall Box
+Fixture, Domestic Water, Water Closet
+Fixture, Domestic Water, Water Hammer Arrestor
+Water Softener, Water Softener, All
+Heat Pump, Water Cooled, Horizontal
+Heat Pump, Water Cooled, Vertical
+Accessory, Water Treatment Controller, All
+Heat Pump, Water-to-Water, All
+Fixture, Waste & Vent, Yard Clean Out
+Accessory, Zone Valve Box, All
