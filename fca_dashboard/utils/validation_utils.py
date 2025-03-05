@@ -2,10 +2,12 @@
 Validation utilities for common data formats.
 
 This module provides functions to validate common data formats such as
-email addresses, phone numbers, and URLs.
+email addresses, phone numbers, URLs, and classification data formats.
 """
 import re
-from typing import Any
+from typing import Any, Dict, List, Optional, Union
+
+import pandas as pd
 
 
 def is_valid_email(email: Any) -> bool:
@@ -141,3 +143,104 @@ def is_valid_url(url: Any) -> bool:
     # Check for domain part
     domain_part = url.split('://')[1].split('/')[0].split(':')[0]
     return not (domain_part.startswith('-') or domain_part.endswith('-'))
+
+
+def is_valid_omniclass_data(data: Union[str, pd.DataFrame], required_columns: Optional[List[str]] = None) -> Dict[str, Any]:
+    """
+    Validate if the input data follows the OmniClass unified training data format.
+    
+    Args:
+        data: The data to validate, either a path to a CSV file or a pandas DataFrame.
+        required_columns: List of required column names. If None, uses the default
+                         required columns: ['OmniClass_Code', 'OmniClass_Title', 'Description'].
+    
+    Returns:
+        Dict containing validation results:
+            - 'valid': bool indicating if the data is valid
+            - 'errors': List of error messages if any
+            - 'stats': Dict with statistics about the data
+    """
+    errors = []
+    stats = {}
+    
+    # Default required columns
+    if required_columns is None:
+        required_columns = ['OmniClass_Code', 'OmniClass_Title', 'Description']
+    
+    # Load data if it's a file path
+    if isinstance(data, str):
+        try:
+            df = pd.read_csv(data)
+        except Exception as e:
+            return {
+                'valid': False,
+                'errors': [f"Failed to read CSV file: {str(e)}"],
+                'stats': {}
+            }
+    elif isinstance(data, pd.DataFrame):
+        df = data
+    else:
+        return {
+            'valid': False,
+            'errors': ["Input must be a DataFrame or a path to a CSV file"],
+            'stats': {}
+        }
+    
+    # Check if DataFrame is empty
+    if df.empty:
+        return {
+            'valid': False,
+            'errors': ["DataFrame is empty"],
+            'stats': {'row_count': 0}
+        }
+    
+    # Check for required columns
+    missing_columns = [col for col in required_columns if col not in df.columns]
+    if missing_columns:
+        errors.append(f"Missing required columns: {missing_columns}")
+    
+    # Collect statistics
+    stats['row_count'] = len(df)
+    stats['column_count'] = len(df.columns)
+    stats['columns'] = df.columns.tolist()
+    
+    # Check for null values in required columns
+    if not missing_columns:
+        for col in required_columns:
+            null_count = df[col].isna().sum()
+            if null_count > 0:
+                errors.append(f"Column '{col}' has {null_count} null values")
+            stats[f'{col}_null_count'] = null_count
+    
+    # Check OmniClass_Code format if the column exists
+    if 'OmniClass_Code' in df.columns:
+        # OmniClass codes can follow various patterns like XX-XX XX XX or XX-XX XX XX XX
+        # We'll use a more flexible pattern that allows for variations
+        invalid_codes = df[~df['OmniClass_Code'].str.match(r'^\d{2}-\d{2}([ ]\d{2})*$', na=True)]
+        if not invalid_codes.empty:
+            errors.append(f"Found {len(invalid_codes)} rows with invalid OmniClass_Code format")
+            stats['invalid_code_count'] = len(invalid_codes)
+            stats['invalid_code_examples'] = invalid_codes['OmniClass_Code'].head(5).tolist()
+    
+    # Check for duplicate OmniClass codes if the column exists
+    if 'OmniClass_Code' in df.columns:
+        duplicates = df['OmniClass_Code'].duplicated()
+        duplicate_count = duplicates.sum()
+        if duplicate_count > 0:
+            errors.append(f"Found {duplicate_count} duplicate OmniClass_Code values")
+            stats['duplicate_code_count'] = duplicate_count
+            stats['duplicate_code_examples'] = df[duplicates]['OmniClass_Code'].head(5).tolist()
+    
+    # Check for empty titles if the column exists
+    if 'OmniClass_Title' in df.columns:
+        empty_titles = df['OmniClass_Title'].isna() | (df['OmniClass_Title'] == '')
+        empty_title_count = empty_titles.sum()
+        if empty_title_count > 0:
+            errors.append(f"Found {empty_title_count} rows with empty OmniClass_Title")
+            stats['empty_title_count'] = empty_title_count
+    
+    return {
+        'valid': len(errors) == 0,
+        'errors': errors,
+        'stats': stats
+    }

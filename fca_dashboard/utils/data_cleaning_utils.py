@@ -37,14 +37,21 @@ def find_header_row(df: pd.DataFrame, header_patterns: Optional[List[str]] = Non
     # Convert patterns to lowercase for case-insensitive matching
     header_patterns = [pattern.lower() for pattern in header_patterns]
     
+    # Log the patterns we're looking for
+    logger.info(f"Looking for header patterns: {header_patterns}")
+    
     # Search for header row
     for idx, row in df.iterrows():
         # Convert row values to strings and check if any contain the patterns
         row_values = [str(val).lower() for val in row.values]
         
+        # Log the row values for debugging
+        logger.info(f"Row {idx} values: {row_values}")
+        
         # Check if any pattern is in any row value
-        if any(pattern in value for pattern in header_patterns for value in row_values):
-            logger.debug(f"Found header row at index {idx}")
+        matches = [pattern for pattern in header_patterns if any(pattern in value for value in row_values)]
+        if matches:
+            logger.info(f"Found header row at index {idx} with matching patterns: {matches}")
             return idx
     
     logger.warning("No header row found")
@@ -115,6 +122,9 @@ def standardize_column_names(
     # Create a copy of the DataFrame to avoid modifying the original
     result_df = df.copy()
     
+    # Log the current column names
+    logger.info(f"Current column names: {result_df.columns.tolist()}")
+    
     # Default column mapping
     default_mapping = {
         'OmniClass Number': 'OmniClass_Code',
@@ -127,14 +137,36 @@ def standardize_column_names(
     # Use provided mapping or default
     mapping = column_mapping if column_mapping is not None else default_mapping
     
+    # Log the mapping being used
+    logger.info(f"Using column mapping: {mapping}")
+    
     # Only map columns that exist in the DataFrame
     valid_mapping = {k: v for k, v in mapping.items() if k in result_df.columns}
     
+    # Log the valid mapping
+    logger.info(f"Valid column mapping: {valid_mapping}")
+    
     if valid_mapping:
         result_df = result_df.rename(columns=valid_mapping)
-        logger.debug(f"Renamed columns: {valid_mapping}")
+        logger.info(f"Renamed columns: {valid_mapping}")
     else:
         logger.warning("No columns matched the mapping")
+        
+        # Try case-insensitive matching as a fallback
+        case_insensitive_mapping = {}
+        for col in result_df.columns:
+            for k, v in mapping.items():
+                if k.lower() == col.lower():
+                    case_insensitive_mapping[col] = v
+                    break
+        
+        if case_insensitive_mapping:
+            logger.info(f"Found case-insensitive matches: {case_insensitive_mapping}")
+            result_df = result_df.rename(columns=case_insensitive_mapping)
+            logger.info(f"Renamed columns using case-insensitive matching: {case_insensitive_mapping}")
+    
+    # Log the final column names
+    logger.info(f"Final column names: {result_df.columns.tolist()}")
     
     return result_df
 
@@ -143,7 +175,8 @@ def clean_dataframe(
     df: pd.DataFrame,
     header_patterns: Optional[List[str]] = None,
     copyright_patterns: Optional[List[str]] = None,
-    column_mapping: Optional[Dict[str, str]] = None
+    column_mapping: Optional[Dict[str, str]] = None,
+    is_omniclass: bool = False
 ) -> pd.DataFrame:
     """
     Clean a DataFrame by removing copyright rows, identifying the header row,
@@ -154,6 +187,7 @@ def clean_dataframe(
         header_patterns: List of patterns to identify the header row.
         copyright_patterns: List of patterns to identify copyright rows.
         column_mapping: Dictionary mapping original column names to standardized names.
+        is_omniclass: Whether the DataFrame contains OmniClass data, which requires special handling.
             
     Returns:
         A cleaned DataFrame.
@@ -176,7 +210,39 @@ def clean_dataframe(
         # Step 3: Use the header row as column names and keep only data rows
         header_values = df_no_copyright.iloc[header_idx].values
         data_df = df_no_copyright.iloc[header_idx + 1:].copy()
-        data_df.columns = header_values
+        
+        # Special handling for OmniClass headers
+        if is_omniclass:
+            # Clean the header values to handle OmniClass format
+            cleaned_headers = []
+            
+            # Log the original header values
+            logger.info(f"Original header values: {header_values}")
+            
+            for val in header_values:
+                # Convert to string and strip whitespace
+                val_str = str(val).strip()
+                
+                # Log the header value being processed
+                logger.info(f"Processing header value: '{val_str}'")
+                
+                # Check if the value looks like an OmniClass code (e.g., "11-11 00 00")
+                if val_str and "-" in val_str and " " in val_str:
+                    # Keep only the OmniClass code part
+                    cleaned_val = val_str.split(",")[0] if "," in val_str else val_str
+                    logger.info(f"Identified as OmniClass code: '{val_str}' -> '{cleaned_val}'")
+                    cleaned_headers.append(cleaned_val)
+                else:
+                    logger.info(f"Not an OmniClass code, keeping as is: '{val_str}'")
+                    cleaned_headers.append(val_str)
+            
+            # Log the cleaned headers
+            logger.info(f"Cleaned headers: {cleaned_headers}")
+            
+            data_df.columns = cleaned_headers
+        else:
+            logger.info(f"Not OmniClass data, using original header values: {header_values}")
+            data_df.columns = header_values
         
         # Step 4: Reset the index
         data_df = data_df.reset_index(drop=True)

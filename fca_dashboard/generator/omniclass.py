@@ -13,6 +13,7 @@ from typing import Dict, List, Optional, Union
 import pandas as pd
 
 from fca_dashboard.config.settings import settings
+from fca_dashboard.utils.data_cleaning_utils import DataCleaningError, clean_dataframe
 from fca_dashboard.utils.excel import (
     analyze_excel_structure,
     extract_excel_with_config,
@@ -161,15 +162,25 @@ def extract_omniclass_data(
                 logger.warning(f"Failed to extract data from {flat_sheet} in {file_path.name}")
                 continue
             
-            # Add file name as a column for tracking
-            df['source_file'] = file_path.name
-            
-            # Add table number from filename (e.g., OmniClass_22_2020-08-15_2022.xlsx -> 22)
-            table_number = file_path.stem.split('_')[1] if len(file_path.stem.split('_')) > 1 else ''
-            df['table_number'] = table_number
-            
-            # Append to the list of dataframes
-            all_data.append(df)
+            try:
+                # Clean the DataFrame using our data cleaning utilities
+                # Set is_omniclass=True to enable special handling for OmniClass headers
+                cleaned_df = clean_dataframe(df, is_omniclass=True)
+                
+                # Add file name as a column for tracking
+                cleaned_df['source_file'] = file_path.name
+                
+                # Add table number from filename (e.g., OmniClass_22_2020-08-15_2022.xlsx -> 22)
+                table_number = file_path.stem.split('_')[1] if len(file_path.stem.split('_')) > 1 else ''
+                cleaned_df['table_number'] = table_number
+                
+                # Append to the list of dataframes
+                all_data.append(cleaned_df)
+                
+                logger.info(f"Cleaned and extracted {len(cleaned_df)} rows from {file_path.name}")
+            except DataCleaningError as e:
+                logger.warning(f"Error cleaning data from {file_path.name}: {str(e)}")
+                continue
             
             logger.info(f"Extracted {len(df)} rows from {file_path.name}")
             
@@ -185,19 +196,17 @@ def extract_omniclass_data(
     # Combine all dataframes
     combined_df = pd.concat(all_data, ignore_index=True)
     
-    # Standardize column names based on the unified training data plan
+    # Get column mapping from settings
     column_mapping = settings.get("generator.omniclass.column_mapping", {
         'Number': 'OmniClass_Code',
         'Title': 'OmniClass_Title',
         'Definition': 'Description'
     })
     
-    # Apply column mapping if specified in settings
-    if column_mapping:
-        # Only map columns that exist in the DataFrame
-        valid_mapping = {k: v for k, v in column_mapping.items() if k in combined_df.columns}
-        if valid_mapping:
-            combined_df = combined_df.rename(columns=valid_mapping)
+    # No need to apply column mapping here as it's already done in clean_dataframe
+    # But we can standardize any remaining columns if needed
+    from fca_dashboard.utils.data_cleaning_utils import standardize_column_names
+    combined_df = standardize_column_names(combined_df, column_mapping=column_mapping)
     
     # Save to CSV
     combined_df.to_csv(output_file, index=False)
