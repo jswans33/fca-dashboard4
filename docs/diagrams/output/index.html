@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Classifier Diagrams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #444;
+            margin-top: 30px;
+        }
+        .diagram {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .diagram img, .diagram svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .format-toggle {
+            margin: 10px 0;
+            text-align: right;
+        }
+        .format-toggle button {
+            padding: 5px 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .format-toggle button.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Equipment Classifier Diagrams</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'viewer')">Diagram Viewer</div>
+            <div class="tab" onclick="openTab(event, 'instructions')">Instructions</div>
+        </div>
+        
+        <div id="viewer" class="tab-content active">
+            <div class="format-toggle">
+                <button id="png-button" onclick="setFormat('png')">PNG</button>
+                <button id="svg-button" class="active" onclick="setFormat('svg')">SVG</button>
+            </div>
+            
+            <h2>Model Architecture Diagram</h2>
+            <div class="diagram">
+                <img id="model-diagram" alt="Model Architecture Diagram" />
+            </div>
+            
+            <h2>Data Model Diagram</h2>
+            <div class="diagram">
+                <img id="data-model-diagram" alt="Data Model Diagram" />
+            </div>
+            
+            <h2>Pipeline Diagram</h2>
+            <div class="diagram">
+                <img id="pipeline-diagram" alt="Pipeline Diagram" />
+            </div>
+        </div>
+        
+        <div id="instructions" class="tab-content">
+            <h2>How to View PlantUML Diagrams</h2>
+            
+            <h3>Using this HTML Viewer</h3>
+            <p>This HTML file displays the rendered PlantUML diagrams. You can switch between PNG and SVG formats using the buttons at the top of the viewer.</p>
+            
+            <h3>Rendering Diagrams</h3>
+            <p>If you need to update the diagrams, you can render them using the following commands:</p>
+            
+            <h4>Windows Command Prompt/PowerShell</h4>
+            <pre style="background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+# From the project root directory
+cd c:/Repos/fca-dashboard4
+
+# Activate the virtual environment (if needed)
+.\.venv\Scripts\activate
+
+# Render all diagrams to SVG (default)
+python -m fca_dashboard.utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m fca_dashboard.utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m fca_dashboard.utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+            </pre>
+            
+            <h4>Git Bash/MINGW (Windows)</h4>
+            <pre style="background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+# From the project root directory
+cd /c/Repos/fca-dashboard4
+
+# Activate the virtual environment (if needed)
+source .venv/Scripts/activate
+
+# Render all diagrams to SVG (default)
+python -m fca_dashboard.utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m fca_dashboard.utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m fca_dashboard.utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+            </pre>
+            
+            <h3>Using Make Commands</h3>
+            <p>You can also use Make commands to render and view diagrams:</p>
+            
+            <h4>Windows Command Prompt/PowerShell</h4>
+            <pre style="background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+# From the project root directory
+cd c:/Repos/fca-dashboard4
+
+# Render all diagrams to SVG
+make -f fca_dashboard/utils/puml/Makefile render-diagrams
+
+# Render all diagrams to PNG
+make -f fca_dashboard/utils/puml/Makefile render-diagrams-png
+
+# View diagrams (opens this HTML file)
+make -f fca_dashboard/utils/puml/Makefile view-diagrams
+            </pre>
+            
+            <h4>Git Bash/MINGW (Windows)</h4>
+            <pre style="background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+# From the project root directory
+cd /c/Repos/fca-dashboard4
+
+# Render all diagrams to SVG
+make -f fca_dashboard/utils/puml/Makefile render-diagrams
+
+# Render all diagrams to PNG
+make -f fca_dashboard/utils/puml/Makefile render-diagrams-png
+
+# View diagrams (opens this HTML file)
+make -f fca_dashboard/utils/puml/Makefile view-diagrams
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        // Current format (png or svg)
+        let currentFormat = 'svg';
+        
+        // Diagram paths
+        const diagramPaths = {
+            model: {
+                svg: 'classifier/classifier_model_diagram.svg',
+                png: 'classifier/classifier_model_diagram.png'
+            },
+            dataModel: {
+                svg: 'classifier/classifier_data_model_diagram.svg',
+                png: 'classifier/classifier_data_model_diagram.png'
+            },
+            pipeline: {
+                svg: 'classifier/classifier_pipeline_diagram.svg',
+                png: 'classifier/classifier_pipeline_diagram.png'
+            }
+        };
+        
+        // Function to set the format (png or svg)
+        function setFormat(format) {
+            currentFormat = format;
+            
+            // Update the active button
+            document.getElementById('png-button').classList.toggle('active', format === 'png');
+            document.getElementById('svg-button').classList.toggle('active', format === 'svg');
+            
+            // Update the diagram sources
+            document.getElementById('model-diagram').src = diagramPaths.model[format];
+            document.getElementById('data-model-diagram').src = diagramPaths.dataModel[format];
+            document.getElementById('pipeline-diagram').src = diagramPaths.pipeline[format];
+        }
+        
+        // Function to switch tabs
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+        
+        // Initialize the diagrams when the page loads
+        window.onload = function() {
+            setFormat('svg');
+        };
+    </script>
+</body>
+</html>

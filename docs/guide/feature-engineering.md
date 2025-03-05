@@ -427,25 +427,33 @@ You can combine these approaches by:
 Either way, the key point is the model still **predicts** your UniFormat and Equipment columns from the CSV data, and *then* you map those predictions to MasterFormat codes in your `enhanced_masterformat_mapping()` function. All MasterFormat expansions ultimately flow from that function’s logic.
 
 ---
+
 ### Short Answer
+
 - **Yes**, the code already deals with **UniFormat** (see the column `Uniformat_Class` in the CSV) **and** it uses a **MasterFormat** mapping.  
-- If you want to **also** use **OmniClass** (or any other classification system) in the same pipeline, you can add a **similar mapping** function or a **dictionary/CSV** for OmniClass codes, just like we do for MasterFormat.
+* If you want to **also** use **OmniClass** (or any other classification system) in the same pipeline, you can add a **similar mapping** function or a **dictionary/CSV** for OmniClass codes, just like we do for MasterFormat.
 
 ---
 
 ### Longer Explanation
 
 #### 1. The Code Already Uses UniFormat
+
 If you look at the CSV columns:
+
 ```text
 Uniformat_Class,System_Type, ...
 ```
+
 and the part of the code that references it:
+
 ```python
 # e.g. from the CSV
 df['Uniformat_Class'] = df['System Type ID']
 ```
+
 You can see that **UniFormat** is already captured as one of the target columns in the multi-output model:
+
 ```python
 y = df[[
     'Equipment_Category', 
@@ -455,17 +463,20 @@ y = df[[
     'System_Subtype'
 ]]
 ```
+
 So your model is predicting a value for `Uniformat_Class` in addition to `Equipment_Category` (and a few other fields).
 
 #### 2. The Code Has a Hard-Coded MasterFormat Mapping
+
 Separately, there is a function called `enhanced_masterformat_mapping()` that takes in `(uniformat_class, system_type, equipment_category, equipment_subcategory)` and returns a **MasterFormat** code. That function is just a big dictionary of “if you see this Uniformat plus that System Type, then the MasterFormat code is X.”  
 
 That’s purely a **post-processing** step. It uses the model’s **predicted** `Uniformat_Class` and `System_Type` (etc.) and **translates** them to a MasterFormat number.
 
 #### 3. Adding OmniClass
+
 If you also need an **OmniClass** code, you have a couple of options:
 
-- **(A) A Separate Mapping Function**  
+* **(A) A Separate Mapping Function**  
   Create a function `enhanced_omniclass_mapping()` that, just like `enhanced_masterformat_mapping()`, uses a dictionary or CSV to look up `(uniformat_class, system_type, etc.)` → `OmniClass code`.
 
   ```python
@@ -484,7 +495,7 @@ If you also need an **OmniClass** code, you have a couple of options:
       return omniclass_code
   ```
 
-- **(B) Fold It into the Same Function**  
+* **(B) Fold It into the Same Function**  
   You could also make a single function that returns **both** MasterFormat and OmniClass codes at once. For example:
 
   ```python
@@ -503,18 +514,152 @@ If you also need an **OmniClass** code, you have a couple of options:
       return masterformat_code, omniclass_code
   ```
 
-Either way, you’d store or compute your OmniClass code from the same predicted columns that drive MasterFormat. 
+Either way, you’d store or compute your OmniClass code from the same predicted columns that drive MasterFormat.
 
 #### 4. Why So Many Classification Systems?
+
 - **UniFormat** is a system primarily for building elements (walls, roofs, MEP systems, etc.)—that’s why we have `Uniformat_Class` in the CSV.  
-- **MasterFormat** is a system for **specifications**, especially for construction documents.  
-- **OmniClass** is a broader classification framework that can include built environment elements, phases, properties, etc.
+* **MasterFormat** is a system for **specifications**, especially for construction documents.  
+* **OmniClass** is a broader classification framework that can include built environment elements, phases, properties, etc.
 
 In practice, an asset (like a piece of HVAC equipment) might need to be labeled with **all** of them if you’re integrating with different design/construction/maintenance software.
 
 ---
 
 ### Summary
+
 - You **already** have UniFormat predictions in the code.  
-- You **already** have MasterFormat output via a mapping function.  
-- To add **OmniClass**, you can write a **similar mapping** (dictionary, CSV, or database) that says: “Given my predicted columns (`Uniformat_Class`, etc.), the OmniClass code is X.” Then call it after the model predicts.
+* You **already** have MasterFormat output via a mapping function.  
+* To add **OmniClass**, you can write a **similar mapping** (dictionary, CSV, or database) that says: “Given my predicted columns (`Uniformat_Class`, etc.), the OmniClass code is X.” Then call it after the model predicts.
+
+---
+
+Below is a **sample template** you can use as a guide for a “clean” CSV that feeds into your classification pipeline.  
+It shows *typical* columns that work well with your code—and what kind of data they should contain to align with your **Uniformat** + **MasterFormat** approach.
+
+---
+
+## 1. Example CSV Column Layout
+
+| Uniformat_Class | System_Type            | Equipment_Category | Equipment_Subcategory | combined_features                                            | Equipment_Size | Unit  | Service_Life | ... (any other columns) ... |
+|-----------------|------------------------|--------------------|-----------------------|----------------------------------------------------------------|---------------|-------|-------------|----------------------------------|
+| H               | Steam Boiler Plant     | Accessory         | Blow Down            | Accessory Blow Down Floor Mounted 100 GPM Steam Boiler ... etc. | 100           | GAL   | 20          | ...                          |
+| H               | Steam Boiler Plant     | Boiler            | Packaged Fire Tube   | Boiler Steam Packaged Fire Tube 3000 MBH ... etc.               | 3000          | MBH   | 25          | ...                          |
+| P               | Domestic Water Plant   | Water Softener    | Duplex System        | Water Softener Duplex ...  etc.                                 | 50            | GPM   | 15          | ...                          |
+| H               | Cooling Tower Plant    | Accessory         | Basket Strainer      | Accessory Basket Strainer 8 INCHES Cooling Tower ... etc.       | 8             | INCH | 25          | ...                          |
+
+### Column-by-column Explanation
+
+1. **`Uniformat_Class`**  
+   - A short code that identifies the Uniformat classification for the system.  
+   - Examples:  
+     - `H` = HVAC  
+     - `P` = Plumbing  
+     - `R` = Refrigeration  
+     - You can also store longer Uniformat codes if needed (like `D2020`, `F1030`, etc.).  
+   - **Important**: This should truly be a correct Uniformat code, or at least a simplified stand-in that you use consistently across your dataset.
+
+2. **`System_Type`**  
+   - A descriptive field for the major mechanical or plumbing system.  
+   - Examples: “Steam Boiler Plant,” “Cooling Tower Plant,” “Domestic Water Plant,” “Air Handling Units,” etc.  
+   - Usually a free-text field, but you want to keep it fairly consistent so you can map it to MasterFormat or other codes.
+
+3. **`Equipment_Category`**  
+   - The top-level type of equipment.  
+   - Examples: “Boiler,” “Chiller,” “Fan,” “Accessory,” “Pump,” “Water Softener,” etc.  
+   - This is used in your pipeline code (like `df['Equipment_Category']`).
+
+4. **`Equipment_Subcategory`**  
+   - A more detailed subtype of your `Equipment_Category`.  
+   - Examples: “Blow Down,” “Floor Mounted,” “Packaged Fire Tube,” “Basket Strainer,” etc.  
+   - This is helpful for building hierarchical classification or “Other” categories.
+
+5. **`combined_features`**  
+   - A concatenation of textual fields that describe the equipment.  
+   - Typically includes columns like “Title,” “Sub System Type,” “Sub System ID,” plus any other descriptive fields you want the TF–IDF vectorizer to ingest.  
+   - Example content for a steam blow-down tank might be:  
+     ```
+     "Accessory Blow Down Floor Mounted 100 GPM Steam Boiler Condensate"
+     ```  
+   - The pipeline uses this field for *text-based* classification signals.
+
+6. **`Equipment_Size`** (or `size_feature`)  
+   - A numeric or string field for the size/capacity.  
+   - Examples: 100.0, 25.0, 1000.0, etc.  
+   - If you store numeric values, you can scale them. If you store “100 GPM,” you might want to parse out the numeric portion.
+
+7. **`Unit`**  
+   - The engineering units for that piece of equipment.  
+   - Examples: “GPM,” “MBH,” “TONS,” “HP,” “INCHES,” “GAL,” etc.  
+   - In your code, you might or might not feed this directly into the numeric pipeline. Some organizations store it in `combined_features` for text usage.
+
+8. **`Service_Life`**  
+   - The numeric field used in your pipeline’s numeric feature pipeline.  
+   - Example: 20 (meaning 20 years).  
+   - If you don’t have a real service-life estimate, you can default to 0 or some fallback.
+
+9. **Other Columns**  
+   - You can keep other columns like `Trade`, `Precon Tag`, `Operations System`, etc., if they’re helpful.  
+   - Some might be fed into `combined_features`, others might be purely reference columns.
+
+---
+
+## 2. How This Aligns With Your Code
+
+- **`df['Uniformat_Class']`**: This is what you actually want stored in `df['Uniformat_Class']`, rather than `Steam Boiler Plant` or `Cooling Tower Plant`.  
+- **`df['System_Type']`**: Free text describing the system, e.g., “Steam Boiler Plant.”  
+- **`df['Equipment_Category']`**: The top-level category (like “Accessory,” “Boiler,” “Pump,” etc.).  
+- **`df['Equipment_Subcategory']`**: The next-level detail (like “Blow Down,” “Floor Mounted,” “Packaged Fire Tube,” “Basket Strainer,” etc.).  
+- **`df['combined_features']`**: String concatenation of the other text columns you want the model to read.  
+
+This structure ensures that:  
+- Your pipeline can train a multi-output classifier for (1) `Equipment_Category`, (2) `Uniformat_Class`, (3) `System_Type`, and so on.  
+- The text-based columns (`combined_features`) still contain enough descriptive text to identify “Blow Down vs. Basket Strainer vs. Polishing System,” etc.  
+- The numeric pipeline can scale `Service_Life` if you have it.
+
+---
+
+## 3. Example CSV Snippet (Very Simplified)
+
+Below is a tiny snippet you could place into a CSV:
+
+```csv
+Uniformat_Class,System_Type,Equipment_Category,Equipment_Subcategory,combined_features,Equipment_Size,Unit,Service_Life
+H,Steam Boiler Plant,Accessory,Blow Down,"Accessory Blow Down Floor Mounted 100 GAL Steam Boiler Plant",100,GAL,20
+H,Cooling Tower Plant,Accessory,Basket Strainer,"Accessory Basket Strainer 8 INCHES Cooling Tower Plant",8,INCH,25
+P,Domestic Water Plant,Water Softener,Duplex,"Water Softener Duplex System Domestic Water 50 GPM",50,GPM,15
+H,Steam Boiler Plant,Boiler,Packaged Fire Tube,"Boiler Steam Packaged Fire Tube 3000 MBH Some additional text",3000,MBH,25
+```
+
+- Notice how **`Uniformat_Class`** is a short code (H or P).  
+- **`System_Type`** might be “Steam Boiler Plant” or “Cooling Tower Plant,” etc.  
+- **`Equipment_Category`** is “Accessory,” “Boiler,” “Water Softener,” etc.  
+- **`Equipment_Subcategory`** is “Blow Down,” “Basket Strainer,” or “Packaged Fire Tube.”  
+- **`combined_features`** is the textual combination of the interesting descriptors.  
+- **`Equipment_Size`** is a numeric value, and **`Unit`** is a string.
+
+---
+
+## 4. Mapping From “Raw” System Names to “Uniformat_Class”
+
+If in your real data you have “Steam Boiler Plant,” “Cooling Tower Plant,” etc., you can keep them in **`System_Type`** but do a short dictionary lookup to assign them to `'H'` or `'P'` for your final **`Uniformat_Class`** column. For example:
+
+```python
+uniformat_mapping = {
+    "Steam Boiler Plant": "H",
+    "Cooling Tower Plant": "H",
+    "Domestic Water Plant": "P",
+    "Medical/Lab Gas Plant": "P",
+    "Rooftop Unit": "H",
+    # ...
+}
+
+df["Uniformat_Class"] = df["System_Type"].map(uniformat_mapping)
+```
+
+---
+
+## Takeaway
+
+**Give each piece of equipment the correct Uniformat code in a single dedicated column**, and keep the “friendly name” (like “Steam Boiler Plant”) in its own `System_Type` column.  
+This ensures your classification pipeline can **cleanly** learn from the text (like “steam” or “boiler” in the combined_features) while also letting you do direct lookups or mapping for MasterFormat, OmniClass, etc.

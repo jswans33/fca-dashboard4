@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Classifier Diagrams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #444;
+            margin-top: 30px;
+        }
+        .diagram {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .diagram img, .diagram svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        .code {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .format-toggle {
+            margin: 10px 0;
+            text-align: right;
+        }
+        .format-toggle button {
+            padding: 5px 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .format-toggle button.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Equipment Classifier Diagrams</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'viewer')">Diagram Viewer</div>
+            <div class="tab" onclick="openTab(event, 'instructions')">Viewing Instructions</div>
+            <div class="tab" onclick="openTab(event, 'source')">Source Code</div>
+        </div>
+        
+        <div id="viewer" class="tab-content active">
+            <div class="format-toggle">
+                <button id="png-button" onclick="setFormat('png')">PNG</button>
+                <button id="svg-button" class="active" onclick="setFormat('svg')">SVG</button>
+            </div>
+            
+            <h2>Model Architecture Diagram</h2>
+            <div class="diagram">
+                <img id="model-diagram" alt="Model Architecture Diagram" />
+            </div>
+            
+            <h2>Data Model Diagram</h2>
+            <div class="diagram">
+                <img id="data-model-diagram" alt="Data Model Diagram" />
+            </div>
+            
+            <h2>Pipeline Diagram</h2>
+            <div class="diagram">
+                <img id="pipeline-diagram" alt="Pipeline Diagram" />
+            </div>
+        </div>
+        
+        <div id="instructions" class="tab-content">
+            <h2>How to View PlantUML Diagrams</h2>
+            
+            <h3>Option 1: Using this HTML Viewer</h3>
+            <p><strong>Important:</strong> You must render the diagrams first using the CLI or Make command before viewing them here:</p>
+            <pre class="code">
+# Render the diagrams first
+make render-diagrams
+
+# Then open the viewer
+make view-diagrams
+            </pre>
+            <p>You can switch between PNG and SVG formats using the buttons at the top of the viewer.</p>
+            
+            <h3>Option 2: Using the CLI</h3>
+            <p>You can use the CLI script to render diagrams to PNG or SVG:</p>
+            <pre class="code">
+# Activate the virtual environment (if needed)
+.\.venv\Scripts\activate
+
+# Render all diagrams to SVG (default)
+python -m fca_dashboard.utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m fca_dashboard.utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m fca_dashboard.utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+
+# Open this HTML viewer
+python -m fca_dashboard.utils.puml.cli view
+            </pre>
+            
+            <h3>Option 3: Using VS Code Extension</h3>
+            <p>If you're using Visual Studio Code, you can install the "PlantUML" extension to view the diagrams directly in the editor:</p>
+            <ol>
+                <li>Open VS Code</li>
+                <li>Go to Extensions (Ctrl+Shift+X)</li>
+                <li>Search for "PlantUML"</li>
+                <li>Install the extension by Jebbs</li>
+                <li>Open any .puml file and use Alt+D to preview</li>
+            </ol>
+            
+            <h3>Option 4: Using Online PlantUML Server</h3>
+            <p>You can use the online PlantUML server to render your diagrams:</p>
+            <ol>
+                <li>Go to <a href="http://www.plantuml.com/plantuml/uml/" target="_blank">http://www.plantuml.com/plantuml/uml/</a></li>
+                <li>Copy and paste the content of your .puml file</li>
+                <li>The diagram will be rendered automatically</li>
+            </ol>
+        </div>
+        
+        <div id="source" class="tab-content">
+            <h2>PlantUML Source Code</h2>
+            
+            <h3>Model Architecture Diagram</h3>
+            <p>File: <code>docs/diagrams/classifier/classifier_model_diagram.puml</code></p>
+            <div class="code" id="model-source">Loading...</div>
+            
+            <h3>Data Model Diagram</h3>
+            <p>File: <code>docs/diagrams/classifier/classifier_data_model_diagram.puml</code></p>
+            <div class="code" id="data-model-source">Loading...</div>
+            
+            <h3>Pipeline Diagram</h3>
+            <p>File: <code>docs/diagrams/classifier/classifier_pipeline_diagram.puml</code></p>
+            <div class="code" id="pipeline-source">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const diagramPaths = {
+            // Source paths for PlantUML files
+            source: {
+                model: '../../../docs/diagrams/classifier/classifier_model_diagram.puml',
+                dataModel: '../../../docs/diagrams/classifier/classifier_data_model_diagram.puml',
+                pipeline: '../../../docs/diagrams/classifier/classifier_pipeline_diagram.puml'
+            },
+            // Output paths for rendered images
+            output: {
+                model: {
+                    svg: '../../../docs/diagrams/output/classifier/classifier_model_diagram.svg',
+                    png: '../../../docs/diagrams/output/classifier/classifier_model_diagram.png'
+                },
+                dataModel: {
+                    svg: '../../../docs/diagrams/output/classifier/classifier_data_model_diagram.svg',
+                    png: '../../../docs/diagrams/output/classifier/classifier_data_model_diagram.png'
+                },
+                pipeline: {
+                    svg: '../../../docs/diagrams/output/classifier/classifier_pipeline_diagram.svg',
+                    png: '../../../docs/diagrams/output/classifier/classifier_pipeline_diagram.png'
+                }
+            }
+        };
+        
+        // Current format (png or svg)
+        let currentFormat = 'svg';
+        
+        // Function to set the format (png or svg)
+        function setFormat(format) {
+            currentFormat = format;
+            
+            // Update the active button
+            document.getElementById('png-button').classList.toggle('active', format === 'png');
+            document.getElementById('svg-button').classList.toggle('active', format === 'svg');
+            
+            // Reload the diagrams
+            loadDiagrams();
+        }
+        
+        // Function to load PlantUML diagrams
+        async function loadDiagrams() {
+            try {
+                // Load model diagram
+                try {
+                    // Try to load the source file for the code view
+                    const modelResponse = await fetch(diagramPaths.source.model);
+                    const modelText = await modelResponse.text();
+                    document.getElementById('model-source').textContent = modelText;
+                } catch (e) {
+                    document.getElementById('model-source').textContent = "Source file not found. Please make sure you've rendered the diagrams.";
+                }
+                
+                // Set the image source to the rendered image
+                document.getElementById('model-diagram').src = diagramPaths.output.model[currentFormat];
+                
+                // Load data model diagram
+                try {
+                    const dataModelResponse = await fetch(diagramPaths.source.dataModel);
+                    const dataModelText = await dataModelResponse.text();
+                    document.getElementById('data-model-source').textContent = dataModelText;
+                } catch (e) {
+                    document.getElementById('data-model-source').textContent = "Source file not found. Please make sure you've rendered the diagrams.";
+                }
+                
+                // Set the image source to the rendered image
+                document.getElementById('data-model-diagram').src = diagramPaths.output.dataModel[currentFormat];
+                
+                // Load pipeline diagram
+                try {
+                    const pipelineResponse = await fetch(diagramPaths.source.pipeline);
+                    const pipelineText = await pipelineResponse.text();
+                    document.getElementById('pipeline-source').textContent = pipelineText;
+                } catch (e) {
+                    document.getElementById('pipeline-source').textContent = "Source file not found. Please make sure you've rendered the diagrams.";
+                }
+                
+                // Set the image source to the rendered image
+                document.getElementById('pipeline-diagram').src = diagramPaths.output.pipeline[currentFormat];
+            } catch (error) {
+                console.error('Error loading diagrams:', error);
+                alert('Error loading diagrams. Please make sure you have rendered the diagrams using "make render-diagrams" first.');
+            }
+        }
+        
+        // Function to switch tabs
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+        
+        // Load diagrams when the page loads
+        window.onload = loadDiagrams;
+    </script>
+</body>
+</html>

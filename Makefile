@@ -72,6 +72,32 @@ run-classifier-simple:
 	# Run the simplified version without matplotlib/seaborn dependencies
 	python -m fca_dashboard.examples.classifier_example_simple
 
+# PlantUML Utilities
+
+# Render all PlantUML diagrams to SVG (default)
+render-diagrams:
+	python -m fca_dashboard.utils.puml.cli render
+	@echo "Diagrams saved to docs/diagrams/output"
+
+# Render all PlantUML diagrams to PNG
+render-diagrams-png:
+	python -m fca_dashboard.utils.puml.cli render --format=png
+
+# Render a specific PlantUML diagram
+render-diagram:
+	@echo "Usage: make render-diagram FILE=<file>"
+	@if [ "$(FILE)" ]; then \
+		python -m fca_dashboard.utils.puml.cli render --file=$(FILE); \
+	fi
+
+# Open the PlantUML HTML viewer
+view-diagrams:
+	# Open the HTML file directly instead of using the CLI
+	start docs/diagrams/output/index.html 2>/dev/null || \
+	open docs/diagrams/output/index.html 2>/dev/null || \
+	xdg-open docs/diagrams/output/index.html 2>/dev/null || \
+	echo "Could not open the HTML viewer automatically. Please open docs/diagrams/output/index.html manually."
+
 # Clean up generated files
 clean:
 	python -c "import os, shutil; [shutil.rmtree(os.path.join(root, d)) for root, dirs, _ in os.walk('.') for d in dirs if d == '__pycache__' or d.endswith('.egg-info') or d.endswith('.egg') or d == '.pytest_cache' or d == 'htmlcov' or d == '.mypy_cache']"
