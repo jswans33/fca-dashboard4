@@ -223,8 +223,8 @@ def test_full_pipeline_with_resampled_data():
         columns=y_train.columns
     )
     
-    # Build the model
-    model = build_enhanced_model()
+    # Build the test model with parameters adjusted for small test datasets
+    model = build_test_model()
     
     # This should not raise an error
     try:
