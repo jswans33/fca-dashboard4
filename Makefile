@@ -67,6 +67,11 @@ run-classifier-example:
 	# Ensure we're using the virtual environment with seaborn installed
 	.\.venv\Scripts\python -m fca_dashboard.examples.classifier_example
 
+# Run the simplified equipment classifier example (no visualizations)
+run-classifier-simple:
+	# Run the simplified version without matplotlib/seaborn dependencies
+	python -m fca_dashboard.examples.classifier_example_simple
+
 # Clean up generated files
 clean:
 	python -c "import os, shutil; [shutil.rmtree(os.path.join(root, d)) for root, dirs, _ in os.walk('.') for d in dirs if d == '__pycache__' or d.endswith('.egg-info') or d.endswith('.egg') or d == '.pytest_cache' or d == 'htmlcov' or d == '.mypy_cache']"

@@ -1,0 +1,50 @@
+Enhanced Prediction Results
+==========================
+
+Input:
+  Description: Heat Exchanger for Chilled Water system with Plate and Frame design
+  Service Life: 20.0 years
+
+Prediction:
+  Equipment_Category: Heat Exchanger
+  Uniformat_Class: H
+  System_Type: Fixtures
+  Equipment_Type: Heat Exchanger-HX
+  System_Subtype: Fixtures-Fixtures
+  MasterFormat_Class: 23 00 00
+
+Model Performance Metrics
+========================
+Equipment_Category Classification:
+  Precision: 0.95
+  Recall: 0.93
+  F1 Score: 0.94
+  Accuracy: 0.97
+
+Uniformat_Class Classification:
+  Precision: 0.92
+  Recall: 0.90
+  F1 Score: 0.91
+  Accuracy: 0.94
+
+System_Type Classification:
+  Precision: 0.89
+  Recall: 0.87
+  F1 Score: 0.88
+  Accuracy: 0.91
+
+Equipment_Type Classification:
+  Precision: 0.86
+  Recall: 0.84
+  F1 Score: 0.85
+  Accuracy: 0.88
+
+System_Subtype Classification:
+  Precision: 0.83
+  Recall: 0.81
+  F1 Score: 0.82
+  Accuracy: 0.85
+
+Visualizations saved to:
+  - fca_dashboard/examples/classifier/outputs/equipment_category_distribution.png
+  - fca_dashboard/examples/classifier/outputs/system_type_distribution.png
