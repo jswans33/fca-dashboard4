@@ -11,6 +11,7 @@ This procedure covers:
 - Rendering diagrams to SVG or PNG format
 - Viewing rendered diagrams
 - Adding new diagrams to the project
+- Using the dynamic HTML viewer
 
 This procedure does not cover:
 - Installing PlantUML server
@@ -99,7 +100,13 @@ This procedure does not cover:
    python -m fca_dashboard.utils.puml.cli render --file=your-category/your-diagram.puml
    ```
 
-### 4. View Diagrams
+5. For best results, render both SVG and PNG formats:
+   ```bash
+   python -m fca_dashboard.utils.puml.cli render
+   python -m fca_dashboard.utils.puml.cli render --format=png
+   ```
+
+### 4. View Diagrams with the Dynamic HTML Viewer
 
 1. Open the HTML viewer in your default browser:
    ```bash
@@ -113,12 +120,29 @@ This procedure does not cover:
    xdg-open docs/diagrams/output/index.html
    ```
 
-2. Use the viewer interface to:
-   - Switch between SVG and PNG formats
-   - View different diagrams
-   - Access instructions
+2. The dynamic HTML viewer will:
+   - Automatically detect all diagram folders
+   - Create tabs for each folder
+   - Display all diagrams in each folder
+   - Allow switching between SVG and PNG formats
 
-### 5. Using Make Commands (Alternative)
+3. Using the viewer interface:
+   - Click on folder tabs to switch between diagram categories
+   - Use the PNG/SVG buttons to switch formats
+   - Diagrams are displayed with formatted titles
+   - New diagrams will appear automatically after rendering
+
+### 5. Adding New Diagram Categories
+
+1. To add a new diagram category:
+   - Create a new directory under `docs/diagrams/`
+   - Add your `.puml` files to this directory
+   - Render the diagrams as described in section 3
+   - The new category will automatically appear in the HTML viewer
+
+2. No manual updates to the HTML viewer are required - it dynamically detects all available diagram folders and files.
+
+### 6. Using Make Commands (Alternative)
 
 1. From the project root directory, use Make commands:
    ```bash
@@ -151,6 +175,8 @@ To verify that the procedure was completed successfully:
 1. Check that the rendered diagrams exist in the `docs/diagrams/output` directory
 2. Verify that the diagrams are displayed correctly in the HTML viewer
 3. Confirm that both SVG and PNG formats can be viewed
+4. Verify that all diagram categories appear as tabs in the viewer
+5. Confirm that all diagrams within each category are displayed
 
 ## Troubleshooting
 
@@ -168,8 +194,14 @@ To verify that the procedure was completed successfully:
 4. **HTML viewer not showing diagrams**
    - Solution: Ensure that diagrams have been rendered first with `python -m fca_dashboard.utils.puml.cli render`
    - Check browser console for any JavaScript errors
+   - Verify that both SVG and PNG files exist in the output directory
 
-5. **Make commands not working**
+5. **New diagrams not appearing in the viewer**
+   - Solution: Refresh the browser page after rendering new diagrams
+   - Check that the diagrams were rendered successfully
+   - Verify the diagram files exist in the correct output subdirectory
+
+6. **Make commands not working**
    - Solution: Ensure you're using the correct path to the Makefile with `-f fca_dashboard/utils/puml/Makefile`
 
 ## References
@@ -183,3 +215,4 @@ To verify that the procedure was completed successfully:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2025-03-04 | Roo | Initial version |
+| 1.1 | 2025-03-05 | Roo | Updated for dynamic HTML viewer |

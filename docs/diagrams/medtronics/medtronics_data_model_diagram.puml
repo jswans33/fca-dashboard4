@@ -1,0 +1,53 @@
+@startuml "Medtronics Pipeline Data Model"
+
+' Define the entities
+entity "Asset Data (Excel)" as AssetData {
+  * asset_id: string
+  --
+  equipment_tag: string
+  other_columns: various
+}
+
+entity "Staging Table" as StagingTable {
+  * id: integer
+  --
+  * source_system: string
+  * import_batch_id: string
+  * import_timestamp: datetime
+  * status: string
+  * data: JSON
+  equipment_tag: string
+  other_columns: various
+}
+
+entity "SQLite Database" as SQLiteDB {
+  * asset_id: string
+  --
+  equipment_tag: string
+  other_columns: various
+}
+
+entity "Analysis Report" as AnalysisReport {
+  * sheet_name: string
+  --
+  unique_values_analysis: text
+  column_statistics: text
+  text_analysis: text
+}
+
+entity "Validation Report" as ValidationReport {
+  * sheet_name: string
+  --
+  missing_values_report: text
+  duplicate_rows_report: text
+  value_ranges_report: text
+  data_types_report: text
+}
+
+' Define relationships
+AssetData --> StagingTable : "staged as"
+AssetData --> SQLiteDB : "exported to"
+AssetData --> AnalysisReport : "analyzed in"
+AssetData --> ValidationReport : "validated in"
+
+@enduml

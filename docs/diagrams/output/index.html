@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Classifier Diagrams</title>
+    <title>FCA Dashboard Diagrams</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,12 +41,14 @@
             display: flex;
             border-bottom: 1px solid #ddd;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .tab {
             padding: 10px 20px;
             cursor: pointer;
             background-color: #f1f1f1;
             margin-right: 5px;
+            margin-bottom: 5px;
             border-radius: 5px 5px 0 0;
         }
         .tab.active {
@@ -77,37 +79,37 @@
             color: white;
             border-color: #007bff;
         }
+        .diagram-title {
+            font-weight: bold;
+            margin-top: 30px;
+            color: #555;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        .error {
+            color: #d9534f;
+            padding: 10px;
+            background-color: #f9f2f2;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Equipment Classifier Diagrams</h1>
+        <h1>FCA Dashboard Diagrams</h1>
         
-        <div class="tabs">
-            <div class="tab active" onclick="openTab(event, 'viewer')">Diagram Viewer</div>
+        <div class="tabs" id="folder-tabs">
+            <!-- Tabs will be dynamically generated -->
             <div class="tab" onclick="openTab(event, 'instructions')">Instructions</div>
         </div>
         
-        <div id="viewer" class="tab-content active">
-            <div class="format-toggle">
-                <button id="png-button" onclick="setFormat('png')">PNG</button>
-                <button id="svg-button" class="active" onclick="setFormat('svg')">SVG</button>
-            </div>
-            
-            <h2>Model Architecture Diagram</h2>
-            <div class="diagram">
-                <img id="model-diagram" alt="Model Architecture Diagram" />
-            </div>
-            
-            <h2>Data Model Diagram</h2>
-            <div class="diagram">
-                <img id="data-model-diagram" alt="Data Model Diagram" />
-            </div>
-            
-            <h2>Pipeline Diagram</h2>
-            <div class="diagram">
-                <img id="pipeline-diagram" alt="Pipeline Diagram" />
-            </div>
+        <div id="diagram-container">
+            <!-- Diagram content will be dynamically generated -->
         </div>
         
         <div id="instructions" class="tab-content">
@@ -194,34 +196,21 @@ make -f fca_dashboard/utils/puml/Makefile view-diagrams
         // Current format (png or svg)
         let currentFormat = 'svg';
         
-        // Diagram paths
-        const diagramPaths = {
-            model: {
-                svg: 'classifier/classifier_model_diagram.svg',
-                png: 'classifier/classifier_model_diagram.png'
-            },
-            dataModel: {
-                svg: 'classifier/classifier_data_model_diagram.svg',
-                png: 'classifier/classifier_data_model_diagram.png'
-            },
-            pipeline: {
-                svg: 'classifier/classifier_pipeline_diagram.svg',
-                png: 'classifier/classifier_pipeline_diagram.png'
-            }
-        };
-        
         // Function to set the format (png or svg)
         function setFormat(format) {
             currentFormat = format;
             
-            // Update the active button
-            document.getElementById('png-button').classList.toggle('active', format === 'png');
-            document.getElementById('svg-button').classList.toggle('active', format === 'svg');
+            // Update all diagram images
+            const diagrams = document.querySelectorAll('.diagram-image');
+            diagrams.forEach(diagram => {
+                const basePath = diagram.getAttribute('data-base-path');
+                diagram.src = basePath + '.' + format;
+            });
             
-            // Update the diagram sources
-            document.getElementById('model-diagram').src = diagramPaths.model[format];
-            document.getElementById('data-model-diagram').src = diagramPaths.dataModel[format];
-            document.getElementById('pipeline-diagram').src = diagramPaths.pipeline[format];
+            // Update the active button
+            document.querySelectorAll('.format-toggle button').forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-format') === format);
+            });
         }
         
         // Function to switch tabs
@@ -240,8 +229,159 @@ make -f fca_dashboard/utils/puml/Makefile view-diagrams
             evt.currentTarget.classList.add('active');
         }
         
-        // Initialize the diagrams when the page loads
+        // Function to scan for available folders and diagrams
+        async function scanDiagrams() {
+            try {
+                // First, scan for available folders
+                const folders = await scanFolders();
+                
+                // Create tabs for each folder
+                const tabsContainer = document.getElementById('folder-tabs');
+                const diagramContainer = document.getElementById('diagram-container');
+                
+                // Add tabs and content for each folder
+                folders.forEach((folder, index) => {
+                    // Create tab
+                    const tab = document.createElement('div');
+                    tab.className = 'tab' + (index === 0 ? ' active' : '');
+                    tab.textContent = folder.charAt(0).toUpperCase() + folder.slice(1) + ' Diagrams';
+                    tab.onclick = function(event) { openTab(event, folder); };
+                    tabsContainer.insertBefore(tab, tabsContainer.lastChild);
+                    
+                    // Create content div
+                    const contentDiv = document.createElement('div');
+                    contentDiv.id = folder;
+                    contentDiv.className = 'tab-content' + (index === 0 ? ' active' : '');
+                    
+                    // Add format toggle
+                    const formatToggle = document.createElement('div');
+                    formatToggle.className = 'format-toggle';
+                    formatToggle.innerHTML = `
+                        <button id="${folder}-png-button" data-format="png" onclick="setFormat('png')">PNG</button>
+                        <button id="${folder}-svg-button" data-format="svg" class="active" onclick="setFormat('svg')">SVG</button>
+                    `;
+                    contentDiv.appendChild(formatToggle);
+                    
+                    // Add loading indicator
+                    const loadingDiv = document.createElement('div');
+                    loadingDiv.className = 'loading';
+                    loadingDiv.textContent = 'Loading diagrams...';
+                    contentDiv.appendChild(loadingDiv);
+                    
+                    diagramContainer.appendChild(contentDiv);
+                    
+                    // Load diagrams for this folder
+                    loadDiagramsForFolder(folder, contentDiv);
+                });
+            } catch (error) {
+                console.error('Error scanning diagrams:', error);
+                const diagramContainer = document.getElementById('diagram-container');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.textContent = 'Error loading diagrams: ' + error.message;
+                diagramContainer.appendChild(errorDiv);
+            }
+        }
+        
+        // Function to scan for available folders
+        async function scanFolders() {
+            // In a real implementation, this would make an AJAX request to the server
+            // to get the list of folders. For now, we'll return a hardcoded list.
+            return ['classifier', 'medtronics'];
+        }
+        
+        // Function to load diagrams for a folder
+        async function loadDiagramsForFolder(folder, containerDiv) {
+            try {
+                // Get diagrams for this folder
+                const diagrams = await scanDiagramsInFolder(folder);
+                
+                // Remove loading indicator
+                const loadingDiv = containerDiv.querySelector('.loading');
+                if (loadingDiv) {
+                    containerDiv.removeChild(loadingDiv);
+                }
+                
+                // Add each diagram
+                diagrams.forEach(diagram => {
+                    const diagramTitle = document.createElement('div');
+                    diagramTitle.className = 'diagram-title';
+                    diagramTitle.textContent = formatDiagramName(diagram);
+                    containerDiv.appendChild(diagramTitle);
+                    
+                    const diagramDiv = document.createElement('div');
+                    diagramDiv.className = 'diagram';
+                    
+                    const img = document.createElement('img');
+                    img.className = 'diagram-image';
+                    img.setAttribute('data-base-path', folder + '/' + diagram);
+                    img.src = folder + '/' + diagram + '.svg'; // Default to SVG
+                    img.alt = formatDiagramName(diagram);
+                    
+                    diagramDiv.appendChild(img);
+                    containerDiv.appendChild(diagramDiv);
+                });
+            } catch (error) {
+                console.error(`Error loading diagrams for folder ${folder}:`, error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.textContent = `Error loading diagrams for ${folder}: ${error.message}`;
+                containerDiv.appendChild(errorDiv);
+            }
+        }
+        
+        // Function to scan for diagrams in a folder
+        async function scanDiagramsInFolder(folder) {
+            // In a real implementation, this would make an AJAX request to the server
+            // to get the list of diagrams in the folder. For now, we'll simulate it.
+            
+            // Check if we have SVG files for this folder
+            const svgFiles = await checkForFiles(folder, 'svg');
+            
+            // Extract diagram names from file paths
+            return svgFiles.map(file => {
+                // Remove folder prefix and file extension
+                return file.replace(folder + '/', '').replace('.svg', '');
+            });
+        }
+        
+        // Function to check for files with a specific extension in a folder
+        async function checkForFiles(folder, extension) {
+            // In a real implementation, this would make an AJAX request to the server
+            // to check for files. For now, we'll simulate it by checking if the files exist.
+            
+            // For demonstration purposes, we'll use a predefined list of files
+            // In a real implementation, this would be dynamically generated by the server
+            const knownFiles = {
+                'classifier': [
+                    'classifier/classifier_model_diagram.svg',
+                    'classifier/classifier_data_model_diagram.svg',
+                    'classifier/classifier_pipeline_diagram.svg'
+                ],
+                'medtronics': [
+                    'medtronics/medtronics_data_model_diagram.svg',
+                    'medtronics/medtronics_workflow_diagram.svg',
+                    'medtronics/medtronics_sequence_diagram.svg',
+                    'medtronics/medtronics_class_diagram.svg',
+                    'medtronics/medtronics_di_data_flow_diagram.svg',
+                    'medtronics/medtronics_staging_schema_diagram.svg'
+                ]
+            };
+            
+            // Return the known files for this folder
+            return knownFiles[folder] || [];
+        }
+        
+        // Function to format diagram name for display
+        function formatDiagramName(name) {
+            return name
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        // Initialize when the page loads
         window.onload = function() {
+            scanDiagrams();
             setFormat('svg');
         };
     </script>

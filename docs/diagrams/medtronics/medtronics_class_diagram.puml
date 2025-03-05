@@ -1,0 +1,72 @@
+@startuml "Medtronics Pipeline Class Diagram"
+
+' Define the main class
+class MedtronicsPipeline {
+  ' Attributes
+  -logger
+  -input_file: string
+  -output_dir: string
+  -db_name: string
+  -sheet_name: string
+  -extraction_config: dict
+  -validation_config: dict
+  -analysis_config: dict
+  -columns_to_extract: list
+  -drop_na_columns: list
+  -staging_config: dict
+  -staging_manager: SQLiteStagingManager
+  -extracted_data: dict
+  -analysis_results: dict
+  -validation_results: dict
+  -staging_results: dict
+  
+  ' Methods
+  +__init__()
+  +extract(): DataFrame
+  +analyze(df: DataFrame): dict
+  +validate(df: DataFrame): dict
+  +stage_data(df: DataFrame): dict
+  +export(df: DataFrame): string
+  +save_reports(df: DataFrame): dict
+  +run(): dict
+}
+
+' Define utility classes
+class SQLiteStagingManager {
+  +initialize_db(db_path: string)
+  +save_dataframe_to_staging(df: DataFrame, connection_string: string, source_system: string, import_batch_id: string)
+  +get_pending_items(connection_string: string): list
+}
+
+' Define utility functions
+class "Excel Utilities" as ExcelUtils << (F,#FF7700) >> {
+  +analyze_excel_structure(file_path: string): dict
+  +extract_excel_with_config(file_path: string, config: dict): dict
+  +analyze_unique_values(df: DataFrame, columns: list, max_unique_values: int): dict
+  +analyze_column_statistics(df: DataFrame, columns: list): dict
+  +analyze_text_columns(df: DataFrame, columns: list): dict
+  +validate_dataframe(df: DataFrame, config: dict): dict
+}
+
+class "Database Utilities" as DBUtils << (F,#FF7700) >> {
+  +save_dataframe_to_database(df: DataFrame, table_name: string, connection_string: string, if_exists: string)
+  +get_table_schema(connection_string: string, table_name: string): string
+}
+
+class "Path Utilities" as PathUtils << (F,#FF7700) >> {
+  +get_root_dir(): Path
+  +resolve_path(path: string): Path
+}
+
+class "Logging Utilities" as LoggingUtils << (F,#FF7700) >> {
+  +get_logger(name: string): Logger
+}
+
+' Define relationships
+MedtronicsPipeline --> SQLiteStagingManager: uses
+MedtronicsPipeline ..> ExcelUtils: uses
+MedtronicsPipeline ..> DBUtils: uses
+MedtronicsPipeline ..> PathUtils: uses
+MedtronicsPipeline ..> LoggingUtils: uses
+
+@enduml

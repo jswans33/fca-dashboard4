@@ -1,0 +1,90 @@
+@startuml "Medtronics Pipeline Sequence"
+
+' Define participants
+actor User
+participant "MedtronicsPipeline" as Pipeline
+participant "Excel Utilities" as ExcelUtils
+participant "Validation Utilities" as ValidationUtils
+participant "SQLiteStagingManager" as StagingManager
+participant "Database Utilities" as DBUtils
+database "SQLite Database" as DB
+entity "File System" as FS
+
+' Define sequence
+User -> Pipeline: run()
+activate Pipeline
+
+Pipeline -> Pipeline: initialize()
+note right: Load configuration from settings
+
+Pipeline -> ExcelUtils: analyze_excel_structure()
+ExcelUtils --> Pipeline: structure analysis
+
+Pipeline -> ExcelUtils: extract_excel_with_config()
+ExcelUtils --> Pipeline: extracted data
+
+Pipeline -> Pipeline: extract()
+note right: Filter columns, normalize names, drop NaN rows
+
+Pipeline -> ExcelUtils: analyze_unique_values()
+ExcelUtils --> Pipeline: unique values analysis
+
+Pipeline -> ExcelUtils: analyze_column_statistics()
+ExcelUtils --> Pipeline: column statistics
+
+Pipeline -> ExcelUtils: analyze_text_columns()
+ExcelUtils --> Pipeline: text analysis
+
+Pipeline -> Pipeline: analyze()
+note right: Combine analysis results
+
+Pipeline -> ValidationUtils: validate_dataframe()
+ValidationUtils --> Pipeline: validation results
+
+Pipeline -> Pipeline: validate()
+note right: Process validation results
+
+Pipeline -> StagingManager: initialize_db()
+StagingManager -> DB: create tables
+DB --> StagingManager: tables created
+StagingManager --> Pipeline: database initialized
+
+Pipeline -> StagingManager: save_dataframe_to_staging()
+StagingManager -> DB: insert data
+DB --> StagingManager: data inserted
+StagingManager --> Pipeline: staging complete
+
+Pipeline -> StagingManager: get_pending_items()
+StagingManager -> DB: query pending items
+DB --> StagingManager: pending items
+StagingManager --> Pipeline: pending items count
+
+Pipeline -> Pipeline: stage_data()
+note right: Process staging results
+
+Pipeline -> DBUtils: save_dataframe_to_database()
+DBUtils -> DB: create/replace table
+DB --> DBUtils: table created/replaced
+DBUtils --> Pipeline: export complete
+
+Pipeline -> DBUtils: get_table_schema()
+DBUtils -> DB: query schema
+DB --> DBUtils: schema
+DBUtils --> Pipeline: table schema
+
+Pipeline -> FS: write schema file
+FS --> Pipeline: schema file written
+
+Pipeline -> FS: write analysis report
+FS --> Pipeline: analysis report written
+
+Pipeline -> FS: write validation report
+FS --> Pipeline: validation report written
+
+Pipeline -> Pipeline: save_reports()
+note right: Process report paths
+
+Pipeline --> User: pipeline results
+deactivate Pipeline
+
+@enduml

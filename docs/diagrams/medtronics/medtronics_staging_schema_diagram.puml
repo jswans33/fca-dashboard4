@@ -1,0 +1,133 @@
+@startuml "Medtronics Staging Schema"
+
+' Define the entities
+entity "equipment_staging" as EquipmentStaging {
+  * staging_id: INTEGER <<PK>>
+  --
+  ' Staging metadata fields
+  source_system: TEXT
+  import_batch_id: TEXT
+  import_timestamp: TIMESTAMP
+  processing_status: TEXT
+  error_message: TEXT
+  is_processed: INTEGER
+  processed_timestamp: TIMESTAMP
+  
+  ' Equipment fields
+  equipment_tag: TEXT
+  manufacturer: TEXT
+  model: TEXT
+  serial_number: TEXT
+  capacity: REAL
+  install_date: DATE
+  status: TEXT
+  
+  ' Classification fields
+  category_name: TEXT
+  omniclass_code: TEXT
+  omniclass_title: TEXT
+  uniformat_code: TEXT
+  uniformat_title: TEXT
+  masterformat_code: TEXT
+  masterformat_title: TEXT
+  catalog_code: TEXT
+  catalog_title: TEXT
+  mcaa_system_category: TEXT
+  mcaa_system_name: TEXT
+  mcaa_subsystem_type: TEXT
+  mcaa_subsystem_classification: TEXT
+  mcaa_equipment_size: TEXT
+  
+  ' Location fields
+  building_name: TEXT
+  floor: TEXT
+  room: TEXT
+  other_location_info: TEXT
+  x_coordinate: REAL
+  y_coordinate: REAL
+  
+  ' Attribute fields
+  attributes: TEXT <<JSON>>
+  
+  ' Cost fields
+  initial_cost: REAL
+  installation_cost: REAL
+  annual_maintenance_cost: REAL
+  replacement_cost: REAL
+  annual_energy_cost: REAL
+  cost_date: DATE
+  cost_comments: TEXT
+  
+  ' TCO fields
+  asset_condition: INTEGER
+  failure_likelihood: INTEGER
+  asset_criticality: INTEGER
+  condition_score: REAL
+  risk_category: TEXT
+  estimated_service_life_years: INTEGER
+  estimated_replacement_date: DATE
+  lifecycle_status: TEXT
+  last_assessment_date: DATE
+  assessed_by: TEXT
+  
+  ' Service life info
+  equipment_type: TEXT
+  median_life_expectancy: INTEGER
+  service_team_priority: TEXT
+  
+  ' JSON data fields
+  maintenance_data: TEXT <<JSON>>
+  project_data: TEXT <<JSON>>
+  document_data: TEXT <<JSON>>
+  qc_data: TEXT <<JSON>>
+  raw_source_data: TEXT <<JSON>>
+  
+  ' Source data fields
+  source_file_name: TEXT
+  source_record_id: TEXT
+  
+  ' Mapping fields
+  mapping_rule_id: INTEGER
+  mapping_confidence_score: REAL
+}
+
+entity "v_pending_items" as PendingItems {
+  * staging_id: INTEGER <<PK>>
+  --
+  ' All fields from equipment_staging
+  ' where processing_status = 'PENDING'
+}
+
+entity "v_error_items" as ErrorItems {
+  * staging_id: INTEGER <<PK>>
+  --
+  ' All fields from equipment_staging
+  ' where processing_status = 'ERROR'
+}
+
+' Define relationships
+EquipmentStaging "1" -- "0..1" PendingItems : "is shown in"
+EquipmentStaging "1" -- "0..1" ErrorItems : "is shown in"
+
+note bottom of EquipmentStaging
+  This table stores all incoming data before 
+  transformation and loading into master tables.
+  
+  Indexes:
+  - idx_staging_equipment_tag
+  - idx_staging_status
+  - idx_staging_batch
+  - idx_staging_processed
+end note
+
+note bottom of PendingItems
+  View that shows only items with 
+  processing_status = 'PENDING'
+end note
+
+note bottom of ErrorItems
+  View that shows only items with 
+  processing_status = 'ERROR'
+end note
+
+@enduml

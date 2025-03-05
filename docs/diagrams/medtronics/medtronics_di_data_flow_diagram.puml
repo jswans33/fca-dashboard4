@@ -1,0 +1,93 @@
+@startuml "Dependency Injection Data Flow"
+
+' Define components
+package "Extractors" {
+  class ExcelExtractor {
+    -upload_service
+    +__init__(upload_service=None)
+    +extract()
+    +extract_and_save()
+  }
+  
+  class ExtractorFactory {
+    +register_extractor()
+    +get_extractor()
+    +extract()
+    +extract_and_save()
+  }
+}
+
+package "Database" {
+  class SQLiteStagingManager {
+    -logger
+    -connection_factory
+    -schema_path
+    +__init__(logger=None, connection_factory=None, schema_path=None)
+    +initialize_db()
+    +save_dataframe_to_staging()
+    +get_pending_items()
+    +update_item_status()
+  }
+}
+
+package "Services" {
+  interface "UploadService" as UploadService {
+    +upload_file()
+  }
+  
+  interface "ConnectionFactory" as ConnectionFactory {
+    +create_connection()
+  }
+  
+  interface "Logger" as Logger {
+    +info()
+    +error()
+    +warning()
+  }
+}
+
+package "Mappers" {
+  class MapperFactory {
+    +create_mapper()
+  }
+  
+  interface "Mapper" as Mapper {
+    +map_dataframe()
+  }
+}
+
+package "Pipeline" {
+  class MedtronicsPipeline {
+    -staging_manager
+    +extract()
+    +analyze()
+    +validate()
+    +stage_data()
+    +export()
+  }
+}
+
+' Define relationships
+MedtronicsPipeline --> SQLiteStagingManager : uses
+MedtronicsPipeline ..> ExcelExtractor : uses indirectly
+
+SQLiteStagingManager ..> Logger : depends on
+SQLiteStagingManager ..> ConnectionFactory : depends on
+SQLiteStagingManager ..> MapperFactory : uses
+
+ExcelExtractor ..> UploadService : depends on
+ExtractorFactory ..> ExcelExtractor : creates
+
+MapperFactory ..> Mapper : creates
+
+' Define dependency injection flows
+note "Dependency Injection Flow" as N1
+note "1. External dependencies are injected via constructor" as N2
+note "2. Default implementations are used if not provided" as N3
+note "3. This allows for easier testing and flexibility" as N4
+
+N1 .. N2
+N2 .. N3
+N3 .. N4
+
+@enduml

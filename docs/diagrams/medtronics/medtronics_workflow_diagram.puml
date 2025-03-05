@@ -1,0 +1,54 @@
+@startuml "Medtronics Pipeline Workflow"
+
+' Define the workflow
+start
+
+:Initialize Pipeline;
+
+:Extract Data from Excel File;
+note right
+  - Read from Medtronics Asset Log Uploader Excel file
+  - Filter columns if specified
+  - Normalize column names
+  - Drop rows with NaN values in specified columns
+end note
+
+:Analyze Data;
+note right
+  - Analyze unique values
+  - Analyze column statistics for numeric columns
+  - Analyze text columns
+end note
+
+:Validate Data;
+note right
+  - Check for missing values
+  - Check for duplicate rows
+  - Validate data types
+  - Check value ranges
+  - Verify required columns
+end note
+
+:Stage Data in SQLite Database;
+note right
+  - Create staging database if it doesn't exist
+  - Generate batch ID
+  - Add metadata columns
+  - Save to staging table
+end note
+
+:Export Data to SQLite Database;
+note right
+  - Export to dedicated SQLite database
+  - Get and save table schema
+end note
+
+:Save Analysis and Validation Reports;
+note right
+  - Save analysis report
+  - Save validation report
+end note
+
+stop
+
+@enduml
