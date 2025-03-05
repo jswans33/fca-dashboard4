@@ -49,13 +49,13 @@ fca_dashboard/
 
 Run the ETL pipeline with default settings:
 
-```
+```bash
 make run
 ```
 
 Or specify custom configuration:
 
-```
+```bash
 python fca_dashboard/main.py --config path/to/config.yml
 ```
 
@@ -71,13 +71,13 @@ Additional command-line options:
 
 Ensure code quality by running linting checks:
 
-```
+```bash
 make lint
 ```
 
 Format code automatically:
 
-```
+```bash
 make format
 ```
 
@@ -85,19 +85,19 @@ make format
 
 Run all tests:
 
-```
+```bash
 make test
 ```
 
 Run unit tests only:
 
-```
+```bash
 make test-unit
 ```
 
 Run integration tests only:
 
-```
+```bash
 make test-integration
 ```
 
@@ -105,7 +105,7 @@ make test-integration
 
 Generate and view test coverage report:
 
-```
+```bash
 make coverage
 ```
 
@@ -121,7 +121,7 @@ The project maintains 100% test coverage across all modules.
 
 Remove generated files and caches:
 
-```
+```bash
 make clean
 ```
 
@@ -129,7 +129,7 @@ make clean
 
 Initialize the database schema:
 
-```
+```bash
 make init-db
 ```
 

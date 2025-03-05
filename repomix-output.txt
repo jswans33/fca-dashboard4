@@ -1,0 +1,6085 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+.flake8
+.gitignore
+.prettierrc
+.prettierrc.example
+docs/guide/guide.md
+docs/primer/primer.md
+docs/repomix-output.txt
+docs/SOPs/000-sop-template.md
+docs/SOPs/001-env-setup.md
+fca_dashboard/config/__init__.py
+fca_dashboard/config/settings.py
+fca_dashboard/config/settings.yml
+fca_dashboard/main.py
+fca_dashboard/tests/conftest.py
+fca_dashboard/tests/unit/test_logging_config.py
+fca_dashboard/tests/unit/test_main.py
+fca_dashboard/tests/unit/test_path_util.py
+fca_dashboard/tests/unit/test_settings.py
+fca_dashboard/utils/logging_config.py
+fca_dashboard/utils/loguru_stubs.pyi
+fca_dashboard/utils/path_util.py
+Makefile
+pyproject.toml
+pytest.ini
+README.md
+requirements.txt
+setup.cfg
+setup.py
+
+================================================================
+Files
+================================================================
+
+================
+File: .flake8
+================
+[flake8]
+max-line-length = 120
+extend-ignore = E203
+exclude = 
+    .git,
+    __pycache__,
+    build,
+    dist,
+    alembic,
+    venv,
+    .venv,
+    env,
+    .env,
+    .venv/Lib/,
+    .venv\\Lib\\,
+    ./.venv/Lib/,
+    .\\\.venv\\Lib\\,
+    *site-packages*,
+    *.venv*
+
+================
+File: .gitignore
+================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a PyInstaller build script
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control.
+#   https://pdm.fming.dev/#use-with-ide
+.pdm.toml
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+.idea/
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Jupyter
+.ipynb_checkpoints
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+__pycache__
+
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pywz
+
+*.pyc~
+*.pyo~
+*.pyd~
+*.pyw~
+*.pyz~
+*.pywz~
+
+*.pyc.1
+*.pyo.1
+*.pyd.1
+*.pyw.1
+*.pyz.1
+*.pywz.1
+
+================
+File: .prettierrc
+================
+{
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "semi": true,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
+}
+
+================
+File: .prettierrc.example
+================
+{
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "semi": true,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
+}
+
+================
+File: docs/guide/guide.md
+================
+# ETL Pipeline v4 Implementation Guide
+
+## 1. Environment Setup
+
+### 1.1. Repository Setup
+
+1. Create a new repository on GitHub/GitLab
+2. Clone the repository locally:
+
+   ```bash
+   git clone <repository-url>
+   cd fca-dashboard4
+   ```
+
+3. Create a `.gitignore` file with Python-specific entries:
+
+   ```text
+   # Python
+   __pycache__/
+   *.py[cod]
+   *$py.class
+   *.so
+   .Python
+   env/
+   venv/
+   ENV/
+   build/
+   develop-eggs/
+   dist/
+   downloads/
+   eggs/
+   .eggs/
+   lib/
+   lib64/
+   parts/
+   sdist/
+   var/
+   *.egg-info/
+   .installed.cfg
+   *.egg
+   
+   # SQLite
+   *.db
+   *.sqlite3
+   
+   # Logs
+   *.log
+   
+   # IDE
+   .idea/
+   .vscode/
+   *.swp
+   *.swo
+   ```
+
+### 1.2. Virtual Environment
+
+1. Create a virtual environment:
+
+   ```bash
+   python -m .venv venv
+   ```
+
+2. Activate the virtual environment:
+   - Windows: `venv\Scripts\activate`
+   - Unix/MacOS: `source venv/bin/activate`
+
+### 1.3. Dependencies Setup
+
+1. Create a `requirements.txt` file:
+
+   ```text
+   # Core dependencies
+   sqlalchemy>=2.0.0
+   alembic>=1.9.0
+   pandas>=1.5.0
+   openpyxl>=3.1.0  # For Excel support in pandas
+   pyyaml>=6.0
+   psycopg2-binary>=2.9.5  # PostgreSQL driver
+   
+   # Development dependencies
+   pytest>=7.0.0
+   black>=23.0.0
+   isort>=5.12.0
+   flake8>=6.0.0
+   mypy>=1.0.0
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### 1.4. Linter Configuration
+
+1. Create `pyproject.toml` with linting configurations:
+
+   ```toml
+   [tool.black]
+   line-length = 120
+   target-version = ['py39']
+   include = '\.pyi?$'
+   
+   [tool.isort]
+   profile = "black"
+   line_length = 120
+   multi_line_output = 3
+   
+   [tool.flake8]
+   max-line-length = 120
+   extend-ignore = "E203"
+   exclude = [".git", "__pycache__", "build", "dist", "alembic"]
+   
+   [tool.mypy]
+   python_version = "3.9"
+   warn_return_any = true
+   warn_unused_configs = true
+   disallow_untyped_defs = true
+   disallow_incomplete_defs = true
+   
+   [tool.pytest.ini_options]
+   testpaths = ["tests"]
+   python_files = "test_*.py"
+   ```
+
+2. Test linters:
+
+   ```bash
+   black --check .
+   isort --check .
+   flake8 .
+   mypy .
+   ```
+
+## 2. Project Structure Setup
+
+### 2.1. Create Directory Structure
+
+```bash
+mkdir -p fca_dashboard/{alembic,config,core/{interfaces,models},extractors/{strategies},mappers/{strategies},loaders,pipelines,utils,tests/{unit,integration}}
+touch fca_dashboard/__init__.py
+touch fca_dashboard/main.py
+touch fca_dashboard/core/__init__.py
+touch fca_dashboard/extractors/__init__.py
+touch fca_dashboard/mappers/__init__.py
+touch fca_dashboard/loaders/__init__.py
+touch fca_dashboard/pipelines/__init__.py
+touch fca_dashboard/utils/__init__.py
+touch fca_dashboard/tests/__init__.py
+touch fca_dashboard/tests/unit/__init__.py
+touch fca_dashboard/tests/integration/__init__.py
+```
+
+### 2.2. Create Configuration Files
+
+1. Create `fca_dashboard/config/settings.yaml`:
+
+   ```yaml
+   # Database settings
+   databases:
+     sqlite:
+       url: "sqlite:///etl.db"
+     postgresql:
+       url: "postgresql://user:password@localhost/etl"
+       
+   # Pipeline settings
+   pipeline_settings:
+     batch_size: 5000
+     log_level: "INFO"
+     
+   # Table mappings
+   tables:
+     equipment:
+       mapping_type: "direct"
+       column_mappings:
+         tag: "Tag"
+         name: "Name"
+         description: "Description"
+   ```
+
+2. Create `fca_dashboard/config/settings.py`:
+
+   ```python
+   import yaml
+   from pathlib import Path
+   from typing import Dict, Any
+   
+   def load_settings(config_path: str = None) -> Dict[str, Any]:
+       """Load settings from YAML file."""
+       if config_path is None:
+           config_path = str(Path(__file__).parent / "settings.yaml")
+       
+       with open(config_path, 'r') as f:
+           return yaml.safe_load(f)
+   ```
+
+## 3. Core Components Implementation
+
+### 3.1. Create Interfaces
+
+1. Create `fca_dashboard/core/interfaces.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   from typing import Generic, TypeVar, Optional, List, Any, Dict
+   
+   T = TypeVar('T')
+   
+   class Repository(Generic[T], ABC):
+       """Base repository interface."""
+       
+       @abstractmethod
+       def add(self, entity: T) -> T:
+           """Add an entity to the repository."""
+           pass
+       
+       @abstractmethod
+       def get_by_id(self, id: Any) -> Optional[T]:
+           """Get an entity by its ID."""
+           pass
+       
+       @abstractmethod
+       def get_all(self) -> List[T]:
+           """Get all entities."""
+           pass
+       
+       @abstractmethod
+       def update(self, entity: T) -> T:
+           """Update an entity."""
+           pass
+       
+       @abstractmethod
+       def delete(self, entity: T) -> None:
+           """Delete an entity."""
+           pass
+   
+   class UnitOfWork(ABC):
+       """Unit of Work interface."""
+       
+       @abstractmethod
+       def __enter__(self):
+           """Enter the context."""
+           pass
+       
+       @abstractmethod
+       def __exit__(self, exc_type, exc_val, exc_tb):
+           """Exit the context."""
+           pass
+       
+       @abstractmethod
+       def commit(self):
+           """Commit the transaction."""
+           pass
+       
+       @abstractmethod
+       def rollback(self):
+           """Rollback the transaction."""
+           pass
+   ```
+
+### 3.2. Create SQLAlchemy Models
+
+1. Create `fca_dashboard/core/models.py`:
+
+   ```python
+   from sqlalchemy import Column, Integer, String, Text, ForeignKey
+   from sqlalchemy.ext.declarative import declarative_base
+   from sqlalchemy.orm import relationship
+   
+   Base = declarative_base()
+   
+   class Equipment(Base):
+       """Equipment model."""
+       __tablename__ = 'equipment'
+       
+       id = Column(Integer, primary_key=True)
+       tag = Column(String(50), nullable=False, unique=True)
+       name = Column(String(100), nullable=False)
+       description = Column(Text, nullable=True)
+   
+       def __repr__(self):
+           return f"<Equipment(tag='{self.tag}', name='{self.name}')>"
+   ```
+
+### 3.3. Implement Repository
+
+1. Create `fca_dashboard/core/repository.py`:
+
+   ```python
+   from typing import Generic, TypeVar, Optional, List, Any, Type
+   from sqlalchemy.orm import Session
+   
+   from fca_dashboard.core.interfaces import Repository
+   
+   T = TypeVar('T')
+   
+   class SQLAlchemyRepository(Repository[T], Generic[T]):
+       """SQLAlchemy implementation of Repository."""
+       
+       def __init__(self, session: Session, model_class: Type[T]):
+           self.session = session
+           self.model_class = model_class
+       
+       def add(self, entity: T) -> T:
+           """Add an entity to the repository."""
+           self.session.add(entity)
+           return entity
+       
+       def get_by_id(self, id: Any) -> Optional[T]:
+           """Get an entity by its ID."""
+           return self.session.query(self.model_class).get(id)
+       
+       def get_all(self) -> List[T]:
+           """Get all entities."""
+           return self.session.query(self.model_class).all()
+       
+       def update(self, entity: T) -> T:
+           """Update an entity."""
+           self.session.merge(entity)
+           return entity
+       
+       def delete(self, entity: T) -> None:
+           """Delete an entity."""
+           self.session.delete(entity)
+   ```
+
+### 3.4. Implement Unit of Work
+
+1. Create `fca_dashboard/core/unit_of_work.py`:
+
+   ```python
+   from sqlalchemy import create_engine
+   from sqlalchemy.orm import sessionmaker, Session
+   
+   from fca_dashboard.core.interfaces import UnitOfWork
+   
+   class SQLAlchemyUnitOfWork(UnitOfWork):
+       """SQLAlchemy implementation of UnitOfWork."""
+       
+       def __init__(self, connection_string: str):
+           self.connection_string = connection_string
+           self.engine = create_engine(connection_string)
+           self.session_factory = sessionmaker(bind=self.engine)
+           self.session = None
+       
+       def __enter__(self):
+           """Enter the context."""
+           self.session = self.session_factory()
+           return self
+       
+       def __exit__(self, exc_type, exc_val, exc_tb):
+           """Exit the context."""
+           if exc_type is not None:
+               self.rollback()
+           self.session.close()
+       
+       def commit(self):
+           """Commit the transaction."""
+           self.session.commit()
+       
+       def rollback(self):
+           """Rollback the transaction."""
+           self.session.rollback()
+   ```
+
+## 4. Extraction Components
+
+### 4.1. Create Extraction Strategy Interface
+
+1. Create `fca_dashboard/extractors/strategies/base.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import pandas as pd
+   
+   class ExtractionStrategy(ABC):
+       """Base extraction strategy."""
+       
+       @abstractmethod
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from the source."""
+           pass
+       
+       def _validate(self, data: pd.DataFrame) -> None:
+           """Validate extracted data."""
+           if data.empty:
+               raise ValueError("Extracted data is empty.")
+   ```
+
+### 4.2. Implement Excel Extraction Strategy
+
+1. Create `fca_dashboard/extractors/strategies/excel.py`:
+
+   ```python
+   import pandas as pd
+   from fca_dashboard.extractors.strategies.base import ExtractionStrategy
+   
+   class ExcelExtractionStrategy(ExtractionStrategy):
+       """Excel-specific extraction."""
+       
+       def __init__(self, sheet_name=0, header=0):
+           self.sheet_name = sheet_name
+           self.header = header
+       
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from an Excel file."""
+           try:
+               data = pd.read_excel(
+                   source, 
+                   sheet_name=self.sheet_name, 
+                   header=self.header
+               )
+               self._validate(data)
+               return data
+           except Exception as e:
+               raise ValueError(f"Failed to extract data from {source}: {e}")
+   ```
+
+### 4.3. Create Excel Extractor
+
+1. Create `fca_dashboard/extractors/excel_extractor.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from typing import Dict, Any
+   
+   from fca_dashboard.extractors.strategies.base import ExtractionStrategy
+   
+   logger = logging.getLogger(__name__)
+   
+   class ExcelExtractor:
+       """Excel data extractor."""
+       
+       def __init__(self, strategy: ExtractionStrategy):
+           self.strategy = strategy
+       
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from an Excel file."""
+           logger.info(f"Extracting data from {source}")
+           try:
+               data = self.strategy.extract(source)
+               logger.info(f"Extracted {len(data)} rows from {source}")
+               return data
+           except Exception as e:
+               logger.error(f"Error extracting data from {source}: {e}")
+               raise
+   ```
+
+## 5. Mapping Components
+
+### 5.1. Create Mapping Strategy Interface
+
+1. Create `fca_dashboard/mappers/mapping_strategy.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import pandas as pd
+   from typing import Dict, Any, Callable
+   
+   class MappingStrategy(ABC):
+       """Base mapping strategy."""
+       
+       @abstractmethod
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data to target format."""
+           pass
+   ```
+
+### 5.2. Implement Direct Mapping Strategy
+
+1. Create `fca_dashboard/mappers/strategies/direct_mapping.py`:
+
+   ```python
+   import pandas as pd
+   from typing import Dict
+   
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   
+   class DirectMappingStrategy(MappingStrategy):
+       """Direct column mapping."""
+       
+       def __init__(self, column_mappings: Dict[str, str]):
+           self.column_mappings = column_mappings
+       
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data using direct column mapping."""
+           # Create a new DataFrame with mapped columns
+           result = pd.DataFrame()
+           
+           for target_col, source_col in self.column_mappings.items():
+               if source_col in source_data.columns:
+                   result[target_col] = source_data[source_col]
+               else:
+                   raise ValueError(f"Source column '{source_col}' not found in data")
+           
+           return result
+   ```
+
+### 5.3. Implement Transform Mapping Strategy
+
+1. Create `fca_dashboard/mappers/strategies/transform_mapping.py`:
+
+   ```python
+   import pandas as pd
+   from typing import Dict, Callable
+   
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   
+   class TransformMappingStrategy(MappingStrategy):
+       """Transform-based mapping."""
+       
+       def __init__(self, transformations: Dict[str, Callable[[pd.DataFrame], pd.Series]]):
+           self.transformations = transformations
+       
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data using transformations."""
+           # Create a new DataFrame with transformed columns
+           result = pd.DataFrame()
+           
+           for target_col, transform_func in self.transformations.items():
+               try:
+                   result[target_col] = transform_func(source_data)
+               except Exception as e:
+                   raise ValueError(f"Error applying transformation for column '{target_col}': {e}")
+           
+           return result
+   ```
+
+## 6. Loading Components
+
+### 6.1. Create SQLite Loader
+
+1. Create `fca_dashboard/loaders/sqlite_loader.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine
+   from typing import Optional
+   
+   logger = logging.getLogger(__name__)
+   
+   class SQLiteLoader:
+       """SQLite data loader."""
+       
+       def __init__(self, db_url: str, batch_size: int = 1000):
+           self.db_url = db_url
+           self.batch_size = batch_size
+           self.engine = create_engine(db_url)
+       
+       def load(self, data: pd.DataFrame, table_name: str, if_exists: str = 'replace', index: bool = False) -> None:
+           """Load data into SQLite database."""
+           logger.info(f"Loading {len(data)} rows into {table_name}")
+           
+           try:
+               # Process in batches to avoid memory issues
+               total_rows = len(data)
+               for i in range(0, total_rows, self.batch_size):
+                   batch = data.iloc[i:i + self.batch_size]
+                   
+                   # For the first batch, use the if_exists parameter
+                   current_if_exists = if_exists if i == 0 else 'append'
+                   
+                   batch.to_sql(
+                       name=table_name,
+                       con=self.engine,
+                       if_exists=current_if_exists,
+                       index=index
+                   )
+                   
+                   logger.info(f"Loaded batch {i // self.batch_size + 1}/{(total_rows + self.batch_size - 1) // self.batch_size}")
+               
+               logger.info(f"Successfully loaded data into {table_name}")
+           except Exception as e:
+               logger.error(f"Error loading data into {table_name}: {e}")
+               raise
+   ```
+
+### 6.2. Create PostgreSQL Loader
+
+1. Create `fca_dashboard/loaders/postgresql_loader.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine
+   from typing import Optional
+   
+   logger = logging.getLogger(__name__)
+   
+   class PostgreSQLLoader:
+       """PostgreSQL data loader."""
+       
+       def __init__(self, db_url: str, batch_size: int = 1000):
+           self.db_url = db_url
+           self.batch_size = batch_size
+           self.engine = create_engine(db_url)
+       
+       def load(self, data: pd.DataFrame, table_name: str, if_exists: str = 'replace', index: bool = False) -> None:
+           """Load data into PostgreSQL database."""
+           logger.info(f"Loading {len(data)} rows into {table_name}")
+           
+           try:
+               # Process in batches to avoid memory issues
+               total_rows = len(data)
+               for i in range(0, total_rows, self.batch_size):
+                   batch = data.iloc[i:i + self.batch_size]
+                   
+                   # For the first batch, use the if_exists parameter
+                   current_if_exists = if_exists if i == 0 else 'append'
+                   
+                   batch.to_sql(
+                       name=table_name,
+                       con=self.engine,
+                       if_exists=current_if_exists,
+                       index=index,
+                       method='multi'  # Use multi-row insert for better performance
+                   )
+                   
+                   logger.info(f"Loaded batch {i // self.batch_size + 1}/{(total_rows + self.batch_size - 1) // self.batch_size}")
+               
+               logger.info(f"Successfully loaded data into {table_name}")
+           except Exception as e:
+               logger.error(f"Error loading data into {table_name}: {e}")
+               raise
+   ```
+
+## 7. Pipeline Components
+
+### 7.1. Create Base Pipeline
+
+1. Create `fca_dashboard/pipelines/base_pipeline.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import logging
+   
+   logger = logging.getLogger(__name__)
+   
+   class Pipeline(ABC):
+       """Base pipeline with template method."""
+       
+       def run(self, *args, **kwargs):
+           """Run the pipeline."""
+           logger.info(f"Starting pipeline: {self.__class__.__name__}")
+           try:
+               # Template method defines the algorithm structure
+               data = self.extract(*args, **kwargs)
+               transformed = self.transform(data)
+               self.load(transformed)
+               result = self.verify()
+               logger.info(f"Pipeline completed successfully: {self.__class__.__name__}")
+               return result
+           except Exception as e:
+               logger.error(f"Pipeline failed: {e}")
+               raise
+       
+       @abstractmethod
+       def extract(self, *args, **kwargs):
+           """Extract data from source."""
+           pass
+       
+       @abstractmethod
+       def transform(self, data):
+           """Transform the data."""
+           pass
+       
+       @abstractmethod
+       def load(self, data):
+           """Load data to target."""
+           pass
+       
+       @abstractmethod
+       def verify(self):
+           """Verify the pipeline execution."""
+           pass
+   ```
+
+### 7.2. Create Excel to SQLite Pipeline
+
+1. Create `fca_dashboard/pipelines/excel_to_sqlite.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   
+   from fca_dashboard.pipelines.base_pipeline import Pipeline
+   from fca_dashboard.extractors.excel_extractor import ExcelExtractor
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   from fca_dashboard.loaders.sqlite_loader import SQLiteLoader
+   
+   logger = logging.getLogger(__name__)
+   
+   class ExcelToSQLitePipeline(Pipeline):
+       """Excel to SQLite pipeline implementation."""
+       
+       def __init__(self, extractor: ExcelExtractor, mapping_strategy: MappingStrategy, 
+                    loader: SQLiteLoader, table_name: str):
+           self.extractor = extractor
+           self.mapping_strategy = mapping_strategy
+           self.loader = loader
+           self.table_name = table_name
+       
+       def extract(self, source_file: str) -> pd.DataFrame:
+           """Extract data from Excel file."""
+           logger.info(f"Extracting data from {source_file}")
+           return self.extractor.extract(source_file)
+       
+       def transform(self, data: pd.DataFrame) -> pd.DataFrame:
+           """Transform data using mapping strategy."""
+           logger.info("Transforming data")
+           return self.mapping_strategy.map_data(data)
+       
+       def load(self, data: pd.DataFrame) -> None:
+           """Load data to SQLite database."""
+           logger.info(f"Loading data to {self.table_name}")
+           self.loader.load(data, self.table_name)
+       
+       def verify(self) -> bool:
+           """Verify the pipeline execution."""
+           logger.info("Verifying pipeline execution")
+           # Simple verification - could be enhanced
+           return True
+   ```
+
+### 7.3. Create SQLite to PostgreSQL Pipeline
+
+1. Create `fca_dashboard/pipelines/sqlite_to_postgresql.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine, MetaData, Table, select
+   
+   from fca_dashboard.pipelines.base_pipeline import Pipeline
+   from fca_dashboard.loaders.postgresql_loader import PostgreSQLLoader
+   
+   logger = logging.getLogger(__name__)
+   
+   class SQLiteToPostgreSQLPipeline(Pipeline):
+       """SQLite to PostgreSQL pipeline implementation."""
+       
+       def __init__(self, sqlite_url: str, loader: PostgreSQLLoader, 
+                    table_name: str, batch_size: int = 1000):
+           self.sqlite_url = sqlite_url
+           self.loader = loader
+           self.table_name = table_name
+           self.batch_size = batch_size
+           self.sqlite_engine = create_engine(sqlite_url)
+       
+       def extract(self) -> pd.DataFrame:
+           """Extract data from SQLite database."""
+           logger.info(f"Extracting data from SQLite table {self.table_name}")
+           return pd.read_sql_table(self.table_name, self.sqlite_engine)
+       
+       def transform(self, data: pd.DataFrame) -> pd.DataFrame:
+           """Transform data (identity transformation in this case)."""
+           logger.info("Transforming data (identity transformation)")
+           return data
+       
+       def load(self, data: pd.DataFrame) -> None:
+           """Load data to PostgreSQL database."""
+           logger.info(f"Loading data to PostgreSQL table {self.table_name}")
+           self.loader.load(data, self.table_name)
+       
+       def verify(self) -> bool:
+           """Verify the pipeline execution."""
+           logger.info("Verifying pipeline execution")
+           # Simple verification - could be enhanced
+           return True
+   ```
+
+## 8. Utility Components
+
+### 8.1. Create Logging Configuration
+
+1. Create `fca_dashboard/utils/logging_config.py`:
+
+   ```python
+   import logging
+   import sys
+   from typing import Optional
+   
+   def configure_logging(log_level: str = "INFO", log_file: Optional[str] = None):
+       """Configure logging for the application."""
+       # Convert string log level to logging constant
+       numeric_level = getattr(logging, log_level.upper(), None)
+       if not isinstance(numeric_level, int):
+           raise ValueError(f"Invalid log level: {log_level}")
+       
+       # Create formatter
+       formatter = logging.Formatter(
+           '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+       )
+       
+       # Configure root logger
+       root_logger = logging.getLogger()
+       root_logger.setLevel(numeric_level)
+       
+       # Clear existing handlers
+       for handler in root_logger.handlers[:]:
+           root_logger.removeHandler(handler)
+       
+       # Add console handler
+       console_handler = logging.StreamHandler(sys.stdout)
+       console_handler.setFormatter(formatter)
+       root_logger.addHandler(console_handler)
+       
+       # Add file handler if specified
+       if log_file:
+           file_handler = logging.FileHandler(log_file)
+           file_handler.setFormatter(formatter)
+           root_logger.addHandler(file_handler)
+       
+       return root_logger
+   ```
+
+### 8.2. Create Factory Functions
+
+1. Create `fca_dashboard/core/factories.py`:
+
+   ```python
+   from typing import Dict, Any, Type
+   
+   from sqlalchemy.orm import Session
+   
+   from fca_dashboard.core.interfaces import Repository
+   from fca_dashboard.core.repository import SQLAlchemyRepository
+   from fca_dashboard.core.unit_of_work import SQLAlchemyUnitOfWork
+   from fca_dashboard.extractors.strategies.excel import ExcelExtractionStrategy
+   from fca_dashboard.extractors.excel_extractor import ExcelExtractor
+   from fca_dashboard.mappers.strategies.direct_mapping import DirectMappingStrategy
+   from fca_dashboard.mappers.strategies.transform_mapping import TransformMappingStrategy
+   from fca_dashboard.loaders.sqlite_loader import SQLiteLoader
+   from fca_dashboard.loaders.postgresql_loader import PostgreSQLLoader
+   
+   def create_repository(session: Session, model_class: Type) -> Repository:
+       """Create a SQLAlchemy repository."""
+       return SQLAlchemyRepository(session, model_class)
+   
+   def create_unit_of_work(connection_string: str) -> SQLAlchemyUnitOfWork:
+       """Create a SQLAlchemy unit of work."""
+       return SQLAlchemyUnitOfWork(connection_string)
+   
+   def create_excel_extractor(sheet_name=0, header=0) -> ExcelExtractor:
+       """Create an Excel extractor."""
+       strategy = ExcelExtractionStrategy(sheet_name=sheet_name, header=header)
+       return ExcelExtractor(strategy)
+   
+   def create_mapping_strategy(config: Dict[str, Any]):
+       """Create a mapping strategy based on configuration."""
+       mapping_type = config.get("mapping_type", "direct")
+       
+       if mapping_type == "direct":
+           column_mappings = config.get("column_mappings", {})
+           return DirectMappingStrategy(column_mappings)
+       elif mapping_type == "transform":
+           # This would require more complex handling of transformation functions
+           raise NotImplementedError("Transform mapping strategy not yet implemented")
+       else:
+           raise ValueError(f"Unknown mapping type: {mapping_type}")
+   
+   def create_sqlite_loader(db_url: str, batch_size: int = 1000) -> SQLiteLoader:
+       """Create a SQLite loader."""
+       return SQLiteLoader(db_url, batch_size)
+   
+   def create_postgresql_loader(db_url: str, batch_size: int = 1000) -> PostgreSQLLoader:
+       """Create a PostgreSQL loader."""
+       return PostgreSQLLoader(db_url, batch_size)
+   ```
+
+## 9. Main Application
+
+### 9.1. Create Main Entry Point
+
+1. Create `fca_dashboard/main.py`:
+
+   ```python
+   import argparse
+   import logging
+   import sys
+   from pathlib import Path
+   
+   from fca_dashboard.config.settings import load_settings
+   from fca_dashboard.core.factories import (
+       create_excel_extractor,
+       create_mapping_strategy,
+       create_sqlite_loader,
+       create_postgresql_loader
+   )
+   from fca_dashboard.pipelines.excel_to_sqlite import ExcelToSQLitePipeline
+   from fca_dashboard.pipelines.sqlite_to_postgresql import SQLiteToPostgreSQLPipeline
+   from fca_dashboard.utils.logging_config import configure_logging
+   
+   logger = logging.getLogger(__name__)
+   
+   def parse_args():
+       """Parse command line arguments."""
+       parser = argparse.ArgumentParser(description="ETL Pipeline")
+       parser.add_argument("--config", help="Path to configuration file")
+       parser.add_argument("--excel-file", help="Path to Excel file")
+       parser.add_argument("--table-name", help="Table name")
+       parser.add_argument("--log-level", default="INFO", help="Logging level")
+       parser.add_argument("--log-file", help="Log file path")
+       return parser.parse_args()
+   
+   def main():
+       """Main entry point."""
+       args = parse_args()
+       
+       # Configure logging
+       configure_logging(args.log_level, args.log_file)
+       
+       try:
+           # Load configuration
+           config = load_settings(args.config)
+           
+           # Get database settings
+           sqlite_url = config["databases"]["sqlite"]["url"]
+           postgresql_url = config["databases"]["postgresql"]["url"]
+           
+           # Get pipeline settings
+           batch_size = config["pipeline_settings"]["batch_size"]
+           
+           # Get table configuration
+           table_name = args.table_name
+           if not table_name:
+               raise ValueError("Table name is required")
+           
+           table_config = config["tables"].get(table_name)
+           if not table_config:
+               raise ValueError(f"Configuration for table '{table_name}' not found")
+           
+           # Create components
+           excel_extractor = create_excel_extractor()
+           mapping_strategy = create_mapping_strategy(table_config)
+           sqlite_loader = create_sqlite_loader(sqlite_url, batch_size)
+           postgresql_loader = create_postgresql_loader(postgresql_url, batch_size)
+           
+           # Run Excel to SQLite pipeline
+           excel_file = args.excel_file
+           if not excel_file:
+               raise ValueError("Excel file path is required")
+           
+           logger.info(f"Running Excel to SQLite pipeline for table '{table_name}'")
+           excel_
+
+================
+File: docs/primer/primer.md
+================
+# fca dashboard v4 - Primer Document
+
+## Purpose and Goals
+
+The FCA Dashboard v4 is designed to revolutionize data handling by effectively extracting, transforming, and loading diverse data sets into structured, highly available databases (using SQLite as an intermediate and PostgreSQL as the ultimate target). It significantly reduces manual intervention, optimizes performance, and enhances data integrity. This pipeline ensures teams can confidently use consistent, accurate data for informed decision-making, ultimately driving efficiency and innovation across the organization.
+
+## Why FCA Dashboard v4 is Essential
+
+Today's fast-paced, data-driven world requires robust, scalable, and reliable data processing systems. Manual data handling or outdated systems are prone to errors, inconsistencies, and inefficiencies, causing critical delays and misguided decisions. The fca dashboard v4 addresses these challenges by automating and streamlining data workflows, ensuring high-quality data is quickly accessible for analytics, business intelligence, and real-time decision-making. Adopting fca dashboard v4 will position teams to leverage data more strategically, innovate faster, and maintain a competitive advantage.
+
+## Key Architectural Decisions and Improvements
+
+### Architectural Decisions
+
+- **ORM Adoption**: Leveraged SQLAlchemy ORM for simplified database interactions, enhancing developer productivity.
+- **Migration Management**: Integrated Alembic for seamless, automated schema migrations, reducing deployment time and errors.
+- **Centralized Configuration**: Implemented YAML-based settings (`config/settings.yaml`) for flexible configuration management, enabling rapid adaptability to changing business requirements.
+- **Dependency Injection and Factory Methods**: Adopted clearer and simpler factory patterns for component creation, promoting easier testing and faster integration of new components.
+- **Centralized Logging and Error Handling**: Developed comprehensive, standardized logging (`utils/logging_config.py`) and unified error handling, significantly reducing debugging efforts and improving system reliability.
+
+### Improvements Over Previous Versions
+
+- Automated ORM-based schema management replacing manual methods.
+- Enhanced scalability through batch processing to handle extensive data sets.
+- Improved data integrity and accuracy with rigorous validation at each ETL stage.
+- Increased modularity, making the system easier to maintain, scale, and extend.
+
+## Core Design Patterns and Rationale
+
+### Repository Pattern
+
+- **Purpose**: Simplifies database operations by abstracting complexities, ensuring consistency and ease of maintenance.
+- **Rationale**: Allows seamless switching or scaling between databases, significantly reducing development and maintenance overhead.
+
+### Strategy Pattern (Extraction & Mapping)
+
+- **Purpose**: Enables easy integration of various data extraction and transformation methods tailored for diverse data sources.
+- **Rationale**: Provides flexibility, ensuring quick adaptation to new data sources without altering the existing stable codebase, adhering strictly to the Open/Closed Principle.
+
+### Template Method Pattern (Pipelines)
+
+- **Purpose**: Establishes a consistent, robust ETL process that is customizable to specific data handling needs.
+- **Rationale**: Ensures uniformity and high reliability across different data workflows, allowing developers to confidently introduce new pipeline implementations.
+
+### Unit of Work Pattern
+
+- **Purpose**: Ensures database integrity by managing transactions systematically.
+- **Rationale**: Guarantees that data integrity is consistently maintained, preventing data corruption and loss.
+
+## High-Level Data Flow Diagram
+
+```text
+Input (Excel Data Source)
+          │
+          ▼
+    Extractors
+ (ExcelExtractionStrategy)
+          │
+          ▼
+   Data Validation
+      (validator.py)
+          │
+          ▼
+   Mappers (Transformers)
+   (Direct/Transform Mapping Strategies)
+          │
+          ▼
+ Intermediate Storage (SQLite)
+          │
+          ▼
+   Loaders/Unit of Work
+ (sqlite_loader.py, postgresql_loader.py)
+          │
+          ▼
+Final Target Database (PostgreSQL)
+          │
+          ▼
+ Data Verification & Logging
+```
+
+## Testing Strategy
+
+- Structured into clear, targeted **unit** and **integration tests** for robust, efficient validation.
+- Comprehensive testing to ensure high reliability and accuracy at every step, from extraction through final data verification.
+
+Adopting fca dashboard v4 positions your team at the forefront of data excellence—transforming raw data into strategic assets that fuel innovation, precision, and growth.
+
+================
+File: docs/repomix-output.txt
+================
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+guide/guide.md
+primer/primer.md
+SOPs/000-sop-template.md
+SOPs/001-env-setup.md
+
+================================================================
+Files
+================================================================
+
+================
+File: guide/guide.md
+================
+# ETL Pipeline v4 Implementation Guide
+
+## 1. Environment Setup
+
+### 1.1. Repository Setup
+
+1. Create a new repository on GitHub/GitLab
+2. Clone the repository locally:
+
+   ```bash
+   git clone <repository-url>
+   cd fca-dashboard4
+   ```
+
+3. Create a `.gitignore` file with Python-specific entries:
+
+   ```text
+   # Python
+   __pycache__/
+   *.py[cod]
+   *$py.class
+   *.so
+   .Python
+   env/
+   venv/
+   ENV/
+   build/
+   develop-eggs/
+   dist/
+   downloads/
+   eggs/
+   .eggs/
+   lib/
+   lib64/
+   parts/
+   sdist/
+   var/
+   *.egg-info/
+   .installed.cfg
+   *.egg
+   
+   # SQLite
+   *.db
+   *.sqlite3
+   
+   # Logs
+   *.log
+   
+   # IDE
+   .idea/
+   .vscode/
+   *.swp
+   *.swo
+   ```
+
+### 1.2. Virtual Environment
+
+1. Create a virtual environment:
+
+   ```bash
+   python -m .venv venv
+   ```
+
+2. Activate the virtual environment:
+   - Windows: `venv\Scripts\activate`
+   - Unix/MacOS: `source venv/bin/activate`
+
+### 1.3. Dependencies Setup
+
+1. Create a `requirements.txt` file:
+
+   ```text
+   # Core dependencies
+   sqlalchemy>=2.0.0
+   alembic>=1.9.0
+   pandas>=1.5.0
+   openpyxl>=3.1.0  # For Excel support in pandas
+   pyyaml>=6.0
+   psycopg2-binary>=2.9.5  # PostgreSQL driver
+   
+   # Development dependencies
+   pytest>=7.0.0
+   black>=23.0.0
+   isort>=5.12.0
+   flake8>=6.0.0
+   mypy>=1.0.0
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### 1.4. Linter Configuration
+
+1. Create `pyproject.toml` with linting configurations:
+
+   ```toml
+   [tool.black]
+   line-length = 120
+   target-version = ['py39']
+   include = '\.pyi?$'
+   
+   [tool.isort]
+   profile = "black"
+   line_length = 120
+   multi_line_output = 3
+   
+   [tool.flake8]
+   max-line-length = 120
+   extend-ignore = "E203"
+   exclude = [".git", "__pycache__", "build", "dist", "alembic"]
+   
+   [tool.mypy]
+   python_version = "3.9"
+   warn_return_any = true
+   warn_unused_configs = true
+   disallow_untyped_defs = true
+   disallow_incomplete_defs = true
+   
+   [tool.pytest.ini_options]
+   testpaths = ["tests"]
+   python_files = "test_*.py"
+   ```
+
+2. Test linters:
+
+   ```bash
+   black --check .
+   isort --check .
+   flake8 .
+   mypy .
+   ```
+
+## 2. Project Structure Setup
+
+### 2.1. Create Directory Structure
+
+```bash
+mkdir -p fca_dashboard/{alembic,config,core/{interfaces,models},extractors/{strategies},mappers/{strategies},loaders,pipelines,utils,tests/{unit,integration}}
+touch fca_dashboard/__init__.py
+touch fca_dashboard/main.py
+touch fca_dashboard/core/__init__.py
+touch fca_dashboard/extractors/__init__.py
+touch fca_dashboard/mappers/__init__.py
+touch fca_dashboard/loaders/__init__.py
+touch fca_dashboard/pipelines/__init__.py
+touch fca_dashboard/utils/__init__.py
+touch fca_dashboard/tests/__init__.py
+touch fca_dashboard/tests/unit/__init__.py
+touch fca_dashboard/tests/integration/__init__.py
+```
+
+### 2.2. Create Configuration Files
+
+1. Create `fca_dashboard/config/settings.yaml`:
+
+   ```yaml
+   # Database settings
+   databases:
+     sqlite:
+       url: "sqlite:///etl.db"
+     postgresql:
+       url: "postgresql://user:password@localhost/etl"
+       
+   # Pipeline settings
+   pipeline_settings:
+     batch_size: 5000
+     log_level: "INFO"
+     
+   # Table mappings
+   tables:
+     equipment:
+       mapping_type: "direct"
+       column_mappings:
+         tag: "Tag"
+         name: "Name"
+         description: "Description"
+   ```
+
+2. Create `fca_dashboard/config/settings.py`:
+
+   ```python
+   import yaml
+   from pathlib import Path
+   from typing import Dict, Any
+   
+   def load_settings(config_path: str = None) -> Dict[str, Any]:
+       """Load settings from YAML file."""
+       if config_path is None:
+           config_path = str(Path(__file__).parent / "settings.yaml")
+       
+       with open(config_path, 'r') as f:
+           return yaml.safe_load(f)
+   ```
+
+## 3. Core Components Implementation
+
+### 3.1. Create Interfaces
+
+1. Create `fca_dashboard/core/interfaces.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   from typing import Generic, TypeVar, Optional, List, Any, Dict
+   
+   T = TypeVar('T')
+   
+   class Repository(Generic[T], ABC):
+       """Base repository interface."""
+       
+       @abstractmethod
+       def add(self, entity: T) -> T:
+           """Add an entity to the repository."""
+           pass
+       
+       @abstractmethod
+       def get_by_id(self, id: Any) -> Optional[T]:
+           """Get an entity by its ID."""
+           pass
+       
+       @abstractmethod
+       def get_all(self) -> List[T]:
+           """Get all entities."""
+           pass
+       
+       @abstractmethod
+       def update(self, entity: T) -> T:
+           """Update an entity."""
+           pass
+       
+       @abstractmethod
+       def delete(self, entity: T) -> None:
+           """Delete an entity."""
+           pass
+   
+   class UnitOfWork(ABC):
+       """Unit of Work interface."""
+       
+       @abstractmethod
+       def __enter__(self):
+           """Enter the context."""
+           pass
+       
+       @abstractmethod
+       def __exit__(self, exc_type, exc_val, exc_tb):
+           """Exit the context."""
+           pass
+       
+       @abstractmethod
+       def commit(self):
+           """Commit the transaction."""
+           pass
+       
+       @abstractmethod
+       def rollback(self):
+           """Rollback the transaction."""
+           pass
+   ```
+
+### 3.2. Create SQLAlchemy Models
+
+1. Create `fca_dashboard/core/models.py`:
+
+   ```python
+   from sqlalchemy import Column, Integer, String, Text, ForeignKey
+   from sqlalchemy.ext.declarative import declarative_base
+   from sqlalchemy.orm import relationship
+   
+   Base = declarative_base()
+   
+   class Equipment(Base):
+       """Equipment model."""
+       __tablename__ = 'equipment'
+       
+       id = Column(Integer, primary_key=True)
+       tag = Column(String(50), nullable=False, unique=True)
+       name = Column(String(100), nullable=False)
+       description = Column(Text, nullable=True)
+   
+       def __repr__(self):
+           return f"<Equipment(tag='{self.tag}', name='{self.name}')>"
+   ```
+
+### 3.3. Implement Repository
+
+1. Create `fca_dashboard/core/repository.py`:
+
+   ```python
+   from typing import Generic, TypeVar, Optional, List, Any, Type
+   from sqlalchemy.orm import Session
+   
+   from fca_dashboard.core.interfaces import Repository
+   
+   T = TypeVar('T')
+   
+   class SQLAlchemyRepository(Repository[T], Generic[T]):
+       """SQLAlchemy implementation of Repository."""
+       
+       def __init__(self, session: Session, model_class: Type[T]):
+           self.session = session
+           self.model_class = model_class
+       
+       def add(self, entity: T) -> T:
+           """Add an entity to the repository."""
+           self.session.add(entity)
+           return entity
+       
+       def get_by_id(self, id: Any) -> Optional[T]:
+           """Get an entity by its ID."""
+           return self.session.query(self.model_class).get(id)
+       
+       def get_all(self) -> List[T]:
+           """Get all entities."""
+           return self.session.query(self.model_class).all()
+       
+       def update(self, entity: T) -> T:
+           """Update an entity."""
+           self.session.merge(entity)
+           return entity
+       
+       def delete(self, entity: T) -> None:
+           """Delete an entity."""
+           self.session.delete(entity)
+   ```
+
+### 3.4. Implement Unit of Work
+
+1. Create `fca_dashboard/core/unit_of_work.py`:
+
+   ```python
+   from sqlalchemy import create_engine
+   from sqlalchemy.orm import sessionmaker, Session
+   
+   from fca_dashboard.core.interfaces import UnitOfWork
+   
+   class SQLAlchemyUnitOfWork(UnitOfWork):
+       """SQLAlchemy implementation of UnitOfWork."""
+       
+       def __init__(self, connection_string: str):
+           self.connection_string = connection_string
+           self.engine = create_engine(connection_string)
+           self.session_factory = sessionmaker(bind=self.engine)
+           self.session = None
+       
+       def __enter__(self):
+           """Enter the context."""
+           self.session = self.session_factory()
+           return self
+       
+       def __exit__(self, exc_type, exc_val, exc_tb):
+           """Exit the context."""
+           if exc_type is not None:
+               self.rollback()
+           self.session.close()
+       
+       def commit(self):
+           """Commit the transaction."""
+           self.session.commit()
+       
+       def rollback(self):
+           """Rollback the transaction."""
+           self.session.rollback()
+   ```
+
+## 4. Extraction Components
+
+### 4.1. Create Extraction Strategy Interface
+
+1. Create `fca_dashboard/extractors/strategies/base.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import pandas as pd
+   
+   class ExtractionStrategy(ABC):
+       """Base extraction strategy."""
+       
+       @abstractmethod
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from the source."""
+           pass
+       
+       def _validate(self, data: pd.DataFrame) -> None:
+           """Validate extracted data."""
+           if data.empty:
+               raise ValueError("Extracted data is empty.")
+   ```
+
+### 4.2. Implement Excel Extraction Strategy
+
+1. Create `fca_dashboard/extractors/strategies/excel.py`:
+
+   ```python
+   import pandas as pd
+   from fca_dashboard.extractors.strategies.base import ExtractionStrategy
+   
+   class ExcelExtractionStrategy(ExtractionStrategy):
+       """Excel-specific extraction."""
+       
+       def __init__(self, sheet_name=0, header=0):
+           self.sheet_name = sheet_name
+           self.header = header
+       
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from an Excel file."""
+           try:
+               data = pd.read_excel(
+                   source, 
+                   sheet_name=self.sheet_name, 
+                   header=self.header
+               )
+               self._validate(data)
+               return data
+           except Exception as e:
+               raise ValueError(f"Failed to extract data from {source}: {e}")
+   ```
+
+### 4.3. Create Excel Extractor
+
+1. Create `fca_dashboard/extractors/excel_extractor.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from typing import Dict, Any
+   
+   from fca_dashboard.extractors.strategies.base import ExtractionStrategy
+   
+   logger = logging.getLogger(__name__)
+   
+   class ExcelExtractor:
+       """Excel data extractor."""
+       
+       def __init__(self, strategy: ExtractionStrategy):
+           self.strategy = strategy
+       
+       def extract(self, source: str) -> pd.DataFrame:
+           """Extract data from an Excel file."""
+           logger.info(f"Extracting data from {source}")
+           try:
+               data = self.strategy.extract(source)
+               logger.info(f"Extracted {len(data)} rows from {source}")
+               return data
+           except Exception as e:
+               logger.error(f"Error extracting data from {source}: {e}")
+               raise
+   ```
+
+## 5. Mapping Components
+
+### 5.1. Create Mapping Strategy Interface
+
+1. Create `fca_dashboard/mappers/mapping_strategy.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import pandas as pd
+   from typing import Dict, Any, Callable
+   
+   class MappingStrategy(ABC):
+       """Base mapping strategy."""
+       
+       @abstractmethod
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data to target format."""
+           pass
+   ```
+
+### 5.2. Implement Direct Mapping Strategy
+
+1. Create `fca_dashboard/mappers/strategies/direct_mapping.py`:
+
+   ```python
+   import pandas as pd
+   from typing import Dict
+   
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   
+   class DirectMappingStrategy(MappingStrategy):
+       """Direct column mapping."""
+       
+       def __init__(self, column_mappings: Dict[str, str]):
+           self.column_mappings = column_mappings
+       
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data using direct column mapping."""
+           # Create a new DataFrame with mapped columns
+           result = pd.DataFrame()
+           
+           for target_col, source_col in self.column_mappings.items():
+               if source_col in source_data.columns:
+                   result[target_col] = source_data[source_col]
+               else:
+                   raise ValueError(f"Source column '{source_col}' not found in data")
+           
+           return result
+   ```
+
+### 5.3. Implement Transform Mapping Strategy
+
+1. Create `fca_dashboard/mappers/strategies/transform_mapping.py`:
+
+   ```python
+   import pandas as pd
+   from typing import Dict, Callable
+   
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   
+   class TransformMappingStrategy(MappingStrategy):
+       """Transform-based mapping."""
+       
+       def __init__(self, transformations: Dict[str, Callable[[pd.DataFrame], pd.Series]]):
+           self.transformations = transformations
+       
+       def map_data(self, source_data: pd.DataFrame) -> pd.DataFrame:
+           """Map source data using transformations."""
+           # Create a new DataFrame with transformed columns
+           result = pd.DataFrame()
+           
+           for target_col, transform_func in self.transformations.items():
+               try:
+                   result[target_col] = transform_func(source_data)
+               except Exception as e:
+                   raise ValueError(f"Error applying transformation for column '{target_col}': {e}")
+           
+           return result
+   ```
+
+## 6. Loading Components
+
+### 6.1. Create SQLite Loader
+
+1. Create `fca_dashboard/loaders/sqlite_loader.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine
+   from typing import Optional
+   
+   logger = logging.getLogger(__name__)
+   
+   class SQLiteLoader:
+       """SQLite data loader."""
+       
+       def __init__(self, db_url: str, batch_size: int = 1000):
+           self.db_url = db_url
+           self.batch_size = batch_size
+           self.engine = create_engine(db_url)
+       
+       def load(self, data: pd.DataFrame, table_name: str, if_exists: str = 'replace', index: bool = False) -> None:
+           """Load data into SQLite database."""
+           logger.info(f"Loading {len(data)} rows into {table_name}")
+           
+           try:
+               # Process in batches to avoid memory issues
+               total_rows = len(data)
+               for i in range(0, total_rows, self.batch_size):
+                   batch = data.iloc[i:i + self.batch_size]
+                   
+                   # For the first batch, use the if_exists parameter
+                   current_if_exists = if_exists if i == 0 else 'append'
+                   
+                   batch.to_sql(
+                       name=table_name,
+                       con=self.engine,
+                       if_exists=current_if_exists,
+                       index=index
+                   )
+                   
+                   logger.info(f"Loaded batch {i // self.batch_size + 1}/{(total_rows + self.batch_size - 1) // self.batch_size}")
+               
+               logger.info(f"Successfully loaded data into {table_name}")
+           except Exception as e:
+               logger.error(f"Error loading data into {table_name}: {e}")
+               raise
+   ```
+
+### 6.2. Create PostgreSQL Loader
+
+1. Create `fca_dashboard/loaders/postgresql_loader.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine
+   from typing import Optional
+   
+   logger = logging.getLogger(__name__)
+   
+   class PostgreSQLLoader:
+       """PostgreSQL data loader."""
+       
+       def __init__(self, db_url: str, batch_size: int = 1000):
+           self.db_url = db_url
+           self.batch_size = batch_size
+           self.engine = create_engine(db_url)
+       
+       def load(self, data: pd.DataFrame, table_name: str, if_exists: str = 'replace', index: bool = False) -> None:
+           """Load data into PostgreSQL database."""
+           logger.info(f"Loading {len(data)} rows into {table_name}")
+           
+           try:
+               # Process in batches to avoid memory issues
+               total_rows = len(data)
+               for i in range(0, total_rows, self.batch_size):
+                   batch = data.iloc[i:i + self.batch_size]
+                   
+                   # For the first batch, use the if_exists parameter
+                   current_if_exists = if_exists if i == 0 else 'append'
+                   
+                   batch.to_sql(
+                       name=table_name,
+                       con=self.engine,
+                       if_exists=current_if_exists,
+                       index=index,
+                       method='multi'  # Use multi-row insert for better performance
+                   )
+                   
+                   logger.info(f"Loaded batch {i // self.batch_size + 1}/{(total_rows + self.batch_size - 1) // self.batch_size}")
+               
+               logger.info(f"Successfully loaded data into {table_name}")
+           except Exception as e:
+               logger.error(f"Error loading data into {table_name}: {e}")
+               raise
+   ```
+
+## 7. Pipeline Components
+
+### 7.1. Create Base Pipeline
+
+1. Create `fca_dashboard/pipelines/base_pipeline.py`:
+
+   ```python
+   from abc import ABC, abstractmethod
+   import logging
+   
+   logger = logging.getLogger(__name__)
+   
+   class Pipeline(ABC):
+       """Base pipeline with template method."""
+       
+       def run(self, *args, **kwargs):
+           """Run the pipeline."""
+           logger.info(f"Starting pipeline: {self.__class__.__name__}")
+           try:
+               # Template method defines the algorithm structure
+               data = self.extract(*args, **kwargs)
+               transformed = self.transform(data)
+               self.load(transformed)
+               result = self.verify()
+               logger.info(f"Pipeline completed successfully: {self.__class__.__name__}")
+               return result
+           except Exception as e:
+               logger.error(f"Pipeline failed: {e}")
+               raise
+       
+       @abstractmethod
+       def extract(self, *args, **kwargs):
+           """Extract data from source."""
+           pass
+       
+       @abstractmethod
+       def transform(self, data):
+           """Transform the data."""
+           pass
+       
+       @abstractmethod
+       def load(self, data):
+           """Load data to target."""
+           pass
+       
+       @abstractmethod
+       def verify(self):
+           """Verify the pipeline execution."""
+           pass
+   ```
+
+### 7.2. Create Excel to SQLite Pipeline
+
+1. Create `fca_dashboard/pipelines/excel_to_sqlite.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   
+   from fca_dashboard.pipelines.base_pipeline import Pipeline
+   from fca_dashboard.extractors.excel_extractor import ExcelExtractor
+   from fca_dashboard.mappers.mapping_strategy import MappingStrategy
+   from fca_dashboard.loaders.sqlite_loader import SQLiteLoader
+   
+   logger = logging.getLogger(__name__)
+   
+   class ExcelToSQLitePipeline(Pipeline):
+       """Excel to SQLite pipeline implementation."""
+       
+       def __init__(self, extractor: ExcelExtractor, mapping_strategy: MappingStrategy, 
+                    loader: SQLiteLoader, table_name: str):
+           self.extractor = extractor
+           self.mapping_strategy = mapping_strategy
+           self.loader = loader
+           self.table_name = table_name
+       
+       def extract(self, source_file: str) -> pd.DataFrame:
+           """Extract data from Excel file."""
+           logger.info(f"Extracting data from {source_file}")
+           return self.extractor.extract(source_file)
+       
+       def transform(self, data: pd.DataFrame) -> pd.DataFrame:
+           """Transform data using mapping strategy."""
+           logger.info("Transforming data")
+           return self.mapping_strategy.map_data(data)
+       
+       def load(self, data: pd.DataFrame) -> None:
+           """Load data to SQLite database."""
+           logger.info(f"Loading data to {self.table_name}")
+           self.loader.load(data, self.table_name)
+       
+       def verify(self) -> bool:
+           """Verify the pipeline execution."""
+           logger.info("Verifying pipeline execution")
+           # Simple verification - could be enhanced
+           return True
+   ```
+
+### 7.3. Create SQLite to PostgreSQL Pipeline
+
+1. Create `fca_dashboard/pipelines/sqlite_to_postgresql.py`:
+
+   ```python
+   import pandas as pd
+   import logging
+   from sqlalchemy import create_engine, MetaData, Table, select
+   
+   from fca_dashboard.pipelines.base_pipeline import Pipeline
+   from fca_dashboard.loaders.postgresql_loader import PostgreSQLLoader
+   
+   logger = logging.getLogger(__name__)
+   
+   class SQLiteToPostgreSQLPipeline(Pipeline):
+       """SQLite to PostgreSQL pipeline implementation."""
+       
+       def __init__(self, sqlite_url: str, loader: PostgreSQLLoader, 
+                    table_name: str, batch_size: int = 1000):
+           self.sqlite_url = sqlite_url
+           self.loader = loader
+           self.table_name = table_name
+           self.batch_size = batch_size
+           self.sqlite_engine = create_engine(sqlite_url)
+       
+       def extract(self) -> pd.DataFrame:
+           """Extract data from SQLite database."""
+           logger.info(f"Extracting data from SQLite table {self.table_name}")
+           return pd.read_sql_table(self.table_name, self.sqlite_engine)
+       
+       def transform(self, data: pd.DataFrame) -> pd.DataFrame:
+           """Transform data (identity transformation in this case)."""
+           logger.info("Transforming data (identity transformation)")
+           return data
+       
+       def load(self, data: pd.DataFrame) -> None:
+           """Load data to PostgreSQL database."""
+           logger.info(f"Loading data to PostgreSQL table {self.table_name}")
+           self.loader.load(data, self.table_name)
+       
+       def verify(self) -> bool:
+           """Verify the pipeline execution."""
+           logger.info("Verifying pipeline execution")
+           # Simple verification - could be enhanced
+           return True
+   ```
+
+## 8. Utility Components
+
+### 8.1. Create Logging Configuration
+
+1. Create `fca_dashboard/utils/logging_config.py`:
+
+   ```python
+   import logging
+   import sys
+   from typing import Optional
+   
+   def configure_logging(log_level: str = "INFO", log_file: Optional[str] = None):
+       """Configure logging for the application."""
+       # Convert string log level to logging constant
+       numeric_level = getattr(logging, log_level.upper(), None)
+       if not isinstance(numeric_level, int):
+           raise ValueError(f"Invalid log level: {log_level}")
+       
+       # Create formatter
+       formatter = logging.Formatter(
+           '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+       )
+       
+       # Configure root logger
+       root_logger = logging.getLogger()
+       root_logger.setLevel(numeric_level)
+       
+       # Clear existing handlers
+       for handler in root_logger.handlers[:]:
+           root_logger.removeHandler(handler)
+       
+       # Add console handler
+       console_handler = logging.StreamHandler(sys.stdout)
+       console_handler.setFormatter(formatter)
+       root_logger.addHandler(console_handler)
+       
+       # Add file handler if specified
+       if log_file:
+           file_handler = logging.FileHandler(log_file)
+           file_handler.setFormatter(formatter)
+           root_logger.addHandler(file_handler)
+       
+       return root_logger
+   ```
+
+### 8.2. Create Factory Functions
+
+1. Create `fca_dashboard/core/factories.py`:
+
+   ```python
+   from typing import Dict, Any, Type
+   
+   from sqlalchemy.orm import Session
+   
+   from fca_dashboard.core.interfaces import Repository
+   from fca_dashboard.core.repository import SQLAlchemyRepository
+   from fca_dashboard.core.unit_of_work import SQLAlchemyUnitOfWork
+   from fca_dashboard.extractors.strategies.excel import ExcelExtractionStrategy
+   from fca_dashboard.extractors.excel_extractor import ExcelExtractor
+   from fca_dashboard.mappers.strategies.direct_mapping import DirectMappingStrategy
+   from fca_dashboard.mappers.strategies.transform_mapping import TransformMappingStrategy
+   from fca_dashboard.loaders.sqlite_loader import SQLiteLoader
+   from fca_dashboard.loaders.postgresql_loader import PostgreSQLLoader
+   
+   def create_repository(session: Session, model_class: Type) -> Repository:
+       """Create a SQLAlchemy repository."""
+       return SQLAlchemyRepository(session, model_class)
+   
+   def create_unit_of_work(connection_string: str) -> SQLAlchemyUnitOfWork:
+       """Create a SQLAlchemy unit of work."""
+       return SQLAlchemyUnitOfWork(connection_string)
+   
+   def create_excel_extractor(sheet_name=0, header=0) -> ExcelExtractor:
+       """Create an Excel extractor."""
+       strategy = ExcelExtractionStrategy(sheet_name=sheet_name, header=header)
+       return ExcelExtractor(strategy)
+   
+   def create_mapping_strategy(config: Dict[str, Any]):
+       """Create a mapping strategy based on configuration."""
+       mapping_type = config.get("mapping_type", "direct")
+       
+       if mapping_type == "direct":
+           column_mappings = config.get("column_mappings", {})
+           return DirectMappingStrategy(column_mappings)
+       elif mapping_type == "transform":
+           # This would require more complex handling of transformation functions
+           raise NotImplementedError("Transform mapping strategy not yet implemented")
+       else:
+           raise ValueError(f"Unknown mapping type: {mapping_type}")
+   
+   def create_sqlite_loader(db_url: str, batch_size: int = 1000) -> SQLiteLoader:
+       """Create a SQLite loader."""
+       return SQLiteLoader(db_url, batch_size)
+   
+   def create_postgresql_loader(db_url: str, batch_size: int = 1000) -> PostgreSQLLoader:
+       """Create a PostgreSQL loader."""
+       return PostgreSQLLoader(db_url, batch_size)
+   ```
+
+## 9. Main Application
+
+### 9.1. Create Main Entry Point
+
+1. Create `fca_dashboard/main.py`:
+
+   ```python
+   import argparse
+   import logging
+   import sys
+   from pathlib import Path
+   
+   from fca_dashboard.config.settings import load_settings
+   from fca_dashboard.core.factories import (
+       create_excel_extractor,
+       create_mapping_strategy,
+       create_sqlite_loader,
+       create_postgresql_loader
+   )
+   from fca_dashboard.pipelines.excel_to_sqlite import ExcelToSQLitePipeline
+   from fca_dashboard.pipelines.sqlite_to_postgresql import SQLiteToPostgreSQLPipeline
+   from fca_dashboard.utils.logging_config import configure_logging
+   
+   logger = logging.getLogger(__name__)
+   
+   def parse_args():
+       """Parse command line arguments."""
+       parser = argparse.ArgumentParser(description="ETL Pipeline")
+       parser.add_argument("--config", help="Path to configuration file")
+       parser.add_argument("--excel-file", help="Path to Excel file")
+       parser.add_argument("--table-name", help="Table name")
+       parser.add_argument("--log-level", default="INFO", help="Logging level")
+       parser.add_argument("--log-file", help="Log file path")
+       return parser.parse_args()
+   
+   def main():
+       """Main entry point."""
+       args = parse_args()
+       
+       # Configure logging
+       configure_logging(args.log_level, args.log_file)
+       
+       try:
+           # Load configuration
+           config = load_settings(args.config)
+           
+           # Get database settings
+           sqlite_url = config["databases"]["sqlite"]["url"]
+           postgresql_url = config["databases"]["postgresql"]["url"]
+           
+           # Get pipeline settings
+           batch_size = config["pipeline_settings"]["batch_size"]
+           
+           # Get table configuration
+           table_name = args.table_name
+           if not table_name:
+               raise ValueError("Table name is required")
+           
+           table_config = config["tables"].get(table_name)
+           if not table_config:
+               raise ValueError(f"Configuration for table '{table_name}' not found")
+           
+           # Create components
+           excel_extractor = create_excel_extractor()
+           mapping_strategy = create_mapping_strategy(table_config)
+           sqlite_loader = create_sqlite_loader(sqlite_url, batch_size)
+           postgresql_loader = create_postgresql_loader(postgresql_url, batch_size)
+           
+           # Run Excel to SQLite pipeline
+           excel_file = args.excel_file
+           if not excel_file:
+               raise ValueError("Excel file path is required")
+           
+           logger.info(f"Running Excel to SQLite pipeline for table '{table_name}'")
+           excel_
+
+================
+File: primer/primer.md
+================
+# fca dashboard v4 - Primer Document
+
+## Purpose and Goals
+
+The FCA Dashboard v4 is designed to revolutionize data handling by effectively extracting, transforming, and loading diverse data sets into structured, highly available databases (using SQLite as an intermediate and PostgreSQL as the ultimate target). It significantly reduces manual intervention, optimizes performance, and enhances data integrity. This pipeline ensures teams can confidently use consistent, accurate data for informed decision-making, ultimately driving efficiency and innovation across the organization.
+
+## Why FCA Dashboard v4 is Essential
+
+Today's fast-paced, data-driven world requires robust, scalable, and reliable data processing systems. Manual data handling or outdated systems are prone to errors, inconsistencies, and inefficiencies, causing critical delays and misguided decisions. The fca dashboard v4 addresses these challenges by automating and streamlining data workflows, ensuring high-quality data is quickly accessible for analytics, business intelligence, and real-time decision-making. Adopting fca dashboard v4 will position teams to leverage data more strategically, innovate faster, and maintain a competitive advantage.
+
+## Key Architectural Decisions and Improvements
+
+### Architectural Decisions
+
+- **ORM Adoption**: Leveraged SQLAlchemy ORM for simplified database interactions, enhancing developer productivity.
+- **Migration Management**: Integrated Alembic for seamless, automated schema migrations, reducing deployment time and errors.
+- **Centralized Configuration**: Implemented YAML-based settings (`config/settings.yaml`) for flexible configuration management, enabling rapid adaptability to changing business requirements.
+- **Dependency Injection and Factory Methods**: Adopted clearer and simpler factory patterns for component creation, promoting easier testing and faster integration of new components.
+- **Centralized Logging and Error Handling**: Developed comprehensive, standardized logging (`utils/logging_config.py`) and unified error handling, significantly reducing debugging efforts and improving system reliability.
+
+### Improvements Over Previous Versions
+
+- Automated ORM-based schema management replacing manual methods.
+- Enhanced scalability through batch processing to handle extensive data sets.
+- Improved data integrity and accuracy with rigorous validation at each ETL stage.
+- Increased modularity, making the system easier to maintain, scale, and extend.
+
+## Core Design Patterns and Rationale
+
+### Repository Pattern
+
+- **Purpose**: Simplifies database operations by abstracting complexities, ensuring consistency and ease of maintenance.
+- **Rationale**: Allows seamless switching or scaling between databases, significantly reducing development and maintenance overhead.
+
+### Strategy Pattern (Extraction & Mapping)
+
+- **Purpose**: Enables easy integration of various data extraction and transformation methods tailored for diverse data sources.
+- **Rationale**: Provides flexibility, ensuring quick adaptation to new data sources without altering the existing stable codebase, adhering strictly to the Open/Closed Principle.
+
+### Template Method Pattern (Pipelines)
+
+- **Purpose**: Establishes a consistent, robust ETL process that is customizable to specific data handling needs.
+- **Rationale**: Ensures uniformity and high reliability across different data workflows, allowing developers to confidently introduce new pipeline implementations.
+
+### Unit of Work Pattern
+
+- **Purpose**: Ensures database integrity by managing transactions systematically.
+- **Rationale**: Guarantees that data integrity is consistently maintained, preventing data corruption and loss.
+
+## High-Level Data Flow Diagram
+
+```text
+Input (Excel Data Source)
+          │
+          ▼
+    Extractors
+ (ExcelExtractionStrategy)
+          │
+          ▼
+   Data Validation
+      (validator.py)
+          │
+          ▼
+   Mappers (Transformers)
+   (Direct/Transform Mapping Strategies)
+          │
+          ▼
+ Intermediate Storage (SQLite)
+          │
+          ▼
+   Loaders/Unit of Work
+ (sqlite_loader.py, postgresql_loader.py)
+          │
+          ▼
+Final Target Database (PostgreSQL)
+          │
+          ▼
+ Data Verification & Logging
+```
+
+## Testing Strategy
+
+- Structured into clear, targeted **unit** and **integration tests** for robust, efficient validation.
+- Comprehensive testing to ensure high reliability and accuracy at every step, from extraction through final data verification.
+
+Adopting fca dashboard v4 positions your team at the forefront of data excellence—transforming raw data into strategic assets that fuel innovation, precision, and growth.
+
+================
+File: SOPs/000-sop-template.md
+================
+# SOP-000: Standard Operating Procedure Template
+
+## Purpose
+
+[Brief description of why this procedure exists and what it accomplishes]
+
+## Scope
+
+[Define what is covered by this procedure and what is not]
+
+## Prerequisites
+
+[List any requirements, tools, access, or knowledge needed before starting]
+
+## Procedure
+
+[Step-by-step instructions, numbered for clarity]
+
+1. Step one
+   - Sub-step details
+   - Additional information
+
+2. Step two
+   - Sub-step details
+   - Additional information
+
+## Verification
+
+[How to verify the procedure was completed successfully]
+
+## Troubleshooting
+
+[Common issues and their solutions]
+
+## References
+
+[Links to related documentation, resources, or other SOPs]
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | YYYY-MM-DD | [Author] | Initial version |
+
+================
+File: SOPs/001-env-setup.md
+================
+# SOP-001: ETL Pipeline Environment Setup
+
+## Purpose
+
+This procedure documents the exact steps required to set up the development environment for the ETL Pipeline v4 project, ensuring consistency across all development environments.
+
+## Scope
+
+This SOP covers:
+
+- Virtual environment setup and activation
+- Dependencies installation
+- Linter configuration
+- Project structure creation
+- Configuration files setup
+- VS Code workspace configuration
+
+## Prerequisites
+
+- Git installed
+- Python 3.9+ installed
+- Access to the project repository
+- VS Code installed (for workspace setup)
+
+## Procedure
+
+### 1. Virtual Environment Setup
+
+1. Create a virtual environment:
+
+   ```bash
+   python -m venv .venv
+   ```
+
+2. Activate the virtual environment:
+   - Windows: `.venv\Scripts\activate`
+   - Unix/MacOS: `source .venv/bin/activate`
+
+### 2. Dependencies Setup
+
+1. Create a `requirements.txt` file with the following content:
+
+   ```text
+   # Core dependencies
+   sqlalchemy>=2.0.0,<3.0.0
+   alembic>=1.9.0,<2.0.0
+   pandas>=1.5.0,<2.0.0
+   openpyxl>=3.1.0,<4.0.0  # For Excel support in pandas
+   pyyaml>=6.0,<7.0
+   psycopg2-binary>=2.9.5,<3.0.0  # PostgreSQL driver
+   
+   # Development dependencies
+   pytest>=7.0.0,<8.0.0
+   black>=23.0.0,<24.0.0
+   isort>=5.12.0,<6.0.0
+   flake8>=6.0.0,<7.0.0
+   mypy>=1.0.0,<2.0.0
+   ruff>=0.0.262,<1.0.0  # Fast Python linter
+   
+   # Type checking
+   types-PyYAML>=6.0.0,<7.0.0
+   types-requests>=2.29.0,<3.0.0
+   types-setuptools>=65.0.0,<66.0.0
+   types-toml>=0.10.0,<0.11.0
+   
+   # Logging
+   loguru>=0.6.0,<0.7.0
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Install the package in development mode:
+
+   ```bash
+   pip install -e .
+   ```
+
+   This step is crucial for allowing the package to be imported using absolute imports (e.g., `from fca_dashboard.config.settings import get_settings`). Without this step, you may encounter `ModuleNotFoundError` when trying to import modules from the package.
+
+   Note: The Makefile's `install` target includes this step, so you can also run `make install` to install all dependencies and the package in development mode.
+
+### 3. Linter Configuration
+
+1. Create `pyproject.toml` with build system, project metadata, and linting configurations:
+
+   ```toml
+   [build-system]
+   requires = ["setuptools>=42", "wheel"]
+   build-backend = "setuptools.build_meta"
+
+   [project]
+   name = "fca-dashboard"
+   version = "0.1.0"
+   description = "ETL Pipeline for FCA Dashboard"
+   readme = "README.md"
+   requires-python = ">=3.9"
+   license = {text = "Proprietary"}
+   authors = [
+       {name = "ETL Team"}
+   ]
+
+   [tool.black]
+   line-length = 120
+   target-version = ['py39']
+   include = '\.pyi?$'
+   
+   [tool.isort]
+   profile = "black"
+   line_length = 120
+   multi_line_output = 3
+   
+   [tool.flake8]
+   max-line-length = 120
+   extend-ignore = "E203"
+   exclude = [".git", "__pycache__", "build", "dist", "alembic"]
+   
+   [tool.mypy]
+   python_version = "3.9"
+   warn_return_any = true
+   warn_unused_configs = true
+   disallow_untyped_defs = true
+   disallow_incomplete_defs = true
+   
+   [tool.pytest.ini_options]
+   testpaths = ["fca_dashboard/tests"]
+   python_files = "test_*.py"
+   python_classes = "Test*"
+   python_functions = "test_*"
+   addopts = "--cov=fca_dashboard --cov-report=html --cov-report=term"
+
+   [tool.coverage.run]
+   source = ["fca_dashboard"]
+   omit = [
+       "*/tests/*",
+       "*/alembic/*",
+       "*/__pycache__/*",
+       "*/migrations/*",
+       "*/venv/*",
+       "*/.venv/*",
+   ]
+
+   [tool.coverage.report]
+   exclude_lines = [
+       "pragma: no cover",
+       "def __repr__",
+       "raise NotImplementedError",
+       "if __name__ == .__main__.:",
+       "pass",
+       "raise ImportError",
+   ]
+   
+   [tool.ruff]
+   # Enable Pyflakes ('F'), pycodestyle ('E'), and isort ('I') codes by default.
+   select = ["E", "F", "I", "N", "B", "C4", "SIM", "ERA"]
+   ignore = []
+   
+   # Allow autofix for all enabled rules (when `--fix`) is provided.
+   fixable = ["ALL"]
+   unfixable = []
+   
+   # Exclude a variety of commonly ignored directories.
+   exclude = [
+       ".git",
+       ".mypy_cache",
+       ".ruff_cache",
+       ".venv",
+       "__pycache__",
+       "build",
+       "dist",
+   ]
+   
+   # Same as Black.
+   line-length = 120
+   
+   # Allow unused variables when underscore-prefixed.
+   dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+   
+   # Assume Python 3.9
+   target-version = "py39"
+   
+   [tool.ruff.mccabe]
+   # Unlike Flake8, default to a complexity level of 10.
+   max-complexity = 10
+   
+   [tool.ruff.isort]
+   known-first-party = ["fca_dashboard"]
+   ```
+
+2. Create a `pytest.ini` file for additional pytest configuration:
+
+   ```ini
+   [pytest]
+   testpaths = fca_dashboard/tests
+   python_files = test_*.py
+   python_classes = Test*
+   python_functions = test_*
+
+   [mypy]
+   python_version = 3.8
+   warn_return_any = True
+   warn_unused_configs = True
+   disallow_untyped_defs = True
+   disallow_incomplete_defs = True
+
+   # Ignore missing imports for third-party libraries
+   [mypy.plugins.pytest]
+   # This tells mypy that pytest fixtures can return Any
+   pytest_fixture_function = True
+
+   # Ignore errors in test files
+   [mypy-fca_dashboard.tests.*]
+   disallow_untyped_defs = False
+   disallow_incomplete_defs = False
+   ```
+
+2. Create a minimal `setup.py` file to make the package installable:
+
+   ```python
+   """
+   Setup script for the FCA Dashboard package.
+   """
+
+   from setuptools import setup, find_packages
+
+   setup(
+       name="fca_dashboard",
+       packages=find_packages(),
+   )
+   ```
+
+2. Test linters:
+
+   ```bash
+   black --check .
+   isort --check .
+   flake8 .
+   mypy .
+   ```
+
+3. Create a `Makefile` for convenience commands:
+
+   ```makefile
+   .PHONY: lint test format install run clean init-db coverage test-unit test-integration
+
+   lint:
+    black --check .
+    isort --check .
+    flake8 .
+    mypy .
+
+   format:
+    black .
+    isort .
+
+   test:
+    pytest fca_dashboard/tests/
+
+   coverage:
+    pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+    @echo "HTML coverage report generated in htmlcov/"
+
+   test-unit:
+    pytest fca_dashboard/tests/unit/
+
+   test-integration:
+    pytest fca_dashboard/tests/integration/
+
+   install:
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install -e .
+   ```
+
+   Note: The `install` target includes installing the package in development mode (`pip install -e .`), which is necessary for absolute imports to work correctly. The additional test targets provide more granular control over test execution:
+
+   - `test`: Runs all tests
+   - `test-unit`: Runs only unit tests
+   - `test-integration`: Runs only integration tests
+   - `coverage`: Runs tests with coverage reporting, generating both terminal and HTML reports
+
+### 3.4. Understanding and Using Makefiles
+
+1. What is a Makefile?
+   - A Makefile is a configuration file used by the `make` utility to automate tasks and build processes
+   - It contains a set of directives (targets) that define commands to be executed
+   - Makefiles help standardize common development tasks across the team
+
+2. Prerequisites for using Makefiles:
+   - Windows: Install Make via Chocolatey (`choco install make`) or use Git Bash
+   - macOS: Make is typically pre-installed
+   - Linux: Install via package manager (e.g., `apt install make`)
+
+3. Makefile structure explanation:
+   - `.PHONY`: Declares targets that don't represent files (prevents conflicts with files of the same name)
+   - Each target (e.g., `lint:`) defines a task that can be executed with `make <target>`
+   - Commands under targets must be indented with tabs, not spaces
+
+4. Additional useful targets to consider:
+
+   ```makefile
+   # Add these to your Makefile as needed
+   
+   # Run the ETL pipeline with default settings
+   run:
+    python fca_dashboard/main.py --config fca_dashboard/config/settings.yaml
+   
+   # Clean up generated files
+   clean:
+    find . -type d -name "__pycache__" -exec rm -rf {} +
+    find . -type f -name "*.pyc" -delete
+    find . -type f -name "*.pyo" -delete
+    find . -type f -name "*.pyd" -delete
+    find . -type d -name "*.egg-info" -exec rm -rf {} +
+    find . -type d -name "*.egg" -exec rm -rf {} +
+    find . -type d -name ".pytest_cache" -exec rm -rf {} +
+    find . -type d -name ".coverage" -exec rm -rf {} +
+    find . -type d -name "htmlcov" -exec rm -rf {} +
+    find . -type d -name ".mypy_cache" -exec rm -rf {} +
+   
+   # Create initial database schema
+   init-db:
+    python -c "from fca_dashboard.core.models import Base; from sqlalchemy import create_engine; engine = create_engine('sqlite:///etl.db'); Base.metadata.create_all(engine)"
+   ```
+
+5. Using the Makefile:
+   - Run linters: `make lint`
+   - Format code: `make format`
+   - Run tests: `make test`
+   - Install dependencies: `make install`
+   - Execute multiple targets: `make clean install test`
+
+### 4. Project Structure Setup
+
+1. Create the directory structure:
+
+   ```bash
+   mkdir -p fca_dashboard/{alembic,config,core/{interfaces,models},extractors/{strategies},mappers/{strategies},loaders,pipelines,utils,tests/{unit,integration}}
+   touch fca_dashboard/__init__.py
+   touch fca_dashboard/main.py
+   touch fca_dashboard/core/__init__.py
+   touch fca_dashboard/extractors/__init__.py
+   touch fca_dashboard/mappers/__init__.py
+   touch fca_dashboard/loaders/__init__.py
+   touch fca_dashboard/pipelines/__init__.py
+   touch fca_dashboard/utils/__init__.py
+   touch fca_dashboard/tests/__init__.py
+   touch fca_dashboard/tests/unit/__init__.py
+   touch fca_dashboard/tests/integration/__init__.py
+   ```
+
+   Note: We're using `fca_dashboard` as the package name to match the repository name (`fca-dashboard4`), rather than `fca_dashboard` as mentioned in the guide.
+
+### 5. Configuration Files Setup
+
+1. Create `fca_dashboard/config/settings.yaml`:
+
+   ```yaml
+   # Database settings
+   databases:
+     sqlite:
+       url: "sqlite:///fca_dashboard.db"
+     postgresql:
+       url: "postgresql://user:password@localhost/fca_dashboard"
+       
+   # Pipeline settings
+   pipeline_settings:
+     batch_size: 5000
+     log_level: "INFO"
+     
+   # Table mappings
+   tables:
+     equipment:
+       mapping_type: "direct"
+       column_mappings:
+         tag: "Tag"
+         name: "Name"
+         description: "Description"
+   ```
+
+2. Create `fca_dashboard/config/settings.py` for loading settings.
+
+### 7. Configure Logging Early
+
+1. Set up logging configuration right after environment setup:
+
+   ```bash
+   # After installing dependencies
+   mkdir -p logs
+   touch logs/fca_dashboard.log
+   ```
+
+2. Create a type stub file for Loguru to help with type checking:
+
+   ```python
+   # fca_dashboard/utils/loguru_stubs.pyi
+   from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, Union, overload
+
+   class Logger:
+       def remove(self, handler_id: Optional[int] = None) -> None: ...
+       
+       def add(
+           self,
+           sink: Union[TextIO, str, Callable, Dict[str, Any]],
+           *,
+           level: Optional[Union[str, int]] = None,
+           format: Optional[str] = None,
+           filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
+           colorize: Optional[bool] = None,
+           serialize: Optional[bool] = None,
+           backtrace: Optional[bool] = None,
+           diagnose: Optional[bool] = None,
+           enqueue: Optional[bool] = None,
+           catch: Optional[bool] = None,
+           rotation: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           retention: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           compression: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           delay: Optional[bool] = None,
+           mode: Optional[str] = None,
+           buffering: Optional[int] = None,
+           encoding: Optional[str] = None,
+           **kwargs: Any
+       ) -> int: ...
+       
+       def bind(self, **kwargs: Any) -> "Logger": ...
+       
+       def opt(
+           self,
+           *,
+           exception: Optional[Union[bool, Tuple[Any, ...], Dict[str, Any]]] = None,
+           record: Optional[bool] = None,
+           lazy: Optional[bool] = None,
+           colors: Optional[bool] = None,
+           raw: Optional[bool] = None,
+           capture: Optional[bool] = None,
+           depth: Optional[int] = None,
+           ansi: Optional[bool] = None,
+       ) -> "Logger": ...
+       
+       def trace(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def debug(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def info(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def success(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def warning(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def error(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def critical(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def exception(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def log(self, level: Union[int, str], __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       
+       def level(self, name: str, no: int = 0, color: Optional[str] = None, icon: Optional[str] = None) -> "Logger": ...
+       def disable(self, name: str) -> None: ...
+       def enable(self, name: str) -> None: ...
+       
+       def configure(
+           self,
+           *,
+           handlers: List[Dict[str, Any]] = [],
+           levels: List[Dict[str, Any]] = [],
+           extra: Dict[str, Any] = {},
+           patcher: Optional[Callable] = None,
+           activation: List[Tuple[str, bool]] = [],
+       ) -> None: ...
+       
+       def patch(self, patcher: Callable) -> "Logger": ...
+       
+       def complete(self) -> None: ...
+       
+       @property
+       def catch(self) -> Callable: ...
+
+   logger: Logger
+   ```
+
+3. Create a logging utility using Loguru:
+
+   ```python
+   # fca_dashboard/utils/logging_config.py
+   """
+   Logging configuration module for the FCA Dashboard application.
+
+   This module provides functionality to configure logging for the application
+   using Loguru, which offers improved formatting, better exception handling,
+   and simplified configuration compared to the standard logging module.
+   """
+
+   import sys
+   from pathlib import Path
+   from typing import Optional, Any
+
+   from loguru import logger  # type: ignore
+
+
+   def configure_logging(
+       level: str = "INFO",
+       log_file: Optional[str] = None,
+       rotation: str = "10 MB",
+       retention: str = "1 month",
+       format_string: Optional[str] = None
+   ) -> None:
+       """
+       Configure application logging with console and optional file output using Loguru.
+       
+       Args:
+           level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+           log_file: Path to log file. If None, only console logging is configured.
+           rotation: When to rotate the log file (e.g., "10 MB", "1 day")
+           retention: How long to keep log files (e.g., "1 month", "1 year")
+           format_string: Custom format string for log messages
+       """
+       # Remove default handlers
+       logger.remove()
+       
+       # Default format string if none provided
+       if format_string is None:
+           format_string = (
+               "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+               "<level>{level: <8}</level> | "
+               "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+               "<level>{message}</level>"
+           )
+       
+       # Add console handler
+       logger.add(
+           sys.stderr,
+           level=level.upper(),
+           format=format_string,
+           colorize=True
+       )
+       
+       # Add file handler if log_file is provided
+       if log_file:
+           # Ensure log directory exists
+           log_path = Path(log_file)
+           log_dir = log_path.parent
+           if not log_dir.exists():
+               log_dir.mkdir(parents=True, exist_ok=True)
+           
+           # Add rotating file handler
+           logger.add(
+               log_file,
+               level=level.upper(),
+               format=format_string,
+               rotation=rotation,
+               retention=retention,
+               compression="zip"
+           )
+       
+       logger.info(f"Logging configured with level: {level}")
+
+
+   def get_logger(name: str = "fca_dashboard") -> Any:
+       """
+       Get a logger instance with the specified name.
+       
+       Args:
+           name: Logger name, typically the module name
+           
+       Returns:
+           Loguru logger instance
+       """
+       return logger.bind(name=name)
+   ```
+
+3. Install type stubs for libraries:
+
+   ```bash
+   # Install type stubs for PyYAML (already in requirements.txt)
+   pip install types-PyYAML
+   ```
+
+   Note: Type stubs are important for static type checking with mypy. They provide type information for libraries that don't have built-in type annotations. If you encounter mypy errors like "Cannot find implementation or library stub for module named X", you may need to install type stubs for that library.
+
+4. Test logging configuration:
+
+   ```bash
+   python -c "from fca_dashboard.utils.logging_config import configure_logging; configure_logging('DEBUG', 'logs/fca_dashboard.log')"
+   ```
+
+### 8. Unit Testing Setup
+
+1. Create test files for key modules:
+
+   ```bash
+   # Create test files for settings and logging modules
+   mkdir -p fca_dashboard/tests/unit
+   touch fca_dashboard/tests/unit/__init__.py
+   touch fca_dashboard/tests/unit/test_settings.py
+   touch fca_dashboard/tests/unit/test_logging_config.py
+   ```
+
+2. Create a `conftest.py` file in the tests directory to ensure pytest can find modules:
+
+   ```python
+   """
+   Pytest configuration file.
+
+   This file contains shared fixtures and configuration for pytest.
+   """
+
+   import os
+   import sys
+   from pathlib import Path
+
+   # Add the project root directory to the Python path
+   # This ensures that the tests can import modules from the project
+   project_root = Path(__file__).parent.parent.parent
+   sys.path.insert(0, str(project_root))
+   ```
+
+3. Implement unit tests for the Settings module in `fca_dashboard/tests/unit/test_settings.py`:
+
+   ```python
+   """
+   Unit tests for the Settings module.
+
+   This module contains tests for the Settings class and related functionality
+   in the fca_dashboard.config.settings module.
+   """
+
+   import os
+   import tempfile
+   from pathlib import Path
+
+   import pytest
+   import yaml
+
+   from fca_dashboard.config.settings import Settings, get_settings
+
+
+   @pytest.fixture
+   def temp_settings_file() -> str:
+       """Create a temporary settings file for testing."""
+       config_content = """
+       database:
+         host: localhost
+         port: 5432
+         user: test_user
+         password: secret
+       app:
+         name: test_app
+         debug: true
+       """
+       with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
+           temp_file.write(config_content.encode("utf-8"))
+           temp_path = temp_file.name
+       
+       yield temp_path
+       
+       # Cleanup
+       os.unlink(temp_path)
+
+
+   def test_settings_load_valid_file(temp_settings_file: str) -> None:
+       """Test loading settings from a valid file."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.host") == "localhost"
+       assert settings.get("database.port") == 5432
+       assert settings.get("app.name") == "test_app"
+       assert settings.get("app.debug") is True
+
+
+   def test_settings_load_missing_file() -> None:
+       """Test that loading a non-existent file raises FileNotFoundError."""
+       with pytest.raises(FileNotFoundError):
+           Settings(config_path="nonexistent_file.yml")
+
+
+   def test_settings_get_nonexistent_key(temp_settings_file: str) -> None:
+       """Test getting a non-existent key returns the default value."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("nonexistent.key") is None
+       assert settings.get("nonexistent.key", default="fallback") == "fallback"
+
+
+   def test_settings_get_nested_keys(temp_settings_file: str) -> None:
+       """Test getting nested keys from the configuration."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.user") == "test_user"
+       assert settings.get("database.password") == "secret"
+
+
+   def test_get_settings_caching(temp_settings_file: str) -> None:
+       """Test that get_settings caches instances for the same config path."""
+       settings1 = get_settings(temp_settings_file)
+       settings2 = get_settings(temp_settings_file)
+       
+       # Should be the same instance
+       assert settings1 is settings2
+       
+       # Modify the first instance and check that the second reflects the change
+       settings1.config["test_key"] = "test_value"
+       assert settings2.config["test_key"] == "test_value"
+
+
+   def test_get_settings_default() -> None:
+       """Test that get_settings returns the default instance when no path is provided."""
+       settings = get_settings()
+       assert isinstance(settings, Settings)
+       
+       # Should return the same default instance on subsequent calls
+       settings2 = get_settings()
+       assert settings is settings2
+   ```
+
+4. Run the tests using the Makefile:
+
+   ```bash
+   # Run all tests
+   make test
+   
+   # Run only unit tests
+   make test-unit
+   
+   # Run tests with coverage reporting
+   make coverage
+   ```
+
+5. Verify test coverage:
+   - Open the HTML coverage report in a browser: `open htmlcov/index.html`
+   - Check the terminal output for coverage statistics
+   - Aim for at least 80% code coverage for critical modules
+
+### 9. Example Pipeline Usage
+
+1. Example command for running the ETL pipeline:
+
+   ```bash
+   python fca_dashboard/main.py --config fca_dashboard/config/settings.yaml --excel-file data/sample.xlsx --table-name equipment --log-level INFO
+   ```
+
+2. Using the Makefile for common operations:
+
+   ```bash
+   # Run linters
+   make lint
+   
+   # Run tests
+   make test
+   
+   # Run tests with coverage
+   make coverage
+   
+   # Format code
+   make format
+   ```
+
+### 6. VS Code Workspace Setup
+
+1. Create a `.vscode` directory:
+
+   ```bash
+   mkdir -p .vscode
+   ```
+
+2. Create `.vscode/settings.json` for linting and autoformatting configuration:
+
+   ```json
+   {
+     "python.linting.enabled": true,
+     "python.linting.flake8Enabled": true,
+     "python.linting.mypyEnabled": true,
+     "python.formatting.provider": "black",
+     "editor.formatOnSave": true,
+     "editor.rulers": [120],
+     "python.testing.pytestEnabled": true,
+     "python.testing.unittestEnabled": false,
+     "python.testing.nosetestsEnabled": false,
+     "python.testing.pytestArgs": [
+       "fca_dashboard/tests"
+     ],
+     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+     "python.analysis.extraPaths": [
+       "${workspaceFolder}"
+     ],
+     "ruff.enable": true,
+     "ruff.organizeImports": true,
+     "ruff.fixAll": true,
+     "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+     "[python]": {
+       "editor.defaultFormatter": "charliermarsh.ruff",
+       "editor.formatOnSave": true,
+       "editor.codeActionsOnSave": {
+         "source.fixAll.ruff": true,
+         "source.organizeImports.ruff": true
+       }
+     }
+   }
+   ```
+
+   Key settings explained:
+   - `"python.linting.enabled": true` - Enables linting for Python files
+   - `"python.linting.flake8Enabled": true` - Enables flake8 linter
+   - `"python.linting.mypyEnabled": true` - Enables mypy type checking
+   - `"python.formatting.provider": "black"` - Sets Black as the formatter
+   - `"editor.formatOnSave": true` - Automatically formats code when saving files
+   - `"editor.rulers": [120]` - Shows a vertical line at 120 characters
+   - `"python.pythonPath": "${workspaceFolder}/.venv/bin/python"` - Points to the virtual environment Python
+   - `"ruff.enable": true` - Enables Ruff linter
+   - `"ruff.organizeImports": true` - Enables Ruff to organize imports (replaces isort)
+   - `"ruff.fixAll": true` - Enables Ruff to fix all auto-fixable issues
+   - `"editor.codeActionsOnSave"` - Configures Ruff to run on save for fixing and organizing imports
+
+3. Install VS Code extensions for Python development:
+   - Python extension (ms-python.python)
+   - Pylance (ms-python.vscode-pylance)
+   - Python Docstring Generator (njpwerner.autodocstring)
+   - YAML (redhat.vscode-yaml)
+   - Ruff (charliermarsh.ruff) - Fast Python linter
+
+   These can be installed via the Extensions view in VS Code or using the command line:
+
+   ```bash
+   code --install-extension ms-python.python
+   code --install-extension ms-python.vscode-pylance
+   code --install-extension njpwerner.autodocstring
+   code --install-extension redhat.vscode-yaml
+   code --install-extension charliermarsh.ruff
+   ```
+
+   Ruff configuration:
+   - Ruff is a fast Python linter that replaces multiple tools (flake8, isort, etc.)
+   - It's significantly faster than traditional linters
+   - It can automatically fix many issues with `--fix` option
+
+4. Create `.vscode/launch.json`:
+
+   ```json
+   {
+     "version": "0.2.0",
+     "configurations": [
+       {
+         "name": "Python: Current File",
+         "type": "python",
+         "request": "launch",
+         "program": "${file}",
+         "console": "integratedTerminal",
+         "justMyCode": false
+       },
+       {
+         "name": "Python: ETL Pipeline",
+         "type": "python",
+         "request": "launch",
+         "program": "${workspaceFolder}/fca_dashboard/main.py",
+         "args": [
+           "--config", "${workspaceFolder}/fca_dashboard/config/settings.yaml"
+         ],
+         "console": "integratedTerminal",
+         "justMyCode": false
+       }
+     ]
+   }
+   ```
+
+5. Create a workspace file `fca-dashboard4.code-workspace`:
+
+   ```json
+   {
+     "folders": [
+       {
+         "path": "."
+       }
+     ],
+     "settings": {
+       "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+     }
+   }
+   ```
+
+## Verification
+
+1. Verify virtual environment activation:
+   - Command prompt should show (.venv) prefix
+   - Run `pip -V` to confirm packages are installed from the virtual environment
+
+2. Verify dependencies installation:
+   - Run `pip list` to confirm all required packages are installed
+
+3. Verify linter configuration:
+   - Run linter tests as described in step 3.2
+   - All tests should pass or show expected warnings/errors
+
+4. Verify project structure:
+   - Run `find fca_dashboard -type d | sort` to confirm all directories exist
+   - Run `find fca_dashboard -type f -name "__init__.py" | sort` to confirm all __init__.py files exist
+
+5. Verify VS Code workspace:
+   - Open the workspace file in VS Code
+   - Confirm linting and formatting work as expected:
+     - Open a Python file and introduce a PEP 8 violation (e.g., extra spaces)
+     - Save the file and verify it's automatically formatted
+     - Introduce a type error and verify mypy highlights it
+     - Introduce a syntax error and verify flake8 highlights it
+   - Confirm debugging configurations are available
+   - Verify extensions are installed and activated
+
+## Troubleshooting
+
+1. Virtual environment issues:
+   - If `python -m venv .venv` fails, ensure Python 3.9+ is installed
+   - If activation fails, check that the scripts directory exists in .venv
+   - On Windows, you may need to run PowerShell as administrator or adjust execution policy: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+2. Dependencies installation issues:
+   - If pip install fails with permission errors, ensure the virtual environment is activated
+   - If package conflicts occur, try installing packages one by one to identify conflicts
+   - For psycopg2-binary installation issues on Windows, you might need to install Visual C++ Build Tools
+   - If pandas wheel building takes too long, consider using a pre-built wheel: `pip install --only-binary=:all: pandas`
+   - If you encounter `ModuleNotFoundError` when importing from the package, ensure you've installed the package in development mode with `pip install -e .`
+
+3. Linter configuration issues:
+   - If linters aren't recognized, ensure they're installed in the virtual environment
+   - For VS Code integration issues, install the Python extension and reload the window
+   - If black/isort configurations conflict, ensure the profiles are compatible
+
+4. Makefile issues:
+   - If `make` command is not found on Windows, install it using Chocolatey
+   - If Chocolatey installation fails with permission errors, run PowerShell as administrator:
+
+     ```powershell
+     Start-Process powershell -Verb RunAs -ArgumentList "choco install make -y"
+     ```
+
+   - If lock file errors occur during installation, you may need to delete the lock file mentioned in the error message
+   - Ensure Makefile commands use tabs for indentation, not spaces
+   - For Windows users without make, you can run the individual commands directly
+
+5. VS Code linting and formatting issues:
+   - If autoformatting doesn't work on save, check that `"editor.formatOnSave": true` is set
+   - If linting doesn't work, ensure the Python extension is installed and activated
+   - Try reloading the VS Code window (Ctrl+Shift+P, then "Developer: Reload Window")
+   - Verify the Python interpreter is correctly set to the virtual environment
+   - Check the VS Code output panel (View > Output) and select "Python" to see linting errors
+   - If you see "Import X could not be resolved from source" errors in VS Code/Pylance, but the code runs correctly, this is likely just an IDE issue. Try reloading the window or restarting VS Code. You can also try adding the package to the `python.analysis.extraPaths` setting in `.vscode/settings.json`.
+
+6. Project structure issues:
+   - On Windows, use appropriate mkdir commands or create directories through Explorer
+   - Ensure proper permissions to create directories and files
+   - For nested directory creation issues on Windows, create parent directories first
+
+7. Database connection issues:
+   - For SQLite: Ensure the database file path is writable
+   - For PostgreSQL: Verify connection parameters and that the PostgreSQL service is running
+   - Check firewall settings if connecting to a remote database
+
+8. Pipeline execution issues:
+   - Verify input file formats match expected formats
+   - Check for sufficient disk space for large data operations
+   - For memory errors during processing, try reducing batch_size in settings.yaml
+
+9. Logging issues:
+   - If using Loguru, ensure it's properly installed: `pip install loguru`
+   - For file permission issues, check that the logs directory exists and is writable
+   - If log rotation isn't working, verify the rotation and retention parameters
+
+10. Testing issues:
+
+- If pytest can't find your modules, ensure you have a `conftest.py` file that adds the project root to the Python path
+- If you get type errors in test files, check the `pytest.ini` configuration for mypy settings
+- For coverage issues, verify the `[tool.coverage.run]` and `[tool.coverage.report]` settings in `pyproject.toml`
+- If tests pass locally but fail in CI, check for environment-specific issues like file paths or dependencies
+- For slow tests, consider using pytest's `-xvs` flags for more verbose output and to stop on the first failure
+
+## Completion Status
+
+This SOP has been completed and verified on March 3, 2025. All steps have been tested and confirmed to work correctly. The environment setup is now complete and ready for development.
+
+## References
+
+- [ETL Pipeline v4 Implementation Guide](../../docs/guide/guide.md)
+- [Python venv documentation](https://docs.python.org/3/library/venv.html)
+- [VS Code Python setup](https://code.visualstudio.com/docs/python/python-tutorial)
+- [Loguru documentation](https://github.com/Delgan/loguru)
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | 2025-03-03 | ETL Team | Initial version |
+| 1.1 | 2025-03-03 | ETL Team | Enhanced with version bounds, Makefile, example usage, expanded troubleshooting |
+| 1.2 | 2025-03-03 | ETL Team | Added detailed VS Code setup, linting and autoformat configuration |
+| 1.3 | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users |
+| 1.4 | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting |
+| 1.5 | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
+| 1.6 | 2025-03-03 | ETL Team | Added unit testing setup, improved test configuration, and updated VS Code settings |
+
+
+
+================================================================
+End of Codebase
+================================================================
+
+================
+File: docs/SOPs/000-sop-template.md
+================
+# SOP-000: Standard Operating Procedure Template
+
+## Purpose
+
+[Brief description of why this procedure exists and what it accomplishes]
+
+## Scope
+
+[Define what is covered by this procedure and what is not]
+
+## Prerequisites
+
+[List any requirements, tools, access, or knowledge needed before starting]
+
+## Procedure
+
+[Step-by-step instructions, numbered for clarity]
+
+1. Step one
+   - Sub-step details
+   - Additional information
+
+2. Step two
+   - Sub-step details
+   - Additional information
+
+## Verification
+
+[How to verify the procedure was completed successfully]
+
+## Troubleshooting
+
+[Common issues and their solutions]
+
+## References
+
+[Links to related documentation, resources, or other SOPs]
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | YYYY-MM-DD | [Author] | Initial version |
+
+================
+File: docs/SOPs/001-env-setup.md
+================
+# SOP-001: ETL Pipeline Environment Setup
+
+## Purpose
+
+This procedure documents the exact steps required to set up the development environment for the ETL Pipeline v4 project, ensuring consistency across all development environments.
+
+## Scope
+
+This SOP covers:
+
+- Virtual environment setup and activation
+- Dependencies installation
+- Linter configuration
+- Project structure creation
+- Configuration files setup
+- VS Code workspace configuration
+
+## Prerequisites
+
+- Git installed
+- Python 3.9+ installed
+- Access to the project repository
+- VS Code installed (for workspace setup)
+
+## Procedure
+
+### 1. Virtual Environment Setup
+
+1. Create a virtual environment:
+
+   ```bash
+   python -m venv .venv
+   ```
+
+2. Activate the virtual environment:
+   - Windows: `.venv\Scripts\activate`
+   - Unix/MacOS: `source .venv/bin/activate`
+
+### 2. Dependencies Setup
+
+1. Create a `requirements.txt` file with the following content:
+
+   ```text
+   # Core dependencies
+   sqlalchemy>=2.0.0,<3.0.0
+   alembic>=1.9.0,<2.0.0
+   pandas>=1.5.0,<2.0.0
+   openpyxl>=3.1.0,<4.0.0  # For Excel support in pandas
+   pyyaml>=6.0,<7.0
+   psycopg2-binary>=2.9.5,<3.0.0  # PostgreSQL driver
+   
+   # Development dependencies
+   pytest>=7.0.0,<8.0.0
+   black>=23.0.0,<24.0.0
+   isort>=5.12.0,<6.0.0
+   flake8>=6.0.0,<7.0.0
+   mypy>=1.0.0,<2.0.0
+   ruff>=0.0.262,<1.0.0  # Fast Python linter
+   
+   # Type checking
+   types-PyYAML>=6.0.0,<7.0.0
+   types-requests>=2.29.0,<3.0.0
+   types-setuptools>=65.0.0,<66.0.0
+   types-toml>=0.10.0,<0.11.0
+   
+   # Logging
+   loguru>=0.6.0,<0.7.0
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Install the package in development mode:
+
+   ```bash
+   pip install -e .
+   ```
+
+   This step is crucial for allowing the package to be imported using absolute imports (e.g., `from fca_dashboard.config.settings import get_settings`). Without this step, you may encounter `ModuleNotFoundError` when trying to import modules from the package.
+
+   Note: The Makefile's `install` target includes this step, so you can also run `make install` to install all dependencies and the package in development mode.
+
+### 3. Linter Configuration
+
+1. Create `pyproject.toml` with build system, project metadata, and linting configurations:
+
+   ```toml
+   [build-system]
+   requires = ["setuptools>=42", "wheel"]
+   build-backend = "setuptools.build_meta"
+
+   [project]
+   name = "fca-dashboard"
+   version = "0.1.0"
+   description = "ETL Pipeline for FCA Dashboard"
+   readme = "README.md"
+   requires-python = ">=3.9"
+   license = {text = "Proprietary"}
+   authors = [
+       {name = "ETL Team"}
+   ]
+
+   [tool.black]
+   line-length = 120
+   target-version = ['py39']
+   include = '\.pyi?$'
+   
+   [tool.isort]
+   profile = "black"
+   line_length = 120
+   multi_line_output = 3
+   
+   [tool.flake8]
+   max-line-length = 120
+   extend-ignore = "E203"
+   exclude = [".git", "__pycache__", "build", "dist", "alembic"]
+   
+   [tool.mypy]
+   python_version = "3.9"
+   warn_return_any = true
+   warn_unused_configs = true
+   disallow_untyped_defs = true
+   disallow_incomplete_defs = true
+   
+   [tool.pytest.ini_options]
+   testpaths = ["fca_dashboard/tests"]
+   python_files = "test_*.py"
+   python_classes = "Test*"
+   python_functions = "test_*"
+   addopts = "--cov=fca_dashboard --cov-report=html --cov-report=term"
+
+   [tool.coverage.run]
+   source = ["fca_dashboard"]
+   omit = [
+       "*/tests/*",
+       "*/alembic/*",
+       "*/__pycache__/*",
+       "*/migrations/*",
+       "*/venv/*",
+       "*/.venv/*",
+   ]
+
+   [tool.coverage.report]
+   exclude_lines = [
+       "pragma: no cover",
+       "def __repr__",
+       "raise NotImplementedError",
+       "if __name__ == .__main__.:",
+       "pass",
+       "raise ImportError",
+   ]
+   
+   [tool.ruff]
+   # Enable Pyflakes ('F'), pycodestyle ('E'), and isort ('I') codes by default.
+   select = ["E", "F", "I", "N", "B", "C4", "SIM", "ERA"]
+   ignore = []
+   
+   # Allow autofix for all enabled rules (when `--fix`) is provided.
+   fixable = ["ALL"]
+   unfixable = []
+   
+   # Exclude a variety of commonly ignored directories.
+   exclude = [
+       ".git",
+       ".mypy_cache",
+       ".ruff_cache",
+       ".venv",
+       "__pycache__",
+       "build",
+       "dist",
+   ]
+   
+   # Same as Black.
+   line-length = 120
+   
+   # Allow unused variables when underscore-prefixed.
+   dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+   
+   # Assume Python 3.9
+   target-version = "py39"
+   
+   [tool.ruff.mccabe]
+   # Unlike Flake8, default to a complexity level of 10.
+   max-complexity = 10
+   
+   [tool.ruff.isort]
+   known-first-party = ["fca_dashboard"]
+   ```
+
+2. Create a `pytest.ini` file for additional pytest configuration:
+
+   ```ini
+   [pytest]
+   testpaths = fca_dashboard/tests
+   python_files = test_*.py
+   python_classes = Test*
+   python_functions = test_*
+
+   [mypy]
+   python_version = 3.8
+   warn_return_any = True
+   warn_unused_configs = True
+   disallow_untyped_defs = True
+   disallow_incomplete_defs = True
+
+   # Ignore missing imports for third-party libraries
+   [mypy.plugins.pytest]
+   # This tells mypy that pytest fixtures can return Any
+   pytest_fixture_function = True
+
+   # Ignore errors in test files
+   [mypy-fca_dashboard.tests.*]
+   disallow_untyped_defs = False
+   disallow_incomplete_defs = False
+   ```
+
+2. Create a minimal `setup.py` file to make the package installable:
+
+   ```python
+   """
+   Setup script for the FCA Dashboard package.
+   """
+
+   from setuptools import setup, find_packages
+
+   setup(
+       name="fca_dashboard",
+       packages=find_packages(),
+   )
+   ```
+
+2. Test linters:
+
+   ```bash
+   black --check .
+   isort --check .
+   flake8 .
+   mypy .
+   ```
+
+3. Create a `Makefile` for convenience commands:
+
+   ```makefile
+   .PHONY: lint test format install run clean init-db coverage test-unit test-integration
+
+   lint:
+    black --check .
+    isort --check .
+    flake8 .
+    mypy .
+
+   format:
+    black .
+    isort .
+
+   test:
+    pytest fca_dashboard/tests/
+
+   coverage:
+    pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+    @echo "HTML coverage report generated in htmlcov/"
+
+   test-unit:
+    pytest fca_dashboard/tests/unit/
+
+   test-integration:
+    pytest fca_dashboard/tests/integration/
+
+   install:
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install -e .
+   ```
+
+   Note: The `install` target includes installing the package in development mode (`pip install -e .`), which is necessary for absolute imports to work correctly. The additional test targets provide more granular control over test execution:
+
+   - `test`: Runs all tests
+   - `test-unit`: Runs only unit tests
+   - `test-integration`: Runs only integration tests
+   - `coverage`: Runs tests with coverage reporting, generating both terminal and HTML reports
+
+### 3.4. Understanding and Using Makefiles
+
+1. What is a Makefile?
+   - A Makefile is a configuration file used by the `make` utility to automate tasks and build processes
+   - It contains a set of directives (targets) that define commands to be executed
+   - Makefiles help standardize common development tasks across the team
+
+2. Prerequisites for using Makefiles:
+   - Windows: Install Make via Chocolatey (`choco install make`) or use Git Bash
+   - macOS: Make is typically pre-installed
+   - Linux: Install via package manager (e.g., `apt install make`)
+
+3. Makefile structure explanation:
+   - `.PHONY`: Declares targets that don't represent files (prevents conflicts with files of the same name)
+   - Each target (e.g., `lint:`) defines a task that can be executed with `make <target>`
+   - Commands under targets must be indented with tabs, not spaces
+
+4. Additional useful targets to consider:
+
+   ```makefile
+   # Add these to your Makefile as needed
+   
+   # Run the ETL pipeline with default settings
+   run:
+    python fca_dashboard/main.py --config fca_dashboard/config/settings.yaml
+   
+   # Clean up generated files
+   clean:
+    find . -type d -name "__pycache__" -exec rm -rf {} +
+    find . -type f -name "*.pyc" -delete
+    find . -type f -name "*.pyo" -delete
+    find . -type f -name "*.pyd" -delete
+    find . -type d -name "*.egg-info" -exec rm -rf {} +
+    find . -type d -name "*.egg" -exec rm -rf {} +
+    find . -type d -name ".pytest_cache" -exec rm -rf {} +
+    find . -type d -name ".coverage" -exec rm -rf {} +
+    find . -type d -name "htmlcov" -exec rm -rf {} +
+    find . -type d -name ".mypy_cache" -exec rm -rf {} +
+   
+   # Create initial database schema
+   init-db:
+    python -c "from fca_dashboard.core.models import Base; from sqlalchemy import create_engine; engine = create_engine('sqlite:///etl.db'); Base.metadata.create_all(engine)"
+   ```
+
+5. Using the Makefile:
+   - Run linters: `make lint`
+   - Format code: `make format`
+   - Run tests: `make test`
+   - Install dependencies: `make install`
+   - Execute multiple targets: `make clean install test`
+
+### 4. Project Structure Setup
+
+1. Create the directory structure:
+
+   ```bash
+   mkdir -p fca_dashboard/{alembic,config,core/{interfaces,models},extractors/{strategies},mappers/{strategies},loaders,pipelines,utils,tests/{unit,integration}}
+   touch fca_dashboard/__init__.py
+   touch fca_dashboard/main.py
+   touch fca_dashboard/core/__init__.py
+   touch fca_dashboard/extractors/__init__.py
+   touch fca_dashboard/mappers/__init__.py
+   touch fca_dashboard/loaders/__init__.py
+   touch fca_dashboard/pipelines/__init__.py
+   touch fca_dashboard/utils/__init__.py
+   touch fca_dashboard/tests/__init__.py
+   touch fca_dashboard/tests/unit/__init__.py
+   touch fca_dashboard/tests/integration/__init__.py
+   ```
+
+   Note: We're using `fca_dashboard` as the package name to match the repository name (`fca-dashboard4`), rather than `fca_dashboard` as mentioned in the guide.
+
+### 5. Configuration Files Setup
+
+1. Create `fca_dashboard/config/settings.yaml`:
+
+   ```yaml
+   # Database settings
+   databases:
+     sqlite:
+       url: "sqlite:///fca_dashboard.db"
+     postgresql:
+       url: "postgresql://user:password@localhost/fca_dashboard"
+       
+   # Pipeline settings
+   pipeline_settings:
+     batch_size: 5000
+     log_level: "INFO"
+     
+   # Table mappings
+   tables:
+     equipment:
+       mapping_type: "direct"
+       column_mappings:
+         tag: "Tag"
+         name: "Name"
+         description: "Description"
+   ```
+
+2. Create `fca_dashboard/config/settings.py` for loading settings.
+
+### 7. Configure Logging Early
+
+1. Set up logging configuration right after environment setup:
+
+   ```bash
+   # After installing dependencies
+   mkdir -p logs
+   touch logs/fca_dashboard.log
+   ```
+
+2. Create a type stub file for Loguru to help with type checking:
+
+   ```python
+   # fca_dashboard/utils/loguru_stubs.pyi
+   from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, Union, overload
+
+   class Logger:
+       def remove(self, handler_id: Optional[int] = None) -> None: ...
+       
+       def add(
+           self,
+           sink: Union[TextIO, str, Callable, Dict[str, Any]],
+           *,
+           level: Optional[Union[str, int]] = None,
+           format: Optional[str] = None,
+           filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
+           colorize: Optional[bool] = None,
+           serialize: Optional[bool] = None,
+           backtrace: Optional[bool] = None,
+           diagnose: Optional[bool] = None,
+           enqueue: Optional[bool] = None,
+           catch: Optional[bool] = None,
+           rotation: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           retention: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           compression: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+           delay: Optional[bool] = None,
+           mode: Optional[str] = None,
+           buffering: Optional[int] = None,
+           encoding: Optional[str] = None,
+           **kwargs: Any
+       ) -> int: ...
+       
+       def bind(self, **kwargs: Any) -> "Logger": ...
+       
+       def opt(
+           self,
+           *,
+           exception: Optional[Union[bool, Tuple[Any, ...], Dict[str, Any]]] = None,
+           record: Optional[bool] = None,
+           lazy: Optional[bool] = None,
+           colors: Optional[bool] = None,
+           raw: Optional[bool] = None,
+           capture: Optional[bool] = None,
+           depth: Optional[int] = None,
+           ansi: Optional[bool] = None,
+       ) -> "Logger": ...
+       
+       def trace(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def debug(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def info(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def success(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def warning(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def error(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def critical(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def exception(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       def log(self, level: Union[int, str], __message: Any, *args: Any, **kwargs: Any) -> None: ...
+       
+       def level(self, name: str, no: int = 0, color: Optional[str] = None, icon: Optional[str] = None) -> "Logger": ...
+       def disable(self, name: str) -> None: ...
+       def enable(self, name: str) -> None: ...
+       
+       def configure(
+           self,
+           *,
+           handlers: List[Dict[str, Any]] = [],
+           levels: List[Dict[str, Any]] = [],
+           extra: Dict[str, Any] = {},
+           patcher: Optional[Callable] = None,
+           activation: List[Tuple[str, bool]] = [],
+       ) -> None: ...
+       
+       def patch(self, patcher: Callable) -> "Logger": ...
+       
+       def complete(self) -> None: ...
+       
+       @property
+       def catch(self) -> Callable: ...
+
+   logger: Logger
+   ```
+
+3. Create a logging utility using Loguru:
+
+   ```python
+   # fca_dashboard/utils/logging_config.py
+   """
+   Logging configuration module for the FCA Dashboard application.
+
+   This module provides functionality to configure logging for the application
+   using Loguru, which offers improved formatting, better exception handling,
+   and simplified configuration compared to the standard logging module.
+   """
+
+   import sys
+   from pathlib import Path
+   from typing import Optional, Any
+
+   from loguru import logger  # type: ignore
+
+
+   def configure_logging(
+       level: str = "INFO",
+       log_file: Optional[str] = None,
+       rotation: str = "10 MB",
+       retention: str = "1 month",
+       format_string: Optional[str] = None
+   ) -> None:
+       """
+       Configure application logging with console and optional file output using Loguru.
+       
+       Args:
+           level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+           log_file: Path to log file. If None, only console logging is configured.
+           rotation: When to rotate the log file (e.g., "10 MB", "1 day")
+           retention: How long to keep log files (e.g., "1 month", "1 year")
+           format_string: Custom format string for log messages
+       """
+       # Remove default handlers
+       logger.remove()
+       
+       # Default format string if none provided
+       if format_string is None:
+           format_string = (
+               "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+               "<level>{level: <8}</level> | "
+               "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+               "<level>{message}</level>"
+           )
+       
+       # Add console handler
+       logger.add(
+           sys.stderr,
+           level=level.upper(),
+           format=format_string,
+           colorize=True
+       )
+       
+       # Add file handler if log_file is provided
+       if log_file:
+           # Ensure log directory exists
+           log_path = Path(log_file)
+           log_dir = log_path.parent
+           if not log_dir.exists():
+               log_dir.mkdir(parents=True, exist_ok=True)
+           
+           # Add rotating file handler
+           logger.add(
+               log_file,
+               level=level.upper(),
+               format=format_string,
+               rotation=rotation,
+               retention=retention,
+               compression="zip"
+           )
+       
+       logger.info(f"Logging configured with level: {level}")
+
+
+   def get_logger(name: str = "fca_dashboard") -> Any:
+       """
+       Get a logger instance with the specified name.
+       
+       Args:
+           name: Logger name, typically the module name
+           
+       Returns:
+           Loguru logger instance
+       """
+       return logger.bind(name=name)
+   ```
+
+3. Install type stubs for libraries:
+
+   ```bash
+   # Install type stubs for PyYAML (already in requirements.txt)
+   pip install types-PyYAML
+   ```
+
+   Note: Type stubs are important for static type checking with mypy. They provide type information for libraries that don't have built-in type annotations. If you encounter mypy errors like "Cannot find implementation or library stub for module named X", you may need to install type stubs for that library.
+
+4. Test logging configuration:
+
+   ```bash
+   python -c "from fca_dashboard.utils.logging_config import configure_logging; configure_logging('DEBUG', 'logs/fca_dashboard.log')"
+   ```
+
+### 8. Unit Testing Setup
+
+1. Create test files for key modules:
+
+   ```bash
+   # Create test files for settings and logging modules
+   mkdir -p fca_dashboard/tests/unit
+   touch fca_dashboard/tests/unit/__init__.py
+   touch fca_dashboard/tests/unit/test_settings.py
+   touch fca_dashboard/tests/unit/test_logging_config.py
+   ```
+
+2. Create a `conftest.py` file in the tests directory to ensure pytest can find modules:
+
+   ```python
+   """
+   Pytest configuration file.
+
+   This file contains shared fixtures and configuration for pytest.
+   """
+
+   import os
+   import sys
+   from pathlib import Path
+
+   # Add the project root directory to the Python path
+   # This ensures that the tests can import modules from the project
+   project_root = Path(__file__).parent.parent.parent
+   sys.path.insert(0, str(project_root))
+   ```
+
+3. Implement unit tests for the Settings module in `fca_dashboard/tests/unit/test_settings.py`:
+
+   ```python
+   """
+   Unit tests for the Settings module.
+
+   This module contains tests for the Settings class and related functionality
+   in the fca_dashboard.config.settings module.
+   """
+
+   import os
+   import tempfile
+   from pathlib import Path
+
+   import pytest
+   import yaml
+
+   from fca_dashboard.config.settings import Settings, get_settings
+
+
+   @pytest.fixture
+   def temp_settings_file() -> str:
+       """Create a temporary settings file for testing."""
+       config_content = """
+       database:
+         host: localhost
+         port: 5432
+         user: test_user
+         password: secret
+       app:
+         name: test_app
+         debug: true
+       """
+       with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
+           temp_file.write(config_content.encode("utf-8"))
+           temp_path = temp_file.name
+       
+       yield temp_path
+       
+       # Cleanup
+       os.unlink(temp_path)
+
+
+   def test_settings_load_valid_file(temp_settings_file: str) -> None:
+       """Test loading settings from a valid file."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.host") == "localhost"
+       assert settings.get("database.port") == 5432
+       assert settings.get("app.name") == "test_app"
+       assert settings.get("app.debug") is True
+
+
+   def test_settings_load_missing_file() -> None:
+       """Test that loading a non-existent file raises FileNotFoundError."""
+       with pytest.raises(FileNotFoundError):
+           Settings(config_path="nonexistent_file.yml")
+
+
+   def test_settings_get_nonexistent_key(temp_settings_file: str) -> None:
+       """Test getting a non-existent key returns the default value."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("nonexistent.key") is None
+       assert settings.get("nonexistent.key", default="fallback") == "fallback"
+
+
+   def test_settings_get_nested_keys(temp_settings_file: str) -> None:
+       """Test getting nested keys from the configuration."""
+       settings = Settings(config_path=temp_settings_file)
+       assert settings.get("database.user") == "test_user"
+       assert settings.get("database.password") == "secret"
+
+
+   def test_get_settings_caching(temp_settings_file: str) -> None:
+       """Test that get_settings caches instances for the same config path."""
+       settings1 = get_settings(temp_settings_file)
+       settings2 = get_settings(temp_settings_file)
+       
+       # Should be the same instance
+       assert settings1 is settings2
+       
+       # Modify the first instance and check that the second reflects the change
+       settings1.config["test_key"] = "test_value"
+       assert settings2.config["test_key"] == "test_value"
+
+
+   def test_get_settings_default() -> None:
+       """Test that get_settings returns the default instance when no path is provided."""
+       settings = get_settings()
+       assert isinstance(settings, Settings)
+       
+       # Should return the same default instance on subsequent calls
+       settings2 = get_settings()
+       assert settings is settings2
+   ```
+
+4. Run the tests using the Makefile:
+
+   ```bash
+   # Run all tests
+   make test
+   
+   # Run only unit tests
+   make test-unit
+   
+   # Run tests with coverage reporting
+   make coverage
+   ```
+
+5. Verify test coverage:
+   - Open the HTML coverage report in a browser: `open htmlcov/index.html`
+   - Check the terminal output for coverage statistics
+   - Aim for at least 80% code coverage for critical modules
+
+### 9. Example Pipeline Usage
+
+1. Example command for running the ETL pipeline:
+
+   ```bash
+   python fca_dashboard/main.py --config fca_dashboard/config/settings.yaml --excel-file data/sample.xlsx --table-name equipment --log-level INFO
+   ```
+
+2. Using the Makefile for common operations:
+
+   ```bash
+   # Run linters
+   make lint
+   
+   # Run tests
+   make test
+   
+   # Run tests with coverage
+   make coverage
+   
+   # Format code
+   make format
+   ```
+
+### 6. VS Code Workspace Setup
+
+1. Create a `.vscode` directory:
+
+   ```bash
+   mkdir -p .vscode
+   ```
+
+2. Create `.vscode/settings.json` for linting and autoformatting configuration:
+
+   ```json
+   {
+     "python.linting.enabled": true,
+     "python.linting.flake8Enabled": true,
+     "python.linting.mypyEnabled": true,
+     "python.formatting.provider": "black",
+     "editor.formatOnSave": true,
+     "editor.rulers": [120],
+     "python.testing.pytestEnabled": true,
+     "python.testing.unittestEnabled": false,
+     "python.testing.nosetestsEnabled": false,
+     "python.testing.pytestArgs": [
+       "fca_dashboard/tests"
+     ],
+     "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+     "python.analysis.extraPaths": [
+       "${workspaceFolder}"
+     ],
+     "ruff.enable": true,
+     "ruff.organizeImports": true,
+     "ruff.fixAll": true,
+     "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+     "[python]": {
+       "editor.defaultFormatter": "charliermarsh.ruff",
+       "editor.formatOnSave": true,
+       "editor.codeActionsOnSave": {
+         "source.fixAll.ruff": true,
+         "source.organizeImports.ruff": true
+       }
+     }
+   }
+   ```
+
+   Key settings explained:
+   - `"python.linting.enabled": true` - Enables linting for Python files
+   - `"python.linting.flake8Enabled": true` - Enables flake8 linter
+   - `"python.linting.mypyEnabled": true` - Enables mypy type checking
+   - `"python.formatting.provider": "black"` - Sets Black as the formatter
+   - `"editor.formatOnSave": true` - Automatically formats code when saving files
+   - `"editor.rulers": [120]` - Shows a vertical line at 120 characters
+   - `"python.pythonPath": "${workspaceFolder}/.venv/bin/python"` - Points to the virtual environment Python
+   - `"ruff.enable": true` - Enables Ruff linter
+   - `"ruff.organizeImports": true` - Enables Ruff to organize imports (replaces isort)
+   - `"ruff.fixAll": true` - Enables Ruff to fix all auto-fixable issues
+   - `"editor.codeActionsOnSave"` - Configures Ruff to run on save for fixing and organizing imports
+
+3. Install VS Code extensions for Python development:
+   - Python extension (ms-python.python)
+   - Pylance (ms-python.vscode-pylance)
+   - Python Docstring Generator (njpwerner.autodocstring)
+   - YAML (redhat.vscode-yaml)
+   - Ruff (charliermarsh.ruff) - Fast Python linter
+
+   These can be installed via the Extensions view in VS Code or using the command line:
+
+   ```bash
+   code --install-extension ms-python.python
+   code --install-extension ms-python.vscode-pylance
+   code --install-extension njpwerner.autodocstring
+   code --install-extension redhat.vscode-yaml
+   code --install-extension charliermarsh.ruff
+   ```
+
+   Ruff configuration:
+   - Ruff is a fast Python linter that replaces multiple tools (flake8, isort, etc.)
+   - It's significantly faster than traditional linters
+   - It can automatically fix many issues with `--fix` option
+
+4. Create `.vscode/launch.json`:
+
+   ```json
+   {
+     "version": "0.2.0",
+     "configurations": [
+       {
+         "name": "Python: Current File",
+         "type": "python",
+         "request": "launch",
+         "program": "${file}",
+         "console": "integratedTerminal",
+         "justMyCode": false
+       },
+       {
+         "name": "Python: ETL Pipeline",
+         "type": "python",
+         "request": "launch",
+         "program": "${workspaceFolder}/fca_dashboard/main.py",
+         "args": [
+           "--config", "${workspaceFolder}/fca_dashboard/config/settings.yaml"
+         ],
+         "console": "integratedTerminal",
+         "justMyCode": false
+       }
+     ]
+   }
+   ```
+
+5. Create a workspace file `fca-dashboard4.code-workspace`:
+
+   ```json
+   {
+     "folders": [
+       {
+         "path": "."
+       }
+     ],
+     "settings": {
+       "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+     }
+   }
+   ```
+
+## Verification
+
+1. Verify virtual environment activation:
+   - Command prompt should show (.venv) prefix
+   - Run `pip -V` to confirm packages are installed from the virtual environment
+
+2. Verify dependencies installation:
+   - Run `pip list` to confirm all required packages are installed
+
+3. Verify linter configuration:
+   - Run linter tests as described in step 3.2
+   - All tests should pass or show expected warnings/errors
+
+4. Verify project structure:
+   - Run `find fca_dashboard -type d | sort` to confirm all directories exist
+   - Run `find fca_dashboard -type f -name "__init__.py" | sort` to confirm all __init__.py files exist
+
+5. Verify VS Code workspace:
+   - Open the workspace file in VS Code
+   - Confirm linting and formatting work as expected:
+     - Open a Python file and introduce a PEP 8 violation (e.g., extra spaces)
+     - Save the file and verify it's automatically formatted
+     - Introduce a type error and verify mypy highlights it
+     - Introduce a syntax error and verify flake8 highlights it
+   - Confirm debugging configurations are available
+   - Verify extensions are installed and activated
+
+## Troubleshooting
+
+1. Virtual environment issues:
+   - If `python -m venv .venv` fails, ensure Python 3.9+ is installed
+   - If activation fails, check that the scripts directory exists in .venv
+   - On Windows, you may need to run PowerShell as administrator or adjust execution policy: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+2. Dependencies installation issues:
+   - If pip install fails with permission errors, ensure the virtual environment is activated
+   - If package conflicts occur, try installing packages one by one to identify conflicts
+   - For psycopg2-binary installation issues on Windows, you might need to install Visual C++ Build Tools
+   - If pandas wheel building takes too long, consider using a pre-built wheel: `pip install --only-binary=:all: pandas`
+   - If you encounter `ModuleNotFoundError` when importing from the package, ensure you've installed the package in development mode with `pip install -e .`
+
+3. Linter configuration issues:
+   - If linters aren't recognized, ensure they're installed in the virtual environment
+   - For VS Code integration issues, install the Python extension and reload the window
+   - If black/isort configurations conflict, ensure the profiles are compatible
+
+4. Makefile issues:
+   - If `make` command is not found on Windows, install it using Chocolatey
+   - If Chocolatey installation fails with permission errors, run PowerShell as administrator:
+
+     ```powershell
+     Start-Process powershell -Verb RunAs -ArgumentList "choco install make -y"
+     ```
+
+   - If lock file errors occur during installation, you may need to delete the lock file mentioned in the error message
+   - Ensure Makefile commands use tabs for indentation, not spaces
+   - For Windows users without make, you can run the individual commands directly
+
+5. VS Code linting and formatting issues:
+   - If autoformatting doesn't work on save, check that `"editor.formatOnSave": true` is set
+   - If linting doesn't work, ensure the Python extension is installed and activated
+   - Try reloading the VS Code window (Ctrl+Shift+P, then "Developer: Reload Window")
+   - Verify the Python interpreter is correctly set to the virtual environment
+   - Check the VS Code output panel (View > Output) and select "Python" to see linting errors
+   - If you see "Import X could not be resolved from source" errors in VS Code/Pylance, but the code runs correctly, this is likely just an IDE issue. Try reloading the window or restarting VS Code. You can also try adding the package to the `python.analysis.extraPaths` setting in `.vscode/settings.json`.
+
+6. Project structure issues:
+   - On Windows, use appropriate mkdir commands or create directories through Explorer
+   - Ensure proper permissions to create directories and files
+   - For nested directory creation issues on Windows, create parent directories first
+
+7. Database connection issues:
+   - For SQLite: Ensure the database file path is writable
+   - For PostgreSQL: Verify connection parameters and that the PostgreSQL service is running
+   - Check firewall settings if connecting to a remote database
+
+8. Pipeline execution issues:
+   - Verify input file formats match expected formats
+   - Check for sufficient disk space for large data operations
+   - For memory errors during processing, try reducing batch_size in settings.yaml
+
+9. Logging issues:
+   - If using Loguru, ensure it's properly installed: `pip install loguru`
+   - For file permission issues, check that the logs directory exists and is writable
+   - If log rotation isn't working, verify the rotation and retention parameters
+
+10. Testing issues:
+
+- If pytest can't find your modules, ensure you have a `conftest.py` file that adds the project root to the Python path
+- If you get type errors in test files, check the `pytest.ini` configuration for mypy settings
+- For coverage issues, verify the `[tool.coverage.run]` and `[tool.coverage.report]` settings in `pyproject.toml`
+- If tests pass locally but fail in CI, check for environment-specific issues like file paths or dependencies
+- For slow tests, consider using pytest's `-xvs` flags for more verbose output and to stop on the first failure
+
+## Completion Status
+
+This SOP has been completed and verified on March 3, 2025. All steps have been tested and confirmed to work correctly. The environment setup is now complete and ready for development.
+
+## References
+
+- [ETL Pipeline v4 Implementation Guide](../../docs/guide/guide.md)
+- [Python venv documentation](https://docs.python.org/3/library/venv.html)
+- [VS Code Python setup](https://code.visualstudio.com/docs/python/python-tutorial)
+- [Loguru documentation](https://github.com/Delgan/loguru)
+
+## Revision History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 1.0 | 2025-03-03 | ETL Team | Initial version |
+| 1.1 | 2025-03-03 | ETL Team | Enhanced with version bounds, Makefile, example usage, expanded troubleshooting |
+| 1.2 | 2025-03-03 | ETL Team | Added detailed VS Code setup, linting and autoformat configuration |
+| 1.3 | 2025-03-03 | ETL Team | Added Makefile troubleshooting section for Windows users |
+| 1.4 | 2025-03-03 | ETL Team | Updated to use Loguru for logging, added type stubs, expanded troubleshooting |
+| 1.5 | 2025-03-03 | ETL Team | Updated Makefile to include development mode installation, added notes about its importance |
+| 1.6 | 2025-03-03 | ETL Team | Added unit testing setup, improved test configuration, and updated VS Code settings |
+
+================
+File: fca_dashboard/config/__init__.py
+================
+"""
+Configuration package for the FCA Dashboard application.
+
+This package contains modules for loading and managing application configuration.
+"""
+
+================
+File: fca_dashboard/config/settings.py
+================
+"""
+Configuration module for loading and accessing application settings.
+
+This module provides functionality to load settings from YAML configuration files
+and access them in a structured way throughout the application.
+"""
+
+from pathlib import Path
+from typing import Any, Dict, Optional, Union
+
+import yaml
+
+
+class Settings:
+    """
+    Settings class for loading and accessing application configuration.
+
+    This class provides methods to load settings from YAML files and access
+    them through a simple interface.
+    """
+
+    def __init__(self, config_path: Optional[Union[str, Path]] = None):
+        """
+        Initialize Settings with optional config path.
+
+        Args:
+            config_path: Path to the YAML configuration file. If None, uses default.
+        """
+        self.config: Dict[str, Any] = {}
+        self.config_path = Path(config_path) if config_path else Path(__file__).parent / "settings.yml"
+        self.load_config()
+
+    def load_config(self) -> None:
+        """Load configuration from the YAML file."""
+        config_path = self.config_path
+
+        if not config_path.exists():
+            raise FileNotFoundError(f"Configuration file not found: {self.config_path}")
+
+        with open(config_path, "r") as config_file:
+            self.config = yaml.safe_load(config_file)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """
+        Get a configuration value by key.
+
+        Args:
+            key: The configuration key to retrieve
+            default: Default value if key is not found
+
+        Returns:
+            The configuration value or default if not found
+        """
+        keys = key.split(".")
+        value = self.config
+
+        for k in keys:
+            if isinstance(value, dict) and k in value:
+                value = value[k]
+            else:
+                return default
+
+        return value
+
+
+# Cache for settings instances
+_settings_cache: Dict[str, Settings] = {}
+# Create a default settings instance
+settings = Settings()
+
+
+def get_settings(config_path: Optional[Union[str, Path]] = None) -> Settings:
+    """
+    Get a Settings instance, with caching for repeated calls.
+
+    Args:
+        config_path: Optional path to a configuration file
+
+    Returns:
+        A Settings instance
+    """
+    if config_path is None:
+        return settings
+
+    # Convert to string for dictionary key
+    cache_key = str(config_path)
+
+    # Return cached instance if available
+    if cache_key in _settings_cache:
+        return _settings_cache[cache_key]
+
+    # Create new instance and cache it
+    new_settings = Settings(config_path)
+    _settings_cache[cache_key] = new_settings
+    return new_settings
+
+================
+File: fca_dashboard/config/settings.yml
+================
+# Database settings
+databases:
+  sqlite:
+    url: "sqlite:///fca_dashboard.db"
+  postgresql:
+    url: "postgresql://user:password@localhost/fca_dashboard"
+    
+# Pipeline settings
+pipeline_settings:
+  batch_size: 5000
+  log_level: "INFO"
+  
+# Table mappings
+tables:
+  equipment:
+    mapping_type: "direct"
+    column_mappings:
+      tag: "Tag"
+      name: "Name"
+      description: "Description"
+
+================
+File: fca_dashboard/main.py
+================
+"""
+Main entry point for the FCA Dashboard ETL pipeline.
+
+This module provides the main functionality to run the ETL pipeline,
+including command-line argument parsing and pipeline execution.
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+import yaml
+
+from fca_dashboard.config.settings import get_settings
+from fca_dashboard.utils.logging_config import configure_logging, get_logger
+from fca_dashboard.utils.path_util import get_logs_path, resolve_path
+
+
+def parse_args() -> argparse.Namespace:
+    """
+    Parse command line arguments.
+
+    Returns:
+        Parsed command line arguments
+    """
+    parser = argparse.ArgumentParser(description="FCA Dashboard ETL Pipeline")
+
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=str(Path(__file__).parent / "config" / "settings.yml"),
+        help="Path to configuration file",
+    )
+
+    parser.add_argument(
+        "--log-level",
+        type=str,
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="INFO",
+        help="Logging level",
+    )
+
+    parser.add_argument("--excel-file", type=str, help="Path to Excel file to process")
+
+    parser.add_argument("--table-name", type=str, help="Name of the table to process")
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    """
+    Main entry point for the ETL pipeline.
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Parse command line arguments
+    args = parse_args()
+
+    # Configure logging
+    log_file = get_logs_path("fca_dashboard.log")
+    configure_logging(level=args.log_level, log_file=str(log_file), rotation="10 MB", retention="1 month")
+
+    # Get a logger for this module
+    log = get_logger("main")
+
+    try:
+        # Resolve the configuration file path
+        config_path = resolve_path(args.config)
+        log.info(f"Loading configuration from {config_path}")
+
+        # Load settings
+        settings = get_settings(str(config_path))
+
+        # Log startup information
+        log.info("FCA Dashboard ETL Pipeline starting")
+        log.info(f"Python version: {sys.version}")
+        log.info(f"Current working directory: {Path.cwd()}")
+
+        # TODO: Implement ETL pipeline execution
+        # Steps include:
+        # 1. Extract data from Excel or database source
+        #    - Read source data using appropriate extractor strategy
+        #    - Validate source data structure
+        # 2. Transform data (cleaning, normalization, enrichment)
+        #    - Apply business rules and transformations
+        #    - Map source fields to destination schema
+        # 3. Load data into destination database or output format
+        #    - Batch insert/update operations
+        #    - Validate data integrity after loading
+        log.info("ETL Pipeline execution would start here")
+
+        log.info(f"Database URL: {settings.get('databases.sqlite.url')}")
+
+        if args.excel_file:
+            excel_path = resolve_path(args.excel_file)
+            log.info(f"Would process Excel file: {excel_path}")
+
+        if args.table_name:
+            log.info(f"Would process table: {args.table_name}")
+
+        # Log successful completion
+        log.info("ETL Pipeline completed successfully")
+        return 0
+
+    except FileNotFoundError as fnf:
+        log.error(f"File not found: {fnf}")
+        return 1
+    except yaml.YAMLError as yaml_err:
+        log.error(f"YAML configuration error: {yaml_err}")
+        return 1
+    except Exception as e:
+        log.exception(f"Unexpected error in ETL Pipeline: {e}")
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: fca_dashboard/tests/conftest.py
+================
+"""
+Pytest configuration file.
+
+This file contains shared fixtures and configuration for pytest.
+"""
+
+import sys
+from pathlib import Path
+
+# Add the project root directory to the Python path
+# This ensures that the tests can import modules from the project
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+================
+File: fca_dashboard/tests/unit/test_logging_config.py
+================
+"""
+Unit tests for the logging configuration module.
+
+This module contains tests for the logging configuration functionality
+in the fca_dashboard.utils.logging_config module.
+"""
+
+import os
+import tempfile
+from typing import Generator
+
+import pytest
+from _pytest.capture import CaptureFixture
+from loguru import logger
+
+from fca_dashboard.utils.logging_config import configure_logging, get_logger
+
+
+@pytest.fixture
+def temp_log_file() -> Generator[str, None, None]:
+    """Create a temporary log file for testing."""
+    with tempfile.NamedTemporaryFile(suffix=".log", delete=False) as temp_file:
+        temp_path = temp_file.name
+
+    yield temp_path
+
+    # Cleanup
+    if os.path.exists(temp_path):
+        os.unlink(temp_path)
+
+
+def test_configure_logging_console_only() -> None:
+    """Test configuring logging with console output only."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging with console output only
+    configure_logging(level="DEBUG")
+
+    # Get a logger and log a message
+    log = get_logger("test_logger")
+    log.debug("Test debug message")
+    log.info("Test info message")
+
+    # No assertions here as we're just testing that no exceptions are raised
+    # and visually confirming console output during test execution
+
+
+def test_configure_logging_with_file(temp_log_file: str) -> None:
+    """Test configuring logging with file output."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging with file output
+    configure_logging(level="INFO", log_file=temp_log_file)
+
+    # Get a logger and log messages
+    log = get_logger("test_logger")
+    log.debug("Test debug message - should not be in file")
+    log.info("Test info message - should be in file")
+    log.warning("Test warning message - should be in file")
+
+    # Force flush by removing handlers
+    logger.remove()
+
+    # Check that the log file exists and contains the expected messages
+    assert os.path.exists(temp_log_file)
+    with open(temp_log_file, "r") as f:
+        log_content = f.read()
+        assert "Test debug message - should not be in file" not in log_content
+        assert "Test info message - should be in file" in log_content
+        assert "Test warning message - should be in file" in log_content
+
+
+def test_configure_logging_creates_directory() -> None:
+    """Test that configure_logging creates the log directory if it doesn't exist."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a path to a log file in a non-existent subdirectory
+        nonexistent_dir = os.path.join(temp_dir, "nonexistent_dir")
+        log_file = os.path.join(nonexistent_dir, "test.log")
+
+        # Configure logging - this should create the directory
+        configure_logging(level="INFO", log_file=log_file)
+
+        # Get a logger and log a message
+        log = get_logger("test_logger")
+        log.info("Test message")
+
+        # Force flush by removing handlers
+        logger.remove()
+
+        # Check that the directory and log file were created
+        assert os.path.exists(nonexistent_dir)
+        assert os.path.exists(log_file)
+
+        # Check that the log file contains the message
+        with open(log_file, "r") as f:
+            log_content = f.read()
+            assert "Test message" in log_content
+
+
+def test_configure_logging_with_custom_format(temp_log_file: str) -> None:
+    """Test configuring logging with a custom format string."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Custom format string
+    custom_format = "{time} | {level} | {message}"
+
+    # Configure logging with custom format
+    configure_logging(level="INFO", log_file=temp_log_file, format_string=custom_format)
+
+    # Get a logger and log a message
+    log = get_logger("test_logger")
+    log.info("Test message with custom format")
+
+    # Force flush by removing handlers
+    logger.remove()
+
+    # Check that the log file contains the message with the custom format
+    with open(temp_log_file, "r") as f:
+        log_content = f.read()
+        assert "Test message with custom format" in log_content
+        # The format is simplified, so we don't check for exact format
+
+
+def test_get_logger_with_name(capfd: CaptureFixture) -> None:
+    """Test getting a logger with a specific name."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging
+    configure_logging(level="INFO")
+
+    # Get a logger with a specific name
+    log_name = "custom_logger_name"
+    log = get_logger(log_name)
+    log.info("Checking logger name")
+
+    # Capture the output and verify the log message is included
+    captured = capfd.readouterr()
+    # The name might not be directly visible in the output due to formatting
+    # but we can verify the log message is there
+    assert "Checking logger name" in captured.err
+
+
+def test_get_logger_default_name(capfd: CaptureFixture) -> None:
+    """Test getting a logger with the default name."""
+    # Remove any existing handlers
+    logger.remove()
+
+    # Configure logging
+    configure_logging(level="INFO")
+
+    # Get a logger with the default name
+    log = get_logger()
+    log.info("Checking default logger name")
+
+    # Capture the output and verify the default logger name is included
+    captured = capfd.readouterr()
+    assert "fca_dashboard" in captured.err
+    assert "Checking default logger name" in captured.err
+
+================
+File: fca_dashboard/tests/unit/test_main.py
+================
+from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+import yaml
+
+from fca_dashboard.main import main, parse_args
+
+
+@patch("sys.argv", ["main.py", "--config", "config/settings.yml"])
+def test_main_runs_successfully() -> None:
+    """Test that the main function runs successfully with default arguments."""
+    exit_code = main()
+    assert exit_code == 0
+
+
+def test_parse_args_defaults() -> None:
+    """Test that parse_args returns expected defaults."""
+    with patch("sys.argv", ["main.py"]):
+        args = parse_args()
+        assert "settings.yml" in args.config
+        assert args.log_level == "INFO"
+        assert args.excel_file is None
+        assert args.table_name is None
+
+
+def test_parse_args_custom_values() -> None:
+    """Test that parse_args handles custom arguments correctly."""
+    with patch(
+        "sys.argv",
+        [
+            "main.py",
+            "--config",
+            "custom_config.yml",
+            "--log-level",
+            "DEBUG",
+            "--excel-file",
+            "data.xlsx",
+            "--table-name",
+            "equipment",
+        ],
+    ):
+        args = parse_args()
+        assert args.config == "custom_config.yml"
+        assert args.log_level == "DEBUG"
+        assert args.excel_file == "data.xlsx"
+        assert args.table_name == "equipment"
+
+
+@patch("fca_dashboard.main.get_settings")
+@patch("fca_dashboard.main.configure_logging")
+@patch("fca_dashboard.main.get_logger")
+@patch("fca_dashboard.main.resolve_path")
+def test_main_with_excel_file_and_table(
+    mock_resolve_path: MagicMock,
+    mock_get_logger: MagicMock,
+    mock_configure_logging: MagicMock,
+    mock_get_settings: MagicMock,
+) -> None:
+    """Test main function with excel_file and table_name arguments."""
+    # Setup mocks
+    mock_logger = MagicMock()
+    mock_get_logger.return_value = mock_logger
+    mock_settings = MagicMock()
+    mock_get_settings.return_value = mock_settings
+    mock_settings.get.return_value = "sqlite:///test.db"
+    mock_resolve_path.side_effect = lambda x: Path(f"/resolved/{x}")
+
+    # Run with excel file and table name
+    with patch(
+        "sys.argv",
+        ["main.py", "--config", "config/settings.yml", "--excel-file", "data.xlsx", "--table-name", "equipment"],
+    ):
+        exit_code = main()
+
+    # Verify
+    assert exit_code == 0
+    assert mock_logger.info.call_count >= 5  # Multiple info logs
+    # Check that excel file and table name were logged
+    mock_resolve_path.assert_any_call("data.xlsx")
+    # Check that the log message contains the excel file path (exact format may vary by OS)
+    excel_log_found = False
+    for call_args in mock_logger.info.call_args_list:
+        if "Would process Excel file:" in call_args[0][0] and "data.xlsx" in call_args[0][0]:
+            excel_log_found = True
+            break
+    assert excel_log_found, "Excel file log message not found"
+    mock_logger.info.assert_any_call("Would process table: equipment")
+
+
+@patch("fca_dashboard.main.get_logger")
+@patch("fca_dashboard.main.configure_logging")
+@patch("fca_dashboard.main.resolve_path")
+def test_main_file_not_found_error(
+    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
+) -> None:
+    """Test main function handling FileNotFoundError."""
+    # Setup mocks
+    mock_logger = MagicMock()
+    mock_get_logger.return_value = mock_logger
+    mock_resolve_path.return_value = Path("nonexistent_file.yml")
+
+    # Simulate FileNotFoundError when trying to load settings
+    with (
+        patch("fca_dashboard.main.get_settings", side_effect=FileNotFoundError("File not found")),
+        patch("sys.argv", ["main.py", "--config", "nonexistent_file.yml"]),
+    ):
+        exit_code = main()
+
+    # Verify
+    assert exit_code == 1
+    mock_logger.error.assert_called_once()
+    assert "File not found" in mock_logger.error.call_args[0][0]
+
+
+@patch("fca_dashboard.main.get_logger")
+@patch("fca_dashboard.main.configure_logging")
+@patch("fca_dashboard.main.resolve_path")
+def test_main_yaml_error(
+    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
+) -> None:
+    """Test main function handling YAMLError."""
+    # Setup mocks
+    mock_logger = MagicMock()
+    mock_get_logger.return_value = mock_logger
+    mock_resolve_path.return_value = Path("invalid_yaml.yml")
+
+    # Simulate YAMLError when trying to load settings
+    with (
+        patch("fca_dashboard.main.get_settings", side_effect=yaml.YAMLError("Invalid YAML")),
+        patch("sys.argv", ["main.py", "--config", "invalid_yaml.yml"]),
+    ):
+        exit_code = main()
+
+    # Verify
+    assert exit_code == 1
+    mock_logger.error.assert_called_once()
+    assert "YAML configuration error" in mock_logger.error.call_args[0][0]
+
+
+@patch("fca_dashboard.main.get_logger")
+@patch("fca_dashboard.main.configure_logging")
+@patch("fca_dashboard.main.resolve_path")
+def test_main_unexpected_error(
+    mock_resolve_path: MagicMock, mock_configure_logging: MagicMock, mock_get_logger: MagicMock
+) -> None:
+    """Test main function handling unexpected exceptions."""
+    # Setup mocks
+    mock_logger = MagicMock()
+    mock_get_logger.return_value = mock_logger
+    mock_resolve_path.return_value = Path("config.yml")
+
+    # Simulate unexpected exception
+    with (
+        patch("fca_dashboard.main.get_settings", side_effect=Exception("Unexpected error")),
+        patch("sys.argv", ["main.py", "--config", "config.yml"]),
+    ):
+        exit_code = main()
+
+    # Verify
+    assert exit_code == 1
+    mock_logger.exception.assert_called_once()
+    assert "Unexpected error" in mock_logger.exception.call_args[0][0]
+
+================
+File: fca_dashboard/tests/unit/test_path_util.py
+================
+"""
+Unit tests for the path utility module.
+
+This module contains tests for the path utility functions in the
+fca_dashboard.utils.path_util module.
+"""
+
+import os
+import tempfile
+from pathlib import Path
+from typing import Any
+from unittest.mock import patch
+
+from fca_dashboard.utils.path_util import get_config_path, get_logs_path, get_root_dir, resolve_path
+
+
+def test_get_root_dir() -> None:
+    """Test that get_root_dir returns a Path object to the project root."""
+    root_dir = get_root_dir()
+    assert isinstance(root_dir, Path)
+    # Check that the directory exists
+    assert root_dir.exists()
+    # Check that it contains expected project files/directories
+    assert (root_dir / "fca_dashboard").exists()
+    assert (root_dir / "setup.py").exists() or (root_dir / "pyproject.toml").exists()
+
+
+def test_get_config_path_default() -> None:
+    """Test get_config_path with default filename."""
+    config_path = get_config_path()
+    assert isinstance(config_path, Path)
+    assert config_path.name == "settings.yml"
+    # Use os.path.join to handle platform-specific path separators
+    assert os.path.join("fca_dashboard", "config") in str(config_path)
+
+
+def test_get_config_path_custom() -> None:
+    """Test get_config_path with custom filename."""
+    custom_filename = "custom_settings.yml"
+    config_path = get_config_path(custom_filename)
+    assert isinstance(config_path, Path)
+    assert config_path.name == custom_filename
+    # Use os.path.join to handle platform-specific path separators
+    assert os.path.join("fca_dashboard", "config") in str(config_path)
+
+
+@patch("fca_dashboard.utils.path_util.logger")
+def test_get_config_path_nonexistent(mock_logger: Any) -> None:
+    """Test get_config_path with a nonexistent file."""
+    nonexistent_file = "nonexistent_file.yml"
+    config_path = get_config_path(nonexistent_file)
+    assert isinstance(config_path, Path)
+    assert config_path.name == nonexistent_file
+    # Check that a warning was logged
+    mock_logger.warning.assert_called_once()
+
+
+def test_get_logs_path_default() -> None:
+    """Test get_logs_path with default filename."""
+    logs_path = get_logs_path()
+    assert isinstance(logs_path, Path)
+    assert logs_path.name == "fca_dashboard.log"
+    assert "logs" in str(logs_path)
+    # Check that the logs directory exists
+    assert logs_path.parent.exists()
+
+
+def test_get_logs_path_custom() -> None:
+    """Test get_logs_path with custom filename."""
+    custom_filename = "custom.log"
+    logs_path = get_logs_path(custom_filename)
+    assert isinstance(logs_path, Path)
+    assert logs_path.name == custom_filename
+    assert "logs" in str(logs_path)
+
+
+def test_resolve_path_absolute() -> None:
+    """Test resolve_path with an absolute path."""
+    # Create a temporary file
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_path = Path(temp_file.name)
+
+    try:
+        # Test with absolute path
+        resolved_path = resolve_path(temp_path)
+        assert resolved_path == temp_path
+    finally:
+        # Clean up
+        os.unlink(temp_path)
+
+
+def test_resolve_path_existing_relative() -> None:
+    """Test resolve_path with an existing relative path."""
+    # Create a temporary file in the current directory
+    with tempfile.NamedTemporaryFile(dir=".", delete=False) as temp_file:
+        temp_name = Path(temp_file.name).name
+
+    try:
+        # Test with relative path that exists
+        resolved_path = resolve_path(temp_name)
+        assert resolved_path.is_absolute()
+        assert resolved_path.name == temp_name
+    finally:
+        # Clean up
+        os.unlink(temp_name)
+
+
+@patch("fca_dashboard.utils.path_util.logger")
+def test_resolve_path_nonexistent(mock_logger: Any) -> None:
+    """Test resolve_path with a nonexistent path."""
+    nonexistent_path = "nonexistent_file.txt"
+    resolved_path = resolve_path(nonexistent_path)
+    assert isinstance(resolved_path, Path)
+    assert resolved_path.name == nonexistent_path
+    # Check that a debug message was logged
+    mock_logger.debug.assert_called()
+
+
+def test_resolve_path_with_base_dir() -> None:
+    """Test resolve_path with a base directory."""
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a file in the temporary directory
+        temp_file_path = Path(temp_dir) / "test_file.txt"
+        with open(temp_file_path, "w") as f:
+            f.write("test")
+
+        # Test resolving the file relative to the base directory
+        resolved_path = resolve_path("test_file.txt", base_dir=Path(temp_dir))
+        assert resolved_path.is_absolute()
+        assert resolved_path.name == "test_file.txt"
+        assert resolved_path.parent == Path(temp_dir).resolve()
+
+
+def test_resolve_path_with_fca_dashboard_subdir() -> None:
+    """Test resolve_path with a path in the fca_dashboard subdirectory."""
+    # Mock a base directory with an fca_dashboard subdirectory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        base_dir = Path(temp_dir)
+        fca_dir = base_dir / "fca_dashboard"
+        fca_dir.mkdir()
+
+        # Create a file in the fca_dashboard subdirectory
+        test_file = fca_dir / "test_file.txt"
+        with open(test_file, "w") as f:
+            f.write("test")
+
+        # Test resolving the file
+        resolved_path = resolve_path("test_file.txt", base_dir=base_dir)
+        assert resolved_path.is_absolute()
+        assert resolved_path.name == "test_file.txt"
+        assert resolved_path.parent == fca_dir.resolve()
+
+================
+File: fca_dashboard/tests/unit/test_settings.py
+================
+"""
+Unit tests for the Settings module.
+
+This module contains tests for the Settings class and related functionality
+in the fca_dashboard.config.settings module.
+"""
+
+import os
+import tempfile
+from typing import Generator
+
+import pytest
+
+from fca_dashboard.config.settings import Settings, get_settings
+
+
+@pytest.fixture
+def temp_settings_file() -> Generator[str, None, None]:
+    """Create a temporary settings file for testing."""
+    config_content = """
+database:
+  host: localhost
+  port: 5432
+  user: test_user
+  password: secret
+app:
+  name: test_app
+  debug: true
+"""
+    with tempfile.NamedTemporaryFile(suffix=".yml", delete=False) as temp_file:
+        temp_file.write(config_content.encode("utf-8"))
+        temp_path = temp_file.name
+
+    yield temp_path
+
+    # Cleanup
+    os.unlink(temp_path)
+
+
+def test_settings_load_valid_file(temp_settings_file: str) -> None:
+    """Test loading settings from a valid file."""
+    settings = Settings(config_path=temp_settings_file)
+    assert settings.get("database.host") == "localhost"
+    assert settings.get("database.port") == 5432
+    assert settings.get("app.name") == "test_app"
+    assert settings.get("app.debug") is True
+
+
+def test_settings_load_missing_file() -> None:
+    """Test that loading a non-existent file raises FileNotFoundError."""
+    with pytest.raises(FileNotFoundError):
+        Settings(config_path="nonexistent_file.yml")
+
+
+def test_settings_get_nonexistent_key(temp_settings_file: str) -> None:
+    """Test getting a non-existent key returns the default value."""
+    settings = Settings(config_path=temp_settings_file)
+    assert settings.get("nonexistent.key") is None
+    assert settings.get("nonexistent.key", default="fallback") == "fallback"
+
+
+def test_settings_get_nested_keys(temp_settings_file: str) -> None:
+    """Test getting nested keys from the configuration."""
+    settings = Settings(config_path=temp_settings_file)
+    assert settings.get("database.user") == "test_user"
+    assert settings.get("database.password") == "secret"
+
+
+def test_get_settings_caching(temp_settings_file: str) -> None:
+    """Test that get_settings caches instances for the same config path."""
+    settings1 = get_settings(temp_settings_file)
+    settings2 = get_settings(temp_settings_file)
+
+    # Should be the same instance
+    assert settings1 is settings2
+
+    # Modify the first instance and check that the second reflects the change
+    settings1.config["test_key"] = "test_value"
+    assert settings2.config["test_key"] == "test_value"
+
+
+def test_get_settings_default() -> None:
+    """Test that get_settings returns the default instance when no path is provided."""
+    settings = get_settings()
+    assert isinstance(settings, Settings)
+
+    # Should return the same default instance on subsequent calls
+    settings2 = get_settings()
+    assert settings is settings2
+
+================
+File: fca_dashboard/utils/logging_config.py
+================
+"""
+Logging configuration module for the FCA Dashboard application.
+
+This module provides functionality to configure logging for the application
+using Loguru, which offers improved formatting, better exception handling,
+and simplified configuration compared to the standard logging module.
+"""
+
+import sys
+from pathlib import Path
+from typing import Any, Callable, Dict, Optional, Union
+
+from loguru import logger  # type: ignore
+
+# Define a Record type for type hints
+Record = Dict[str, Any]
+# Define a FormatFunction type for type hints
+FormatFunction = Callable[[Record], str]
+
+
+def configure_logging(
+    level: str = "INFO",
+    log_file: Optional[str] = None,
+    rotation: str = "10 MB",
+    retention: str = "1 month",
+    format_string: Optional[Union[str, Callable[[Record], str]]] = None,
+) -> None:
+    """
+    Configure application logging with console and optional file output using Loguru.
+
+    Args:
+        level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        log_file: Path to log file. If None, only console logging is configured.
+        rotation: When to rotate the log file (e.g., "10 MB", "1 day")
+        retention: How long to keep log files (e.g., "1 month", "1 year")
+        format_string: Custom format string for log messages
+    """
+    # Remove default handlers
+    logger.remove()
+
+    # Default format string if none provided
+    if format_string is None:
+        # Define a custom format function that safely handles extra[name]
+        def safe_format(record: Record) -> str:
+            # Add the name from extra if available, otherwise use empty string
+            name = record["extra"].get("name", "")
+            name_part = f"<cyan>{name}</cyan> | " if name else ""
+
+            return (
+                "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+                "<level>{level: <8}</level> | "
+                f"{name_part}"
+                "<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+                "<level>{message}</level>"
+            ).format_map(record)
+
+        format_string = safe_format
+
+    # Add console handler
+    logger.add(sys.stderr, level=level.upper(), format=format_string, colorize=True)  # type: ignore
+
+    # Add file handler if log_file is provided
+    if log_file:
+        # Create the log directory if it doesn't exist
+        log_path = Path(log_file)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Add rotating file handler
+        logger.add(  # type: ignore[arg-type]
+            str(log_path),
+            level=level.upper(),
+            format=format_string,
+            rotation=rotation,
+            retention=retention,
+            compression="zip",
+        )
+
+    logger.info(f"Logging configured with level: {level}")
+
+
+def get_logger(name: str = "fca_dashboard") -> Any:
+    """
+    Get a logger instance with the specified name.
+
+    Args:
+        name: Logger name, typically the module name
+
+    Returns:
+        Loguru logger instance
+    """
+    return logger.bind(name=name)
+
+================
+File: fca_dashboard/utils/loguru_stubs.pyi
+================
+from typing import Any, Callable, Dict, List, Optional, TextIO, Tuple, Union
+
+class Logger:
+    def remove(self, handler_id: Optional[int] = None) -> None: ...
+    def add(
+        self,
+        sink: Union[TextIO, str, Callable, Dict[str, Any]],
+        *,
+        level: Optional[Union[str, int]] = None,
+        format: Optional[Union[str, Callable[[Dict[str, Any]], str]]] = None,
+        filter: Optional[Union[str, Callable, Dict[str, Any]]] = None,
+        colorize: Optional[bool] = None,
+        serialize: Optional[bool] = None,
+        backtrace: Optional[bool] = None,
+        diagnose: Optional[bool] = None,
+        enqueue: Optional[bool] = None,
+        catch: Optional[bool] = None,
+        rotation: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        retention: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        compression: Optional[Union[str, int, Callable, Dict[str, Any]]] = None,
+        delay: Optional[bool] = None,
+        mode: Optional[str] = None,
+        buffering: Optional[int] = None,
+        encoding: Optional[str] = None,
+        **kwargs: Any,
+    ) -> int: ...
+    def bind(self, **kwargs: Any) -> "Logger": ...
+    def opt(
+        self,
+        *,
+        exception: Optional[Union[bool, Tuple[Any, ...], Dict[str, Any]]] = None,
+        record: Optional[bool] = None,
+        lazy: Optional[bool] = None,
+        colors: Optional[bool] = None,
+        raw: Optional[bool] = None,
+        capture: Optional[bool] = None,
+        depth: Optional[int] = None,
+        ansi: Optional[bool] = None,
+    ) -> "Logger": ...
+    def trace(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def debug(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def info(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def success(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def warning(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def error(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def critical(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def exception(self, __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def log(self, level: Union[int, str], __message: Any, *args: Any, **kwargs: Any) -> None: ...
+    def level(self, name: str, no: int = 0, color: Optional[str] = None, icon: Optional[str] = None) -> "Logger": ...
+    def disable(self, name: str) -> None: ...
+    def enable(self, name: str) -> None: ...
+    def configure(
+        self,
+        *,
+        handlers: List[Dict[str, Any]] = [],
+        levels: List[Dict[str, Any]] = [],
+        extra: Dict[str, Any] = {},
+        patcher: Optional[Callable] = None,
+        activation: List[Tuple[str, bool]] = [],
+    ) -> None: ...
+    def patch(self, patcher: Callable) -> "Logger": ...
+    def complete(self) -> None: ...
+    @property
+    def catch(self) -> Callable: ...
+
+logger: Logger
+
+================
+File: fca_dashboard/utils/path_util.py
+================
+import logging
+from pathlib import Path
+from typing import Union
+
+logger = logging.getLogger(__name__)
+
+
+def get_root_dir() -> Path:
+    """Return the project's root directory (assuming this module is within project)."""
+    return Path(__file__).resolve().parents[2]
+
+
+def get_config_path(filename: str = "settings.yml") -> Path:
+    """Get absolute path to the config file, ensuring it exists."""
+    config_path = get_root_dir() / "fca_dashboard" / "config" / filename
+    if not config_path.exists():
+        logger.warning(f"Config file not found: {config_path}")
+    return config_path
+
+
+def get_logs_path(filename: str = "fca_dashboard.log") -> Path:
+    """Get absolute path to the log file, ensuring the logs directory exists."""
+    logs_dir = get_root_dir() / "logs"
+    logs_dir.mkdir(exist_ok=True, parents=True)
+    return logs_dir / filename
+
+
+def resolve_path(path: Union[str, Path], base_dir: Union[Path, None] = None) -> Path:
+    """
+    Resolve a path relative to the base directory or project root.
+
+    Args:
+        path: The path to resolve.
+        base_dir: Optional base directory; defaults to the project's root directory.
+
+    Returns:
+        Resolved Path object.
+    """
+    path_obj = Path(path)
+
+    if path_obj.is_absolute():
+        return path_obj
+
+    if path_obj.exists():
+        return path_obj.resolve()
+
+    if base_dir is None:
+        base_dir = get_root_dir()
+
+    candidate_paths = [
+        base_dir / path_obj,
+        base_dir / "fca_dashboard" / path_obj,
+    ]
+
+    for candidate in candidate_paths:
+        if candidate.exists():
+            logger.debug(f"Resolved path '{path}' to '{candidate.resolve()}'")
+            return candidate.resolve()
+
+    logger.debug(f"Could not resolve path: {path_obj}. Returning unresolved path.")
+    return path_obj
+
+================
+File: Makefile
+================
+.PHONY: lint test format install run clean init-db coverage test-unit test-integration
+
+lint:
+	black --check .
+	isort --check .
+	flake8 .
+	mypy .
+
+format:
+	black .
+	isort .
+
+test:
+	pytest fca_dashboard/tests/
+
+coverage:
+	pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
+	@echo "HTML coverage report generated in htmlcov/"
+	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
+
+test-unit:
+	pytest fca_dashboard/tests/unit/
+
+test-integration:
+	pytest fca_dashboard/tests/integration/
+
+install:
+	python -m pip install --upgrade pip
+	pip install -r requirements.txt
+	pip install -e .
+
+git-commit:
+	git add .
+	git commit -m "Update"
+	git push
+
+# Run the ETL pipeline with default settings
+run:
+	python fca_dashboard/main.py --config fca_dashboard/config/settings.yml
+
+# Clean up generated files
+clean:
+	python -c "import os, shutil; [shutil.rmtree(os.path.join(root, d)) for root, dirs, _ in os.walk('.') for d in dirs if d == '__pycache__' or d.endswith('.egg-info') or d.endswith('.egg') or d == '.pytest_cache' or d == 'htmlcov' or d == '.mypy_cache']"
+	python -c "import os; [os.remove(os.path.join(root, f)) for root, _, files in os.walk('.') for f in files if f.endswith('.pyc') or f.endswith('.pyo') or f.endswith('.pyd') or f == '.coverage']"
+
+# Create initial database schema
+init-db:
+	python -c "from fca_dashboard.core.models import Base; from sqlalchemy import create_engine; engine = create_engine('sqlite:///etl.db'); Base.metadata.create_all(engine)"
+
+================
+File: pyproject.toml
+================
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fca-dashboard"
+version = "0.1.0"
+description = "ETL Pipeline for FCA Dashboard"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "Proprietary"}
+authors = [
+    {name = "ETL Team"}
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = "E203"
+exclude = [".git", "__pycache__", "build", "dist", "alembic", "venv", ".venv", "env", ".env", ".venv/Lib/", ".venv\\Lib\\", "./.venv/Lib/", ".\\.venv\\Lib\\"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["fca_dashboard/tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "--cov=fca_dashboard --cov-report=html --cov-report=term"
+
+[tool.coverage.run]
+source = ["fca_dashboard"]
+omit = [
+    "*/tests/*",
+    "*/alembic/*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+
+[tool.ruff]
+# Enable Pyflakes ('F'), pycodestyle ('E'), and isort ('I') codes by default.
+select = ["E", "F", "I", "N", "B", "C4", "SIM", "ERA"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+# Same as Black.
+line-length = 120
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.9
+target-version = "py39"
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["fca_dashboard"]
+
+================
+File: pytest.ini
+================
+[pytest]
+testpaths = fca_dashboard/tests
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+
+[mypy]
+python_version = 3.8
+warn_return_any = True
+warn_unused_configs = True
+disallow_untyped_defs = True
+disallow_incomplete_defs = True
+
+# Ignore missing imports for third-party libraries
+[mypy.plugins.pytest]
+# This tells mypy that pytest fixtures can return Any
+pytest_fixture_function = True
+
+# Ignore errors in test files
+[mypy-fca_dashboard.tests.*]
+disallow_untyped_defs = False
+disallow_incomplete_defs = False
+
+================
+File: README.md
+================
+# FCA Dashboard
+
+A data extraction, transformation, and loading (ETL) pipeline for the FCA Dashboard application.
+
+## Overview
+
+The FCA Dashboard is a Python-based ETL application designed to process data from various sources, transform it according to business rules, and load it into a database for reporting and analysis.
+
+## Features
+
+- Configurable ETL pipeline
+- Support for multiple data sources (Excel, databases)
+- Extensible architecture with strategy patterns
+- Comprehensive logging
+- 100% test coverage
+
+## Project Structure
+
+```text
+fca_dashboard/
+├── config/           # Configuration files
+├── core/             # Core functionality and interfaces
+├── extractors/       # Data extraction modules
+├── loaders/          # Data loading modules
+├── mappers/          # Data mapping and transformation
+├── pipelines/        # ETL pipeline orchestration
+├── tests/            # Test suite
+│   ├── unit/         # Unit tests
+│   └── integration/  # Integration tests
+└── utils/            # Utility functions
+```
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd fca-dashboard4
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   make install
+   ```
+
+## Usage
+
+Run the ETL pipeline with default settings:
+
+```bash
+make run
+```
+
+Or specify custom configuration:
+
+```bash
+python fca_dashboard/main.py --config path/to/config.yml
+```
+
+Additional command-line options:
+
+- `--log-level`: Set logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+- `--excel-file`: Specify an Excel file to process
+- `--table-name`: Specify a table name to process
+
+## Development
+
+### Code Quality
+
+Ensure code quality by running linting checks:
+
+```bash
+make lint
+```
+
+Format code automatically:
+
+```bash
+make format
+```
+
+### Testing
+
+Run all tests:
+
+```bash
+make test
+```
+
+Run unit tests only:
+
+```bash
+make test-unit
+```
+
+Run integration tests only:
+
+```bash
+make test-integration
+```
+
+### Test Coverage
+
+Generate and view test coverage report:
+
+```bash
+make coverage
+```
+
+This will:
+
+1. Run all tests with coverage analysis
+2. Generate an HTML coverage report
+3. Open the report in your default web browser
+
+The project maintains 100% test coverage across all modules.
+
+### Cleaning Up
+
+Remove generated files and caches:
+
+```bash
+make clean
+```
+
+## Database
+
+Initialize the database schema:
+
+```bash
+make init-db
+```
+
+## Configuration
+
+The application uses YAML configuration files located in the `fca_dashboard/config/` directory. The default configuration file is `settings.yml`.
+
+Example configuration:
+
+```yaml
+# Database settings
+databases:
+  sqlite:
+    url: "sqlite:///fca_dashboard.db"
+  postgresql:
+    url: "postgresql://user:password@localhost/fca_dashboard"
+    
+# Pipeline settings
+pipeline_settings:
+  batch_size: 5000
+  log_level: "INFO"
+  
+# Table mappings
+tables:
+  equipment:
+    mapping_type: "direct"
+    column_mappings:
+      tag: "Tag"
+      name: "Name"
+      description: "Description"
+```
+
+## License
+
+[License information]
+
+================
+File: requirements.txt
+================
+# Core dependencies
+sqlalchemy>=2.0.0,<3.0.0
+alembic>=1.9.0,<2.0.0
+pandas>=1.5.0,<2.0.0
+openpyxl>=3.1.0,<4.0.0  # For Excel support in pandas
+pyyaml>=6.0,<7.0
+psycopg2-binary>=2.9.5,<3.0.0  # PostgreSQL driver
+
+# Development dependencies
+pytest>=7.0.0,<8.0.0
+black>=23.0.0,<24.0.0
+isort>=5.12.0,<6.0.0
+flake8>=6.0.0,<7.0.0
+mypy>=1.0.0,<2.0.0
+ruff>=0.0.262,<1.0.0
+
+# Type checking
+types-PyYAML>=6.0.0,<7.0.0
+types-requests>=2.29.0,<3.0.0
+types-setuptools>=65.0.0,<66.0.0
+types-toml>=0.10.0,<0.11.0
+
+# Logging
+loguru>=0.6.0,<0.7.0
+
+# Testing
+pytest>=7.0.0,<8.0.0
+pytest-cov>=4.0.0,<5.0.0
+coverage>=7.0.0,<8.0.0
+
+================
+File: setup.cfg
+================
+[flake8]
+max-line-length = 120
+extend-ignore = E203
+exclude = 
+    .git,
+    __pycache__,
+    build,
+    dist,
+    alembic,
+    venv,
+    .venv,
+    env,
+    .env,
+    .venv/Lib/,
+    .venv\\Lib\\,
+    ./.venv/Lib/,
+    .\\\.venv\\Lib\\,
+    *site-packages*,
+    *.venv*,
+    *\\site-packages\\*,
+    *\\pandas\\*
+
+================
+File: setup.py
+================
+"""
+Setup script for the FCA Dashboard package.
+"""
+
+from setuptools import find_packages, setup
+
+setup(
+    name="fca_dashboard",
+    packages=find_packages(),
+)
+
+
+
+================================================================
+End of Codebase
+================================================================
