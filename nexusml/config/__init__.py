@@ -7,7 +7,7 @@ handling both standalone usage and integration with fca_dashboard.
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, cast
+from typing import Any, Dict, Union, cast
 
 import yaml
 

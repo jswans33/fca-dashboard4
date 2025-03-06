@@ -53,7 +53,7 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
                     Path(settings_path_str) if settings_path_str else Path("")
                 )
                 if not settings_path_str or not settings_path.exists():
-                    raise FileNotFoundError("Could not find settings.yml")
+                    raise FileNotFoundError("Could not find settings.yml") from None
 
         with open(settings_path, "r") as file:
             settings = yaml.safe_load(file)
@@ -156,7 +156,7 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
     return pipeline
 
 
-def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
+def optimize_hyperparameters(pipeline: Pipeline, x_train, y_train) -> Pipeline:
     """
     Optimize hyperparameters for better handling of all classes including "Other"
 
@@ -166,7 +166,7 @@ def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
 
     Args:
         pipeline (Pipeline): Model pipeline to optimize
-        X_train: Training features
+        x_train: Training features
         y_train: Training targets
 
     Returns:
@@ -193,8 +193,8 @@ def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
     )
 
     # Fit the grid search to the data
-    # Note: X_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
-    grid_search.fit(X_train, y_train)
+    # Note: x_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
+    grid_search.fit(x_train, y_train)
 
     print(f"Best parameters: {grid_search.best_params_}")
     print(f"Best cross-validation score: {grid_search.best_score_}")

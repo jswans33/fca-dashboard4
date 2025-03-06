@@ -16,7 +16,7 @@
   "ignore": {
     "useGitignore": true,
     "useDefaultPatterns": true,
-    "customPatterns": ["nexusml/ingest/data/**"]
+    "customPatterns": ["nexusml/ingest/data/**", "nexusml/docs"]
   },
   "security": {
     "enableSecurityCheck": true
