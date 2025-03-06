@@ -142,15 +142,22 @@ For managing dependencies in this complex monorepo structure, we recommend using
 
 - **Usage:**
 
-  ```bash
+  <!-- ```bash -->
+
   # Create a virtual environment
+
   uv venv
 
   # Install dependencies
+
   uv pip install -e .
 
   # Install development dependencies
+
   uv pip install -e ".[dev]"
+
+  ```
+
   ```
 
 - **Managing Multiple Packages:** Since we're using a monorepo approach with

@@ -3,11 +3,11 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["core", "utils", "ingest", "examples"]
+packages = ["core", "utils", "ingest", "examples", "config"]
 package-dir = {"" = "."}
 
 [project]
-name = "core"
+name = "nexusml"
 version = "0.1.0"
 description = "Modern machine learning classification engine"
 readme = "README.md"

@@ -25,8 +25,7 @@ and numeric features. Key features include:
 
 # Standard library imports
 import os
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 
 # Third-party imports
 import matplotlib.pyplot as plt
@@ -52,22 +51,25 @@ from nexusml.core.model_building import build_enhanced_model
 
 
 def handle_class_imbalance(
-    X: Union[pd.DataFrame, np.ndarray], y: pd.DataFrame
-) -> Tuple[Union[pd.DataFrame, np.ndarray], pd.DataFrame]:
+    x: Union[pd.DataFrame, np.ndarray],
+    y: pd.DataFrame,
+    method: str = "random_over",
+    **kwargs,
+) -> Tuple[Any, Any]:
     """
-    Handle class imbalance to give proper weight to "Other" categories
+    Handle class imbalance with configurable method
 
-    This function uses RandomOverSampler instead of SMOTE because:
-    1. It's more appropriate for text data
-    2. It duplicates existing samples rather than creating synthetic samples
-    3. The duplicated samples maintain the original text meaning
-
-    For numeric-only data, SMOTE might still be preferable, but for text or mixed data,
-    RandomOverSampler is generally a better choice.
+    This function supports multiple oversampling strategies:
+    - "random_over": Uses RandomOverSampler, which duplicates existing samples
+      (better for text data as it preserves original text meaning)
+    - "smote": Uses SMOTE to create synthetic samples
+      (better for numeric-only data, but can create meaningless text)
 
     Args:
-        X: Features
+        x: Features
         y: Target variables
+        method: Method to use ("random_over" or "smote")
+        **kwargs: Additional parameters for the oversampler
 
     Returns:
         Tuple: (Resampled features, resampled targets)
@@ -77,25 +79,49 @@ def handle_class_imbalance(
         print(f"\nClass distribution for {col}:")
         print(y[col].value_counts())
 
-    # Use RandomOverSampler to duplicate minority class samples
-    # This is more appropriate for text data than SMOTE
-    oversample = RandomOverSampler(sampling_strategy="auto", random_state=42)
-    X_resampled, y_resampled = oversample.fit_resample(X, y)
+    # Set default parameters
+    params = {"sampling_strategy": "auto", "random_state": 42}
+    params.update(kwargs)
+
+    # Select oversampling method
+    if method.lower() == "smote":
+        try:
+            from imblearn.over_sampling import SMOTE
+
+            oversample = SMOTE(**params)
+            print("Using SMOTE for oversampling...")
+        except ImportError:
+            print("SMOTE not available, falling back to RandomOverSampler...")
+            oversample = RandomOverSampler(**params)
+    else:  # default to random_over
+        oversample = RandomOverSampler(**params)
+        print("Using RandomOverSampler for oversampling...")
+
+    # Apply oversampling
+    # Handle the case where fit_resample might return 2 or 3 values
+    result = oversample.fit_resample(x, y)
+
+    # Extract the first two elements regardless of tuple size
+    x_resampled, y_resampled = result[0], result[1]
 
     print("\nAfter oversampling:")
     for col in y.columns:
         print(f"\nClass distribution for {col}:")
         print(pd.Series(y_resampled[col]).value_counts())
 
-    return X_resampled, y_resampled
+    return x_resampled, y_resampled
 
 
-def train_enhanced_model(data_path: Optional[str] = None) -> Tuple[Any, pd.DataFrame]:
+def train_enhanced_model(
+    data_path: Optional[str] = None, sampling_strategy: str = "random_over", **kwargs
+) -> Tuple[Any, pd.DataFrame]:
     """
     Train and evaluate the enhanced model with better handling of "Other" categories
 
     Args:
-        data_path (str, optional): Path to the CSV file. Defaults to None, which uses the standard location.
+        data_path: Path to the CSV file. Defaults to None, which uses the standard location.
+        sampling_strategy: Strategy for handling class imbalance ("random_over", "smote", or "direct")
+        **kwargs: Additional parameters for the oversampling method
 
     Returns:
         tuple: (trained model, preprocessed dataframe)
@@ -114,74 +140,104 @@ def train_enhanced_model(data_path: Optional[str] = None) -> Tuple[Any, pd.DataF
 
     # 4. Prepare training data - now including both text and numeric features
     # Create a DataFrame with both text and numeric features
-    X = pd.DataFrame({"combined_features": df["combined_features"], "service_life": df["service_life"]})
+    x = pd.DataFrame(
+        {
+            "combined_features": df["combined_features"],
+            "service_life": df["service_life"],
+        }
+    )
 
     # Use hierarchical classification targets
-    y = df[["Equipment_Category", "Uniformat_Class", "System_Type", "Equipment_Type", "System_Subtype"]]
+    y = df[
+        [
+            "Equipment_Category",
+            "Uniformat_Class",
+            "System_Type",
+            "Equipment_Type",
+            "System_Subtype",
+        ]
+    ]
 
     # 5. Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.3, random_state=42
+    )
 
-    # 6. Handle class imbalance using RandomOverSampler instead of SMOTE
-    # RandomOverSampler is more appropriate for text data as it duplicates existing samples
-    # rather than creating synthetic samples that don't correspond to meaningful text
-    print("Handling class imbalance with RandomOverSampler...")
+    # 6. Handle class imbalance using the specified strategy
+    print(f"Handling class imbalance with {sampling_strategy}...")
 
-    # Apply RandomOverSampler directly to the DataFrame
-    # This will duplicate minority class samples rather than creating synthetic samples
-    oversampler = RandomOverSampler(random_state=42)
+    if sampling_strategy.lower() == "direct":
+        # Skip oversampling entirely
+        print("Skipping oversampling as requested...")
+        x_train_resampled, y_train_resampled = x_train, y_train
+    else:
+        # For text data, we need a special approach with RandomOverSampler
+        # We create a temporary unique ID for each sample
+        x_train_with_id = x_train.copy()
+        x_train_with_id["temp_id"] = range(len(x_train_with_id))
 
-    # We need to convert the DataFrame to a format suitable for RandomOverSampler
-    # For this, we'll create a temporary unique ID for each sample
-    X_train_with_id = X_train.copy()
-    X_train_with_id["temp_id"] = range(len(X_train_with_id))
+        # Handle class imbalance with the specified strategy
+        if sampling_strategy.lower() == "smote":
+            # For SMOTE, we need to apply it directly to the features
+            # This might create synthetic text samples that don't make sense
+            x_train_resampled, y_train_resampled = handle_class_imbalance(
+                x_train, y_train, method="smote", **kwargs
+            )
+        else:  # default to random_over with ID-based approach
+            # Fit and transform using the oversampler
+            # We use the ID column as the feature for oversampling
+            x_resampled_ids, y_train_resampled = handle_class_imbalance(
+                x_train_with_id[["temp_id"]], y_train, method="random_over", **kwargs
+            )
 
-    # Fit and transform using the oversampler
-    # We use the ID column as the feature for oversampling, but the actual resampling
-    # is based on the class distribution in y_train
-    X_resampled_ids, y_train_resampled = oversampler.fit_resample(X_train_with_id[["temp_id"]], y_train)
-
-    # Map the resampled IDs back to the original DataFrame rows
-    # This effectively duplicates rows from the original DataFrame
-    X_train_resampled = pd.DataFrame(columns=X_train.columns)
-    for idx in X_resampled_ids["temp_id"]:
-        X_train_resampled = pd.concat([X_train_resampled, X_train.iloc[[idx]]], ignore_index=True)
+            # Map the resampled IDs back to the original DataFrame rows
+            x_train_resampled = pd.DataFrame(columns=x_train.columns)
+            for idx in x_resampled_ids["temp_id"]:
+                x_train_resampled = pd.concat(
+                    [x_train_resampled, x_train.iloc[[idx]]], ignore_index=True
+                )
 
     # Print statistics about the resampling
-    original_sample_count = X_train.shape[0]
-    total_resampled_count = X_train_resampled.shape[0]
-    print(f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}")
+    original_sample_count = x_train.shape[0]
+    total_resampled_count = x_train_resampled.shape[0]
     print(
-        f"Shape of X_train_resampled: {X_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}"
+        f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}"
+    )
+    print(
+        f"Shape of x_train_resampled: {x_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}"
     )
 
     # Verify that the shapes match
-    assert X_train_resampled.shape[0] == y_train_resampled.shape[0], "Mismatch in sample counts after resampling"
+    assert (
+        x_train_resampled.shape[0] == y_train_resampled.shape[0]
+    ), "Mismatch in sample counts after resampling"
 
     # 7. Build enhanced model
     print("Building enhanced model...")
-    model = build_enhanced_model()
+    model = build_enhanced_model(sampling_strategy=sampling_strategy, **kwargs)
 
     # 8. Train the model
     print("Training model...")
-    model.fit(X_train_resampled, y_train_resampled)
+    model.fit(x_train_resampled, y_train_resampled)
 
     # 9. Evaluate with focus on "Other" categories
     print("Evaluating model...")
-    y_pred_df = enhanced_evaluation(model, X_test, y_test)
+    y_pred_df = enhanced_evaluation(model, x_test, y_test)
 
     # 10. Analyze "Other" category features
     print("Analyzing 'Other' category features...")
-    analyze_other_category_features(model, X_test, y_test, y_pred_df)
+    analyze_other_category_features(model, x_test, y_test, y_pred_df)
 
     # 11. Analyze misclassifications for "Other" categories
     print("Analyzing 'Other' category misclassifications...")
-    analyze_other_misclassifications(X_test, y_test, y_pred_df)
+    analyze_other_misclassifications(x_test, y_test, y_pred_df)
 
     return model, df
 
 
-def predict_with_enhanced_model(model: Any, description: str, service_life: float = 0.0) -> dict:
+def predict_with_enhanced_model(
+    model: Any, description: str, service_life: float = 0.0
+) -> dict:
     """
     Make predictions with enhanced detail for "Other" categories
 
@@ -197,7 +253,9 @@ def predict_with_enhanced_model(model: Any, description: str, service_life: floa
         dict: Prediction results with classifications
     """
     # Create a DataFrame with the required structure for the pipeline
-    input_data = pd.DataFrame({"combined_features": [description], "service_life": [service_life]})
+    input_data = pd.DataFrame(
+        {"combined_features": [description], "service_life": [service_life]}
+    )
 
     # Predict using the trained pipeline
     pred = model.predict(input_data)[0]
@@ -217,13 +275,19 @@ def predict_with_enhanced_model(model: Any, description: str, service_life: floa
         result["System_Type"],
         result["Equipment_Category"],
         # Extract equipment subcategory if available
-        result["Equipment_Type"].split("-")[1] if "-" in result["Equipment_Type"] else None,
+        (
+            result["Equipment_Type"].split("-")[1]
+            if "-" in result["Equipment_Type"]
+            else None
+        ),
     )
 
     return result
 
 
-def visualize_category_distribution(df: pd.DataFrame, output_dir: str = "outputs") -> Tuple[str, str]:
+def visualize_category_distribution(
+    df: pd.DataFrame, output_dir: str = "outputs"
+) -> Tuple[str, str]:
     """
     Visualize the distribution of categories in the dataset
 
@@ -274,6 +338,6 @@ if __name__ == "__main__":
     # Visualize category distribution
     equipment_category_file, system_type_file = visualize_category_distribution(df)
 
-    print(f"\nVisualizations saved to:")
+    print("\nVisualizations saved to:")
     print(f"  - {equipment_category_file}")
     print(f"  - {system_type_file}")

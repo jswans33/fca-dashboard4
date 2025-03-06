@@ -1,0 +1,19 @@
+{
+  "H": {
+    "Chiller Plant": "23 64 00",
+    "Cooling Tower Plant": "23 65 00",
+    "Heating Water Boiler Plant": "23 52 00",
+    "Steam Boiler Plant": "23 52 33",
+    "Air Handling Units": "23 73 00"
+  },
+  "P": {
+    "Domestic Water Plant": "22 11 00",
+    "Medical/Lab Gas Plant": "22 63 00",
+    "Sanitary Equipment": "22 13 00"
+  },
+  "SM": {
+    "Air Handling Units": "23 74 00",
+    "SM Accessories": "23 33 00",
+    "SM Equipment": "23 30 00"
+  }
+}

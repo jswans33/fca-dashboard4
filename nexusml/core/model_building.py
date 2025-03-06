@@ -17,13 +17,17 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 
-def build_enhanced_model() -> Pipeline:
+def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pipeline:
     """
-    Build an enhanced model with better handling of "Other" categories
+    Build an enhanced model with configurable sampling strategy
 
     This model incorporates both text features (via TF-IDF) and numeric features
     (like service_life) using a ColumnTransformer to create a more comprehensive
     feature representation.
+
+    Args:
+        sampling_strategy: Sampling strategy to use ("random_over", "smote", or "direct")
+        **kwargs: Additional parameters for the model
 
     Returns:
         Pipeline: Scikit-learn pipeline with preprocessor and classifier
@@ -37,11 +41,17 @@ def build_enhanced_model() -> Pipeline:
             settings_path = get_config_path("settings.yml")
         except ImportError:
             # If not running in fca_dashboard context, look for settings in nexusml
-            settings_path = Path(__file__).resolve().parent.parent.parent / "config" / "settings.yml"
+            settings_path = (
+                Path(__file__).resolve().parent.parent.parent
+                / "config"
+                / "settings.yml"
+            )
             if not settings_path.exists():
                 # Fallback to environment variable
                 settings_path_str = os.environ.get("NEXUSML_CONFIG", "")
-                settings_path = Path(settings_path_str) if settings_path_str else Path("")
+                settings_path = (
+                    Path(settings_path_str) if settings_path_str else Path("")
+                )
                 if not settings_path_str or not settings_path.exists():
                     raise FileNotFoundError("Could not find settings.yml")
 
@@ -58,7 +68,9 @@ def build_enhanced_model() -> Pipeline:
         sublinear_tf = tfidf_settings.get("sublinear_tf", True)
 
         # Get Random Forest settings
-        rf_settings = settings.get("classifier", {}).get("model", {}).get("random_forest", {})
+        rf_settings = (
+            settings.get("classifier", {}).get("model", {}).get("random_forest", {})
+        )
         n_estimators = rf_settings.get("n_estimators", 200)
         max_depth = rf_settings.get("max_depth", None)
         min_samples_split = rf_settings.get("min_samples_split", 2)
@@ -102,9 +114,7 @@ def build_enhanced_model() -> Pipeline:
     # Numeric feature processing - simplified to just use StandardScaler
     # The ColumnTransformer handles column selection
     numeric_features = Pipeline(
-        [
-            ("scaler", StandardScaler())  # Scale numeric features
-        ]
+        [("scaler", StandardScaler())]  # Scale numeric features
     )
 
     # Combine text and numeric features
@@ -112,7 +122,11 @@ def build_enhanced_model() -> Pipeline:
     preprocessor = ColumnTransformer(
         transformers=[
             ("text", text_features, "combined_features"),
-            ("numeric", numeric_features, ["service_life"]),  # Use a list to specify column
+            (
+                "numeric",
+                numeric_features,
+                ["service_life"],
+            ),  # Use a list to specify column
         ],
         remainder="drop",  # Drop any other columns
     )

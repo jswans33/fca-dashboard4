@@ -1,0 +1,17 @@
+{
+  "Heat Exchanger": "23 57 00",
+  "Water Softener": "22 31 00",
+  "Humidifier": "23 84 13",
+  "Radiant Panel": "23 83 16",
+  "Make-up Air Unit": "23 74 23",
+  "Energy Recovery Ventilator": "23 72 00",
+  "DI/RO Equipment": "22 31 16",
+  "Bypass Filter Feeder": "23 25 00",
+  "Grease Interceptor": "22 13 23",
+  "Heat Trace": "23 05 33",
+  "Dust Collector": "23 35 16",
+  "Venturi VAV Box": "23 36 00",
+  "Water Treatment Controller": "23 25 13",
+  "Polishing System": "23 25 00",
+  "Ozone Generator": "22 67 00"
+}
