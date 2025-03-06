@@ -133,6 +133,21 @@ class ReferenceManager:
         """
         return self.uniformat.get_description(code)
 
+    def find_uniformat_codes_by_keyword(
+        self, keyword: str, max_results: int = 10
+    ) -> List[Dict[str, str]]:
+        """
+        Find Uniformat codes by keyword.
+
+        Args:
+            keyword: Keyword to search for
+            max_results: Maximum number of results to return
+
+        Returns:
+            List of dictionaries with Uniformat code, title, and MasterFormat number
+        """
+        return self.uniformat.find_codes_by_keyword(keyword, max_results)
+
     def get_masterformat_description(self, code: str) -> Optional[str]:
         """
         Get the MasterFormat description for a code.
@@ -331,6 +346,36 @@ class ReferenceManager:
                 lambda x: self.get_uniformat_description(x) if pd.notna(x) else None
             )
 
+        # Try to find Uniformat codes by equipment name if uniformat_code is missing
+        if (
+            "equipment_name" in result_df.columns
+            and "uniformat_code" in result_df.columns
+        ):
+            # Only process rows with missing uniformat_code
+            mask = result_df["uniformat_code"].isna()
+            if mask.any():
+
+                def find_uniformat_code(name):
+                    if pd.isna(name):
+                        return None
+                    results = self.find_uniformat_codes_by_keyword(name, max_results=1)
+                    return results[0]["uniformat_code"] if results else None
+
+                # Apply the function to find codes
+                result_df.loc[mask, "uniformat_code"] = result_df.loc[
+                    mask, "equipment_name"
+                ].apply(find_uniformat_code)
+
+                # Update descriptions for newly found codes
+                mask = (
+                    result_df["uniformat_code"].notna()
+                    & result_df["uniformat_description"].isna()
+                )
+                if mask.any():
+                    result_df.loc[mask, "uniformat_description"] = result_df.loc[
+                        mask, "uniformat_code"
+                    ].apply(self.get_uniformat_description)
+
         # Add MasterFormat descriptions if masterformat_code column exists
         if "masterformat_code" in result_df.columns:
             result_df["masterformat_description"] = result_df[
@@ -338,6 +383,40 @@ class ReferenceManager:
             ].apply(
                 lambda x: self.get_masterformat_description(x) if pd.notna(x) else None
             )
+
+        # Try to find MasterFormat codes by equipment name if masterformat_code is missing
+        if (
+            "equipment_name" in result_df.columns
+            and "masterformat_code" in result_df.columns
+        ):
+            # Only process rows with missing masterformat_code
+            mask = result_df["masterformat_code"].isna()
+            if mask.any():
+
+                def find_masterformat_code(name):
+                    if pd.isna(name):
+                        return None
+                    results = self.find_uniformat_codes_by_keyword(name, max_results=1)
+                    return (
+                        results[0]["masterformat_code"]
+                        if results and results[0]["masterformat_code"]
+                        else None
+                    )
+
+                # Apply the function to find codes
+                result_df.loc[mask, "masterformat_code"] = result_df.loc[
+                    mask, "equipment_name"
+                ].apply(find_masterformat_code)
+
+                # Update descriptions for newly found codes
+                mask = (
+                    result_df["masterformat_code"].notna()
+                    & result_df["masterformat_description"].isna()
+                )
+                if mask.any():
+                    result_df.loc[mask, "masterformat_description"] = result_df.loc[
+                        mask, "masterformat_code"
+                    ].apply(self.get_masterformat_description)
 
         # Add service life information if equipment_type column exists
         if "equipment_type" in result_df.columns:

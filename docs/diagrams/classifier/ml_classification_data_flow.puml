@@ -71,6 +71,14 @@ note right
   based on feature_config.yml
 end note
 
+:Apply keyword classification;
+note right
+  Uses uniformat-keywords.csv to:
+  - Match equipment descriptions to Uniformat codes
+  - Fill in missing Uniformat_Class values
+  - Enhance classification accuracy
+end note
+
 |#F3E5F5|ML Model|
 :Vectorize text using TF-IDF;
 :Train Random Forest Classifier;

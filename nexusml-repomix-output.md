@@ -29,7 +29,7 @@ The content is organized as follows:
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
 - Only files matching these patterns are included: nexusml/
-- Files matching these patterns are excluded: nexusml/ingest/data/**, nexusml/docs, nexusml/output/**, nexusml/core/deprecated/**, nexusml/test/**
+- Files matching these patterns are excluded: nexusml/ingest/**, nexusml/docs, nexusml/output/**, nexusml/core/deprecated/**, nexusml/test/**, nexusml/ingest/**
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Content has been formatted for parsing in markdown style
@@ -40,22 +40,36 @@ The content is organized as follows:
 # Directory Structure
 ```
 nexusml/__init__.py
+nexusml/classify_equipment.py
 nexusml/config/__init__.py
 nexusml/config/.repomixignore
+nexusml/config/classification_config.yml
 nexusml/config/data_config.yml
 nexusml/config/eav/equipment_attributes.json
 nexusml/config/feature_config.yml
 nexusml/config/mappings/masterformat_equipment.json
 nexusml/config/mappings/masterformat_primary.json
+nexusml/config/reference_config.yml
 nexusml/config/repomix.config.json
 nexusml/core/__init__.py
 nexusml/core/data_mapper.py
 nexusml/core/data_preprocessing.py
+nexusml/core/dynamic_mapper.py
 nexusml/core/eav_manager.py
 nexusml/core/evaluation.py
 nexusml/core/feature_engineering.py
 nexusml/core/model_building.py
 nexusml/core/model.py
+nexusml/core/reference_manager.py
+nexusml/core/reference/__init__.py
+nexusml/core/reference/base.py
+nexusml/core/reference/classification.py
+nexusml/core/reference/equipment.py
+nexusml/core/reference/glossary.py
+nexusml/core/reference/manager.py
+nexusml/core/reference/manufacturer.py
+nexusml/core/reference/service_life.py
+nexusml/core/reference/validation.py
 nexusml/examples/__init__.py
 nexusml/examples/advanced_example.py
 nexusml/examples/common.py
@@ -65,21 +79,21 @@ nexusml/examples/omniclass_generator_example.py
 nexusml/examples/omniclass_hierarchy_example.py
 nexusml/examples/simple_example.py
 nexusml/examples/staging_data_example.py
-nexusml/ingest/__init__.py
-nexusml/ingest/generator/__init__.py
-nexusml/ingest/generator/omniclass_description_generator.py
-nexusml/ingest/generator/omniclass_example.py
-nexusml/ingest/generator/omniclass_hierarchy.py
-nexusml/ingest/generator/omniclass_tree.py
-nexusml/ingest/generator/omniclass.py
-nexusml/ingest/generator/README.md
+nexusml/examples/uniformat_keywords_example.py
 nexusml/pyproject.toml
 nexusml/README.md
 nexusml/setup.py
+nexusml/test_output/reference_validation_results.json
+nexusml/test_output/test_data1_classified.json
+nexusml/test_output/test_data1.csv
+nexusml/test_output/test_data2_classified.json
+nexusml/test_output/test_data2.csv
+nexusml/test_reference_validation.py
 nexusml/tests/__init__.py
 nexusml/tests/conftest.py
 nexusml/tests/integration/__init__.py
 nexusml/tests/integration/test_integration.py
+nexusml/tests/test_modular_classification.py
 nexusml/tests/unit/__init__.py
 nexusml/tests/unit/test_generator.py
 nexusml/tests/unit/test_pipeline.py
@@ -103,6 +117,101 @@ __version__ = "0.1.0"
 # Import key functionality to expose at the top level
 ⋮----
 __all__ = [
+````
+
+## File: nexusml/classify_equipment.py
+````python
+#!/usr/bin/env python
+"""
+Modular Equipment Classification
+
+This script takes input data with any column structure,
+maps it to the expected model format, classifies it,
+and outputs the results in a format ready for database import.
+"""
+⋮----
+# Add project root to path
+project_root = Path(__file__).resolve().parent
+⋮----
+def process_any_input_file(input_file, output_file=None, config_file=None)
+⋮----
+"""
+    Process equipment data with any column structure.
+
+    Args:
+        input_file: Path to input file (CSV, Excel)
+        output_file: Path to output CSV file
+        config_file: Path to classification config file
+    """
+# Determine file type and load data
+file_ext = os.path.splitext(input_file)[1].lower()
+⋮----
+df = pd.read_csv(input_file)
+⋮----
+df = pd.read_excel(input_file)
+⋮----
+# Create dynamic mapper
+mapper = DynamicFieldMapper(config_file)
+⋮----
+# Map input data to model format
+⋮----
+mapped_df = mapper.map_dataframe(df)
+⋮----
+# Train model
+⋮----
+# Get classification targets and DB field requirements
+classification_targets = mapper.get_classification_targets()
+db_field_mapping = mapper.get_required_db_fields()
+⋮----
+# Create EAV manager
+eav_manager = EAVManager()
+⋮----
+# Process each row
+results = []
+⋮----
+# Create description from available text fields
+description_parts = []
+⋮----
+description = " ".join(description_parts)
+service_life = (
+⋮----
+# Get prediction
+prediction = predict_with_enhanced_model(model, description, service_life)
+⋮----
+# Get EAV template info
+equipment_type = prediction.get("Equipment_Category", "Unknown")
+template = eav_manager.get_equipment_template(equipment_type)
+⋮----
+# Process for database integration
+db_fields = {}
+⋮----
+# Combine all results
+result = {
+⋮----
+# Show progress
+⋮----
+# Determine output file
+⋮----
+output_file = os.path.splitext(input_file)[0] + "_classified.json"
+⋮----
+# Save results based on extension
+out_ext = os.path.splitext(output_file)[1].lower()
+⋮----
+# Flatten results into a CSV-friendly format
+flat_results = []
+⋮----
+flat_result = {}
+# Add original data
+⋮----
+# Add classifications
+⋮----
+# Add DB mappings
+⋮----
+# Default to JSON
+⋮----
+parser = argparse.ArgumentParser(
+⋮----
+args = parser.parse_args()
 ````
 
 ## File: nexusml/config/__init__.py
@@ -230,6 +339,72 @@ current = current[key]
 
 
 .csv
+````
+
+## File: nexusml/config/classification_config.yml
+````yaml
+# Define what classifications to produce
+classification_targets:
+  - name: 'Equipment_Category'
+    description: 'Primary equipment type (e.g., Chiller, Pump, Air Handler)'
+    required: true
+    master_db:
+      table: 'Equipment_Categories'
+      field: 'CategoryName'
+      id_field: 'CategoryID'
+
+  - name: 'Uniformat_Class'
+    description: 'Uniformat classification code (e.g., D3040, D2010)'
+    required: true
+    master_db:
+      table: 'UniFormat'
+      field: 'UniFormatCode'
+      id_field: 'UniFormatID'
+
+  - name: 'System_Type'
+    description: 'System type (e.g., HVAC, Plumbing)'
+    required: true
+    master_db:
+      table: 'Equipment'
+      field: 'System_Type'
+
+  - name: 'MasterFormat_Class'
+    description: 'MasterFormat classification code'
+    required: false
+    master_db:
+      table: 'MasterFormat'
+      field: 'MasterFormatCode'
+      id_field: 'MasterFormatID'
+
+# Input field mapping strategies - flexible matching for incoming data
+input_field_mappings:
+  - target: 'Asset Category'
+    patterns:
+      - 'Asset Name'
+      - 'Asset Type'
+      - 'Equipment Type'
+      - 'Equipment Name'
+      - 'Equip Name'
+      - 'Equip Type'
+
+  - target: 'System Type ID'
+    patterns:
+      - 'Trade'
+      - 'System ID'
+      - 'Discipline'
+
+  - target: 'Precon System'
+    patterns:
+      - 'System Category'
+      - 'System Type'
+      - 'System'
+
+  - target: 'Equip Name ID'
+    patterns:
+      - 'Sub System Type'
+      - 'Asset Subtype'
+      - 'Asset Sub Type'
+      - 'Equipment Subtype'
 ````
 
 ## File: nexusml/config/data_config.yml
@@ -656,6 +831,14 @@ hierarchies:
     parents: ['System Category', 'Sub System Type']
     separator: '-'
 
+keyword_classifications:
+  - name: 'Uniformat'
+    source_column: 'combined_text'
+    target_column: 'Uniformat_Class'
+    reference_manager: 'uniformat_keywords'
+    max_results: 1
+    confidence_threshold: 0.0
+
 column_mappings:
   - source: 'Asset Name'
     target: 'Equipment_Category'
@@ -741,6 +924,91 @@ eav_integration:
 }
 ````
 
+## File: nexusml/config/reference_config.yml
+````yaml
+# Reference Data Configuration
+# This file centralizes all configuration for reference data sources
+
+# Base paths for reference data sources
+paths:
+  omniclass: 'nexusml/ingest/reference/omniclass'
+  uniformat: 'nexusml/ingest/reference/uniformat'
+  masterformat: 'nexusml/ingest/reference/masterformat'
+  mcaa_glossary: 'nexusml/ingest/reference/mcaa-glossary'
+  mcaa_abbreviations: 'nexusml/ingest/reference/mcaa-glossary'
+  smacna: 'nexusml/ingest/reference/smacna-manufacturers'
+  ashrae: 'nexusml/ingest/reference/service-life/ashrae'
+  energize_denver: 'nexusml/ingest/reference/service-life/energize-denver'
+  equipment_taxonomy: 'nexusml/ingest/reference/equipment-taxonomy'
+
+# File patterns for finding reference data files
+file_patterns:
+  omniclass: '*.csv'
+  uniformat: '*.csv'
+  masterformat: '*.csv'
+  mcaa_glossary: 'Glossary.csv'
+  mcaa_abbreviations: 'Abbreviations.csv'
+  smacna: '*.json'
+  ashrae: '*.csv'
+  energize_denver: '*.csv'
+  equipment_taxonomy: '*.csv'
+
+# Column mappings for standardizing reference data
+column_mappings:
+  omniclass:
+    code: 'OmniClass_Code'
+    name: 'OmniClass_Title'
+    description: 'Description'
+  uniformat:
+    code: 'UniFormat Code'
+    name: 'UniFormat Title'
+    description: 'Description'
+  masterformat:
+    code: 'MasterFormat Code'
+    name: 'MasterFormat Title'
+    description: 'Description'
+  service_life:
+    equipment_type: 'Equipment Type'
+    median_years: 'Median Years'
+    min_years: 'Min Years'
+    max_years: 'Max Years'
+    source: 'Source'
+  equipment_taxonomy:
+    # Map internal names (keys) to CSV column names (values)
+    asset_category: 'Asset Category'
+    equipment_id: 'Equip Name ID'
+    trade: 'Trade'
+    title: 'Title'
+    drawing_abbreviation: 'Drawing Abbreviation'
+    precon_tag: 'Precon Tag'
+    system_type_id: 'System Type ID'
+    sub_system_type: 'Sub System Type'
+    sub_system_id: 'Sub System ID'
+    sub_system_class: 'Sub System Class'
+    class_id: 'Class ID'
+    equipment_size: 'Equipment Size'
+    unit: 'Unit'
+    service_maintenance_hrs: 'Service Maintenance Hrs'
+    service_life: 'Service Life'
+
+# Hierarchical relationships
+hierarchies:
+  omniclass:
+    separator: '-'
+    levels: 3
+  uniformat:
+    separator: ''
+    levels: 4
+  masterformat:
+    separator: ' '
+    levels: 3
+
+# Default values when data is missing
+defaults:
+  service_life: 15.0
+  confidence: 0.5
+````
+
 ## File: nexusml/config/repomix.config.json
 ````json
 {
@@ -762,11 +1030,12 @@ eav_integration:
     "useGitignore": true,
     "useDefaultPatterns": true,
     "customPatterns": [
-      "nexusml/ingest/data/**",
+      "nexusml/ingest/**",
       "nexusml/docs",
       "nexusml/output/**",
       "nexusml/core/deprecated/**",
-      "nexusml/test/**"
+      "nexusml/test/**",
+      "nexusml/ingest/**"
     ]
   },
   "security": {
@@ -1030,6 +1299,120 @@ df = pd.read_csv(data_path, encoding=fallback_encoding)
 ⋮----
 # Verify and create required columns
 df = verify_required_columns(df, config)
+````
+
+## File: nexusml/core/dynamic_mapper.py
+````python
+"""
+Dynamic Field Mapper
+
+This module provides a flexible way to map input fields to the expected format
+for the ML model, regardless of the exact column names in the input data.
+"""
+⋮----
+class DynamicFieldMapper
+⋮----
+"""Maps input data fields to model fields using flexible pattern matching."""
+⋮----
+def __init__(self, config_path: Optional[str] = None)
+⋮----
+"""
+        Initialize the mapper with a configuration file.
+
+        Args:
+            config_path: Path to the configuration YAML file.
+                         If None, uses the default path.
+        """
+⋮----
+def load_config(self) -> None
+⋮----
+"""Load the field mapping configuration."""
+⋮----
+# Use default path
+config_path = (
+⋮----
+config_path = Path(self.config_path)
+⋮----
+"""
+        Find the best matching column for a target field.
+
+        Args:
+            available_columns: List of available column names
+            target_field: Target field name to match
+
+        Returns:
+            Best matching column name or None if no match found
+        """
+# First try exact match
+⋮----
+# Then try pattern matching from config
+⋮----
+# Try case-insensitive matching
+pattern_lower = pattern.lower()
+⋮----
+# No match found
+⋮----
+def map_dataframe(self, df: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Map input dataframe columns to the format expected by the ML model.
+
+        Args:
+            df: Input DataFrame with arbitrary column names
+
+        Returns:
+            DataFrame with columns mapped to what the model expects
+        """
+result_df = pd.DataFrame()
+available_columns = df.columns.tolist()
+⋮----
+# Get required fields for the model from feature_config.yml
+⋮----
+feature_config_path = (
+⋮----
+feature_config = yaml.safe_load(f)
+⋮----
+# Extract text combination fields
+required_fields = []
+⋮----
+# Add numeric fields
+⋮----
+# Add hierarchy parent fields
+⋮----
+# Add source fields from column mappings
+⋮----
+# Remove duplicates
+required_fields = list(set([f for f in required_fields if f]))
+⋮----
+# Default required fields if feature config can't be loaded
+required_fields = [
+⋮----
+# Map each required field
+⋮----
+best_match = self.get_best_match(available_columns, field)
+⋮----
+# Copy the column with the new name
+⋮----
+# Create empty column if no match found
+⋮----
+def get_classification_targets(self) -> List[str]
+⋮----
+"""
+        Get the list of classification targets.
+
+        Returns:
+            List of classification target names
+        """
+⋮----
+def get_required_db_fields(self) -> Dict[str, Dict]
+⋮----
+"""
+        Get the mapping of classification targets to database fields.
+
+        Returns:
+            Dictionary mapping classification names to DB field info
+        """
+result = {}
 ````
 
 ## File: nexusml/core/eav_manager.py
@@ -1513,6 +1896,49 @@ def __init__(self, mappings: List[Dict[str, str]])
 source = mapping["source"]
 target = mapping["target"]
 ⋮----
+class KeywordClassificationMapper(BaseEstimator, TransformerMixin)
+⋮----
+"""
+    Maps equipment descriptions to classification system IDs using keyword matching.
+
+    Config example: {
+        "name": "Uniformat",
+        "source_column": "combined_text",
+        "target_column": "Uniformat_Class",
+        "reference_manager": "uniformat_keywords"
+    }
+    """
+⋮----
+"""
+        Initialize the transformer.
+
+        Args:
+            name: Name of the classification system
+            source_column: Column containing text to search for keywords
+            target_column: Column to store the matched classification code
+            reference_manager: Reference manager to use for keyword matching
+            max_results: Maximum number of results to consider
+            confidence_threshold: Minimum confidence score to accept a match
+        """
+⋮----
+# Initialize reference manager
+⋮----
+"""Transform the input DataFrame by adding classification codes based on keyword matching."""
+⋮----
+# Check if the source column exists
+⋮----
+# Apply keyword matching
+⋮----
+# Only process rows where the target column is empty or NaN
+mask = X[self.target_column].isna() | (X[self.target_column] == "")
+⋮----
+def find_uniformat_code(text)
+⋮----
+# Find Uniformat codes by keyword
+results = self.ref_manager.find_uniformat_codes_by_keyword(
+⋮----
+# Apply the function to find codes
+⋮----
 class ClassificationSystemMapper(BaseEstimator, TransformerMixin)
 ⋮----
 """
@@ -1604,6 +2030,10 @@ X = cleaner.transform(X)
 ⋮----
 builder = HierarchyBuilder(
 X = builder.transform(X)
+⋮----
+# 4.5. Apply keyword classification mappings
+⋮----
+mapper = KeywordClassificationMapper(
 ⋮----
 # 5. Apply classification system mappings
 ⋮----
@@ -2110,6 +2540,50 @@ system_type_file = f"{output_dir}/system_type_distribution.png"
 ⋮----
 # Generate visualizations
 ⋮----
+"""
+    Train a model using data with any column structure.
+
+    Args:
+        df: Input DataFrame with arbitrary column names
+        mapper: Optional DynamicFieldMapper instance
+
+    Returns:
+        Tuple: (trained model, transformed DataFrame)
+    """
+# Create mapper if not provided
+⋮----
+mapper = DynamicFieldMapper()
+⋮----
+# Map input fields to expected model fields
+mapped_df = mapper.map_dataframe(df)
+⋮----
+# Get the classification targets
+classification_targets = mapper.get_classification_targets()
+⋮----
+# Since train_enhanced_model expects a file path, we need to modify our approach
+# We'll use the core components of train_enhanced_model directly
+⋮----
+# Apply Generic Feature Engineering with EAV integration
+⋮----
+feature_engineer = GenericFeatureEngineer(eav_manager=eav_manager)
+transformed_df = feature_engineer.transform(mapped_df)
+⋮----
+# Prepare training data - now including both text and numeric features
+⋮----
+],  # Using the name from config
+⋮----
+y = transformed_df[
+⋮----
+# Split the data
+⋮----
+# Build enhanced model
+⋮----
+model = build_enhanced_model(sampling_strategy="direct")
+⋮----
+# Train the model
+⋮----
+# Evaluate with focus on "Other" categories
+⋮----
 # Example usage
 ⋮----
 # Create and train the equipment classifier
@@ -2125,6 +2599,1164 @@ if key != "attribute_template":  # Skip printing the full template
 template = prediction["attribute_template"]
 ⋮----
 # Visualize category distribution
+````
+
+## File: nexusml/core/reference_manager.py
+````python
+"""
+Reference Data Manager
+
+This module provides a unified interface for managing reference data from multiple sources.
+It's a wrapper around the more modular implementation in the reference package.
+"""
+⋮----
+# Re-export the ReferenceManager from the package
+⋮----
+# For backward compatibility
+def get_reference_manager(config_path=None)
+⋮----
+"""
+    Get an instance of the ReferenceManager.
+
+    Args:
+        config_path: Optional path to the configuration file
+
+    Returns:
+        ReferenceManager instance
+    """
+````
+
+## File: nexusml/core/reference/__init__.py
+````python
+"""
+Reference Data Management Package
+
+This package provides a modular approach to managing reference data from multiple sources:
+- OmniClass taxonomy
+- Uniformat classification
+- MasterFormat classification
+- MCAA abbreviations and glossary
+- SMACNA manufacturer data
+- ASHRAE service life data
+- Energize Denver service life data
+"""
+⋮----
+__all__ = [
+````
+
+## File: nexusml/core/reference/base.py
+````python
+"""
+Base Reference Data Source
+
+This module provides the abstract base class for all reference data sources.
+"""
+⋮----
+class ReferenceDataSource(ABC)
+⋮----
+"""Abstract base class for all reference data sources."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""
+        Initialize the reference data source.
+
+        Args:
+            config: Configuration dictionary for this data source
+            base_path: Base path for resolving relative paths
+        """
+⋮----
+@abstractmethod
+    def load(self) -> None
+⋮----
+"""Load the reference data."""
+⋮----
+def get_path(self, key: str) -> Optional[Path]
+⋮----
+"""
+        Get the absolute path for a configuration key.
+
+        Args:
+            key: Configuration key for the path
+
+        Returns:
+            Absolute path or None if not found
+        """
+path = self.config.get("paths", {}).get(key, "")
+⋮----
+def get_file_pattern(self, key: str) -> str
+⋮----
+"""
+        Get the file pattern for a data source.
+
+        Args:
+            key: Data source key
+
+        Returns:
+            File pattern string
+        """
+````
+
+## File: nexusml/core/reference/classification.py
+````python
+"""
+Classification Reference Data Sources
+
+This module provides classes for classification data sources:
+- ClassificationDataSource (base class)
+- OmniClassDataSource
+- UniformatDataSource
+- MasterFormatDataSource
+"""
+⋮----
+class ClassificationDataSource(ReferenceDataSource)
+⋮----
+"""Base class for classification data sources (OmniClass, Uniformat, MasterFormat)."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path, source_key: str)
+⋮----
+"""
+        Initialize the classification data source.
+
+        Args:
+            config: Configuration dictionary
+            base_path: Base path for resolving relative paths
+            source_key: Key identifying this data source in the config
+        """
+⋮----
+def get_parent_code(self, code: str) -> Optional[str]
+⋮----
+"""
+        Get the parent code for a classification code.
+
+        Args:
+            code: Classification code
+
+        Returns:
+            Parent code or None if at top level
+        """
+⋮----
+separator = self.hierarchy_config.get("separator", "-")
+levels = self.hierarchy_config.get("levels", 3)
+⋮----
+parts = code.split(separator)
+⋮----
+# For codes like "23-70-00", create parent by setting last non-zero segment to 00
+⋮----
+def get_description(self, code: str) -> Optional[str]
+⋮----
+"""
+        Get the description for a classification code.
+
+        Args:
+            code: Classification code
+
+        Returns:
+            Description or None if not found
+        """
+⋮----
+code_col = self.column_mappings.get("code")
+desc_col = self.column_mappings.get("description")
+⋮----
+match = self.data[self.data[code_col] == code]
+⋮----
+def find_similar_codes(self, code: str, n: int = 5) -> List[str]
+⋮----
+"""
+        Find similar classification codes.
+
+        Args:
+            code: Classification code
+            n: Number of similar codes to return
+
+        Returns:
+            List of similar codes
+        """
+⋮----
+parent = self.get_parent_code(code)
+⋮----
+# Get siblings (codes with same parent)
+siblings = self.data[
+⋮----
+class OmniClassDataSource(ClassificationDataSource)
+⋮----
+"""OmniClass taxonomy data source."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""Initialize the OmniClass data source."""
+⋮----
+def load(self) -> None
+⋮----
+"""Load OmniClass taxonomy data."""
+path = self.get_path(self.source_key)
+⋮----
+pattern = self.get_file_pattern(self.source_key)
+csv_files = list(path.glob(pattern))
+⋮----
+# Read and combine all CSV files
+dfs = []
+⋮----
+df = pd.read_csv(file)
+# Standardize column names based on mapping
+⋮----
+df = df.rename(
+⋮----
+class UniformatDataSource(ClassificationDataSource)
+⋮----
+"""Uniformat classification data source."""
+⋮----
+"""Initialize the Uniformat data source."""
+⋮----
+"""Load Uniformat classification data."""
+⋮----
+# Skip the keywords file, we'll handle it separately
+⋮----
+def _load_keywords(self, file_path: Path) -> None
+⋮----
+"""
+        Load Uniformat keywords data from a CSV file.
+
+        Args:
+            file_path: Path to the keywords CSV file
+        """
+⋮----
+"""
+        Find Uniformat codes by keyword.
+
+        Args:
+            keyword: Keyword to search for
+            max_results: Maximum number of results to return
+
+        Returns:
+            List of dictionaries with Uniformat code, title, and MasterFormat number
+        """
+⋮----
+# Case-insensitive search
+keyword = keyword.lower()
+⋮----
+# Search for the keyword in the Keyword column
+matches = self.keywords_data[
+⋮----
+# Limit the number of results
+matches = matches.head(max_results)
+⋮----
+# Convert to list of dictionaries
+results = []
+⋮----
+class MasterFormatDataSource(ClassificationDataSource)
+⋮----
+"""MasterFormat classification data source."""
+⋮----
+"""Initialize the MasterFormat data source."""
+⋮----
+"""Load MasterFormat classification data."""
+````
+
+## File: nexusml/core/reference/equipment.py
+````python
+"""
+Equipment Taxonomy Reference Data Source
+
+This module provides the EquipmentTaxonomyDataSource class for accessing
+equipment taxonomy data.
+"""
+⋮----
+class EquipmentTaxonomyDataSource(ReferenceDataSource)
+⋮----
+"""
+    Equipment taxonomy data source.
+
+    This class provides access to equipment taxonomy data, including:
+    - Equipment categories and types
+    - Service life information
+    - Maintenance requirements
+    - System classifications
+    """
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""
+        Initialize the equipment taxonomy data source.
+
+        Args:
+            config: Configuration dictionary
+            base_path: Base path for resolving relative paths
+        """
+⋮----
+def load(self) -> None
+⋮----
+"""
+        Load equipment taxonomy data from CSV files.
+
+        Searches for CSV files in the configured path and loads them into a DataFrame.
+        """
+path = self.get_path(self.source_key)
+⋮----
+pattern = self.get_file_pattern(self.source_key)
+csv_files = list(path.glob(pattern))
+⋮----
+# Read and combine all CSV files
+dfs = []
+⋮----
+df = pd.read_csv(file)
+# Standardize column names based on mapping
+⋮----
+df = df.rename(
+⋮----
+def _find_equipment_match(self, search_term: str) -> Optional[Series]
+⋮----
+"""
+        Find equipment matching the search term.
+
+        Args:
+            search_term: Term to search for
+
+        Returns:
+            Matching equipment row or None if not found
+        """
+⋮----
+search_term_lower = search_term.lower()
+⋮----
+# Search columns in priority order
+search_columns = [
+⋮----
+# Try exact matches first
+⋮----
+exact_matches = self.data[self.data[col].str.lower() == search_term_lower]
+⋮----
+# Try partial matches
+⋮----
+col_value = str(row[col]).lower()
+⋮----
+def get_equipment_info(self, equipment_type: str) -> Optional[Dict[str, Any]]
+⋮----
+"""
+        Get equipment information for a given equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Dictionary with equipment information or None if not found
+        """
+match = self._find_equipment_match(equipment_type)
+⋮----
+# Convert to a standard Python dict with str keys
+⋮----
+def get_service_life(self, equipment_type: str) -> Dict[str, Any]
+⋮----
+"""
+        Get service life information for an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Dictionary with service life information
+        """
+equipment_info = self.get_equipment_info(equipment_type)
+⋮----
+service_life = float(equipment_info["service_life"])
+⋮----
+"min_years": service_life * 0.7,  # Estimate
+"max_years": service_life * 1.3,  # Estimate
+⋮----
+def _get_default_service_life(self) -> Dict[str, Any]
+⋮----
+"""
+        Get default service life information.
+
+        Returns:
+            Dictionary with default service life values
+        """
+default_life = self.config.get("defaults", {}).get("service_life", 15.0)
+⋮----
+"min_years": default_life * 0.7,  # Estimate
+"max_years": default_life * 1.3,  # Estimate
+⋮----
+def get_maintenance_hours(self, equipment_type: str) -> Optional[float]
+⋮----
+"""
+        Get maintenance hours for an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Maintenance hours or None if not found
+        """
+⋮----
+def _filter_by_column(self, column: str, value: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Filter equipment by a specific column value.
+
+        Args:
+            column: Column name to filter on
+            value: Value to match
+
+        Returns:
+            List of matching equipment dictionaries
+        """
+⋮----
+value_lower = value.lower()
+matches = self.data[self.data[column].str.lower() == value_lower]
+⋮----
+# Convert to list of dicts with string keys
+⋮----
+def get_equipment_by_category(self, category: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get all equipment in a specific category.
+
+        Args:
+            category: Asset category
+
+        Returns:
+            List of equipment dictionaries
+        """
+⋮----
+def get_equipment_by_system(self, system_type: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get all equipment in a specific system type.
+
+        Args:
+            system_type: System type
+
+        Returns:
+            List of equipment dictionaries
+        """
+# Try different system columns in order
+⋮----
+results = self._filter_by_column(col, system_type)
+````
+
+## File: nexusml/core/reference/glossary.py
+````python
+"""
+Glossary Reference Data Sources
+
+This module provides classes for glossary data sources:
+- GlossaryDataSource (base class)
+- MCAAGlossaryDataSource
+- MCAAAbbrDataSource
+"""
+⋮----
+class GlossaryDataSource(ReferenceDataSource)
+⋮----
+"""Base class for glossary data sources (MCAA glossary, abbreviations)."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path, source_key: str)
+⋮----
+"""
+        Initialize the glossary data source.
+
+        Args:
+            config: Configuration dictionary
+            base_path: Base path for resolving relative paths
+            source_key: Key identifying this data source in the config
+        """
+⋮----
+def get_definition(self, term: str) -> Optional[str]
+⋮----
+"""
+        Get the definition for a term.
+
+        Args:
+            term: Term to look up
+
+        Returns:
+            Definition or None if not found
+        """
+⋮----
+term_lower = term.lower()
+⋮----
+# Try partial matches
+⋮----
+class MCAAGlossaryDataSource(GlossaryDataSource)
+⋮----
+"""MCAA glossary data source."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""Initialize the MCAA glossary data source."""
+⋮----
+def load(self) -> None
+⋮----
+"""Load MCAA glossary data."""
+path = self.get_path(self.source_key)
+⋮----
+pattern = self.get_file_pattern(self.source_key)
+csv_files = list(path.glob(pattern))
+⋮----
+# Parse CSV files for glossary terms
+glossary = {}
+⋮----
+reader = csv.reader(f)
+# Skip header row
+⋮----
+class MCAAAbbrDataSource(GlossaryDataSource)
+⋮----
+"""MCAA abbreviations data source."""
+⋮----
+"""Initialize the MCAA abbreviations data source."""
+⋮----
+"""Load MCAA abbreviations data."""
+⋮----
+# Parse CSV files for abbreviations
+abbreviations = {}
+````
+
+## File: nexusml/core/reference/manager.py
+````python
+"""
+Reference Manager
+
+This module provides the main facade for accessing all reference data sources.
+"""
+⋮----
+class ReferenceManager
+⋮----
+"""
+    Unified manager for all reference data sources.
+
+    This class follows the Facade pattern to provide a simple interface
+    to the complex subsystem of reference data sources.
+    """
+⋮----
+def __init__(self, config_path: Optional[str] = None)
+⋮----
+"""
+        Initialize the reference manager.
+
+        Args:
+            config_path: Path to the reference configuration file.
+                         If None, uses the default path.
+        """
+⋮----
+# Initialize data sources
+⋮----
+# List of all data sources for batch operations
+⋮----
+def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]
+⋮----
+"""
+        Load the reference configuration.
+
+        Args:
+            config_path: Path to the configuration file
+
+        Returns:
+            Configuration dictionary
+        """
+⋮----
+# Use default path
+root_dir = Path(__file__).resolve().parent.parent.parent
+config_path = str(root_dir / "config" / "reference_config.yml")
+⋮----
+def _get_base_path(self) -> Path
+⋮----
+"""
+        Get the base path for resolving relative paths.
+
+        Returns:
+            Base path
+        """
+⋮----
+def load_all(self) -> None
+⋮----
+"""Load all reference data sources."""
+⋮----
+def get_omniclass_description(self, code: str) -> Optional[str]
+⋮----
+"""
+        Get the OmniClass description for a code.
+
+        Args:
+            code: OmniClass code
+
+        Returns:
+            Description or None if not found
+        """
+⋮----
+def get_uniformat_description(self, code: str) -> Optional[str]
+⋮----
+"""
+        Get the Uniformat description for a code.
+
+        Args:
+            code: Uniformat code
+
+        Returns:
+            Description or None if not found
+        """
+⋮----
+"""
+        Find Uniformat codes by keyword.
+
+        Args:
+            keyword: Keyword to search for
+            max_results: Maximum number of results to return
+
+        Returns:
+            List of dictionaries with Uniformat code, title, and MasterFormat number
+        """
+⋮----
+def get_masterformat_description(self, code: str) -> Optional[str]
+⋮----
+"""
+        Get the MasterFormat description for a code.
+
+        Args:
+            code: MasterFormat code
+
+        Returns:
+            Description or None if not found
+        """
+⋮----
+def get_term_definition(self, term: str) -> Optional[str]
+⋮----
+"""
+        Get the definition for a term from the MCAA glossary.
+
+        Args:
+            term: Term to look up
+
+        Returns:
+            Definition or None if not found
+        """
+⋮----
+def get_abbreviation_meaning(self, abbr: str) -> Optional[str]
+⋮----
+"""
+        Get the meaning of an abbreviation from the MCAA abbreviations.
+
+        Args:
+            abbr: Abbreviation to look up
+
+        Returns:
+            Meaning or None if not found
+        """
+⋮----
+def find_manufacturers_by_product(self, product: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Find manufacturers that produce a specific product.
+
+        Args:
+            product: Product description or keyword
+
+        Returns:
+            List of manufacturer information dictionaries
+        """
+⋮----
+def get_service_life(self, equipment_type: str) -> Dict[str, Any]
+⋮----
+"""
+        Get service life information for an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Dictionary with service life information
+        """
+# Try ASHRAE first, then Energize Denver, then Equipment Taxonomy
+ashrae_result = self.ashrae.get_service_life(equipment_type)
+⋮----
+energize_denver_result = self.energize_denver.get_service_life(equipment_type)
+⋮----
+def get_equipment_info(self, equipment_type: str) -> Optional[Dict[str, Any]]
+⋮----
+"""
+        Get detailed information about an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Dictionary with equipment information or None if not found
+        """
+⋮----
+def get_equipment_maintenance_hours(self, equipment_type: str) -> Optional[float]
+⋮----
+"""
+        Get maintenance hours for an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Maintenance hours or None if not found
+        """
+⋮----
+def get_equipment_by_category(self, category: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get all equipment in a specific category.
+
+        Args:
+            category: Asset category
+
+        Returns:
+            List of equipment dictionaries
+        """
+⋮----
+def get_equipment_by_system(self, system_type: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get all equipment in a specific system type.
+
+        Args:
+            system_type: System type
+
+        Returns:
+            List of equipment dictionaries
+        """
+⋮----
+def validate_data(self) -> Dict[str, Dict[str, Any]]
+⋮----
+"""
+        Validate all reference data sources to ensure data quality.
+
+        This method checks:
+        1. If data is loaded
+        2. If required columns exist
+        3. If data has the expected structure
+        4. Basic data quality checks (nulls, duplicates, etc.)
+
+        Returns:
+            Dictionary with validation results for each data source
+        """
+⋮----
+# Load data if not already loaded
+⋮----
+results = {}
+⋮----
+# Validate classification data sources
+⋮----
+# Validate glossary data sources
+⋮----
+# Validate manufacturer data sources
+⋮----
+# Validate service life data sources
+⋮----
+# Validate equipment taxonomy data
+⋮----
+def enrich_equipment_data(self, df: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Enrich equipment data with reference information.
+
+        Args:
+            df: DataFrame with equipment data
+
+        Returns:
+            Enriched DataFrame
+        """
+result_df = df.copy()
+⋮----
+# Add OmniClass descriptions if omniclass_code column exists
+⋮----
+# Add Uniformat descriptions if uniformat_code column exists
+⋮----
+# Try to find Uniformat codes by equipment name if uniformat_code is missing
+⋮----
+# Only process rows with missing uniformat_code
+mask = result_df["uniformat_code"].isna()
+⋮----
+def find_uniformat_code(name)
+⋮----
+results = self.find_uniformat_codes_by_keyword(name, max_results=1)
+⋮----
+# Apply the function to find codes
+⋮----
+# Update descriptions for newly found codes
+mask = (
+⋮----
+# Add MasterFormat descriptions if masterformat_code column exists
+⋮----
+# Try to find MasterFormat codes by equipment name if masterformat_code is missing
+⋮----
+# Only process rows with missing masterformat_code
+mask = result_df["masterformat_code"].isna()
+⋮----
+def find_masterformat_code(name)
+⋮----
+# Add service life information if equipment_type column exists
+⋮----
+service_life_info = result_df["equipment_type"].apply(self.get_service_life)
+⋮----
+# Add maintenance hours from equipment taxonomy
+⋮----
+# Add equipment taxonomy information
+def safe_get_equipment_attribute(equip_type: Any, attribute: str) -> Any
+⋮----
+"""Safely get an attribute from equipment info."""
+⋮----
+info = self.get_equipment_info(equip_type)
+````
+
+## File: nexusml/core/reference/manufacturer.py
+````python
+"""
+Manufacturer Reference Data Sources
+
+This module provides classes for manufacturer data sources:
+- ManufacturerDataSource (base class)
+- SMACNADataSource
+"""
+⋮----
+class ManufacturerDataSource(ReferenceDataSource)
+⋮----
+"""Base class for manufacturer data sources (SMACNA)."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path, source_key: str)
+⋮----
+"""
+        Initialize the manufacturer data source.
+
+        Args:
+            config: Configuration dictionary
+            base_path: Base path for resolving relative paths
+            source_key: Key identifying this data source in the config
+        """
+⋮----
+def find_manufacturers_by_product(self, product: str) -> List[Dict[str, Any]]
+⋮----
+"""
+        Find manufacturers that produce a specific product.
+
+        Args:
+            product: Product description or keyword
+
+        Returns:
+            List of manufacturer information dictionaries
+        """
+⋮----
+product_lower = product.lower()
+results = []
+⋮----
+def find_products_by_manufacturer(self, manufacturer: str) -> List[str]
+⋮----
+"""
+        Find products made by a specific manufacturer.
+
+        Args:
+            manufacturer: Manufacturer name
+
+        Returns:
+            List of product descriptions
+        """
+⋮----
+manufacturer_lower = manufacturer.lower()
+⋮----
+class SMACNADataSource(ManufacturerDataSource)
+⋮----
+"""SMACNA manufacturer data source."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""Initialize the SMACNA data source."""
+⋮----
+def load(self) -> None
+⋮----
+"""Load SMACNA manufacturer data."""
+path = self.get_path(self.source_key)
+⋮----
+pattern = self.get_file_pattern(self.source_key)
+json_files = list(path.glob(pattern))
+⋮----
+# Parse JSON files for manufacturer data
+manufacturers = []
+⋮----
+data = json.load(f)
+⋮----
+# Process manufacturer data
+# Assuming format with manufacturer name, representative, and products
+⋮----
+manufacturer = {
+````
+
+## File: nexusml/core/reference/service_life.py
+````python
+"""
+Service Life Reference Data Sources
+
+This module provides classes for service life data sources:
+- ServiceLifeDataSource (base class)
+- ASHRAEDataSource
+- EnergizeDenverDataSource
+"""
+⋮----
+class ServiceLifeDataSource(ReferenceDataSource)
+⋮----
+"""Base class for service life data sources (ASHRAE, Energize Denver)."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path, source_key: str)
+⋮----
+"""
+        Initialize the service life data source.
+
+        Args:
+            config: Configuration dictionary
+            base_path: Base path for resolving relative paths
+            source_key: Key identifying this data source in the config
+        """
+⋮----
+def get_service_life(self, equipment_type: str) -> Dict[str, Any]
+⋮----
+"""
+        Get service life information for an equipment type.
+
+        Args:
+            equipment_type: Equipment type description
+
+        Returns:
+            Dictionary with service life information
+        """
+⋮----
+equipment_type_lower = equipment_type.lower()
+equipment_col = self.column_mappings.get("equipment_type")
+⋮----
+# Try exact match
+match = self.data[self.data[equipment_col].str.lower() == equipment_type_lower]
+⋮----
+# If no exact match, try partial match
+⋮----
+match = self.data.iloc[[idx]]
+⋮----
+row = match.iloc[0]
+⋮----
+def _get_default_service_life(self) -> Dict[str, Any]
+⋮----
+"""Get default service life information."""
+default_life = self.config.get("defaults", {}).get("service_life", 15.0)
+⋮----
+"min_years": default_life * 0.7,  # Estimate
+"max_years": default_life * 1.3,  # Estimate
+⋮----
+class ASHRAEDataSource(ServiceLifeDataSource)
+⋮----
+"""ASHRAE service life data source."""
+⋮----
+def __init__(self, config: Dict[str, Any], base_path: Path)
+⋮----
+"""Initialize the ASHRAE data source."""
+⋮----
+def load(self) -> None
+⋮----
+"""Load ASHRAE service life data."""
+path = self.get_path(self.source_key)
+⋮----
+pattern = self.get_file_pattern(self.source_key)
+csv_files = list(path.glob(pattern))
+⋮----
+# Read and combine all CSV files
+dfs = []
+⋮----
+df = pd.read_csv(file)
+# Standardize column names based on mapping
+⋮----
+df = df.rename(
+# Add source column if not present
+⋮----
+class EnergizeDenverDataSource(ServiceLifeDataSource)
+⋮----
+"""Energize Denver service life data source."""
+⋮----
+"""Initialize the Energize Denver data source."""
+⋮----
+"""Load Energize Denver service life data."""
+````
+
+## File: nexusml/core/reference/validation.py
+````python
+"""
+Reference Data Validation
+
+This module provides validation functions for reference data sources.
+"""
+⋮----
+# Type alias for DataFrame to help with type checking
+DataFrame = pd.DataFrame
+⋮----
+"""
+    Validate a classification data source.
+
+    Args:
+        source: Classification data source
+        source_type: Type of classification (omniclass, uniformat, masterformat)
+        config: Configuration dictionary
+
+    Returns:
+        Dictionary with validation results
+    """
+result = {
+⋮----
+# Check if data is a DataFrame
+⋮----
+# Check required columns
+required_columns = ["code", "name", "description"]
+column_mappings = config.get("column_mappings", {}).get(source_type, {})
+missing_columns = [
+⋮----
+# Check for nulls in key columns
+⋮----
+null_count = source.data[col].isna().sum()
+⋮----
+# Check for duplicates in code column
+⋮----
+duplicate_count = source.data["code"].duplicated().sum()
+⋮----
+# Add statistics
+⋮----
+# Cast source.data to DataFrame to help with type checking
+df = cast(DataFrame, source.data)
+⋮----
+def validate_glossary_data(source: GlossaryDataSource) -> Dict[str, Any]
+⋮----
+"""
+    Validate a glossary data source.
+
+    Args:
+        source: Glossary data source
+
+    Returns:
+        Dictionary with validation results
+    """
+⋮----
+# Check if data is a dictionary
+⋮----
+# Check for empty values
+empty_values = 0
+data_dict = source.data if isinstance(source.data, dict) else {}
+⋮----
+data_len = len(data_dict)
+total_key_length = 0
+total_value_length = 0
+⋮----
+def validate_manufacturer_data(source: ManufacturerDataSource) -> Dict[str, Any]
+⋮----
+"""
+    Validate a manufacturer data source.
+
+    Args:
+        source: Manufacturer data source
+
+    Returns:
+        Dictionary with validation results
+    """
+⋮----
+# Check if data is a list
+⋮----
+# Check required fields in each manufacturer entry
+required_fields = ["name", "products"]
+missing_fields = {}
+empty_products = 0
+total_products = 0
+valid_entries = 0
+⋮----
+# Check for empty product lists
+⋮----
+data_len = len(source.data)
+⋮----
+def validate_service_life_data(source: ServiceLifeDataSource) -> Dict[str, Any]
+⋮----
+"""
+    Validate a service life data source.
+
+    Args:
+        source: Service life data source
+
+    Returns:
+        Dictionary with validation results
+    """
+⋮----
+column_mappings = source.column_mappings
+required_columns = ["equipment_type", "median_years"]
+⋮----
+# Map internal column names to actual DataFrame columns
+required_df_columns = []
+⋮----
+# Ensure column_mappings is a dictionary
+⋮----
+# Use a safer approach to find the mapped column
+mapped_col = col
+⋮----
+mapped_col = k
+⋮----
+# If column_mappings is not a dictionary, use the original column names
+required_df_columns = required_columns
+⋮----
+# Check for negative service life values
+⋮----
+# Get column names as a list to avoid iteration issues
+column_names = list(df.columns)
+⋮----
+# Find columns with 'year' in the name
+year_columns = []
+⋮----
+neg_count = (df[col] < 0).sum()
+⋮----
+"""
+    Validate an equipment taxonomy data source.
+
+    Args:
+        source: Equipment taxonomy data source
+
+    Returns:
+        Dictionary with validation results
+    """
+⋮----
+# Print actual column names for debugging
+⋮----
+# Handle BOM character in first column name
+⋮----
+# Create a copy of the DataFrame with fixed column names
+fixed_columns = list(source.data.columns)
+⋮----
+# Check required columns based on actual CSV columns
+required_columns = [
+⋮----
+# Case-insensitive column check
+available_columns = [col.lower() for col in source.data.columns]
+⋮----
+# Check for nulls in key columns - case-insensitive
+⋮----
+# Find the actual column name in the DataFrame (case-insensitive)
+actual_col = None
+⋮----
+actual_col = df_col
+⋮----
+null_count = source.data[actual_col].isna().sum()
+⋮----
+# Check for negative service life values - case-insensitive
+⋮----
+# Use the actual column name from the CSV
+service_life_col = "service_life"
+⋮----
+# Convert to numeric, coercing errors to NaN
+service_life = pd.to_numeric(df[service_life_col], errors="coerce")
+⋮----
+# Check for negative values
+neg_count = (service_life < 0).sum()
+⋮----
+# Check for non-numeric values
+non_numeric = df[service_life_col].isna() != service_life.isna()
+non_numeric_count = non_numeric.sum()
+⋮----
+# Use the actual column names from the CSV
+category_col = "Asset Category"
+title_col = "title"
+⋮----
+# Count unique categories
+⋮----
+# Count unique equipment types
+⋮----
+# Calculate average service life if available
 ````
 
 ## File: nexusml/examples/__init__.py
@@ -2788,1151 +4420,44 @@ prediction = classifier.predict(description, service_life, asset_tag)
 results_file = (
 ````
 
-## File: nexusml/ingest/__init__.py
+## File: nexusml/examples/uniformat_keywords_example.py
 ````python
+#!/usr/bin/env python
 """
-Data ingestion functionality for NexusML.
+Uniformat Keywords Example
+
+This script demonstrates how to use the Uniformat keywords functionality
+to find Uniformat codes by keyword and enrich equipment data.
 """
-⋮----
-# Import ingest functions to expose at the package level
-# These will be populated as we migrate the ingest functionality
-⋮----
-__all__ = [
-````
-
-## File: nexusml/ingest/generator/__init__.py
-````python
-"""
-Generator module for NexusML.
-
-This module provides utilities for generating data for the NexusML module,
-including OmniClass data extraction and description generation.
-"""
-⋮----
-__all__ = [
-````
-
-## File: nexusml/ingest/generator/omniclass_description_generator.py
-````python
-"""
-Utility for generating descriptions for OmniClass codes using the Claude API.
-
-This module provides functions to generate plain-English descriptions for OmniClass codes
-using the Claude API. It processes the data in batches to manage API rate limits and costs.
-"""
-⋮----
-# Load environment variables from .env file
-⋮----
-# Define custom error classes
-class NexusMLError(Exception)
-⋮----
-"""Base exception for NexusML errors."""
-⋮----
-class ApiClientError(NexusMLError)
-⋮----
-"""Exception raised for API client errors."""
-⋮----
-class DescriptionGeneratorError(NexusMLError)
-⋮----
-"""Exception raised for description generator errors."""
-⋮----
-# Load settings from config file if available
-def load_settings()
-⋮----
-"""
-    Load settings from the config file.
-
-    Returns:
-        dict: Settings dictionary
-    """
-⋮----
-# Try to load from fca_dashboard settings if available
-⋮----
-# Not running in fca_dashboard context, load from local config
-config_path = Path(__file__).resolve().parent.parent.parent / "config" / "settings.yml"
-⋮----
-# Initialize settings
-settings = load_settings()
-⋮----
-# Import utilities if available, otherwise define minimal versions
-⋮----
-# Define minimal versions of required functions
-def get_logger(name)
-⋮----
-"""Simple logger function."""
-⋮----
-def resolve_path(path)
-⋮----
-"""Resolve a path to an absolute path."""
-⋮----
-path = Path(path)
-⋮----
-# Load settings from config file
-config = settings.get("generator", {}).get("omniclass_description_generator", {})
-api_config = config.get("api", {})
-⋮----
-# Constants with defaults from config
-BATCH_SIZE = config.get("batch_size", 50)
-MODEL = api_config.get("model", "claude-3-haiku-20240307")
-MAX_RETRIES = api_config.get("retries", 3)
-RETRY_DELAY = api_config.get("delay", 5)
-DEFAULT_INPUT_FILE = config.get("input_file", "nexusml/ingest/generator/data/omniclass.csv")
-DEFAULT_OUTPUT_FILE = config.get("output_file", "nexusml/ingest/generator/data/omniclass_with_descriptions.csv")
-DEFAULT_DESCRIPTION_COLUMN = config.get("description_column", "Description")
-⋮----
-# System prompt for Claude
-SYSTEM_PROMPT = config.get(
-⋮----
-# Initialize logger
-logger = get_logger("omniclass_description_generator")
-⋮----
-class ApiClient(ABC)
-⋮----
-"""Abstract base class for API clients."""
-⋮----
-@abstractmethod
-    def call(self, prompt: str, system_prompt: str, **kwargs) -> Optional[str]
-⋮----
-"""
-        Make an API call.
-
-        Args:
-            prompt: The prompt to send to the API
-            system_prompt: The system prompt to use
-            **kwargs: Additional keyword arguments for the API call
-
-        Returns:
-            The API response text or None if the call fails
-
-        Raises:
-            ApiClientError: If the API call fails
-        """
-⋮----
-class AnthropicClient(ApiClient)
-⋮----
-"""Client for the Anthropic Claude API."""
-⋮----
-def __init__(self, api_key: Optional[str] = None)
-⋮----
-"""
-        Initialize the Anthropic client.
-
-        Args:
-            api_key: The API key to use. If None, uses the ANTHROPIC_API_KEY environment variable.
-
-        Raises:
-            ApiClientError: If the API key is not provided and not found in environment variables
-        """
-# Get API key from environment variables if not provided
-⋮----
-# Create the client
-⋮----
-"""
-        Call the Anthropic API with retry logic.
-
-        Args:
-            prompt: The prompt to send to the API
-            system_prompt: The system prompt to use
-            model: The model to use
-            max_tokens: The maximum number of tokens to generate
-            temperature: The temperature to use for generation
-
-        Returns:
-            The API response text or None if all retries fail
-
-        Raises:
-            ApiClientError: If the API call fails after all retries
-        """
-⋮----
-response = self.client.messages.create(
-⋮----
-class DescriptionGenerator(ABC)
-⋮----
-"""Abstract base class for description generators."""
-⋮----
-@abstractmethod
-    def generate(self, data: pd.DataFrame) -> List[Optional[str]]
-⋮----
-"""
-        Generate descriptions for the given data.
-
-        Args:
-            data: DataFrame containing data to generate descriptions for
-
-        Returns:
-            List of descriptions
-
-        Raises:
-            DescriptionGeneratorError: If description generation fails
-        """
-⋮----
-class OmniClassDescriptionGenerator(DescriptionGenerator)
-⋮----
-"""Generator for OmniClass descriptions using Claude API."""
-⋮----
-def __init__(self, api_client: Optional[ApiClient] = None, system_prompt: Optional[str] = None)
-⋮----
-"""
-        Initialize the OmniClass description generator.
-
-        Args:
-            api_client: The API client to use. If None, creates a new AnthropicClient.
-            system_prompt: The system prompt to use. If None, uses the default SYSTEM_PROMPT.
-        """
-⋮----
-def generate_prompt(self, data: pd.DataFrame) -> str
-⋮----
-"""
-        Generate a prompt for the API based on the data.
-
-        Args:
-            data: DataFrame containing OmniClass codes and titles
-
-        Returns:
-            Formatted prompt for the API
-        """
-prompt_items = []
-⋮----
-prompt = f"""
-⋮----
-def parse_response(self, response_text: str) -> List[Optional[str]]
-⋮----
-"""
-        Parse the response from the API.
-
-        Args:
-            response_text: Response text from the API
-
-        Returns:
-            List of descriptions
-        """
-⋮----
-# Extract JSON array from response
-json_match = re.search(r"\[.*\]", response_text, re.DOTALL)
-⋮----
-def generate(self, data: pd.DataFrame) -> List[Optional[str]]
-⋮----
-"""
-        Generate descriptions for OmniClass codes.
-
-        Args:
-            data: DataFrame containing OmniClass codes and titles
-
-        Returns:
-            List of descriptions
-
-        Raises:
-            DescriptionGeneratorError: If description generation fails
-        """
-⋮----
-# Check required columns
-required_columns = ["OmniClass_Code", "OmniClass_Title"]
-missing_columns = [col for col in required_columns if col not in data.columns]
-⋮----
-# Generate prompt
-prompt = self.generate_prompt(data)
-⋮----
-# Call API
-⋮----
-response_text = self.api_client.call(prompt=prompt, system_prompt=self.system_prompt)
-⋮----
-# Parse response
-descriptions = self.parse_response(response_text)
-⋮----
-# If we got fewer descriptions than expected, pad with None
-⋮----
-class BatchProcessor
-⋮----
-"""Processor for batch processing data."""
-⋮----
-def __init__(self, generator: DescriptionGenerator, batch_size: int = BATCH_SIZE)
-⋮----
-"""
-        Initialize the batch processor.
-
-        Args:
-            generator: The description generator to use
-            batch_size: The size of batches to process
-        """
-⋮----
-"""
-        Process data in batches.
-
-        Args:
-            df: DataFrame to process
-            description_column: Column to store descriptions in
-            start_index: Index to start processing from
-            end_index: Index to end processing at
-            save_callback: Callback function to save progress
-            save_interval: Number of batches between saves
-
-        Returns:
-            Processed DataFrame
-        """
-end_index = end_index or len(df)
-result_df = df.copy()
-⋮----
-batch = result_df.iloc[i : min(i + self.batch_size, end_index)].copy()
-⋮----
-# Process all rows regardless of existing descriptions
-batch_to_process = batch
-⋮----
-# Process batch
-⋮----
-descriptions = self.generator.generate(batch_to_process)
-⋮----
-# Update the dataframe
-⋮----
-# Convert column to string type if needed to avoid dtype warning
-⋮----
-# Continue with next batch
-⋮----
-# Save progress if callback provided
-⋮----
-# No rate limiting for Tier 4 API access
-# time.sleep(1)
-⋮----
-# Convenience functions for backward compatibility and ease of use
-⋮----
-def create_client() -> anthropic.Anthropic
-⋮----
-"""Create and return an Anthropic client."""
-⋮----
-def generate_prompt(batch_data: pd.DataFrame) -> str
-⋮----
-"""
-    Generate a prompt for the Claude API based on the batch data.
-
-    Args:
-        batch_data: DataFrame containing OmniClass codes and titles
-
-    Returns:
-        str: Formatted prompt for the Claude API
-    """
-⋮----
-def call_claude_api(client: anthropic.Anthropic, prompt: str) -> Optional[str]
-⋮----
-"""
-    Call the Claude API with retry logic.
-
-    Args:
-        client: Anthropic client
-        prompt: Prompt for the Claude API
-
-    Returns:
-        str: Response from the Claude API
-    """
-api_client = AnthropicClient(api_key=client.api_key)
-⋮----
-def parse_response(response_text: str) -> List[Optional[str]]
-⋮----
-"""
-    Parse the response from the Claude API.
-
-    Args:
-        response_text: Response text from the Claude API
-
-    Returns:
-        list: List of descriptions
-    """
-⋮----
-"""
-    Generate descriptions for OmniClass codes.
-
-    Args:
-        input_file: Path to the input CSV file (default from config)
-        output_file: Path to the output CSV file (default from config or input_file with '_with_descriptions' suffix)
-        start_index: Index to start processing from (default: 0)
-        end_index: Index to end processing at (default: None, process all rows)
-        batch_size: Size of batches to process (default from config)
-        description_column: Column to store descriptions in (default from config)
-
-    Returns:
-        DataFrame: DataFrame with generated descriptions
-
-    Raises:
-        DescriptionGeneratorError: If description generation fails
-    """
-⋮----
-# Resolve paths
-input_path = resolve_path(input_file)
-⋮----
-# Set default output file if not provided
-⋮----
-output_path = (
-⋮----
-output_path = resolve_path(output_file)
-⋮----
-# Create the output directory if it doesn't exist
-output_dir = output_path.parent
-⋮----
-# Load the CSV
-⋮----
-df = pd.read_csv(input_path)
-total_rows = len(df)
-⋮----
-# Create generator and processor
-generator = OmniClassDescriptionGenerator()
-processor = BatchProcessor(generator, batch_size=batch_size)
-⋮----
-# Define save callback
-def save_progress(current_df: pd.DataFrame) -> None
-⋮----
-# Process data
-⋮----
-result_df = processor.process(
-⋮----
-# Save final result
 ⋮----
 def main()
 ⋮----
-"""Main function."""
+# Initialize the reference manager
+ref_manager = ReferenceManager()
 ⋮----
-parser = argparse.ArgumentParser(description="Generate descriptions for OmniClass codes")
+# Load all reference data
 ⋮----
-args = parser.parse_args()
+# Example 1: Find Uniformat codes by keyword
 ⋮----
-# Use max-rows as end_index if provided
-end_index = args.max_rows if args.max_rows is not None else args.end
-````
-
-## File: nexusml/ingest/generator/omniclass_example.py
-````python
-"""
-OmniClass Example Visualization Tool
-
-This module provides a simple example of visualizing OmniClass data in a hierarchical tree structure.
-It uses a hardcoded example dataset of medical equipment (dialysis products) to demonstrate the
-hierarchy visualization capabilities.
-"""
+keywords = ["Air Barriers", "Boilers", "Elevators", "Pumps"]
 ⋮----
-# Add path to allow importing from nexusml package
+results = ref_manager.find_uniformat_codes_by_keyword(keyword)
 ⋮----
-logger = get_logger(__name__)
+# Get the description for the Uniformat code
 ⋮----
-def parse_omniclass_code(code)
+description = ref_manager.get_uniformat_description(
 ⋮----
-"""
-    Parse an OmniClass code into its hierarchical components.
-    Format: xx-yy yy yy-zz where:
-    - xx: OmniClass table
-    - yy yy yy: hierarchy
-    - zz: detail number
-    """
-# Remove any whitespace and split by hyphens and spaces
-parts = re.split(r"[-\s]+", code.strip())
+# Example 2: Enrich equipment data with Uniformat and MasterFormat information
 ⋮----
-# Return the parsed components
-if len(parts) >= 4:  # Full format with detail number
+# Create a sample DataFrame with equipment data
+equipment_data = [
 ⋮----
-else:  # Partial format without detail number
+df = pd.DataFrame(equipment_data)
 ⋮----
-def build_tree(data_lines)
+# Enrich the DataFrame with reference information
+enriched_df = ref_manager.enrich_equipment_data(df)
 ⋮----
-"""
-    Build a hierarchical tree from OmniClass data lines.
-
-    Args:
-        data_lines: List of strings in format "code,title,description"
-
-    Returns:
-        A nested dictionary representing the tree structure
-    """
-tree = {}
-⋮----
-# Split the line into code, title, and description
-parts = line.split(",", 2)
-⋮----
-code = parts[0].strip()
-title = parts[1].strip()
-description = parts[2].strip() if len(parts) > 2 else ""
-⋮----
-# Remove quotes from description if present
-⋮----
-description = description[1:-1]
-⋮----
-# Parse the code
-parsed = parse_omniclass_code(code)
-⋮----
-# Navigate to the correct position in the tree
-current = tree
-path = [parsed["table"]] + parsed["hierarchy"]
-⋮----
-# Create the node if it doesn't exist
-⋮----
-if i == len(path) - 1:  # Last part (leaf node)
-# Update the leaf node with actual data
-⋮----
-# Ensure children dictionary exists for intermediate nodes
-⋮----
-# Move to the next level
-current = current[part]["children"]
-⋮----
-def print_tree_terminal(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure to the terminal.
-    """
-⋮----
-title = node["title"]
-description = node["description"]
-⋮----
-# Print the current node
-⋮----
-# Print children
-⋮----
-# Handle case where node is not properly formatted
-⋮----
-def print_tree_markdown(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure in Markdown format.
-    """
-markdown = []
-⋮----
-# Create the current node line
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title}"
-⋮----
-# Add children
-⋮----
-child_md = print_tree_markdown(node["children"], indent + 1, "- ")
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**"
-⋮----
-# Example data of medical equipment (dialysis products)
-example_data = """
-⋮----
-def main()
-⋮----
-# Default output directory
-output_dir = os.path.abspath(
-⋮----
-# Create output directory if it doesn't exist
-⋮----
-# Process the example data
-⋮----
-data_lines = [
-⋮----
-# Build the tree
-⋮----
-tree = build_tree(data_lines)
-⋮----
-# Ask for output directory
-output_dir_input = input(f"Enter output directory (default: {output_dir}): ")
-⋮----
-output_dir = output_dir_input
-⋮----
-# Output format
-output_format = (
-⋮----
-markdown_lines = print_tree_markdown(tree)
-⋮----
-# Option to save to file
-save_option = input("Save to file? (y/n, default: y): ").lower() or "y"
-⋮----
-filename = (
-output_file = os.path.join(output_dir, filename)
-⋮----
-# Save terminal output to file as well
-⋮----
-# Redirect stdout to file temporarily
-````
-
-## File: nexusml/ingest/generator/omniclass_hierarchy.py
-````python
-"""
-OmniClass Hierarchy Visualization Tool
-
-This module provides functionality to visualize OmniClass data in a hierarchical tree structure.
-It can parse OmniClass codes in the format xx-yy yy yy-zz and display the hierarchy in terminal
-or markdown format.
-"""
-⋮----
-# Add path to allow importing from nexusml package
-⋮----
-# Path to the data directory
-DATA_DIR = os.path.dirname(data_file)
-logger = get_logger(__name__)
-⋮----
-def parse_omniclass_code(code)
-⋮----
-"""
-    Parse an OmniClass code into its hierarchical components.
-    Format: xx-yy yy yy-zz where:
-    - xx: OmniClass table
-    - yy yy yy: hierarchy
-    - zz: detail number
-    """
-# Remove any whitespace and split by hyphens
-parts = re.split(r"[-\s]+", code.strip())
-⋮----
-# Return the parsed components
-if len(parts) >= 4:  # Full format with detail number
-⋮----
-else:  # Partial format without detail number
-⋮----
-def build_tree(df, code_column, title_column, description_column=None)
-⋮----
-"""
-    Build a hierarchical tree from OmniClass data.
-
-    Args:
-        df: DataFrame containing OmniClass data
-        code_column: Name of the column containing OmniClass codes
-        title_column: Name of the column containing titles
-        description_column: Optional name of the column containing descriptions
-
-    Returns:
-        A nested dictionary representing the tree structure
-    """
-tree = {}
-⋮----
-# Sort by code to ensure parent nodes are processed before children
-df_sorted = df.sort_values(by=code_column)
-⋮----
-code = row[code_column]
-title = row[title_column]
-description = row[description_column] if description_column else ""
-⋮----
-# Parse the code
-parsed = parse_omniclass_code(code)
-⋮----
-# Navigate to the correct position in the tree
-current = tree
-path = [parsed["table"]] + parsed["hierarchy"]
-⋮----
-# Create the node if it doesn't exist
-⋮----
-if i == len(path) - 1:  # Last part (leaf node)
-# Update the leaf node with actual data
-⋮----
-# Ensure children dictionary exists for intermediate nodes
-⋮----
-# Move to the next level
-current = current[part]["children"]
-⋮----
-def print_tree_terminal(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure to the terminal.
-    """
-⋮----
-title = node["title"]
-description = node["description"]
-⋮----
-# Print the current node
-⋮----
-# Print children
-⋮----
-# Handle case where node is not properly formatted
-⋮----
-def print_tree_markdown(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure in Markdown format.
-    """
-markdown = []
-⋮----
-# Create the current node line
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title}"
-⋮----
-# Add children
-⋮----
-child_md = print_tree_markdown(node["children"], indent + 1, "- ")
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**"
-⋮----
-def main()
-⋮----
-# Default values
-output_dir = os.path.abspath(
-⋮----
-# Create output directory if it doesn't exist
-⋮----
-# Load the OmniClass data
-⋮----
-default_file = os.path.join(DATA_DIR, "omniclass.csv")
-file_path = (
-⋮----
-# Ask for output directory
-output_dir_input = input(f"Enter output directory (default: {output_dir}): ")
-⋮----
-output_dir = output_dir_input
-⋮----
-# Check if the file needs cleaning
-⋮----
-df = read_csv_safe(file_path)
-⋮----
-# Ask user if they want to clean the file
-clean_option = (
-⋮----
-cleaned_file = clean_omniclass_csv(file_path)
-⋮----
-file_path = cleaned_file
-⋮----
-# Determine column names
-⋮----
-code_col = (
-title_col = (
-desc_col = input(
-⋮----
-# Optional filtering
-filter_option = (
-⋮----
-filter_column = (
-filter_value = input(
-df = df[df[filter_column].str.contains(filter_value, na=False)]
-⋮----
-# Build the tree
-⋮----
-tree = build_tree(df, code_col, title_col, desc_col if desc_col else None)
-⋮----
-# Output format
-output_format = (
-⋮----
-markdown_lines = print_tree_markdown(tree)
-⋮----
-# Option to save to file
-save_option = input("\nSave to file? (y/n, default: y): ").lower() or "y"
-⋮----
-filename = (
-output_file = os.path.join(output_dir, filename)
-⋮----
-# Save terminal output to file as well
-⋮----
-# Redirect stdout to file temporarily
-````
-
-## File: nexusml/ingest/generator/omniclass_tree.py
-````python
-"""
-OmniClass Tree Visualization Tool
-
-This module provides a simplified command-line tool to visualize OmniClass data in a hierarchical tree structure.
-It can parse OmniClass codes in the format xx-yy yy yy-zz and display the hierarchy in terminal or markdown format.
-"""
-⋮----
-# Add path to allow importing from nexusml package
-⋮----
-# Path to the data directory
-DATA_DIR = os.path.dirname(data_file)
-logger = get_logger(__name__)
-⋮----
-def parse_omniclass_code(code)
-⋮----
-"""
-    Parse an OmniClass code into its hierarchical components.
-    Format: xx-yy yy yy-zz where:
-    - xx: OmniClass table
-    - yy yy yy: hierarchy
-    - zz: detail number
-    """
-# Remove any whitespace and split by hyphens and spaces
-parts = re.split(r"[-\s]+", code.strip())
-⋮----
-# Return the parsed components
-if len(parts) >= 4:  # Full format with detail number
-⋮----
-else:  # Partial format without detail number
-⋮----
-def build_tree(df, code_column, title_column, description_column=None)
-⋮----
-"""
-    Build a hierarchical tree from OmniClass data.
-    """
-tree = {}
-⋮----
-# Sort by code to ensure parent nodes are processed before children
-df_sorted = df.sort_values(by=code_column)
-⋮----
-code = row[code_column]
-title = row[title_column]
-description = (
-⋮----
-# Parse the code
-parsed = parse_omniclass_code(code)
-⋮----
-# Navigate to the correct position in the tree
-current = tree
-path = [parsed["table"]] + parsed["hierarchy"]
-⋮----
-# Create the node if it doesn't exist
-⋮----
-if i == len(path) - 1:  # Last part (leaf node)
-# Update the leaf node with actual data
-⋮----
-# Ensure children dictionary exists for intermediate nodes
-⋮----
-# Move to the next level
-current = current[part]["children"]
-⋮----
-def print_tree_terminal(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure to the terminal.
-    """
-⋮----
-title = node["title"]
-description = node["description"]
-⋮----
-# Print the current node
-⋮----
-# Print children
-⋮----
-# Handle case where node is not properly formatted
-⋮----
-def print_tree_markdown(tree, indent=0, prefix="")
-⋮----
-"""
-    Print the tree structure in Markdown format.
-    """
-markdown = []
-⋮----
-# Create the current node line
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**: {title}"
-⋮----
-# Add children
-⋮----
-child_md = print_tree_markdown(node["children"], indent + 1, "- ")
-⋮----
-line = f"{'  ' * indent}{prefix}**{key}**"
-⋮----
-def main()
-⋮----
-# Default values
-default_file = os.path.join(DATA_DIR, "omniclass.csv")
-file_path = default_file
-code_column = "OmniClass_Code"
-title_column = "OmniClass_Title"
-description_column = "Description"
-output_format = "terminal"
-filter_value = None
-clean_csv = False
-output_dir = os.path.abspath(
-⋮----
-# Create output directory if it doesn't exist
-⋮----
-# Check for command line arguments
-⋮----
-file_path = sys.argv[1]
-⋮----
-# Additional command line arguments
-⋮----
-filter_value = sys.argv[2]
-⋮----
-output_format = sys.argv[3]
-⋮----
-clean_csv = True
-⋮----
-output_dir = sys.argv[4]
-⋮----
-# Load the OmniClass data
-⋮----
-file_path = clean_omniclass_csv(file_path)
-⋮----
-df = read_csv_safe(file_path)
-⋮----
-# Apply filter if specified
-⋮----
-df = df[df[code_column].str.contains(filter_value, na=False)]
-⋮----
-# Build the tree
-⋮----
-tree = build_tree(df, code_column, title_column, description_column)
-⋮----
-# Output the tree
-⋮----
-markdown_lines = print_tree_markdown(tree)
-⋮----
-# Save to file
-output_file = os.path.join(
-⋮----
-# Save terminal output to file as well
-⋮----
-# Redirect stdout to file temporarily
-````
-
-## File: nexusml/ingest/generator/omniclass.py
-````python
-"""
-OmniClass data extraction module for the NexusML application.
-
-This module provides utilities for extracting OmniClass data from Excel files
-and generating a unified CSV file for classifier training.
-"""
-⋮----
-# Import utility functions from nexusml.utils
-⋮----
-# Load settings from config file if available
-def load_settings()
-⋮----
-"""
-    Load settings from the config file.
-
-    Returns:
-        dict: Settings dictionary
-    """
-⋮----
-# Try to load from fca_dashboard settings if available
-⋮----
-# Not running in fca_dashboard context, load from local config
-config_path = (
-⋮----
-# Initialize settings
-settings = load_settings()
-⋮----
-"""
-    Extract OmniClass data from Excel files and save to a CSV file.
-
-    Args:
-        input_dir: Directory containing OmniClass Excel files.
-            If None, uses the directory from settings.
-        output_file: Path to save the output CSV file.
-            If None, uses the path from settings.
-        file_pattern: Pattern to match Excel files (default: "*.xlsx").
-
-    Returns:
-        DataFrame containing the combined OmniClass data.
-
-    Raises:
-        FileNotFoundError: If the input directory does not exist.
-        ValueError: If no OmniClass files are found or if no FLAT sheets are found.
-    """
-logger = get_logger("generator")
-⋮----
-# Use settings if parameters are not provided
-⋮----
-input_dir = (
-⋮----
-output_file = (
-⋮----
-# Resolve paths
-⋮----
-input_dir = resolve_path(input_dir)
-⋮----
-input_dir = Path("files/omniclass_tables").resolve()
-⋮----
-output_file = resolve_path(output_file)
-⋮----
-output_file = Path("nexusml/ingest/generator/data/omniclass.csv").resolve()
-⋮----
-# Check if input directory exists
-⋮----
-error_msg = f"Input directory does not exist: {input_dir}"
-⋮----
-# Find all Excel files in the input directory
-file_paths = list(input_dir.glob(file_pattern))
-⋮----
-error_msg = (
-⋮----
-# Create the output directory if it doesn't exist
-output_dir = output_file.parent
-⋮----
-# Process each Excel file
-all_data = []
-⋮----
-# Get sheet names
-sheet_names = get_sheet_names(file_path)
-⋮----
-# Find the FLAT sheet
-flat_sheet = find_flat_sheet(sheet_names)
-⋮----
-# Create extraction config
-config = {
-⋮----
-"header_row": 0,  # Assume header is in the first row
-⋮----
-# Extract data from the FLAT sheet
-extracted_data = extract_excel_with_config(file_path, config)
-⋮----
-# Find the sheet in the extracted data
-# The sheet name might have been normalized
-df = None
-⋮----
-df = extracted_data[flat_sheet]
-⋮----
-# Try to find a sheet with a similar name
-normalized_sheet_names = normalize_sheet_names(file_path)
-normalized_flat_sheet = None
-⋮----
-normalized_flat_sheet = normalized
-⋮----
-df = extracted_data[normalized_flat_sheet]
-⋮----
-# Just use the first sheet as a fallback
-⋮----
-sheet_name = list(extracted_data.keys())[0]
-df = extracted_data[sheet_name]
-⋮----
-# Clean the DataFrame using our data cleaning utilities
-# Set is_omniclass=True to enable special handling for OmniClass headers
-cleaned_df = clean_dataframe(df, is_omniclass=True)
-⋮----
-# Add file name as a column for tracking
-⋮----
-# Add table number from filename (e.g., OmniClass_22_2020-08-15_2022.xlsx -> 22)
-table_number = (
-⋮----
-# Append to the list of dataframes
-⋮----
-error_msg = "No data extracted from any OmniClass files"
-⋮----
-# Combine all dataframes
-combined_df = pd.concat(all_data, ignore_index=True)
-⋮----
-# Get column mapping from settings
-column_mapping = (
-⋮----
-# Standardize column names if needed
-combined_df = standardize_column_names(combined_df, column_mapping=column_mapping)
-⋮----
-# Save to CSV if output_file is not None
-⋮----
-def main()
-⋮----
-"""
-    Main function to run the OmniClass data extraction as a standalone script.
-    """
-⋮----
-parser = argparse.ArgumentParser(
-⋮----
-args = parser.parse_args()
-⋮----
-# Extract OmniClass data
-````
-
-## File: nexusml/ingest/generator/README.md
-````markdown
-# NexusML Generator Module
-
-This module provides utilities for generating data for the NexusML module,
-including OmniClass data extraction, description generation, and hierarchy
-visualization.
-
-## Components
-
-### OmniClass Data Extraction
-
-The `omniclass.py` module provides functionality to extract OmniClass data from
-Excel files and generate a unified CSV file for classifier training.
-
-Key functions:
-
-- `extract_omniclass_data`: Extract OmniClass data from Excel files and save to
-  a CSV file.
-
-### OmniClass Description Generator
-
-The `omniclass_description_generator.py` module provides functionality to
-generate plain-English descriptions for OmniClass codes using the Claude API.
-
-Key components:
-
-- `OmniClassDescriptionGenerator`: Generator for OmniClass descriptions using
-  Claude API.
-- `BatchProcessor`: Processor for batch processing data.
-- `AnthropicClient`: Client for the Anthropic Claude API.
-- `generate_descriptions`: Generate descriptions for OmniClass codes.
-
-### OmniClass Hierarchy Visualization
-
-The module includes several tools for visualizing OmniClass data in a
-hierarchical tree structure:
-
-- `omniclass_hierarchy.py`: Interactive tool for visualizing OmniClass data in a
-  hierarchical tree structure.
-- `omniclass_tree.py`: Command-line tool for quickly generating OmniClass
-  hierarchy trees.
-- `omniclass_example.py`: Example tool with hardcoded medical equipment data to
-  demonstrate hierarchy visualization.
-
-Key functions:
-
-- `parse_omniclass_code`: Parse OmniClass codes in the format xx-yy yy yy-zz.
-- `build_tree`: Build a hierarchical tree from OmniClass data.
-- `print_tree_terminal`: Display the hierarchy tree in terminal format.
-- `print_tree_markdown`: Generate a markdown representation of the hierarchy
-  tree.
-
-## Usage
-
-### OmniClass Data Extraction
-
-```python
-from nexusml import extract_omniclass_data
-
-# Extract OmniClass data from Excel files
-df = extract_omniclass_data(
-    input_dir="files/omniclass_tables",
-    output_file="nexusml/ingest/generator/data/omniclass.csv",
-    file_pattern="*.xlsx"
-)
-```
-
-### OmniClass Description Generation
-
-```python
-from nexusml import generate_descriptions
-
-# Generate descriptions for OmniClass codes
-result_df = generate_descriptions(
-    input_file="nexusml/ingest/generator/data/omniclass.csv",
-    output_file="nexusml/ingest/generator/data/omniclass_with_descriptions.csv",
-    start_index=0,
-    end_index=None,  # Process all rows
-    batch_size=50,
-    description_column="Description"
-)
-```
-
-### OmniClass Hierarchy Visualization
-
-```python
-from nexusml.ingest.generator.omniclass_hierarchy import build_tree, print_tree_terminal
-
-# Load OmniClass data
-import pandas as pd
-df = pd.read_csv("nexusml/ingest/data/omniclass.csv")
-
-# Filter data (optional)
-filtered_df = df[df["OmniClass_Code"].str.contains("23-", na=False)]
-
-# Build the hierarchy tree
-tree = build_tree(filtered_df, "OmniClass_Code", "OmniClass_Title", "Description")
-
-# Display the tree in terminal format
-print_tree_terminal(tree)
-```
-
-## Requirements
-
-- Python 3.8+
-- pandas
-- anthropic
-- dotenv
-- tqdm
-- re
-
-## Environment Variables
-
-- `ANTHROPIC_API_KEY`: API key for the Anthropic Claude API (only needed for
-  description generation).
-
-## Examples
-
-- See `nexusml/examples/omniclass_generator_example.py` for a complete example
-  of how to use the generator module.
-- See `nexusml/examples/omniclass_hierarchy_example.py` for an example of how to
-  use the hierarchy visualization tools.
+# Show which codes were found by keyword matching
 ````
 
 ## File: nexusml/pyproject.toml
@@ -4143,6 +4668,398 @@ This is a minimal setup.py file that defers to pyproject.toml for configuration.
 from setuptools import setup  # type: ignore
 ````
 
+## File: nexusml/test_output/reference_validation_results.json
+````json
+{
+  "omniclass": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 21706,
+      "column_count": 3,
+      "columns": [
+        "code",
+        "name",
+        "description"
+      ]
+    }
+  },
+  "uniformat": {
+    "loaded": true,
+    "issues": [
+      "Column 'description' has 34 null values"
+    ],
+    "stats": {
+      "row_count": 170,
+      "column_count": 4,
+      "columns": [
+        "code",
+        "name",
+        "MasterFormat Number",
+        "description"
+      ]
+    }
+  },
+  "masterformat": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "mcaa_glossary": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "entry_count": 161,
+      "avg_key_length": 14.372670807453416,
+      "avg_value_length": 95.65217391304348
+    }
+  },
+  "mcaa_abbreviations": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "entry_count": 347,
+      "avg_key_length": 3.394812680115274,
+      "avg_value_length": 17.06628242074928
+    }
+  },
+  "smacna": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "manufacturer_count": 1452,
+      "valid_entries": 1452,
+      "avg_products_per_manufacturer": 1.6101928374655647
+    }
+  },
+  "ashrae": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "energize_denver": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 64,
+      "column_count": 5,
+      "columns": [
+        "equipment_type",
+        "median_years",
+        "min_years",
+        "max_years",
+        "source"
+      ],
+      "avg_service_life": 19.046875,
+      "min_service_life": "9",
+      "max_service_life": "32"
+    }
+  },
+  "equipment_taxonomy": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 2277,
+      "column_count": 17,
+      "columns": [
+        "Asset Category",
+        "equipment_id",
+        "trade",
+        "Precon System",
+        "Operations System",
+        "title",
+        "drawing_abbreviation",
+        "precon_tag",
+        "system_type_id",
+        "sub_system_type",
+        "sub_system_id",
+        "sub_system_class",
+        "class_id",
+        "equipment_size",
+        "unit",
+        "service_maintenance_hrs",
+        "service_life"
+      ],
+      "category_count": 63,
+      "equipment_type_count": 171,
+      "avg_service_life": 19.487044356609573,
+      "min_service_life": "10",
+      "max_service_life": "35"
+    }
+  }
+}
+````
+
+## File: nexusml/test_output/test_data1_classified.json
+````json
+[
+  {
+    "original_data": {
+      "Asset Name": "Centrifugal Chiller",
+      "Trade": "H",
+      "System Category": "Chiller Plant",
+      "Sub System Type": "Water-Cooled",
+      "Manufacturer": "York",
+      "Model Number": "YK-8000",
+      "Size": 800,
+      "Unit": "Tons",
+      "Service Life": 20
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Water Cooled",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  },
+  {
+    "original_data": {
+      "Asset Name": "Air Handling Unit",
+      "Trade": "H",
+      "System Category": "HVAC",
+      "Sub System Type": "Air Handler",
+      "Manufacturer": "Trane",
+      "Model Number": "TAHN-5000",
+      "Size": 5000,
+      "Unit": "CFM",
+      "Service Life": 15
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Air Cooled",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  },
+  {
+    "original_data": {
+      "Asset Name": "Boiler",
+      "Trade": "H",
+      "System Category": "Heating Plant",
+      "Sub System Type": "Hot Water",
+      "Manufacturer": "Cleaver Brooks",
+      "Model Number": "CB-200",
+      "Size": 2500,
+      "Unit": "MBH",
+      "Service Life": 25
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Hot Water",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  }
+]
+````
+
+## File: nexusml/test_output/test_data1.csv
+````
+Asset Name,Trade,System Category,Sub System Type,Manufacturer,Model Number,Size,Unit,Service Life
+Centrifugal Chiller,H,Chiller Plant,Water-Cooled,York,YK-8000,800,Tons,20
+Air Handling Unit,H,HVAC,Air Handler,Trane,TAHN-5000,5000,CFM,15
+Boiler,H,Heating Plant,Hot Water,Cleaver Brooks,CB-200,2500,MBH,25
+````
+
+## File: nexusml/test_output/test_data2_classified.json
+````json
+[]
+````
+
+## File: nexusml/test_output/test_data2.csv
+````
+Equipment Type,Discipline,System,Equipment Subtype,Vendor,Model,Capacity,Capacity Unit,Expected Life (Years)
+Pump,P,Pumping System,Centrifugal,Grundfos,CRE-5,100,GPM,15
+Cooling Tower,H,Cooling System,Open,SPX,NC-8400,900,Tons,20
+Fan,H,Ventilation,Centrifugal,Cook,CPS-3000,3000,CFM,15
+````
+
+## File: nexusml/test_reference_validation.py
+````python
+#!/usr/bin/env python
+"""
+Test Reference Data Validation
+
+This script demonstrates how to use the reference data validation functionality
+to ensure data quality across all reference data sources.
+"""
+⋮----
+# Add project root to path
+project_root = Path(__file__).resolve().parent
+⋮----
+def test_reference_validation()
+⋮----
+"""Test the reference data validation functionality."""
+⋮----
+# Create reference manager
+manager = ReferenceManager()
+⋮----
+# Load all reference data
+⋮----
+# Validate all reference data
+⋮----
+validation_results = manager.validate_data()
+⋮----
+# Print validation results
+⋮----
+# Format lists to be more readable
+⋮----
+stat_display = f"{stat_value[:5]} ... ({len(stat_value)} total)"
+⋮----
+stat_display = stat_value
+⋮----
+# Save validation results to file
+output_file = project_root / "test_output" / "reference_validation_results.json"
+⋮----
+# Return validation results
+⋮----
+def main()
+⋮----
+"""Main function."""
+````
+
 ## File: nexusml/tests/__init__.py
 ````python
 """
@@ -4252,6 +5169,34 @@ def test_fca_dashboard_integration()
 ⋮----
 # If imports succeed, test the integration
 # This would be a more complex test that verifies the integration works
+````
+
+## File: nexusml/tests/test_modular_classification.py
+````python
+#!/usr/bin/env python
+"""
+Test the modular classification system with different input formats.
+"""
+⋮----
+# Create test data with different column names
+test_data1 = pd.DataFrame(
+⋮----
+test_data2 = pd.DataFrame(
+⋮----
+def run_test()
+⋮----
+"""Run the test with different input formats."""
+# Save test data
+output_dir = Path(__file__).resolve().parent / "test_output"
+⋮----
+test_file1 = output_dir / "test_data1.csv"
+test_file2 = output_dir / "test_data2.csv"
+⋮----
+# Process both test files
+⋮----
+results1 = process_any_input_file(test_file1)
+⋮----
+results2 = process_any_input_file(test_file2)
 ````
 
 ## File: nexusml/tests/unit/__init__.py

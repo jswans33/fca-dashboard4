@@ -34,6 +34,14 @@ hierarchies:
     parents: ['System Category', 'Sub System Type']
     separator: '-'
 
+keyword_classifications:
+  - name: 'Uniformat'
+    source_column: 'combined_text'
+    target_column: 'Uniformat_Class'
+    reference_manager: 'uniformat_keywords'
+    max_results: 1
+    confidence_threshold: 0.0
+
 column_mappings:
   - source: 'Asset Name'
     target: 'Equipment_Category'

@@ -189,6 +189,95 @@ class ColumnMapper(BaseEstimator, TransformerMixin):
         return X
 
 
+class KeywordClassificationMapper(BaseEstimator, TransformerMixin):
+    """
+    Maps equipment descriptions to classification system IDs using keyword matching.
+
+    Config example: {
+        "name": "Uniformat",
+        "source_column": "combined_text",
+        "target_column": "Uniformat_Class",
+        "reference_manager": "uniformat_keywords"
+    }
+    """
+
+    def __init__(
+        self,
+        name: str,
+        source_column: str,
+        target_column: str,
+        reference_manager: str = "uniformat_keywords",
+        max_results: int = 1,
+        confidence_threshold: float = 0.0,
+    ):
+        """
+        Initialize the transformer.
+
+        Args:
+            name: Name of the classification system
+            source_column: Column containing text to search for keywords
+            target_column: Column to store the matched classification code
+            reference_manager: Reference manager to use for keyword matching
+            max_results: Maximum number of results to consider
+            confidence_threshold: Minimum confidence score to accept a match
+        """
+        self.name = name
+        self.source_column = source_column
+        self.target_column = target_column
+        self.reference_manager = reference_manager
+        self.max_results = max_results
+        self.confidence_threshold = confidence_threshold
+
+        # Initialize reference manager
+        from nexusml.core.reference.manager import ReferenceManager
+
+        self.ref_manager = ReferenceManager()
+        self.ref_manager.load_all()
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        """Transform the input DataFrame by adding classification codes based on keyword matching."""
+        X = X.copy()
+
+        # Check if the source column exists
+        if self.source_column not in X.columns:
+            print(
+                f"Warning: Source column '{self.source_column}' not found for KeywordClassificationMapper. Setting target column to empty."
+            )
+            X[self.target_column] = ""
+            return X
+
+        # Apply keyword matching
+        if (
+            self.name.lower() == "uniformat"
+            and self.reference_manager == "uniformat_keywords"
+        ):
+            # Only process rows where the target column is empty or NaN
+            mask = X[self.target_column].isna() | (X[self.target_column] == "")
+            if mask.any():
+
+                def find_uniformat_code(text):
+                    if pd.isna(text) or text == "":
+                        return ""
+
+                    # Find Uniformat codes by keyword
+                    results = self.ref_manager.find_uniformat_codes_by_keyword(
+                        text, self.max_results
+                    )
+                    if results:
+                        return results[0]["uniformat_code"]
+                    return ""
+
+                # Apply the function to find codes
+                X.loc[mask, self.target_column] = X.loc[mask, self.source_column].apply(
+                    find_uniformat_code
+                )
+
+        return X
+
+
 class ClassificationSystemMapper(BaseEstimator, TransformerMixin):
     """
     Maps equipment categories to classification system IDs (OmniClass, MasterFormat, Uniformat).
@@ -398,6 +487,21 @@ class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
                     separator=hierarchy.get("separator", "-"),
                 )
                 X = builder.transform(X)
+
+        # 4.5. Apply keyword classification mappings
+        if "keyword_classifications" in self.config:
+            for system in self.config["keyword_classifications"]:
+                mapper = KeywordClassificationMapper(
+                    name=system["name"],
+                    source_column=system["source_column"],
+                    target_column=system["target_column"],
+                    reference_manager=system.get(
+                        "reference_manager", "uniformat_keywords"
+                    ),
+                    max_results=system.get("max_results", 1),
+                    confidence_threshold=system.get("confidence_threshold", 0.0),
+                )
+                X = mapper.transform(X)
 
         # 5. Apply classification system mappings
         if "classification_systems" in self.config:

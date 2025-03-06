@@ -17,11 +17,12 @@
     "useGitignore": true,
     "useDefaultPatterns": true,
     "customPatterns": [
-      "nexusml/ingest/data/**",
+      "nexusml/ingest/**",
       "nexusml/docs",
       "nexusml/output/**",
       "nexusml/core/deprecated/**",
-      "nexusml/test/**"
+      "nexusml/test/**",
+      "nexusml/ingest/**"
     ]
   },
   "security": {
