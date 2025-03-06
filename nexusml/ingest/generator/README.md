@@ -1,7 +1,8 @@
 # NexusML Generator Module
 
 This module provides utilities for generating data for the NexusML module,
-including OmniClass data extraction and description generation.
+including OmniClass data extraction, description generation, and hierarchy
+visualization.
 
 ## Components
 
@@ -27,6 +28,26 @@ Key components:
 - `BatchProcessor`: Processor for batch processing data.
 - `AnthropicClient`: Client for the Anthropic Claude API.
 - `generate_descriptions`: Generate descriptions for OmniClass codes.
+
+### OmniClass Hierarchy Visualization
+
+The module includes several tools for visualizing OmniClass data in a
+hierarchical tree structure:
+
+- `omniclass_hierarchy.py`: Interactive tool for visualizing OmniClass data in a
+  hierarchical tree structure.
+- `omniclass_tree.py`: Command-line tool for quickly generating OmniClass
+  hierarchy trees.
+- `omniclass_example.py`: Example tool with hardcoded medical equipment data to
+  demonstrate hierarchy visualization.
+
+Key functions:
+
+- `parse_omniclass_code`: Parse OmniClass codes in the format xx-yy yy yy-zz.
+- `build_tree`: Build a hierarchical tree from OmniClass data.
+- `print_tree_terminal`: Display the hierarchy tree in terminal format.
+- `print_tree_markdown`: Generate a markdown representation of the hierarchy
+  tree.
 
 ## Usage
 
@@ -59,6 +80,25 @@ result_df = generate_descriptions(
 )
 ```
 
+### OmniClass Hierarchy Visualization
+
+```python
+from nexusml.ingest.generator.omniclass_hierarchy import build_tree, print_tree_terminal
+
+# Load OmniClass data
+import pandas as pd
+df = pd.read_csv("nexusml/ingest/data/omniclass.csv")
+
+# Filter data (optional)
+filtered_df = df[df["OmniClass_Code"].str.contains("23-", na=False)]
+
+# Build the hierarchy tree
+tree = build_tree(filtered_df, "OmniClass_Code", "OmniClass_Title", "Description")
+
+# Display the tree in terminal format
+print_tree_terminal(tree)
+```
+
 ## Requirements
 
 - Python 3.8+
@@ -66,12 +106,16 @@ result_df = generate_descriptions(
 - anthropic
 - dotenv
 - tqdm
+- re
 
 ## Environment Variables
 
-- `ANTHROPIC_API_KEY`: API key for the Anthropic Claude API.
+- `ANTHROPIC_API_KEY`: API key for the Anthropic Claude API (only needed for
+  description generation).
 
-## Example
+## Examples
 
-See `nexusml/examples/omniclass_generator_example.py` for a complete example of
-how to use the generator module.
+- See `nexusml/examples/omniclass_generator_example.py` for a complete example
+  of how to use the generator module.
+- See `nexusml/examples/omniclass_hierarchy_example.py` for an example of how to
+  use the hierarchy visualization tools.

@@ -18814,13 +18814,13 @@ OmniClass_Code,OmniClass_Title,Description
 11-15 11 47-4,Outdoor Basketball Court,An outdoor facility that provides a designated court for playing basketball.
 11-15 11 52,Outdoor Sports Training Facility,An outdoor facility that provides a designated area for sports training and practice.
 11-15 11 55,Pavilion,An outdoor structure or pavilion that provides a covered and sheltered space for various activities.
-11-15 11 58,Animal Recreation Facility,A facility designed for animal recreation and exercise activities, such as dog parks or pet playgrounds.
-11-15 11 58-1,Zoo/Nature Facility,A facility housing and displaying various animal species for public viewing, education, and conservation purposes.
+11-15 11 58,Animal Recreation Facility,A facility designed for animal recreation and exercise activities  such as dog parks or pet playgrounds.
+11-15 11 58-1,Zoo/Nature Facility,A facility housing and displaying various animal species for public viewing  education  and conservation purposes.
 11-21 12 19,Critical Access Hospital,A rural hospital facility providing emergency and essential healthcare services to remote communities with limited access to medical care.
 11-21 12 23,Freestanding Urgent Care Facility,A standalone medical facility providing immediate care for non-life-threatening conditions without appointment requirements.
-11-21 12 27,Freestanding Cancer Treatment Facility,A specialized medical center dedicated to cancer diagnosis, treatment, and support services outside of a hospital setting.
+11-21 12 27,Freestanding Cancer Treatment Facility,A specialized medical center dedicated to cancer diagnosis  treatment  and support services outside of a hospital setting.
 11-21 12 31,Rehabilitation Hospital,A healthcare facility focused on physical rehabilitation and therapy services for patients recovering from injuries or surgeries.
-11-21 15 00,Outpatient Care Facility,A medical facility providing healthcare services without overnight stays, including diagnostics and treatments.
+11-21 15 00,Outpatient Care Facility,A medical facility providing healthcare services without overnight stays  including diagnostics and treatments.
 11-21 15 11,Primary Care Outpatient Care Facility,A medical facility providing basic healthcare services and preventive care on an outpatient basis.
 11-21 15 15,Small Outpatient Care Facility,A compact medical facility offering limited outpatient services in a smaller setting.
 11-21 15 19,Freestanding Outpatient Diagnostic and Treatment Facility,A standalone facility providing diagnostic testing and medical treatments without hospital admission.
@@ -18843,18 +18843,18 @@ OmniClass_Code,OmniClass_Title,Description
 11-21 32 00,"Mental, Behavioral Care Facility",A healthcare facility specializing in mental health and behavioral treatment services.
 11-21 32 11,Psychiatric Hospital,A hospital dedicated to treating mental health conditions and disorders.
 11-21 32 15,Psychiatric Outpatient Facility,A facility providing mental health services without overnight stays.
-11-21 35 00,Maternity Facility,A healthcare facility specializing in pregnancy, childbirth, and newborn care services.
+11-21 35 00,Maternity Facility,A healthcare facility specializing in pregnancy  childbirth  and newborn care services.
 11-21 38 00,Animal Healthcare Facility,A facility providing medical care and treatment services for animals.
 11-21 42 00,Dental Facility,A healthcare facility specializing in dental and oral health services.
 11-21 45 00,Medical Center,A comprehensive healthcare facility offering multiple medical services and specialties.
-11-21 48 00,Medical Warehouse,A facility for storing medical supplies, equipment, and pharmaceuticals.
+11-21 48 00,Medical Warehouse,A facility for storing medical supplies  equipment  and pharmaceuticals.
 11-21 52 00,Ambulance Shelter,A structure housing ambulances and emergency medical response vehicles.
 11-21 55 00,Death Facility,A facility providing services related to death care and memorial services.
 11-21 55 11,Funeral Home,A facility for preparing deceased individuals and conducting funeral services.
 11-21 55 15,Cremation Facility,A facility equipped for cremating deceased individuals.
 11-21 55 19,Cemetery,A land area designated for burying deceased individuals.
 11-21 55 23,Columbarium,A structure designed to store funeral urns containing cremated remains.
-11-23 00 00,Hospitality Facility,A facility providing accommodations, food service, or entertainment to guests.
+11-23 00 00,Hospitality Facility,A facility providing accommodations  food service  or entertainment to guests.
 11-23 12 00,Dining Establishment,A facility serving food and beverages to customers.
 11-23 12 11,Military Dining Facility,A dining facility serving military personnel on base or installation.
 11-23 12 15,Military Dining Support Facility,A facility supporting food service operations at military dining facilities.
@@ -19065,23 +19065,23 @@ OmniClass_Code,OmniClass_Title,Description
 22-01 26 33,Minor Changes in the Work,Minor changes to the work during a construction project.
 22-01 26 36,Supplemental Instructions,Supplemental instructions during a construction project.
 22-01 26 39,Field Orders,Changes or instructions issued by the field supervisor to modify construction work during project execution.
-22-01 26 43,Amendments,Formal modifications to construction contract documents that change scope, terms, or conditions.
+22-01 26 43,Amendments,Formal modifications to construction contract documents that change scope  terms  or conditions.
 22-01 26 46,Construction Change Directives,Written orders to proceed with construction changes before final agreement on cost/time.
 22-01 26 49,Work Change Directives,Instructions to modify work tasks or procedures during ongoing construction activities.
 22-01 26 53,Proposal Requests,Formal requests for contractors to submit pricing and timeline impacts for potential changes.
 22-01 26 54,Proposal Worksheet Summaries,Documents summarizing contractor responses to proposal requests including costs and schedule impacts.
-22-01 26 57,Change Order Requests,Formal requests to modify construction contract scope, price, or schedule through change orders.
-22-01 26 63,Change Orders,Approved modifications to construction contracts that alter scope, cost, or schedule requirements.
-22-01 29 00,Payment Procedures,Methods and processes for requesting, approving, and issuing payments for construction work.
+22-01 26 57,Change Order Requests,Formal requests to modify construction contract scope  price  or schedule through change orders.
+22-01 26 63,Change Orders,Approved modifications to construction contracts that alter scope  cost  or schedule requirements.
+22-01 29 00,Payment Procedures,Methods and processes for requesting  approving  and issuing payments for construction work.
 22-01 29 73,Schedule of Values,Detailed breakdown of contract sum showing monetary value allocated to various portions of work.
 22-01 29 76,Progress Payment Procedures,Processes for requesting and issuing periodic payments based on completed construction work.
 22-01 29 83,Payment Procedures for Testing Laboratory Services,Methods for processing payments for construction testing and laboratory services.
 22-01 30 00,Administrative Requirements,General administrative procedures and requirements for managing construction projects.
 22-01 31 00,Project Management and Coordination,Oversight and coordination of all aspects of construction project execution.
 22-01 31 13,Project Coordination,Activities to coordinate work between different trades and contractors on construction projects.
-22-01 31 14,Facility Services Coordination,Coordination of mechanical, electrical, and other building systems installation and operation.
+22-01 31 14,Facility Services Coordination,Coordination of mechanical  electrical  and other building systems installation and operation.
 22-01 31 16,Multiple Contract Coordination,Management of multiple construction contracts and contractors on a single project.
-22-01 31 19,Project Meetings,Regular gatherings to discuss construction progress, issues, and coordination requirements.
+22-01 31 19,Project Meetings,Regular gatherings to discuss construction progress  issues  and coordination requirements.
 22-01 31 19-1,Preconstruction Meetings,Initial meetings held before construction begins to review requirements and procedures.
 22-01 31 19-2,Site Mobilization Meetings,Meetings to coordinate contractor mobilization and site setup activities.
 22-01 31 19-3,Progress Meetings,Regular meetings to review construction progress and address ongoing project needs.
@@ -19163,7 +19163,7 @@ OmniClass_Code,OmniClass_Title,Description
 22-02 32 23,Geotechnical Monitoring Before Construction,Geotechnical monitoring and data collection before construction
 22-02 32 23-1,Groundwater Monitoring Before Construction,Monitoring of groundwater conditions before construction
 22-02 40 00,Demolition and Structure Moving,Demolition and relocation of existing structures
-22-02 41 00,Demolition, "selective,Selective demolition of specific site elements"
+22-02 41 00,Demolition," ""selective Selective demolition of specific site elements"""
 22-02 41 13,Selective Site Demolition,"Selective demolition of specific site elements, such as buildings or structures."
 22-02 54 19-1,Bioremediation Using Landfarming,"Bioremediation using landfarming, a process that uses microorganisms to break down contaminants in soil."
 22-02 83 33,Removal and Disposal of Material Containing Lead,"Removal and disposal of materials containing lead, a hazardous substance."
@@ -19213,57 +19213,57 @@ OmniClass_Code,OmniClass_Title,Description
 22-07 03 32,Conservation Treatment for Period Roof Tiles,"Cold fluid-applied waterproofing, a type of waterproofing membrane."
 22-07 14 16,Cold Fluid-Applied Waterproofing,"Sheet metal waterproofing, such as metal roofing or flashing."
 22-07 15 00,Sheet Metal Waterproofing,"Sheet lead waterproofing, a type of waterproofing membrane."
-22-07 15 13,Sheet Lead Waterproofing,"Lead sheets used as a waterproofing membrane to prevent water infiltration in buildings and structures. Provides excellent moisture barrier properties."
-22-07 16 00,Cementitious and Reactive Waterproofing,"Waterproofing systems that use cement-based or chemically reactive materials to create a water-resistant barrier in construction applications."
+22-07 15 13,Sheet Lead Waterproofing,Lead sheets used as a waterproofing membrane to prevent water infiltration in buildings and structures. Provides excellent moisture barrier properties.
+22-07 16 00,Cementitious and Reactive Waterproofing,Waterproofing systems that use cement-based or chemically reactive materials to create a water-resistant barrier in construction applications.
 22-07 16 13,Polymer Modified Cement Waterproofing,"Cement-based waterproofing enhanced with polymers for improved flexibility, adhesion and crack resistance. Used for concrete and masonry protection."
-22-07 16 16,Crystalline Waterproofing,"Chemical treatment that forms crystalline structures within concrete to block water penetration. Creates permanent waterproof barrier."
-22-07 16 19,Metal Oxide Waterproofing,"Waterproofing compound containing metal oxides that react with moisture to form an impermeable barrier. Used for concrete protection."
-22-07 17 00,Bentonite Waterproofing,"Clay-based waterproofing that swells when wet to form a water barrier. Commonly used for below-grade and foundation waterproofing."
-22-07 17 13,Bentonite Panel Waterproofing,"Rigid panels containing bentonite clay used as waterproofing barrier. Panels expand when wet to seal against water infiltration."
-22-07 17 16,Bentonite Composite Sheet Waterproofing,"Flexible sheets combining bentonite clay with geotextiles or membranes for waterproofing. Self-sealing when exposed to water."
-22-07 18 00,Traffic Coatings,"Durable coatings applied to surfaces exposed to vehicle or pedestrian traffic to provide protection and waterproofing."
-22-07 18 13,Pedestrian Traffic Coatings,"Protective coatings designed for foot traffic areas like walkways and balconies. Provides slip resistance and waterproofing."
+22-07 16 16,Crystalline Waterproofing,Chemical treatment that forms crystalline structures within concrete to block water penetration. Creates permanent waterproof barrier.
+22-07 16 19,Metal Oxide Waterproofing,Waterproofing compound containing metal oxides that react with moisture to form an impermeable barrier. Used for concrete protection.
+22-07 17 00,Bentonite Waterproofing,Clay-based waterproofing that swells when wet to form a water barrier. Commonly used for below-grade and foundation waterproofing.
+22-07 17 13,Bentonite Panel Waterproofing,Rigid panels containing bentonite clay used as waterproofing barrier. Panels expand when wet to seal against water infiltration.
+22-07 17 16,Bentonite Composite Sheet Waterproofing,Flexible sheets combining bentonite clay with geotextiles or membranes for waterproofing. Self-sealing when exposed to water.
+22-07 18 00,Traffic Coatings,Durable coatings applied to surfaces exposed to vehicle or pedestrian traffic to provide protection and waterproofing.
+22-07 18 13,Pedestrian Traffic Coatings,Protective coatings designed for foot traffic areas like walkways and balconies. Provides slip resistance and waterproofing.
 22-07 18 16,Vehicular Traffic Coatings,"Heavy-duty coatings for surfaces exposed to vehicle traffic. Resists wear, chemicals and provides waterproofing protection."
-22-07 19 00,Water Repellents,"Materials that repel water from surfaces while allowing vapor transmission. Used to protect building materials from moisture damage."
-22-07 19 13,Acrylic Water Repellents,"Water repellent made with acrylic polymers. Creates invisible barrier that repels water while allowing surface to breathe."
-22-07 19 16,Silane Water Repellents,"Water repellent using silane compounds that penetrate and bond with surfaces. Creates long-lasting water repellent protection."
-22-07 19 19,Silicone Water Repellents,"Water repellent made with silicone compounds. Forms durable water-resistant barrier while maintaining breathability."
-22-07 19 23,Siloxane Water Repellents,"Water repellent using siloxane chemistry for deep penetration and durability. Protects against water damage while remaining breathable."
-22-07 19 26,Stearate Water Repellents,"Water repellent made with stearate compounds. Creates water-resistant surface that helps prevent moisture absorption."
-22-07 19 29,Penetrating Polyester Water Repellents,"Water repellent using polyester compounds that penetrate surfaces. Provides long-term protection against water damage."
-22-07 20 00,Thermal Protection,"Materials and systems used to control heat transfer in buildings. Includes insulation and barriers for temperature control."
+22-07 19 00,Water Repellents,Materials that repel water from surfaces while allowing vapor transmission. Used to protect building materials from moisture damage.
+22-07 19 13,Acrylic Water Repellents,Water repellent made with acrylic polymers. Creates invisible barrier that repels water while allowing surface to breathe.
+22-07 19 16,Silane Water Repellents,Water repellent using silane compounds that penetrate and bond with surfaces. Creates long-lasting water repellent protection.
+22-07 19 19,Silicone Water Repellents,Water repellent made with silicone compounds. Forms durable water-resistant barrier while maintaining breathability.
+22-07 19 23,Siloxane Water Repellents,Water repellent using siloxane chemistry for deep penetration and durability. Protects against water damage while remaining breathable.
+22-07 19 26,Stearate Water Repellents,Water repellent made with stearate compounds. Creates water-resistant surface that helps prevent moisture absorption.
+22-07 19 29,Penetrating Polyester Water Repellents,Water repellent using polyester compounds that penetrate surfaces. Provides long-term protection against water damage.
+22-07 20 00,Thermal Protection,Materials and systems used to control heat transfer in buildings. Includes insulation and barriers for temperature control.
 22-07 21 00,Thermal Insulation,"Materials that reduce heat transfer between spaces. Used in walls, roofs and other building assemblies for energy efficiency."
 22-07 21 13,Board Insulation,"Rigid insulation boards made of various materials. Used in walls, roofs and foundations for thermal resistance."
-22-07 21 13-1,Foam Board Insulation,"Rigid foam insulation boards. Provides high R-value insulation in compact thickness for building envelope applications."
-22-07 21 13-2,Fibrous Board Insulation,"Rigid insulation made from compressed fibers. Used for thermal and acoustic insulation in building assemblies."
-22-07 21 13-3,Mineral Board Insulation,"Rigid insulation made from mineral fibers. Provides fire resistance and thermal insulation for buildings."
-22-07 21 16,Blanket Insulation,"Flexible insulation in roll or batt form. Common in walls and ceilings for thermal and acoustic performance."
-22-07 21 19,Foamed-In-Place Insulation,"Liquid foam insulation sprayed into cavities. Expands to fill spaces and provide continuous insulation barrier."
-22-07 21 23,Loose-Fill Insulation,"Small particles of insulating material blown into building cavities. Used in attics and walls for thermal resistance."
-22-07 21 26,Blown Insulation,"Insulation materials applied using blowing equipment. Used to fill building cavities for thermal performance."
-22-07 21 29,Sprayed Insulation,"Insulation applied by spraying. Forms continuous layer for thermal protection and air sealing."
-22-07 21 53,Reflective Insulation,"Insulation that reflects radiant heat. Uses reflective surfaces to reduce heat transfer in buildings."
-22-07 21 63,Fluid-Applied Insulative Coating,"Liquid coating that provides insulation when cured. Applied to surfaces for thermal protection."
-22-07 22 00,Roof and Deck Insulation,"Insulation specifically for roofs and decks. Provides thermal resistance while supporting roofing assemblies."
-22-07 22 13,Asphaltic Perlite Concrete Deck,"Lightweight insulating concrete containing perlite aggregate. Used for roof decks and insulation."
-22-07 22 16,Roof Board Insulation,"Rigid insulation boards for roofing systems. Provides thermal resistance and support for roofing materials."
-22-07 24 00,Exterior Insulation and Finish Systems,"Complete exterior wall systems combining insulation and finish. Provides thermal protection and weather barrier."
-22-07 24 13,Polymer-Based Exterior Insulation and Finish System,"EIFS using polymer-based materials. Provides insulation and weather protection in decorative exterior finish."
-22-07 24 16,Polymer-Modified Exterior Insulation and Finish System,"EIFS with modified polymer materials. Enhanced durability and performance for exterior walls."
-22-07 24 19,Water-Drainage Exterior Insulation and Finish System,"EIFS with integrated drainage capability. Manages water infiltration while providing insulation and finish."
-22-07 24 23,Direct-Applied Finish Systems,"Exterior finish system applied directly to substrate. Provides weather protection and decorative finish."
+22-07 21 13-1,Foam Board Insulation,Rigid foam insulation boards. Provides high R-value insulation in compact thickness for building envelope applications.
+22-07 21 13-2,Fibrous Board Insulation,Rigid insulation made from compressed fibers. Used for thermal and acoustic insulation in building assemblies.
+22-07 21 13-3,Mineral Board Insulation,Rigid insulation made from mineral fibers. Provides fire resistance and thermal insulation for buildings.
+22-07 21 16,Blanket Insulation,Flexible insulation in roll or batt form. Common in walls and ceilings for thermal and acoustic performance.
+22-07 21 19,Foamed-In-Place Insulation,Liquid foam insulation sprayed into cavities. Expands to fill spaces and provide continuous insulation barrier.
+22-07 21 23,Loose-Fill Insulation,Small particles of insulating material blown into building cavities. Used in attics and walls for thermal resistance.
+22-07 21 26,Blown Insulation,Insulation materials applied using blowing equipment. Used to fill building cavities for thermal performance.
+22-07 21 29,Sprayed Insulation,Insulation applied by spraying. Forms continuous layer for thermal protection and air sealing.
+22-07 21 53,Reflective Insulation,Insulation that reflects radiant heat. Uses reflective surfaces to reduce heat transfer in buildings.
+22-07 21 63,Fluid-Applied Insulative Coating,Liquid coating that provides insulation when cured. Applied to surfaces for thermal protection.
+22-07 22 00,Roof and Deck Insulation,Insulation specifically for roofs and decks. Provides thermal resistance while supporting roofing assemblies.
+22-07 22 13,Asphaltic Perlite Concrete Deck,Lightweight insulating concrete containing perlite aggregate. Used for roof decks and insulation.
+22-07 22 16,Roof Board Insulation,Rigid insulation boards for roofing systems. Provides thermal resistance and support for roofing materials.
+22-07 24 00,Exterior Insulation and Finish Systems,Complete exterior wall systems combining insulation and finish. Provides thermal protection and weather barrier.
+22-07 24 13,Polymer-Based Exterior Insulation and Finish System,EIFS using polymer-based materials. Provides insulation and weather protection in decorative exterior finish.
+22-07 24 16,Polymer-Modified Exterior Insulation and Finish System,EIFS with modified polymer materials. Enhanced durability and performance for exterior walls.
+22-07 24 19,Water-Drainage Exterior Insulation and Finish System,EIFS with integrated drainage capability. Manages water infiltration while providing insulation and finish.
+22-07 24 23,Direct-Applied Finish Systems,Exterior finish system applied directly to substrate. Provides weather protection and decorative finish.
 22-07 25 00,Weather Barriers,"Materials that protect buildings from weather. Includes water, air and vapor control layers."
-22-07 26 00,Vapor Retarders,"Materials that control vapor diffusion in buildings. Helps prevent moisture problems in building assemblies."
-22-07 26 13,Above-Grade Vapor Retarders,"Vapor control materials for walls above ground. Manages moisture movement in building envelope."
-22-07 26 16,Below-Grade Vapor Retarders,"Vapor control materials for below ground applications. Protects against ground moisture in foundations."
-22-07 26 23,Below-Grade Gas Retarders,"Materials that control gas movement below grade. Protects against radon and other soil gases."
-22-07 27 00,Air Barriers,"Materials that control air movement in buildings. Critical for energy efficiency and moisture control."
-22-07 27 13,Modified Bituminous Sheet Air Barriers,"Sheet air barriers made with modified bitumen. Self-adhering membranes for air leakage control."
-22-07 27 16,Sheet Metal Membrane Air Barriers,"Metal sheet materials used as air barriers. Provides durable air leakage control in buildings."
-22-07 27 19,Plastic Sheet Air Barriers,"Plastic sheet materials for air control. Flexible membranes that prevent air leakage in buildings."
-22-07 42 46,Cementitious Wall Panels,"Wall panels made with cement-based materials. Provides durable exterior cladding with various finishes."
+22-07 26 00,Vapor Retarders,Materials that control vapor diffusion in buildings. Helps prevent moisture problems in building assemblies.
+22-07 26 13,Above-Grade Vapor Retarders,Vapor control materials for walls above ground. Manages moisture movement in building envelope.
+22-07 26 16,Below-Grade Vapor Retarders,Vapor control materials for below ground applications. Protects against ground moisture in foundations.
+22-07 26 23,Below-Grade Gas Retarders,Materials that control gas movement below grade. Protects against radon and other soil gases.
+22-07 27 00,Air Barriers,Materials that control air movement in buildings. Critical for energy efficiency and moisture control.
+22-07 27 13,Modified Bituminous Sheet Air Barriers,Sheet air barriers made with modified bitumen. Self-adhering membranes for air leakage control.
+22-07 27 16,Sheet Metal Membrane Air Barriers,Metal sheet materials used as air barriers. Provides durable air leakage control in buildings.
+22-07 27 19,Plastic Sheet Air Barriers,Plastic sheet materials for air control. Flexible membranes that prevent air leakage in buildings.
+22-07 42 46,Cementitious Wall Panels,Wall panels made with cement-based materials. Provides durable exterior cladding with various finishes.
 22-07 42 63,Fabricated Wall Panel Assemblies,"Pre-fabricated wall panel systems. Complete assemblies combining structure, insulation and finish."
-22-07 42 93,Soffit Panels,"Panels specifically for soffit applications. Provides finished ceiling surface for exterior overhangs."
+22-07 42 93,Soffit Panels,Panels specifically for soffit applications. Provides finished ceiling surface for exterior overhangs.
 22-07 44 00,Faced Panels,"Panels with a facing material applied, such as aggregate, porcelain enamel, tile, or ceramic tile."
 22-07 44 13,Aggregate Coated Panels,Panels with an aggregate coating applied to the surface.
 22-07 44 16,Porcelain Enameled Faced Panels,Panels with a porcelain enamel facing material.
@@ -19410,7 +19410,7 @@ OmniClass_Code,OmniClass_Title,Description
 22-08 87 23-1,Safety Films,Decorative films applied to glazing.
 22-08 87 23-2,Security Films,"Glazing with specialized functions, such as fire-resistance or hurricane-resistance."
 22-08 87 26,Bird Control Film,Film applied to glazing to prevent bird strikes and collisions by making glass more visible to birds flying nearby.
-22-08 87 33,Decorative Films,Films applied to glazing for aesthetic purposes that can provide privacy, color, patterns, or other decorative effects.
+22-08 87 33,Decorative Films,Films applied to glazing for aesthetic purposes that can provide privacy  color  patterns  or other decorative effects.
 22-08 88 00,Special Function Glazing,Glazing with specialized performance characteristics beyond standard glass such as fire-resistance or impact protection.
 22-08 88 13,Fire-Rated Glazing,Glazing designed and tested to provide fire protection by preventing or delaying the spread of fire between spaces.
 22-08 88 19,Hurricane-Resistant Glazing,Glazing designed to withstand high wind pressures and impact from windborne debris during hurricane conditions.
@@ -19713,7 +19713,7 @@ OmniClass_Code,OmniClass_Title,Description
 22-23 35 16-2,Mechanical Engine Exhaust Systems,Mechanical systems used to exhaust engine emissions.
 22-23 35 33,Listed Kitchen Ventilation Exhaust System,Exhaust systems designed for commercial kitchen ventilation.
 22-23 36 00,Air Terminal Units,Devices installed at the end of ductwork to distribute conditioned air into spaces and control temperature and airflow in HVAC systems.
-22-23 36 13,Constant-Air-Volume Units,Units that deliver a constant volume of air regardless of heating/cooling needs, typically used in simple HVAC applications.
+22-23 36 13,Constant-Air-Volume Units,Units that deliver a constant volume of air regardless of heating/cooling needs  typically used in simple HVAC applications.
 22-23 36 16,Variable-Air-Volume Units,Units that vary air volume based on heating/cooling demands to improve energy efficiency and comfort in HVAC systems.
 22-23 37 00,Air Outlets and Inlets,Devices that distribute or collect air in HVAC systems including diffusers registers grilles and other air distribution components.
 22-23 37 13,"Diffusers, Registers, and Grilles",Air distribution devices that direct and control airflow from HVAC systems into occupied spaces for comfort and ventilation.
@@ -20316,53 +20316,53 @@ OmniClass_Code,OmniClass_Title,Description
 22-43 23 73-3,Air-Operated Piston Duplex Single-Acting Reciprocating Pumps,"Air-powered pump with dual cylinders and single-acting pistons that work alternately to move fluid in one direction, suitable for high-pressure applications."
 22-43 23 73-4,Air-Operated Piston Duplex Double-Acting Reciprocating Pumps,"Air-powered pump with dual cylinders and double-acting pistons that provide continuous fluid flow in both directions, maximizing efficiency and output."
 22-43 23 74,Steam Horizontal Reciprocating Pumps,"Industrial pump powered by steam that operates horizontally, using reciprocating motion to move fluids efficiently in process applications."
-22-43 23 74-1,Steam Horizontal Double-Acting Piston Simplex Reciprocating Pumps,"Steam-powered horizontal pump with single cylinder and double-acting piston that moves fluid in both directions during each cycle for continuous operation."
+22-43 23 74-1,Steam Horizontal Double-Acting Piston Simplex Reciprocating Pumps,Steam-powered horizontal pump with single cylinder and double-acting piston that moves fluid in both directions during each cycle for continuous operation.
 22-43 23 74-2,Steam Horizontal Double-Acting Piston Duplex Reciprocating Pumps,"Steam-powered horizontal pump with dual cylinders and double-acting pistons working alternately for smooth, continuous fluid flow in industrial processes."
-22-43 23 74-3,Steam Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,"Steam-powered horizontal pump using single plunger with double-acting motion for high-pressure fluid transfer in heavy-duty industrial applications."
-22-43 23 74-4,Steam Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,"Steam-powered horizontal pump with dual plungers operating in double-acting motion for maximum pressure and flow capacity in demanding processes."
+22-43 23 74-3,Steam Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,Steam-powered horizontal pump using single plunger with double-acting motion for high-pressure fluid transfer in heavy-duty industrial applications.
+22-43 23 74-4,Steam Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,Steam-powered horizontal pump with dual plungers operating in double-acting motion for maximum pressure and flow capacity in demanding processes.
 22-43 23 75,Steam Vertical Reciprocating Pumps,"Industrial pump powered by steam that operates vertically, using reciprocating motion for efficient fluid transfer in limited floor space applications."
-22-43 23 75-1,Steam Vertical Double-Acting Piston Simplex Reciprocating Pumps,"Vertical steam-powered pump with single cylinder and double-acting piston for continuous fluid flow in space-constrained industrial environments."
-22-43 23 75-2,Steam Vertical Double-Acting Piston Duplex Reciprocating Pumps,"Vertical steam-powered pump with dual cylinders and double-acting pistons for enhanced flow capacity and efficiency in compact industrial spaces."
-22-43 23 75-3,Steam Vertical Double-Acting Plunger Simplex Reciprocating Pumps,"Vertical steam-powered pump using single plunger with double-acting motion for high-pressure applications in confined industrial spaces."
-22-43 23 75-4,Steam Vertical Double-acting Plunger Duplex Reciprocating Pumps,"Vertical steam-powered pump with dual plungers operating in double-acting motion for maximum pressure and efficiency in compact installations."
-22-43 23 76,Power Horizontal Reciprocating Pumps,"Electrically or mechanically powered horizontal pump using reciprocating motion for reliable fluid transfer in industrial process applications."
-22-43 23 76-1,Power Horizontal Single-Acting Piston Simplex Reciprocating Pumps,"Power-driven horizontal pump with single cylinder and single-acting piston for basic fluid transfer needs in industrial processes."
-22-43 23 76-2,Power Horizontal Single-Acting Piston Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual cylinders and single-acting pistons for improved flow capacity in industrial applications."
-22-43 23 76-3,Power Horizontal Single-Acting Piston Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple cylinders and single-acting pistons for high-volume fluid transfer in large industrial processes."
-22-43 23 76-4,Power Horizontal Single-Acting Plunger Simplex Reciprocating Pumps,"Power-driven horizontal pump with single plunger operating in single-acting motion for high-pressure fluid transfer applications."
-22-43 23 76-5,Power Horizontal Single-Acting Plunger Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual plungers operating in single-acting motion for enhanced pressure capability in industrial processes."
-22-43 23 76-6,Power Horizontal Single-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple plungers operating in single-acting motion for maximum pressure and flow in large installations."
-22-43 23 76-7,Power Horizontal Double-Acting Piston Simplex Reciprocating Pumps,"Power-driven horizontal pump with single cylinder and double-acting piston for continuous fluid flow in industrial applications."
+22-43 23 75-1,Steam Vertical Double-Acting Piston Simplex Reciprocating Pumps,Vertical steam-powered pump with single cylinder and double-acting piston for continuous fluid flow in space-constrained industrial environments.
+22-43 23 75-2,Steam Vertical Double-Acting Piston Duplex Reciprocating Pumps,Vertical steam-powered pump with dual cylinders and double-acting pistons for enhanced flow capacity and efficiency in compact industrial spaces.
+22-43 23 75-3,Steam Vertical Double-Acting Plunger Simplex Reciprocating Pumps,Vertical steam-powered pump using single plunger with double-acting motion for high-pressure applications in confined industrial spaces.
+22-43 23 75-4,Steam Vertical Double-acting Plunger Duplex Reciprocating Pumps,Vertical steam-powered pump with dual plungers operating in double-acting motion for maximum pressure and efficiency in compact installations.
+22-43 23 76,Power Horizontal Reciprocating Pumps,Electrically or mechanically powered horizontal pump using reciprocating motion for reliable fluid transfer in industrial process applications.
+22-43 23 76-1,Power Horizontal Single-Acting Piston Simplex Reciprocating Pumps,Power-driven horizontal pump with single cylinder and single-acting piston for basic fluid transfer needs in industrial processes.
+22-43 23 76-2,Power Horizontal Single-Acting Piston Duplex Reciprocating Pumps,Power-driven horizontal pump with dual cylinders and single-acting pistons for improved flow capacity in industrial applications.
+22-43 23 76-3,Power Horizontal Single-Acting Piston Multiplex Reciprocating Pumps,Power-driven horizontal pump with multiple cylinders and single-acting pistons for high-volume fluid transfer in large industrial processes.
+22-43 23 76-4,Power Horizontal Single-Acting Plunger Simplex Reciprocating Pumps,Power-driven horizontal pump with single plunger operating in single-acting motion for high-pressure fluid transfer applications.
+22-43 23 76-5,Power Horizontal Single-Acting Plunger Duplex Reciprocating Pumps,Power-driven horizontal pump with dual plungers operating in single-acting motion for enhanced pressure capability in industrial processes.
+22-43 23 76-6,Power Horizontal Single-Acting Plunger Multiplex Reciprocating Pumps,Power-driven horizontal pump with multiple plungers operating in single-acting motion for maximum pressure and flow in large installations.
+22-43 23 76-7,Power Horizontal Double-Acting Piston Simplex Reciprocating Pumps,Power-driven horizontal pump with single cylinder and double-acting piston for continuous fluid flow in industrial applications.
 22-43 23 76-8,Power Horizontal Double-Acting Piston Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual cylinders and double-acting pistons for smooth, efficient fluid transfer in industrial processes."
-22-43 23 76-9,Power Horizontal Double-Acting Piston Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple cylinders and double-acting pistons for maximum flow capacity in large industrial applications."
-22-43 23 76-10,Power Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,"Power-driven horizontal pump with single plunger operating in double-acting motion for high-pressure continuous flow applications."
-22-43 23 76-11,Power Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual plungers operating in double-acting motion for enhanced pressure and flow in industrial processes."
-22-43 23 76-12,Power Horizontal Double-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple plungers in double-acting motion for maximum pressure and flow in demanding industrial applications."
-22-43 23 77,Power Vertical Reciprocating Pumps,"Power-driven vertical pump using reciprocating motion for efficient fluid transfer in space-constrained industrial environments."
-22-43 23 77-1,Power Vertical Single-Acting Piston Simplex Reciprocating Pumps,"Power-driven vertical pump with single cylinder and single-acting piston for basic fluid transfer in compact installations."
-22-43 23 77-2,Power Vertical Single-Acting Piston Duplex Reciprocating Pumps,"Power-driven vertical pump with dual cylinders and single-acting pistons for improved flow in limited floor space applications."
-22-43 23 77-3,Power Vertical Single-Acting Piston Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple cylinders and single-acting pistons for high-volume transfer in compact industrial spaces."
-22-43 23 77-4,Power Vertical Single-Acting Plunger Simplex Reciprocating Pumps,"Power-driven vertical pump with single plunger in single-acting motion for high-pressure applications in confined spaces."
-22-43 23 77-5,Power Vertical Single-Acting Plunger Duplex Reciprocating Pumps,"Power-driven vertical pump with dual plungers in single-acting motion for enhanced pressure capability in compact installations."
-22-43 23 77-6,Power Vertical Single-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple plungers in single-acting motion for maximum pressure in space-constrained environments."
-22-43 23 77-7,Power Vertical Double-Acting Piston Simplex Reciprocating Pumps,"Power-driven vertical pump with single cylinder and double-acting piston for continuous flow in compact industrial applications."
-22-43 23 77-8,Power Vertical Double-Acting Piston Duplex Reciprocating Pumps,"Power-driven vertical pump with dual cylinders and double-acting pistons for smooth operation in limited floor space environments."
-22-43 23 77-9,Power Vertical Double-Acting Piston Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple cylinders and double-acting pistons for maximum flow in compact industrial spaces."
-22-43 23 77-10,Power Vertical Double-Acting Plunger Simplex Reciprocating Pumps,"Power-driven vertical pump with single plunger in double-acting motion for high-pressure continuous flow in confined spaces."
-22-43 23 77-11,Power Vertical Double-Acting Plunger Duplex Reciprocating Pumps,"Power-driven vertical pump with dual plungers in double-acting motion for enhanced pressure and flow in compact installations."
-22-43 23 77-12,Power Vertical Double-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple plungers in double-acting motion for maximum performance in confined industrial spaces."
-22-43 23 78,Controlled Volume Horizontal Reciprocating Pumps,"Precision horizontal pump providing controlled fluid volume through reciprocating motion for accurate dosing and transfer applications."
-22-43 23 78-1,Controlled Volume Horizontal Packed Plunger Simplex Reciprocating Pumps,"Precision horizontal pump with single packed plunger for accurate fluid volume control in industrial dosing applications."
-22-43 23 78-2,Controlled Volume Horizontal Packed Plunger Duplex Reciprocating Pumps,"Precision horizontal pump with dual packed plungers for enhanced accuracy in fluid volume control and transfer processes."
-22-43 23 78-3,Controlled Volume Horizontal Packed Plunger Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple packed plungers for maximum accuracy in high-volume fluid control applications."
-22-43 23 78-4,Controlled Volume Horizontal Packed Piston Simplex Reciprocating Pumps,"Precision horizontal pump with single packed piston for accurate fluid volume control in industrial processes."
-22-43 23 78-5,Controlled Volume Horizontal Packed Piston Duplex Reciprocating Pumps,"Precision horizontal pump with dual packed pistons for enhanced accuracy in fluid metering and transfer applications."
-22-43 23 78-6,Controlled Volume Horizontal Packed Piston Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple packed pistons for maximum accuracy in high-volume fluid control processes."
-22-43 23 78-7,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Simplex Reciprocating Pumps,"Precision horizontal pump with single mechanically-coupled diaphragm for accurate fluid control in sensitive applications."
-22-43 23 78-8,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Duplex Reciprocating Pumps,"Precision horizontal pump with dual mechanically-coupled diaphragms for enhanced accuracy in sensitive fluid processes."
-22-43 23 78-9,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple mechanically-coupled diaphragms for maximum accuracy in complex fluid control systems."
-22-43 23 78-10,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Simplex Reciprocating Pumps,"Precision horizontal pump with single hydraulically-coupled diaphragm for accurate fluid control in demanding applications."
-22-43 23 78-11,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Duplex Reciprocating Pumps,"Precision horizontal pump with dual hydraulically-coupled diaphragms for enhanced accuracy in critical fluid processes."
+22-43 23 76-9,Power Horizontal Double-Acting Piston Multiplex Reciprocating Pumps,Power-driven horizontal pump with multiple cylinders and double-acting pistons for maximum flow capacity in large industrial applications.
+22-43 23 76-10,Power Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,Power-driven horizontal pump with single plunger operating in double-acting motion for high-pressure continuous flow applications.
+22-43 23 76-11,Power Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,Power-driven horizontal pump with dual plungers operating in double-acting motion for enhanced pressure and flow in industrial processes.
+22-43 23 76-12,Power Horizontal Double-Acting Plunger Multiplex Reciprocating Pumps,Power-driven horizontal pump with multiple plungers in double-acting motion for maximum pressure and flow in demanding industrial applications.
+22-43 23 77,Power Vertical Reciprocating Pumps,Power-driven vertical pump using reciprocating motion for efficient fluid transfer in space-constrained industrial environments.
+22-43 23 77-1,Power Vertical Single-Acting Piston Simplex Reciprocating Pumps,Power-driven vertical pump with single cylinder and single-acting piston for basic fluid transfer in compact installations.
+22-43 23 77-2,Power Vertical Single-Acting Piston Duplex Reciprocating Pumps,Power-driven vertical pump with dual cylinders and single-acting pistons for improved flow in limited floor space applications.
+22-43 23 77-3,Power Vertical Single-Acting Piston Multiplex Reciprocating Pumps,Power-driven vertical pump with multiple cylinders and single-acting pistons for high-volume transfer in compact industrial spaces.
+22-43 23 77-4,Power Vertical Single-Acting Plunger Simplex Reciprocating Pumps,Power-driven vertical pump with single plunger in single-acting motion for high-pressure applications in confined spaces.
+22-43 23 77-5,Power Vertical Single-Acting Plunger Duplex Reciprocating Pumps,Power-driven vertical pump with dual plungers in single-acting motion for enhanced pressure capability in compact installations.
+22-43 23 77-6,Power Vertical Single-Acting Plunger Multiplex Reciprocating Pumps,Power-driven vertical pump with multiple plungers in single-acting motion for maximum pressure in space-constrained environments.
+22-43 23 77-7,Power Vertical Double-Acting Piston Simplex Reciprocating Pumps,Power-driven vertical pump with single cylinder and double-acting piston for continuous flow in compact industrial applications.
+22-43 23 77-8,Power Vertical Double-Acting Piston Duplex Reciprocating Pumps,Power-driven vertical pump with dual cylinders and double-acting pistons for smooth operation in limited floor space environments.
+22-43 23 77-9,Power Vertical Double-Acting Piston Multiplex Reciprocating Pumps,Power-driven vertical pump with multiple cylinders and double-acting pistons for maximum flow in compact industrial spaces.
+22-43 23 77-10,Power Vertical Double-Acting Plunger Simplex Reciprocating Pumps,Power-driven vertical pump with single plunger in double-acting motion for high-pressure continuous flow in confined spaces.
+22-43 23 77-11,Power Vertical Double-Acting Plunger Duplex Reciprocating Pumps,Power-driven vertical pump with dual plungers in double-acting motion for enhanced pressure and flow in compact installations.
+22-43 23 77-12,Power Vertical Double-Acting Plunger Multiplex Reciprocating Pumps,Power-driven vertical pump with multiple plungers in double-acting motion for maximum performance in confined industrial spaces.
+22-43 23 78,Controlled Volume Horizontal Reciprocating Pumps,Precision horizontal pump providing controlled fluid volume through reciprocating motion for accurate dosing and transfer applications.
+22-43 23 78-1,Controlled Volume Horizontal Packed Plunger Simplex Reciprocating Pumps,Precision horizontal pump with single packed plunger for accurate fluid volume control in industrial dosing applications.
+22-43 23 78-2,Controlled Volume Horizontal Packed Plunger Duplex Reciprocating Pumps,Precision horizontal pump with dual packed plungers for enhanced accuracy in fluid volume control and transfer processes.
+22-43 23 78-3,Controlled Volume Horizontal Packed Plunger Multiplex Reciprocating Pumps,Precision horizontal pump with multiple packed plungers for maximum accuracy in high-volume fluid control applications.
+22-43 23 78-4,Controlled Volume Horizontal Packed Piston Simplex Reciprocating Pumps,Precision horizontal pump with single packed piston for accurate fluid volume control in industrial processes.
+22-43 23 78-5,Controlled Volume Horizontal Packed Piston Duplex Reciprocating Pumps,Precision horizontal pump with dual packed pistons for enhanced accuracy in fluid metering and transfer applications.
+22-43 23 78-6,Controlled Volume Horizontal Packed Piston Multiplex Reciprocating Pumps,Precision horizontal pump with multiple packed pistons for maximum accuracy in high-volume fluid control processes.
+22-43 23 78-7,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Simplex Reciprocating Pumps,Precision horizontal pump with single mechanically-coupled diaphragm for accurate fluid control in sensitive applications.
+22-43 23 78-8,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Duplex Reciprocating Pumps,Precision horizontal pump with dual mechanically-coupled diaphragms for enhanced accuracy in sensitive fluid processes.
+22-43 23 78-9,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Multiplex Reciprocating Pumps,Precision horizontal pump with multiple mechanically-coupled diaphragms for maximum accuracy in complex fluid control systems.
+22-43 23 78-10,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Simplex Reciprocating Pumps,Precision horizontal pump with single hydraulically-coupled diaphragm for accurate fluid control in demanding applications.
+22-43 23 78-11,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Duplex Reciprocating Pumps,Precision horizontal pump with dual hydraulically-coupled diaphragms for enhanced accuracy in critical fluid processes.
 22-43 23 78-12,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Multiplex Reciprocating Pumps,Controlled volume horizontal hydraulically-coupled diaphragm multiplex reciprocating pumps
 22-43 23 79,Controlled Volume Vertical Reciprocating Pumps,Controlled volume vertical reciprocating pumps
 22-43 23 79-1,Controlled Volume Vertical Packed Plunger Simplex Reciprocating Pumps,Controlled volume vertical packed plunger simplex reciprocating pumps
@@ -20686,12 +20686,12 @@ OmniClass_Code,OmniClass_Title,Description
 23-15 13 19-10,Glass Fiber Reinforced Cementitious Wall Panels,Wall panels reinforced with glass fibers in cement matrix for superior strength and crack resistance. Used in demanding architectural applications.
 23-15 13 19-11,Miner Fiber Reinforced Cementitious Wall Panels,Wall panels incorporating mineral fibers in cement composition for enhanced fire resistance and thermal properties. Suitable for specialized installations.
 23-15 13 19-12,Flexible Wood Wall Sheets,Thin wood sheets designed to be flexible for curved wall applications. Made from specially processed wood materials for bendability.
-23-15 13 19-13,Acoustical Wall Treatment,Specialized wall treatments designed to control sound reflection and absorption. Used in theaters, studios and other spaces requiring acoustic control.
+23-15 13 19-13,Acoustical Wall Treatment,Specialized wall treatments designed to control sound reflection and absorption. Used in theaters  studios and other spaces requiring acoustic control.
 23-15 13 21,Ceiling Panels,Modular panels installed in ceiling systems to provide finished ceiling surfaces. Available in various materials and performance characteristics.
 23-15 13 21-1,Metal Ceiling Panels,Ceiling panels made from metal materials like aluminum or steel. Durable and easy to maintain with clean modern appearance.
 23-15 13 21-2,Plastic Ceiling Panels,Ceiling panels manufactured from plastic materials. Lightweight and moisture resistant for specialized applications like clean rooms.
 23-15 13 21-3,Wood Ceiling Panels,Ceiling panels made from natural or engineered wood products. Provide warm aesthetic and can include acoustic properties.
-23-15 13 21-4,Composite Ceiling Panels,Ceiling panels combining multiple materials for enhanced performance. May include combinations of metal, mineral fiber, and other materials.
+23-15 13 21-4,Composite Ceiling Panels,Ceiling panels combining multiple materials for enhanced performance. May include combinations of metal  mineral fiber  and other materials.
 23-15 13 21-5,Faced Ceiling Panels,Ceiling panels with decorative facing materials. Allow design flexibility while maintaining core panel performance.
 23-15 13 21-6,Aggregate Coated Ceiling Panels,Ceiling panels with exposed aggregate coating for decorative texture. Often used in architectural applications requiring visual interest.
 23-15 13 21-7,Porcelain Enameled Faced Ceiling Panels,Ceiling panels with durable porcelain enamel facing. Resistant to staining and appropriate for demanding environments.
@@ -21363,9 +21363,9 @@ OmniClass_Code,OmniClass_Title,Description
 34-11 20 11,Executive,A senior-level executive responsible for the overall management and direction of an organization.
 34-11 20 14,Officer,A senior-level officer or manager responsible for a specific function or department within an organization.
 34-11 20 17,Director,A member of the board of directors or other governing body of an organization.
-34-11 20 21,Manager,A person responsible for managing projects, teams, or operations
+34-11 20 21,Manager,A person responsible for managing projects  teams  or operations
 35-11 11 21-8,Routers,Networking devices that forward data packets between computer networks
-35-11 11 31,Business Machines,Equipment used in business operations like computers, printers, and copiers
+35-11 11 31,Business Machines,Equipment used in business operations like computers  printers  and copiers
 35-51 11 11-4,Site Toilets,Portable restroom facilities for construction sites and outdoor events
 35-51 11 21-24,Pipe Wrenches,Adjustable wrenches designed for gripping and turning pipes or round objects
 35-51 11 21-25,Allen Wrenches,Hexagonal L-shaped wrenches used for fastening hex socket screws
@@ -21386,7 +21386,7 @@ OmniClass_Code,OmniClass_Title,Description
 35-51 11 31-5,Jackhammers,Pneumatic hammers for breaking up hard materials
 35-51 11 31-6,Forming Power Tools,Power tools used for shaping and forming materials
 35-51 11 31-7,Power Hammers,Electric or pneumatic hammers for driving nails or breaking materials
-35-51 11 31-8,Power Grinders,Tools for grinding, cutting, or polishing materials"
+35-51 11 31-8,Power Grinders,"Tools for grinding  cutting  or polishing materials"""
 35-51 11 31-9,Power Routers,Tools for cutting grooves and patterns in wood or other materials
 35-51 11 31-10,Power Planers,Tools for smoothing and leveling wood surfaces
 35-51 11 31-11,Fastening Power Tools,Power tools used for securing materials together
@@ -21697,7 +21697,7 @@ OmniClass_Code,OmniClass_Title,Description
 49-71 19 21,Height,The rate at which a material allows the passage of a substance.
 49-71 39 15-4,Diffusion Rate,The chemical composition or makeup of a product or material.
 49-71 39 17,Chemical Composition,The physical properties or characteristics of a product or material.
-31-10 00 00,Inception Phase, "Phase for establishing the project vision and means to satisfy the client's business or public service requirement, including site selection, planning considerations, establishment of timeline, method of delivery, budget and which identifies necessary resources (design, legal, financing, insurance, etc.)."
+31-10 00 00,Inception Phase," ""Phase for establishing the project vision and means to satisfy the client's business or public service requirement  including site selection  planning considerations  establishment of timeline  method of delivery  budget and which identifies necessary resources (design  legal  financing  insurance  etc.)."""
 31-20 00 00,Conceptualization Phase,"Phase to identify the major design ideas in the context of  programmatic objectives, facility performance, and activity parameters, to define spaces, and to initiate basic project element considerations."
 31-40 00 00,Design Phase,"Phase in which project team establishes means of satisfying project Basis of Design requirements with technical solutions, evaluates alternatives through value analysis or similar processes, and completes initial documentation - Drawings and specified Work Results - for the designed project."
 31-30 00 00,Criteria Definition Phase,"Phase to create and refine schematic diagrams of the basic project elements  - substructure, shell, interiors, equipment, services, equipment and furnishings, special construction and demolition, and building sitework - that fully establish project spatial and element criteria as the Basis of Design."
@@ -21705,4 +21705,4 @@ OmniClass_Code,OmniClass_Title,Description
 31-50 00 00,Coordination Phase,"Phase that bridges the design effort with implementation by integrating constructability and feasibility evaluations of the design in order to further develop spaces, elements, products, and materials necessary for the procurement and execution of the Work irrespective of the method of delivery."
 31-80 00 00,Operations Phase,"Phase in which owner or a designated agent occupies, uses, and manages and maintains a facility, which may also include partial or whole facility renovation, repair, reconditioning or remodeling activities as part of the project use lifecycle."
 31-70 00 00,Handover Phase,"Phase to evaluate the completed Work through testing, inspection, and commissioning activities, including for any Owner-furnished equipment, to ensure that design/performance criteria are met while conforming to applicable codes and standards, and transfer project knowledge from the design/construction team to the Owner/facility management team via demonstrations, training, and documentation."
-31-90 00 00,Closure Phase,"Phase which includes facility closure, preparation for unknown future use, demolition in whole or part, foreclosure, sale, or similar dispensation initiated by the decision that the facility no longer meets the needs of the Owner and cannot be feasibly reconfigured for continued use by that Owner."  
+31-90 00 00,Closure Phase,"Phase which includes facility closure, preparation for unknown future use, demolition in whole or part, foreclosure, sale, or similar dispensation initiated by the decision that the facility no longer meets the needs of the Owner and cannot be feasibly reconfigured for continued use by that Owner.  "

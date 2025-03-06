@@ -6,16 +6,222 @@ It follows the Single Responsibility Principle by focusing solely on feature tra
 """
 
 import json
-from typing import Dict, Optional, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
+import yaml
+from sklearn.base import BaseEstimator, TransformerMixin
 
 from nexusml.config import get_project_root
+
+
+class TextCombiner(BaseEstimator, TransformerMixin):
+    """
+    Combines multiple text columns into one column.
+
+    Config example: {"columns": ["Asset Category","Equip Name ID"], "separator": " "}
+    """
+
+    def __init__(
+        self,
+        columns: List[str],
+        separator: str = " ",
+        new_column: str = "combined_text",
+    ):
+        self.columns = columns
+        self.separator = separator
+        self.new_column = new_column
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Create a single text column from self.columns
+        X[self.new_column] = (
+            X[self.columns]
+            .astype(str)
+            .apply(lambda row: self.separator.join(row.values), axis=1)
+        )
+        X[self.new_column] = X[self.new_column].fillna("")
+        return X
+
+
+class NumericCleaner(BaseEstimator, TransformerMixin):
+    """
+    Cleans and transforms numeric columns.
+
+    Config example: {"name": "Service Life", "new_name": "service_life", "fill_value": 0, "dtype": "float"}
+    """
+
+    def __init__(
+        self,
+        column: str,
+        new_name: Optional[str] = None,
+        fill_value: Union[int, float] = 0,
+        dtype: str = "float",
+    ):
+        self.column = column
+        self.new_name = new_name or column
+        self.fill_value = fill_value
+        self.dtype = dtype
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Clean and transform the numeric column
+        if self.dtype == "float":
+            X[self.new_name] = X[self.column].fillna(self.fill_value).astype(float)
+        elif self.dtype == "int":
+            X[self.new_name] = X[self.column].fillna(self.fill_value).astype(int)
+        return X
+
+
+class HierarchyBuilder(BaseEstimator, TransformerMixin):
+    """
+    Creates hierarchical category columns by combining parent columns.
+
+    Config example: {"new_col": "Equipment_Type", "parents": ["Asset Category", "Equip Name ID"], "separator": "-"}
+    """
+
+    def __init__(
+        self, new_column: str, parent_columns: List[str], separator: str = "-"
+    ):
+        self.new_column = new_column
+        self.parent_columns = parent_columns
+        self.separator = separator
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Create hierarchical column from parent columns
+        X[self.new_column] = (
+            X[self.parent_columns]
+            .astype(str)
+            .apply(lambda row: self.separator.join(row.values), axis=1)
+        )
+        return X
+
+
+class ColumnMapper(BaseEstimator, TransformerMixin):
+    """
+    Maps source columns to target columns.
+
+    Config example: {"source": "Asset Category", "target": "Equipment_Category"}
+    """
+
+    def __init__(self, mappings: List[Dict[str, str]]):
+        self.mappings = mappings
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Map source columns to target columns
+        for mapping in self.mappings:
+            source = mapping["source"]
+            target = mapping["target"]
+            X[target] = X[source]
+        return X
+
+
+class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
+    """
+    A generic feature engineering transformer that applies multiple transformations
+    based on a configuration file.
+    """
+
+    def __init__(self, config_path: Optional[str] = None):
+        """
+        Initialize the transformer with a configuration file path.
+
+        Args:
+            config_path: Path to the YAML configuration file. If None, uses the default path.
+        """
+        self.config_path = config_path
+        self.transformers = []
+        self.config = {}
+        self._load_config()
+
+    def _load_config(self):
+        """Load the configuration from the YAML file."""
+        config_path = self.config_path
+        if config_path is None:
+            # Use default path
+            root = get_project_root()
+            config_path = root / "config" / "feature_config.yml"
+
+        # Load the configuration
+        with open(config_path, "r") as f:
+            self.config = yaml.safe_load(f)
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        """
+        Transform the input DataFrame based on the configuration.
+
+        Args:
+            X: Input DataFrame
+
+        Returns:
+            Transformed DataFrame
+        """
+        X = X.copy()
+
+        # 1. Apply column mappings
+        if "column_mappings" in self.config:
+            mapper = ColumnMapper(self.config["column_mappings"])
+            X = mapper.transform(X)
+
+        # 2. Apply text combinations
+        if "text_combinations" in self.config:
+            for combo in self.config["text_combinations"]:
+                combiner = TextCombiner(
+                    columns=combo["columns"],
+                    separator=combo.get("separator", " "),
+                    new_column=combo.get("name", "combined_text"),
+                )
+                X = combiner.transform(X)
+
+        # 3. Apply numeric column cleaning
+        if "numeric_columns" in self.config:
+            for num_col in self.config["numeric_columns"]:
+                cleaner = NumericCleaner(
+                    column=num_col["name"],
+                    new_name=num_col.get("new_name", num_col["name"]),
+                    fill_value=num_col.get("fill_value", 0),
+                    dtype=num_col.get("dtype", "float"),
+                )
+                X = cleaner.transform(X)
+
+        # 4. Apply hierarchical categories
+        if "hierarchies" in self.config:
+            for hierarchy in self.config["hierarchies"]:
+                builder = HierarchyBuilder(
+                    new_column=hierarchy["new_col"],
+                    parent_columns=hierarchy["parents"],
+                    separator=hierarchy.get("separator", "-"),
+                )
+                X = builder.transform(X)
+
+        return X
 
 
 def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Enhanced feature engineering with hierarchical structure and more granular categories
+
+    This function now uses the GenericFeatureEngineer transformer to apply
+    transformations based on the configuration file.
 
     Args:
         df (pd.DataFrame): Input dataframe with raw features
@@ -23,50 +229,17 @@ def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with enhanced features
     """
-    # Extract primary classification columns
-    df["Equipment_Category"] = df["Asset Category"]
-    df["Uniformat_Class"] = df["System Type ID"]
-    df["System_Type"] = df["Precon System"]
-
-    # Create subcategory field for more granular classification
-    df["Equipment_Subcategory"] = df["Equip Name ID"]
-
-    # Combine fields for rich text features
-    df["combined_features"] = (
-        df["Asset Category"]
-        + " "
-        + df["Equip Name ID"]
-        + " "
-        + df["Sub System Type"]
-        + " "
-        + df["Sub System ID"]
-        + " "
-        + df["Title"]
-        + " "
-        + df["Precon System"]
-        + " "
-        + df["Operations System"]
-        + " "
-        + df["Sub System Class"]
-        + " "
-        + df["Drawing Abbreviation"]
-    )
-
-    # Add equipment size and unit as features
-    df["size_feature"] = df["Equipment Size"].astype(str) + " " + df["Unit"].astype(str)
-
-    # Add service life as a feature
-    df["service_life"] = df["Service Life"].fillna(0).astype(float)
-
-    # Fill NaN values
-    df["combined_features"] = df["combined_features"].fillna("")
-
-    return df
+    # Use the GenericFeatureEngineer to apply transformations
+    engineer = GenericFeatureEngineer()
+    return engineer.transform(df)
 
 
 def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     """
     Create hierarchical category structure to better handle "Other" categories
+
+    This function is kept for backward compatibility but now simply returns the
+    input DataFrame as the hierarchical categories are created by the GenericFeatureEngineer.
 
     Args:
         df (pd.DataFrame): Input dataframe with basic features
@@ -74,12 +247,8 @@ def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with hierarchical category features
     """
-    # Create Equipment Type - a more detailed category than Equipment_Category
-    df["Equipment_Type"] = df["Asset Category"] + "-" + df["Equip Name ID"]
-
-    # Create System Subtype - a more detailed category than System_Type
-    df["System_Subtype"] = df["Precon System"] + "-" + df["Operations System"]
-
+    # This function is kept for backward compatibility
+    # The hierarchical categories are now created by the GenericFeatureEngineer
     return df
 
 

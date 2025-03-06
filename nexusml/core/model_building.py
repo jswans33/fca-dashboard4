@@ -7,6 +7,7 @@ It follows the Single Responsibility Principle by focusing solely on model defin
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from sklearn.compose import ColumnTransformer
@@ -16,21 +17,29 @@ from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from nexusml.core.feature_engineering import GenericFeatureEngineer
 
-def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pipeline:
+
+def build_enhanced_model(
+    sampling_strategy: str = "random_over",
+    feature_config_path: Optional[str] = None,
+    **kwargs,
+) -> Pipeline:
     """
     Build an enhanced model with configurable sampling strategy
 
     This model incorporates both text features (via TF-IDF) and numeric features
     (like service_life) using a ColumnTransformer to create a more comprehensive
-    feature representation.
+    feature representation. It now includes a GenericFeatureEngineer step for
+    more flexible feature engineering.
 
     Args:
         sampling_strategy: Sampling strategy to use ("random_over", "smote", or "direct")
+        feature_config_path: Path to the feature configuration file. If None, uses the default path.
         **kwargs: Additional parameters for the model
 
     Returns:
-        Pipeline: Scikit-learn pipeline with preprocessor and classifier
+        Pipeline: Scikit-learn pipeline with feature engineering, preprocessor and classifier
     """
     # Try to load settings from configuration file
     try:
@@ -131,11 +140,17 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
         remainder="drop",  # Drop any other columns
     )
 
-    # Complete pipeline with feature processing and classifier
+    # Complete pipeline with feature engineering, feature processing and classifier
     # Note: We use both RandomOverSampler (applied earlier) and class_weight='balanced_subsample'
     # for a two-pronged approach to handling imbalanced classes
     pipeline = Pipeline(
         [
+            # Optional feature engineering step - only used if called directly, not through train_enhanced_model
+            # In train_enhanced_model, this is applied separately before the pipeline
+            (
+                "feature_engineer",
+                GenericFeatureEngineer(config_path=feature_config_path),
+            ),
             ("preprocessor", preprocessor),
             (
                 "clf",

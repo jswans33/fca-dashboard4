@@ -1,0 +1,43 @@
+text_combinations:
+  - name: 'combined_text'
+    columns:
+      [
+        'Asset Category',
+        'Equip Name ID',
+        'Sub System Type',
+        'Sub System ID',
+        'Title',
+        'Precon System',
+        'Operations System',
+        'Sub System Class',
+        'Drawing Abbreviation',
+      ]
+    separator: ' '
+
+  - name: 'size_feature'
+    columns: ['Equipment Size', 'Unit']
+    separator: ' '
+
+numeric_columns:
+  - name: 'Service Life'
+    new_name: 'service_life'
+    fill_value: 0
+    dtype: 'float'
+
+hierarchies:
+  - new_col: 'Equipment_Type'
+    parents: ['Asset Category', 'Equip Name ID']
+    separator: '-'
+  - new_col: 'System_Subtype'
+    parents: ['Precon System', 'Operations System']
+    separator: '-'
+
+column_mappings:
+  - source: 'Asset Category'
+    target: 'Equipment_Category'
+  - source: 'System Type ID'
+    target: 'Uniformat_Class'
+  - source: 'Precon System'
+    target: 'System_Type'
+  - source: 'Equip Name ID'
+    target: 'Equipment_Subcategory'

@@ -1,0 +1,165 @@
+OmniClass Hierarchy Tree (Terminal Format):
+22: 
+    └── 22: 
+        └── 11: 
+            └── 23: Domestic-Water, Base-Mounted Pumps - Base-mounted pumps for domestic water distribution.
+    └── 23: 
+        └── 09: 
+            └── 23: Motion Instruments - Devices that measure and transmit data about the motion of HVAC equipment.
+        └── 21: 
+            └── 23: Vertical-Turbine Hydronic Pumps - Vertical-turbine pumps for hydronic systems.
+        └── 22: 
+            └── 23: Pressure-Powered Steam Condensate Pumps - Pressure-powered pumps for steam condensate systems.
+        └── 37: 
+            └── 23: HVAC Gravity Upblast Ventilators - Ventilators designed to direct exhaust air upward using natural convection reducing re-entry of exhaust into building intakes.
+        └── 64: 
+            └── 23: Water-Cooled Scroll Water Chillers - Scroll chillers that are water-cooled.
+        └── 74: 
+            └── 23: Packaged, Indirect-Fired, Outdoor, Heating-Only Makeup-Air Units - Indirect-fired packaged outdoor heating-only makeup-air units for HVAC systems.
+        └── 81: 
+            └── 23: Computer-Room, Rack-Cooling Equipment - Computer-room rack-cooling equipment for HVAC systems.
+23: 
+    └── 13: 
+        └── 23: Mechanical Fasteners - Mechanical fasteners used to attach building components to masonry.
+            └── 11: Screw Cases - Housings for mechanical fasteners that are cast into concrete or masonry.
+        └── 35: 
+            └── 23: Balcony Holders and Mechanical Fasteners - Hardware for securing and supporting balconies
+        └── 37: 
+            └── 23: Mechanical Fasteners for Coverings and Claddings - Hardware for securing exterior finishes
+        └── 39: 
+            └── 17: Tile Roof Mechanical Fasteners - Mechanical fasteners used to install tile roofing.
+            └── 19: Slate Roof Mechanical Fasteners - Mechanical fasteners used to install slate roofing.
+        └── 41: 
+            └── 39: Mechanical Fasteners for Downspouts - Fasteners used to secure downspouts to the building
+    └── 15: 
+        └── 11: 
+            └── 13: Mechanical Fasteners for Partitions - Fasteners used to assemble demountable partitions.
+        └── 17: 
+            └── 15: Mechanical Fasteners for Resilient Floor Coverings - Mechanical fasteners used to install resilient floor coverings.
+        └── 19: 
+            └── 23: Mechanical Fasteners for Suspended Ceilings - Fasteners used to install suspended ceiling systems
+    └── 17: 
+        └── 15: 
+            └── 21: Mechanical Glazing Fasteners - Mechanical fasteners used to install glazing.
+        └── 21: 
+            └── 11: Roller Shutter Gear - Mechanical systems that control the operation of roller shutters.
+    └── 19: 
+        └── 25: 
+            └── 11: Foot Pumps - Tools used to apply caulk and sealants for insect control.
+    └── 21: 
+        └── 21: 
+            └── 25: Commercial Syrup Pump Dispensers - Devices used to dispense syrups with a pump in a commercial setting.
+            └── 27: Commercial Blast Chillers - Commercial blast chillers used to rapidly cool food.
+            └── 31: Commercial Mechanical Food Slicers - Commercial mechanical food slicers used to slice food.
+        └── 23: 
+            └── 37: Residential Mechanical Food Slicers - Residential mechanical food slicers for cutting food into thin, even slices.
+        └── 35: 
+            └── 19: Vehicle Hoists - Mechanical lifts used to raise vehicles for maintenance and repair.
+    └── 23: 
+        └── 11: 
+            └── 11: Elevator Equipment and Controls - Elevator equipment and controls, including the mechanical and electrical components.
+        └── 13: 
+            └── 11: Mechanical Wheel Chair Vertical Lifts - Mechanically-powered wheelchair lifts that move vertically.
+        └── 17: 
+            └── 23: Mechanical Workshop Cranes - Cranes that use electric power to lift and move loads.
+    └── 25: 
+        └── 11: 
+            └── 13: Electro Mechanical Resuscitators - Products used to drain fluid from the pleural cavity.
+        └── 23: 
+            └── 13: Hemodialysis Unit Heparin Infusion Pumps - Pumps used to infuse heparin during hemodialysis.
+        └── 27: 
+            └── 13: General Use Intravenous Pumps - General-use intravenous pumps.
+        └── 47: 
+            └── 13: Mechanical Stethoscopes - Traditional mechanical stethoscopes.
+        └── 59: 
+            └── 13: Intraaortic Balloon Pumps - Devices used to assist with blood circulation during surgery.
+        └── 69: 
+            └── 13: Laboratory Disintegrators - Laboratory disintegrators use mechanical force to break down and disperse samples.
+    └── 27: 
+        └── 15: HVAC Controls - Controls that manage a building's HVAC systems
+            └── 23: HVAC Control Clocks - Clocks that control a building's HVAC systems
+        └── 17: Pump Components - Components used in various types of pumps
+            └── 23: Combined Macerator Pumps - Macerator pumps that combine grinding and pumping
+            └── 31: Rotary Vane Pumps - Rotary vane pumps that pump liquids and fluids
+            └── 35: Submersible Sewage Ejectors - Submersible pumps that eject sewage and wastewater
+        └── 19: Turbine Engines - Engines that use turbine blades to convert energy into mechanical power.
+        └── 31: Thermostatic Expansion Valves - Thermostatic expansion valves control refrigerant flow in HVAC systems.
+        └── 33: Valve Actuators - Valve actuators provide the mechanical force to open and close valves.
+        └── 43: Mechanical Pipe Supports - Mechanical supports used to hold and position pipes.
+        └── 55: 
+            └── 35: Mechanical Liquid Separators - Mechanical devices that separate liquids.
+        └── 57: Mechanically Aided Air Scrubbers - Air scrubbers that use mechanical means to clean air.
+        └── 63: Mechanical Insulation and Linings - Insulation and linings used to cover pipes, equipment, and other building systems.
+    └── 29: 
+        └── 25: 
+            └── 15: Fire Fighting Pumper Connections - Connections for fire trucks to pump water into a system
+        └── 31: Jockey Pump Controllers - Devices that control the operation of a jockey pump
+    └── 33: 
+        └── 00: HVAC Specific Products and Equipment - Products and equipment specifically for HVAC systems
+        └── 11: Boiler Components - Sealants and fillers used to assemble boiler components
+            └── 11: Boiler Burner Controls - Boilers that condense flue gases to improve efficiency
+            └── 15: Low Temperature Hot Water Fire Tube Boilers - Boilers with flexible tube heat exchangers
+            └── 17: Low Temperature Hot Water Flexible Tube Boilers - Boilers with sectionalized cast iron heat exchangers
+            └── 19: Low Temperature Hot Water Sectionalized Cast Iron Boilers - Boilers with water tube heat exchangers
+            └── 21: Low Temperature Hot Water Water Tube Boilers - Boilers that use electricity as the heat source
+            └── 23: Boiler Draft Fans - Furnaces that provide heated air for building heating
+        └── 15: HVAC Steam Hot Water Converters - Devices that convert steam or hot water to heat HVAC systems.
+            └── 11: Outdoor Propane HVAC Heaters - Propane heaters designed for outdoor use in HVAC systems.
+            └── 17: Fuel Fired HVAC Air Heaters - Fuel-fired air heaters used in HVAC systems.
+            └── 19: Forced Air Fuel Fired HVAC Air Heaters - Forced-air fuel-fired air heaters used in HVAC systems.
+            └── 21: Cast Iron Radiators - Cast iron radiators used in hydronic HVAC systems.
+            └── 25: Electric HVAC Resitive Unit Heaters - Electric HVAC heaters that use resistance heating elements.
+            └── 27: Forced Air Electric HVAC Resitive Unit Heaters - Forced air HVAC heaters that use resistance heating elements.
+        └── 17: Split System Heat Pumps - Heat pump systems with separate indoor and outdoor units
+            └── 11: Water Source Packaged Heat Pumps - Self-contained heat pump units that extract heat from water source
+            └── 13: Water Source Split System Heat Pumps - Split system heat pumps that extract heat from water source  
+        └── 21: Chillers - General purpose liquid cooling equipment
+            └── 11: Steam Absorption Chillers - Absorption chillers powered by steam
+            └── 13: Packaged Rotary Chillers - Self-contained chillers with rotary compressors
+        └── 23: Cooling Ponds - Air handling units are central HVAC components that circulate and condition air in a building.
+        └── 27: Vaporizers - HVAC dampers regulate the flow of air in ductwork.
+        └── 29: HVAC Dampers - 3-way diverter dampers direct airflow to different outlets.
+            └── 17: Manual Butterfly Dampers - Dampers regulate airflow in HVAC systems.
+        └── 33: Fan Coil Units - HVAC units that combine a fan and heating/cooling coil.
+            └── 11: 4 Pipe Fan Coil Heating and Cooling Units - HVAC units with a 4-pipe system for heating and cooling.
+        └── 35: HVAC Coils - Coils used in HVAC systems for heating or cooling.
+            └── 11: HVAC Water Coils - Coils that use water for heating or cooling.
+        └── 41: Exhaust Terminals - Exhaust terminals are HVAC devices that remove air from a building.
+        └── 43: HVAC Condenser Units - HVAC condenser units are devices that condense refrigerant in an HVAC system.
+        └── 45: HVAC Evaporative Coolers - HVAC evaporative coolers cool air using evaporation.
+        └── 47: Air Dryers - Air dryers are HVAC devices that remove moisture from air.
+        └── 49: Ventilation Ducts - Ventilation ducts are the pipes that transport air in an HVAC system.
+            └── 29: Mechanical Fasteners for Air Ductwork - Fasteners used to assemble and secure air ductwork.
+        └── 51: Refrigerant Purge Units - Units that purify and recycle refrigerant in HVAC systems.
+        └── 55: Energy HVAC Recovery Equipment - Equipment that recovers and reuses energy from HVAC systems.
+    └── 35: 
+        └── 11: Electrical Generators - Electrical generators convert mechanical energy into electrical energy.
+        └── 15: Electric Motors - Electric motors that convert electrical energy into mechanical energy
+        └── 25: 
+            └── 11: Electromechancial Kilowatt Hour Meters - Electromechanical devices that measure electrical energy use
+        └── 31: 
+            └── 31: Mechanically Controlled Paralleling Switchgear - Switchgear with mechanical controls for power synchronization.
+        └── 33: 
+            └── 13: Conductor Mechanical Fasteners - Fasteners that secure electrical conductors.
+            └── 17: Mechanical Fasteners for Trunking - Mechanical fasteners used to secure electrical trunking in place.
+    └── 37: 
+        └── 11: 
+            └── 17: Mechanical Signal Equipment - Equipment used to provide mechanical signaling for communication systems.
+    └── 39: 
+        └── 31: 
+            └── 11: Packaged Lift Stations - Packaged lift stations that combine a pump and related equipment into a single unit for lifting wastewater.
+        └── 35: 
+            └── 13: Liquid Chemical Transfer Pumps - Pumps for transferring liquid chemicals
+        └── 37: 
+            └── 11: Floating Mechanical Mixers - Floating mechanical mixers that mix water and wastewater
+        └── 39: 
+            └── 11: Floating Mechanical Aerators - Aerators that float on the surface to mix and aerate water or wastewater.
+        └── 41: 
+            └── 13: Desalination Mechanical Vapor Compression Equipment - Equipment that uses mechanical vapor compression to desalinate water.
+        └── 43: 
+            └── 11: Thickening Screw Press - Screw presses that use mechanical force to thicken residuals.
+            └── 17: Waste Heat Recovery Boilers - Boilers that recover heat from sludge incineration.
+49: 
+    └── 91: 
+        └── 25: 
+            └── 23: Naturally Vented Only - HVAC system that relies on natural ventilation rather than mechanical means

@@ -1,0 +1,1237 @@
+OmniClass Hierarchy Tree:
+11: 
+    └── 13: 
+        └── 11: 
+            └── 23: Regional Fusion Center - A regional-level facility that collects and analyzes intelligence to support law enforcement and homeland security.
+13: 
+    └── 23: 
+        └── 11: 
+            └── 23: Liquid Distribution Riser - A vertical shaft used to distribute liquids throughout a building.
+    └── 51: 
+        └── 17: 
+            └── 23: Nurse Triage Space - A space for nurses to triage and assess patients.
+    └── 55: 
+        └── 29: 
+            └── 23: Queuing Space - A space for queuing and lining up for service or access
+22: 
+    └── 01: 
+        └── 71: 
+            └── 23: Construction Surveying - Surveying the construction site to establish elevations and locations.
+        └── 78: 
+            └── 23: Preventative Maintenance Instructions - Instructions for preventative maintenance of systems and equipment.
+        └── 91: 
+            └── 23: Interior Finishes Commissioning - The process of verifying that a building's interior finishes, such as flooring, wall coverings, and ceilings, have been properly installed and are functioning as intended.
+    └── 02: 
+        └── 25: 
+            └── 23: Welding Investigations - Investigations involving welding of existing metals
+        └── 32: 
+            └── 23: Groundwater Monitoring Before Construction - Monitoring of groundwater conditions before construction
+    └── 03: 
+        └── 39: 
+            └── 23: Sheet Membrane Concrete Curing - Curing concrete using a sheet or film membrane to retain moisture.
+    └── 04: 
+        └── 05: 
+            └── 23: Masonry Cavity Drainage, Weepholes, and Vents - Features that allow water drainage and air circulation in masonry cavities.
+        └── 22: 
+            └── 23: Split-Face Concrete Unit Masonry - Masonry constructed using autoclaved aerated concrete units.
+    └── 07: 
+        └── 71: 
+            └── 23: Gutter Debris Guards - Accessories to prevent debris from entering gutters.
+    └── 08: 
+        └── 14: 
+            └── 23: Molded-Hardboard-Faced Wood Doors - Wood doors with a molded hardboard face or covering.
+        └── 33: 
+            └── 23: Overhead Rapid Coiling Doors - Rapid-opening overhead coiling doors.
+        └── 51: 
+            └── 23: Cold-Rolled Steel Windows - Cold-rolled steel windows with a sleek, modern look.
+        └── 87: 
+            └── 23: Security Films - Glazing with specialized functions, such as fire-resistance or hurricane-resistance.
+    └── 09: 
+        └── 64: 
+            └── 23: Acrylic-Impregnated Wood Parquet Flooring - Parquet flooring treated with acrylic resin for enhanced durability and moisture resistance.
+        └── 66: 
+            └── 23: Polyester-Resin Terrazzo Flooring - Terrazzo flooring made with a polyester-resin matrix.
+        └── 93: 
+            └── 23: Interior Finishing - Finishes applied to interior surfaces for protection or decoration.
+        └── 97: 
+            └── 23: Concrete Water Storage Tank Painting - Coatings for the painting of concrete water storage tanks.
+    └── 10: 
+        └── 11: 
+            └── 23: Portable Tackboards - Portable tackboards
+        └── 14: 
+            └── 23: Engraved Panel Signage - Engraved panel signage
+        └── 21: 
+            └── 23: Cubicle Track and Hardware - Tracks and hardware used to support and operate cubicle curtains.
+        └── 22: 
+            └── 23: Movable Panel Systems - Movable panel systems that can be reconfigured to suit changing needs.
+        └── 26: 
+            └── 23: Fiberglass Reinforced Protective Wall Covering - Protective wall coverings made of fiberglass-reinforced materials.
+        └── 28: 
+            └── 23: Clothes Drying Racks and Lines - Fireplaces and stoves for heating and cooking.
+        └── 55: 
+            └── 23: Mail Box Key Keepers - Devices for securely storing and distributing mailbox keys.
+        └── 57: 
+            └── 23: Wood Closet and Utility Shelving - Wooden shelving units for closets and utility spaces.
+    └── 11: 
+        └── 13: 
+            └── 23: Portable Dock Platforms - Portable equipment that provides a flat surface for loading and unloading goods at a loading dock
+        └── 21: 
+            └── 23: Token Vending Machines - Equipment used to weigh and wrap merchandise, such as scales and packaging machines
+        └── 51: 
+            └── 23: Metal Library Shelving - Metal shelving units designed for use in library stacks and storage areas.
+        └── 66: 
+            └── 23: Mat Storage - Storage systems for mats and other gymnasium equipment.
+        └── 68: 
+            └── 23: Tennis Equipment - Equipment used for outdoor tennis courts, such as nets and posts.
+        └── 81: 
+            └── 23: Window Washing Systems - Systems used to wash windows on building exteriors.
+    └── 12: 
+        └── 36: 
+            └── 23: Plastic-Laminate-Clad Countertops - Plastic-laminate-clad countertops.
+    └── 13: 
+        └── 34: 
+            └── 23: Fabricated Cold Storage Buildings - Prefabricated cold storage buildings.
+    └── 14: 
+        └── 21: 
+            └── 23: Machine Room-Less Electric Traction Passenger Elevators - Electric traction passenger elevators without a separate machine room, with the drive system integrated into the hoistway.
+    └── 22: 
+        └── 11: 
+            └── 23: Domestic-Water, Base-Mounted Pumps - Base-mounted pumps for domestic water distribution.
+        └── 12: 
+            └── 23: Facility Plastic, Indoor Potable-Water Storage Non-Pressure Tanks - Plastic, indoor non-pressure tanks used to store potable water.
+        └── 35: 
+            └── 23: Circulating, Storage Domestic Water Heat Exchangers - Circulating, storage domestic water heat exchangers.
+    └── 23: 
+        └── 09: 
+            └── 23: Motion Instruments - Devices that measure and transmit data about the motion of HVAC equipment.
+        └── 13: 
+            └── 23: Concrete-Vaulted, Steel, Aboveground Fuel-Oil, Storage Tanks - Aboveground fuel-oil storage tanks with a concrete-vaulted, steel construction.
+        └── 21: 
+            └── 23: Vertical-Turbine Hydronic Pumps - Vertical-turbine pumps for hydronic systems.
+        └── 22: 
+            └── 23: Pressure-Powered Steam Condensate Pumps - Pressure-powered pumps for steam condensate systems.
+        └── 37: 
+            └── 23: HVAC Gravity Upblast Ventilators - Ventilators designed to direct exhaust air upward using natural convection reducing re-entry of exhaust into building intakes.
+        └── 55: 
+            └── 23: High-Intensity Gas-Fired Radiant Heaters - Gas radiant heaters operating at high temperatures for spot heating or industrial applications.
+        └── 64: 
+            └── 23: Water-Cooled Scroll Water Chillers - Scroll chillers that are water-cooled.
+        └── 74: 
+            └── 23: Packaged, Indirect-Fired, Outdoor, Heating-Only Makeup-Air Units - Indirect-fired packaged outdoor heating-only makeup-air units for HVAC systems.
+        └── 81: 
+            └── 23: Computer-Room, Rack-Cooling Equipment - Computer-room rack-cooling equipment for HVAC systems.
+    └── 26: 
+        └── 32: 
+            └── 23: Vertical-Axis Wind Turbines - Vertical-axis wind turbines for electrical power generation.
+        └── 33: 
+            └── 23: Central Battery Equipment for Emergency Lighting - Central battery equipment specifically designed for emergency lighting systems.
+    └── 27: 
+        └── 13: 
+            └── 23: Communications Optical Fiber Splicing and Terminations - Splicing and termination of fiber optic communications backbone cabling.
+        └── 51: 
+            └── 23: Healthcare Intercommunications and Program Systems - Healthcare intercommunications and program systems for hospitals and clinics
+    └── 28: 
+        └── 15: 
+            └── 23: Audio Video Intercom (IP) - IP-based audio-video intercom systems for visitor entry and communication.
+    └── 31: 
+        └── 23: 
+            └── 23: Geofoam - Building embankments for roads, railways, and other infrastructure
+        └── 32: 
+            └── 23: Chemical Pressure Grouting Soil Stabilization - Spraying concrete (shotcrete) to stabilize soil slopes
+        └── 34: 
+            └── 23: Geosynthetic Fiber Soil Reinforcement - Geosynthetic fiber material used to reinforce soil and improve stability
+        └── 35: 
+            └── 23: Concrete Unit Masonry Slope Paving - Concrete masonry units used to pave and protect slopes
+        └── 62: 
+            └── 23: Wood and Cast-In-Place Concrete Piles - Bored piles constructed in-situ to support structures.
+        └── 63: 
+            └── 23: Bored Friction Concrete Piles - Concrete piles that are bored into the ground and rely on friction along the sides for support.
+    └── 32: 
+        └── 11: 
+            └── 23: Base Course Drainage Layers - Drainage layers in base courses for exterior improvements.
+        └── 17: 
+            └── 23: Plastic Pavement Markings - Plastic or thermoplastic markings applied to pavement.
+        └── 18: 
+            └── 23: Synthetic Running Track Surfacing - Synthetic surfacing for running tracks, such as rubberized material.
+        └── 32: 
+            └── 23: Manufactured Modular Walls - Retaining walls made of manufactured modular components
+    └── 33: 
+        └── 05: 
+            └── 23: Special-Fabrication Stainless Steel Utility Pipe and Tubing - Specially fabricated stainless steel pipes and tubing used for utility applications.
+        └── 14: 
+            └── 23: Enclosures for Water Utility Air Valves - Enclosures to protect water utility air valves
+        └── 41: 
+            └── 23: Geosynthetic Drainage Layers - Systems used to drain water from behind retaining walls.
+        └── 52: 
+            └── 23: Gas Hydrocarbon Piping Welding - Equipment used to launch pigs into hydrocarbon pipelines for cleaning and inspection.
+        └── 54: 
+            └── 23: Gas Hydrocarbon Pipeline Venting - Single-wall ground-level fixed-roof metallic storage tanks used to store hydrocarbon products.
+        └── 71: 
+            └── 23: Potheads - Capacitor banks used in electrical systems.
+        └── 72: 
+            └── 23: Bus Support Insulators - Insulators that support electrical bus bars in substations
+        └── 82: 
+            └── 23: Optical Fiber Splicing and Terminations - Equipment for splicing and terminating optical fiber communications cables
+    └── 34: 
+        └── 01: 
+            └── 23: Track Crosstie Replacement - Replacement of railway track crossties
+        └── 11: 
+            └── 23: Precurved Running Rail - Running rails that are pre-curved to match the track alignment.
+        └── 42: 
+            └── 23: Interlocking Railway Control Equipment - Equipment that controls interlocking of railway signals and switches
+        └── 43: 
+            └── 23: Airfield Wind Cones - Windsocks and other equipment used to indicate wind direction at airfields
+    └── 35: 
+        └── 31: 
+            └── 23: Precast Breakwater Modules - Breakwaters made of precast concrete modules.
+        └── 49: 
+            └── 23: Piling Waterway Locks - Machinery used to operate floodgates.
+        └── 59: 
+            └── 23: Navigation Buoys - Buoys used to mark navigation channels or hazards in waterways.
+    └── 40: 
+        └── 05: 
+            └── 23: Special-Fabrication Stainless Steel Process Pipe and Tubing - Specially fabricated stainless steel pipes and tubing used in industrial processes and systems.
+        └── 21: 
+            └── 23: No. 6 Fuel-Oil Process Piping - No. 6 fuel oil process piping used to transport and distribute No. 6 fuel oil.
+        └── 41: 
+            └── 23: Process Equipment Thermal Fluids Heat Tracing - Thermal fluids heat tracing system for process equipment
+        └── 42: 
+            └── 23: Process Equipment Insulation for Specialty Applications - Insulation for process equipment in specialty applications
+        └── 71: 
+            └── 23: V-Cone Flow Meters - Flow meters that use a V-cone design to measure flow rate
+    └── 41: 
+        └── 13: 
+            └── 23: Weigh Bulk Material Feeders - Feeders that measure and control the weight-based flow of bulk materials.
+        └── 21: 
+            └── 23: Vibratory Piece Material Conveyors - Conveyors that use vibration to transport individual pieces or items.
+        └── 22: 
+            └── 23: Specialty Hoists - Specialty hoists are unique or customized hoists designed for specific applications.
+        └── 34: 
+            └── 23: Spray Painting Booth - An enclosed booth used for spray painting or coating applications.
+        └── 36: 
+            └── 23: Plasma Cutting Equipment - Equipment used to cut materials using a plasma arc.
+        └── 53: 
+            └── 23: Mobile Storage Racks - Mobile racks for storing and organizing items
+23: 
+    └── 11: 
+        └── 11: Earth Reinforcement Anchors - Anchors used to reinforce soil and earth structures
+            └── 11: Stabilizing Ground Anchor Tiebacks - Tiebacks used to stabilize ground anchors
+            └── 13: Earth Reinforcement Soil Nails - Soil nails used to reinforce earth structures
+        └── 13: Soil Stabilization Products - Products used to stabilize soil.
+            └── 11: Field Drainage Land Drainage Pipes - Pipes used to drain water from fields and soil.
+        └── 15: Revetments - Structures used to protect against erosion and soil movement.
+            └── 11: Sheeting Turf Reinforcement Mats - Mats used to reinforce and control erosion of turf.
+            └── 13: Revetment Ripraps - Riprap used to protect against erosion.
+        └── 17: Fascines - Bundled branches used to retain and support soil.
+            └── 13: Retaining Crib Walls - Crib-like structures used to retain and support soil.
+        └── 19: Clamp on Equipment - Equipment that can be clamped onto structures to prevent snow buildup.
+        └── 21: Pavement Drainage - Systems and components for draining water from paved areas.
+            └── 13: Warning Tiles - Specialized tiles used to provide visual warnings or alerts.
+            └── 15: Runway Antiskid Texturing - Textured surfaces applied to runways to improve traction.
+            └── 17: Stone Pavers - Paving units made of natural stone.
+            └── 21: Catch Basins - Structures used to collect and channel surface water.
+        └── 23: Parking Signs - Signs used to indicate parking regulations and restrictions.
+            └── 23: Parking Tow Away Signs - Signs used to indicate tow-away zones.
+        └── 25: Fences - Structures used to enclose or divide outdoor spaces.
+            └── 11: Anti Ram Wedge Barriers - Barriers designed to stop vehicles from breaching a perimeter.
+            └── 13: Precast Perimeter Post Perimeter Walls - Precast concrete posts used to construct perimeter walls.
+            └── 15: Folding Gates - Folding gates that can be opened and closed by folding the panels.
+            └── 19: Rail Fences - Fences made of horizontal rails or boards.
+        └── 27: Pond Equipment - Pond equipment includes devices used to maintain and operate outdoor ponds.
+            └── 11: Plant Netting - Netting used to protect plants in landscaping.
+            └── 13: Plant Tubs - Plant tubs are containers used to grow plants, trees, or shrubs in outdoor spaces.
+            └── 15: Irrigation Weep Hoses - Irrigation weep hoses are porous hoses that slowly release water for irrigation.
+            └── 17: Sod - Sod is pre-grown grass that is cut and installed to create new lawns.
+            └── 19: Non Flowering Plant - Non-flowering plants are plants without flowers used for landscaping.
+            └── 21: Pond Filters - Pond filters are devices used to clean and circulate water in ponds.
+        └── 29: Public Lighting Columns - Outdoor lighting columns and poles
+            └── 11: Bicycle Lockers - Bicycle lockers are enclosed storage units used to secure and protect bicycles.
+            └── 13: Exterior Chairs - Exterior chairs are individual seats for outdoor use.
+            └── 17: Patio Sofa Tables - Patio sofa tables are tables designed to be used with patio sofas.
+            └── 19: Exterior Metal Trash Receptacles - Exterior metal trash receptacles are made of metal for outdoor use.
+            └── 21: Bird Baths - Decorative outdoor structures for birds to bathe in
+            └── 23: Barns - Freestanding agricultural structures for storing items
+            └── 25: Wall Mounted Flagpoles - Flagpoles that are mounted on a wall or building
+            └── 27: Exterior Ornamental Fountains - Ornamental outdoor fountains and water features
+            └── 33: Directional Sign Markers - Outdoor markers that provide directional information
+            └── 35: Architectural Bollards - Bollards used for architectural or decorative purposes
+        └── 31: Playground Surfaces - Specialized surfaces for playgrounds and play areas
+    └── 13: 
+        └── 00: Structural and Exterior Enclosure Products - Products used in the structure and exterior of buildings
+        └── 11: Fibers and Shavings - Mineral-based fibers and shavings
+            └── 11: Residue Powder Fillers - Powder fillers made from waste or residue materials
+            └── 13: Heavyweight Fills and Aggregates - Fibrous or shredded materials used as fillers or reinforcement
+            └── 15: Other Fibers and Shavings - Agents and admixtures used to bind or modify materials
+        └── 13: Gypsum Admixtures - Additives used to modify the properties of gypsum.
+            └── 11: Hydraulic Lime - A type of lime that hardens when mixed with water, used in construction.
+            └── 13: Cement Coloring Agents - Agents that add color to cement.
+        └── 15: Grouts - Grout made with catalyzed metallic materials.
+            └── 11: Low Density Concretes - Mortar made with a mixture of portland cement and lime.
+            └── 13: Surface Bonding Mortar - Grout made with concrete-based materials.
+            └── 15: Chemical Resistant Masonry Grouts - Masonry grouts designed to resist chemical exposure and deterioration
+        └── 17: Lath - Lath is a thin, narrow strip of wood, metal, or other material used as a base for plaster or stucco.
+            └── 11: Plastic Rigid Profiles - Plastic rigid profiles are made of synthetic polymers.
+            └── 13: Polysulfide Flexible Profiles - Polysulfide flexible profiles are made of a synthetic rubber.
+            └── 15: Precast Double Tees - Precast double tees are precast concrete members with a double T-shaped cross-section.
+            └── 17: Wood Lath - Wood lath is a lath made of solid wood.
+        └── 19: Blankets, Quilts - Blankets or quilts used for insulation or decorative purposes.
+            └── 11: Mesh for General Use - Mesh for general use is a thin, open-weave material.
+            └── 13: Solid Resin Sheets - Solid resin sheets are flat, rigid building materials made of synthetic resins.
+        └── 21: Ancillary Products for Masonry - Ancillary products used in masonry construction, such as flashing and vents.
+            └── 11: Split Face Concrete Masonry Units - Concrete blocks with a split or textured face.
+            └── 19: Terra Cotta Units - Decorative clay units, such as terra cotta.
+            └── 21: Masonry Veneer Anchors - Anchors used to secure masonry veneer to a backing.
+            └── 23: Masonry Cornices - Decorative masonry cornices or projections.
+            └── 25: Gussets - Triangular structural supports used in masonry construction.
+            └── 27: Masonry Expansion Joints - Devices that allow expansion in masonry walls.
+        └── 23: Ropes, Wires, and Cables - Ropes used in construction applications
+            └── 11: Dovetail Slots - Slots cast into concrete or masonry to provide attachment points.
+            └── 13: Welding Products - Products used for welding metal components together
+            └── 15: Sound Proofing Adhesive - Adhesives used to provide sound insulation
+            └── 19: Water Immersed Construction Sealants - Sealants used to seal construction joints submerged in water
+            └── 21: Cables - Products used to provide thermal and moisture protection
+        └── 25: Vapor Barriers - Materials used to create vapor barriers in buildings.
+            └── 11: Foamed Magnesium Oxychloride Fireproofing - Intumescent mastics used for fireproofing
+            └── 13: Firestopping Thermal Barriers for Plastics - Thermal barriers designed to prevent fire spread through plastic materials
+            └── 15: Cementitious Dampproofing Coatings - Cementitious coatings used to provide a waterproof barrier against moisture.
+            └── 17: Sheet Metal Waterproofing - Waterproofing system using sheet metal.
+            └── 19: Fiberglass Blanket Thermal Insulation - Coatings used to provide thermal insulation.
+            └── 21: Granular Sound Isolation Loose Fills - Granular loose fill materials used for sound isolation.
+            └── 23: Products for Prevention of Abrasive Wear - Products used to prevent abrasive wear.
+        └── 27: Chemicals for Construction - Chemicals used in construction.
+            └── 11: Combined Cleaning and Protection Products - Combined cleaning and protection products for construction.
+            └── 13: Unit Masonry Cleaning Products - Products for cleaning unit masonry.
+            └── 15: Salts - Salts used in construction.
+        └── 29: Special Foundations - Special foundation types, such as controlled modulus columns
+            └── 11: Composite Driven Piles - Composite driven piles used in foundations.
+            └── 13: Caissons - Caissons, which are watertight chambers used to support structures
+            └── 15: Strip Foundation Blocks - Concrete foundation blocks that support a structure at ground level
+            └── 17: Other Special Foundations - Concrete products used in structural applications
+        └── 31: Concrete Finishing Products - Products used to finish the surface of concrete.
+            └── 17: Insulated Concrete Forms - Non-formwork components used in concrete construction
+            └── 21: Reinforcement Spacers - Accessories used with reinforcing bars
+            └── 23: Colored Concrete Finishing Products - Concrete with a colored surface finish.
+        └── 33: Glazed Facade and Roof Structures - Glazed facade and roof structures.
+            └── 15: Blast Resistant Wall Exteriors - Exterior wall systems designed to resist blast forces.
+            └── 17: Exterior Wall Assemblies - Complete exterior wall assemblies for buildings.
+            └── 19: Imbedded Material Finish Mix, Tiles, Brick - Concrete, tile, or brick finishes embedded in exterior walls.
+            └── 21: Revolving Door Bronze-Framed  Entrances - Revolving door bronze-framed entrance systems.
+            └── 23: Revolving Door Bronze-Framed  Storefronts - Revolving door bronze-framed storefront system.
+            └── 27: Structural Glass Curtain Walls - Structural glass curtain wall system.
+        └── 35: Structural Profiled Roofs - Roofing systems with structural profiles for support
+            └── 11: Structural Slide Bearings - Structural bearings that allow for sliding movement and support the weight of a building.
+            └── 15: Complete Space Frames - Geodesic structures that use a network of triangular elements to create a dome or other curved shape.
+            └── 19: Wood Joists - Solid wood beams that support floors, roofs, and other building components.
+            └── 21: Other Structural Walls - Structural floor and roof systems that support the weight and loads of a building.
+            └── 23: Metal Structural Roof Decks - Metal roof deck systems designed for structural support
+            └── 25: Simulated Stones - Artificial stone products for construction
+        └── 37: Ancillary Products for Coverings and Claddings - Supporting products for exterior finishes
+            └── 15: Wood Exterior Siding - Wood materials used for exterior wall covering
+            └── 17: Sheathing Products - Materials used to cover and strengthen wall frames
+            └── 23: Underlays, Linings, Separations - Materials used beneath or between exterior finish layers for protection and separation
+        └── 39: Renovation Products for Roof Coverings and Claddings - Specialty items and accessories used on roofs, such as edgings, trims, flashings, and more.
+            └── 11: Exterior Fiber Reinforced Cementitious Panels - Exterior fiber-reinforced cementitious panels for roofing.
+            └── 15: Concrete Roof Shingles - Roof shingles made of concrete.
+            └── 17: Tile Roof Mechanical Fasteners - Mechanical fasteners used to install tile roofing.
+            └── 19: Slate Roof Mechanical Fasteners - Mechanical fasteners used to install slate roofing.
+            └── 21: Wood Shakes Roofing - Roof shakes made of wood.
+            └── 23: Wood Decking Roofing - Structural wood decking roofing.
+            └── 27: Roof Battens Cladding - Roof battens used as part of a roof cladding system.
+            └── 29: Coated Foam Roof Covering - Roof covering made of coated foam materials.
+            └── 31: Polyisobutylene (PIB) Single Layer Roof Membranes - Single-layer roof membranes made from polyisobutylene (PIB).
+            └── 33: Concrete Deck Roofing - Roof decking made from concrete composite insulation.
+        └── 41: Roof Drains - Drains installed in the roof to remove water
+            └── 11: Roof Scuppers - Flexible roof flashings made from laminated sheets or modified bituminous materials.
+            └── 13: Roof Penetration Flashings - Flashings used around roof penetrations
+            └── 17: Fire Vents - Vents that open in the event of a fire
+            └── 19: Rubber Roof Treads - Rubber treads used on roof walkways
+            └── 31: Manufactured Roof Curbs - Prefabricated roof curbs
+            └── 39: Siphonic Roof Drains - Roof drains that use a siphon system to remove water
+    └── 15: 
+        └── 00: Interior and Finish Products - Products used to finish the interior of a building
+        └── 11: Operable Partitions - Partitions that can be opened and closed.
+            └── 11: Masonry Fixed Partitions - Masonry partitions, fixed in place.
+            └── 13: Wood Demountable Partitions - Demountable partitions made with wood components.
+            └── 15: Plastic Laminate Shower and Dressing Compartments - Plastic laminate shower and dressing partitions and cubicles.
+            └── 17: Vertically Sliding Room Dividers - Vertically sliding room dividers.
+        └── 13: Preformed Interior Casings - Factory-formed trim and molding components for interior use. Provide consistent profiles for door and window openings.
+            └── 15: Wood Interior Siding - Wood interior siding.
+            └── 19: Fiber Reinforced Cementitious Wall Panels - Wall panels made with fiber-reinforced cement materials for increased strength and durability. Common in commercial and industrial applications.
+            └── 21: Fiber Reinforced Cementitious Ceiling Panels - Ceiling panels made with fiber-reinforced cement materials for strength and fire resistance. Appropriate for exterior applications.
+        └── 15: Security Wall Protection Products - Products used to protect walls from security threats.
+            └── 11: Other Wall Cladding Sections - Wall cladding sections made from materials other than metal wood or plastic. May include composite or specialty materials.
+            └── 13: Other Wall Tiles - Other types of wall tiles for interior or exterior use.
+            └── 15: Other Wall Cladding Panels - Other types of wall panels used for cladding or covering walls.
+            └── 17: Fiberglass Reinforced Panels - Fiberglass reinforced panels used to clad or cover walls.
+            └── 19: Wall Veneers - Veneer materials used to cover walls.
+            └── 31: Renovating Wall Claddings - Materials used to renovate or update wall claddings.
+            └── 35: Blast Resistant Wall Interiors - Interior wall systems designed to resist blast effects.
+        └── 17: Floor Finishing Coatings - Industrial floor coatings are specialized coatings for heavy-duty or high-traffic floor surfaces.
+            └── 11: Floor Treatment Products - Products applied to floors to treat, seal, or protect them.
+            └── 13: Wood Strip Flooring - Flooring made from long, narrow wood strips.
+            └── 15: Other Resilient Flooring - Other resilient flooring includes vinyl, linoleum, and rubber flooring materials that are not specifically classified elsewhere.
+            └── 17: Sheet Carpet Flooring - Sheet carpet flooring is a continuous roll of textile floor covering.
+            └── 19: Gymnasium or Dance Flooring - Gymnasium or dance flooring is a specialized floor system designed for athletic or performance activities.
+            └── 21: Access Floor Infill Panels - Rigid grid access flooring is a raised floor system with a fixed grid structure.
+            └── 29: Seamless Quartz Flooring - Ceiling coverings, claddings, and linings are materials used to finish or decorate ceilings.
+        └── 19: Ceilings - Assemblies that form the overhead surface of an interior space
+            └── 15: Linear Metal Ceiling Covering Strips - Linear wood ceiling covering strips are wood ceiling strips.
+            └── 17: Metal Panel Textured Ceilings - Ceiling specialties and accessories are additional components used in ceiling systems.
+            └── 19: Integral Speaking Panels - Panels integrated into a ceiling that allow sound to pass through
+            └── 23: Acoustical Panel Ceilings - Acoustical ceilings with panel components
+        └── 21: Protective Surface Impregnations - Impregnations that protect and strengthen surfaces.
+            └── 11: Water Based Textured Paints - Paints designed for specific applications
+            └── 13: Mold/Mildew Resistant Coatings - Services to apply powder coatings to metal surfaces
+            └── 15: Factory Applied Metal Powder Coatings - Inorganic coatings applied to metal surfaces
+            └── 17: Vitreous Enameling - Vitreous enameling for decorative or protective coatings.
+            └── 19: Interior Transparent Stains - Transparent interior stains for wood surfaces.
+            └── 21: Textured Plastic Coatings - Textured plastic coatings for decorative or protective purposes.
+            └── 23: Silane Water Repellents - Silane-based water-repellent impregnations.
+    └── 17: 
+        └── 00: Openings, Passages, and Protection Products - Products related to openings, passages, and protection.
+        └── 11: Security Rated Door - Doors that provide a high level of security, such as against forced entry.
+            └── 11: Door Sidelites - Sidelights or panels installed next to a door.
+            └── 13: Sliding Metal Doors - Sliding doors made of metal.
+            └── 15: Folding Wood Doors - Folding doors made of wood.
+            └── 17: Roller Shutter Overhead Plastic Doors - Overhead plastic doors with roller shutter mechanisms.
+            └── 19: Sectional Overhead Composite Doors - Sectional overhead doors made of composite materials.
+            └── 21: Glazed Hinged Doors - Hinged doors with glazed panels.
+            └── 23: Balanced All Glass Doors - Fully glazed balanced doors.
+            └── 25: Rolling Grilles - Rolling grilles that allow passage through an opening.
+            └── 27: Man Hole Accesses - Hatches that provide access to manholes.
+            └── 29: Equipment Access Panels - Panels that provide access to equipment.
+            └── 31: Temperature Rate of Rise Fire Rated Rolling Doors - Fire-rated rolling doors that respond to temperature changes.
+            └── 37: High Energy Magnetic Pulse Protection Doors - Doors that provide protection against high-energy magnetic pulses.
+            └── 43: Revolving Darkroom Door - A revolving door used to maintain a dark environment in a darkroom.
+            └── 45: Rapid Opening Doors - Doors that open and close quickly to allow for rapid access.
+            └── 47: Watertight Doors - Watertight doors that prevent the passage of water, used in marine or underwater applications.
+            └── 49: Ballistic Resistant Door - Doors that provide ballistic resistance, protecting against gunfire or other projectiles.
+        └── 13: Security Windows - Windows designed for security applications.
+            └── 11: Retractable Screens - A window component that can be retracted or folded to allow for ventilation.
+            └── 13: Metal Vertical Pivoted Windows - Metal windows that have sashes that pivot vertically.
+            └── 15: Wood Vertical Pivoted Windows - Wood-framed windows that pivot vertically to open.
+            └── 17: Plastic Vertical Pivoted Windows - Plastic windows that pivot vertically to open.
+            └── 19: Composite Vertical Pivoted Windows - Composite windows that pivot vertically to open.
+            └── 21: Bow Windows - Bow windows that project outward in a curved shape.
+            └── 25: Glass Masonry Unit Windows - Windows made of glass masonry units.
+            └── 27: Radio Frequency Protection Windows - Windows designed to provide radio frequency protection.
+            └── 29: Security Window Films - Films applied to windows to increase their resistance to shattering.
+        └── 15: Protective Films - Protective films applied to glazing for solar control, safety, security, or decoration.
+            └── 11: Impact Resistant Glass - Glass designed to resist impacts and prevent shattering or breaking.
+            └── 13: Transparent Plastic Glazing - Clear, transparent plastic glazing that allows unobstructed views.
+            └── 15: Laminated Security Glass - Laminated glass with multiple layers for increased security and impact resistance.
+            └── 19: Switchable Privacy Glass - Components used to install and secure glazing, such as frames, sections, and fasteners.
+            └── 21: Mechanical Glazing Fasteners - Mechanical fasteners used to install glazing.
+            └── 23: Glazing Leading Material - Materials used to create decorative patterns or designs in glazing.
+            └── 25: Decorative Films - Films applied to glazing for decorative purposes.
+        └── 17: Metal Framed Skylights - Skylights with metal framing systems.
+            └── 11: Skylight Hardware - Hardware used to support and operate skylights.
+            └── 13: Tubular Skylights - Tubular skylights that use reflective tubing to bring in natural light.
+            └── 15: Octagonal Metal Framed Skylights - Octagonal metal framed skylights.
+        └── 19: Other Openings Hardware - Other hardware for openings like hatches or shutters.
+            └── 11: Manual Surface Door Closers - Floor-mounted power-operated door closers.
+            └── 13: Window Deadbolt Locks - Devices that latch or lock windows, preventing them from opening.
+            └── 15: Window Weatherstripping and Seals - Hardware and components used for openings other than doors and windows, such as hatches and louvers.
+            └── 17: Door Stops - Physical devices installed to prevent doors from swinging open or closed.
+        └── 21: Insect Screens - Systems and components that provide insect protection for openings.
+            └── 11: Folding Exterior Shutters - Folding, movable panels installed on the exterior to cover and protect openings.
+            └── 13: Drapery Tracks - Tracks and hardware used to install and operate curtains and drapes.
+            └── 15: Smoke Shutters - Shutters that close automatically in the event of smoke to prevent the spread.
+            └── 17: Mesh for Insect Screens - Mesh material used to create insect screens.
+        └── 23: Evacuation Equipment - Equipment used for evacuating people, such as slings and chairs.
+            └── 15: Ship Ladders - Ladders with an angled design, often used on ships.
+            └── 17: Metal Spiral Stairs - Spiral stairs made primarily of metal.
+            └── 19: Escape Slides - Slides used for emergency evacuation.
+            └── 21: Evacuation Chairs - Chairs designed for evacuating people with limited mobility.
+        └── 25: Impact Protection Products - Guardrails designed to absorb or deflect impacts.
+            └── 11: Railing - Horizontal structures used to provide handholds and support along circulation paths.
+            └── 13: Chain Handrails - Products used to protect against impacts, such as guardrails and bumpers.
+            └── 15: Impact Resistant Wall Protection Products - Specialized products not covered by other categories, such as information displays.
+    └── 19: 
+        └── 00: Specialty Products - Specialized products not covered elsewhere.
+        └── 11: Magnetic Boards - Boards with a magnetic surface for posting notes or documents.
+            └── 19: Drawing Boards - Boards used for technical drawing or design.
+        └── 13: Solid Core Lockers - Lockers made of solid core material for storage.
+        └── 15: Telephone Booths - Enclosed spaces for private telephone conversations.
+        └── 17: Fireplace Water Heaters - Fireplaces that also provide hot water for domestic use.
+        └── 19: Flue and Chimney Systems Components - Components used in flue and chimney systems, such as draft controls or linings.
+            └── 11: Insulated Sectional Chimneys - Insulated, modular chimneys used for venting.
+            └── 13: Fireplace Dampers - Dampers used to control airflow in fireplace ductwork.
+            └── 15: Flue Gas Purifiers - A device that purifies and filters flue gases before they are released into the atmosphere.
+        └── 21: Hearths - The fireplace or platform where a fire is built, typically made of stone or brick.
+        └── 23: Kilns - A high-temperature oven used for firing, drying, or hardening materials like ceramics, glass, or metal.
+        └── 25: Rodent Control Devices - Traps used to capture and contain rodents.
+            └── 11: Visual Devices - Devices that attract birds to an area, used to lure them away from other locations.
+            └── 13: Foam Sealants - Sticky boards used to trap and monitor flying insects.
+            └── 15: Tracking Products - Products that detect and track the movement of rodents
+        └── 27: Industrial Stacks - Tall, freestanding structures that vent industrial exhaust
+            └── 23: Fabricated Industrial Breechings Accessories - Accessories for fabricated industrial breechings
+            └── 25: Industrial Insulated Sectional Chimneys - Insulated, modular industrial chimneys
+        └── 29: Integrated Assemblies - Integrated building systems and assemblies that provide specialized functions.
+            └── 11: Prefabricated Dome Structures - Portable, temporary building structures
+            └── 13: Car Shelters - Shelters for various service functions
+            └── 15: Public Restrooms - Standalone buildings that provide public restroom facilities.
+            └── 17: Dormitory Rooms - Prefabricated, modular rooms used in dormitories and other residential settings.
+            └── 19: Floating Floor Construction Products - Floating floor construction products used to isolate floors from structural elements.
+        └── 31: Corridor Units - Corridor units for building circulation.
+            └── 11: Prefabricated General Purpose Rooms - Prefabricated, general-purpose room units used for storage purposes.
+            └── 15: Steam Baths - Room units designed for bathroom facilities, including toilets and showers.
+            └── 17: Lavatory Units - Room units designed for clean, sterile environments, such as laboratories.
+            └── 19: RF Shielded Rooms - Room units designed for radio frequency protection, such as research facilities.
+            └── 21: Plant Office Shelters and Booths - Shelters and booths for plant office spaces.
+    └── 21: 
+        └── 00: Furnishings, Fixtures and Equipment Products - Products for furnishings, fixtures, and equipment.
+        └── 11: Commercial Storage Units - Storage units for commercial spaces.
+            └── 11: Commercial Key Hangers - Hangers for storing keys in commercial spaces.
+        └── 13: Office Equipment - Equipment for office use, including drafting, plotting, and drawing.
+            └── 25: Office Accessories - Chests of drawers for storage.
+        └── 15: Clothing Shelving Units - Shelving units designed for storing clothing.
+            └── 17: Hat Racks - Hooks for hanging and storing coats.
+            └── 19: Coat Rails - Equipment for managing and storing coats and personal items.
+            └── 25: Automated Checkroom Equipment - Automated systems for storing and retrieving coats.
+            └── 27: Clothing Shelving and Storage Units - Shelving and storage units designed for storing clothing and related items.
+        └── 17: Interior Refuse Holders - Holders or receptacles used for the collection and disposal of interior refuse.
+        └── 19: Casework Components - Components and parts used in the construction of casework.
+            └── 11: Plastic Modular General Casework - Modular casework made of plastic for general storage and organization.
+            └── 15: Display Specialty Casework - Casework designed for use in retail and commercial display settings.
+            └── 17: Casework Component Work Surfaces - Work surfaces and countertops used in the construction of casework.
+        └── 21: Commercial Food Wrapping Equipment - Equipment used for wrapping and packaging food in a commercial setting.
+            └── 11: Commercial Snack Cabinets - Cabinets used to store and display snacks in a commercial setting.
+            └── 13: Commercial Gas Broilers - Commercial broilers that use gas to cook food in a commercial kitchen.
+            └── 15: Commercial Steam Tables - Heated tables used to keep food warm in a commercial kitchen.
+            └── 17: Commercial Refrigerated Tables - Tables with built-in refrigeration for commercial food service.
+            └── 19: Commercial Dishwasher Tray Conveyors - Conveyor-style dishwashers used to transport dirty dishes in a commercial kitchen.
+            └── 21: Commercial Garbage Pulpers - Appliances used to pulp and dispose of food waste in a commercial kitchen.
+            └── 23: Commercial Food Guards - Protective barriers used to display food in a commercial setting.
+            └── 25: Commercial Cream Dispensers - Appliances used to dispense cream in a commercial setting.
+            └── 27: Commercial Upright Freezers - Commercial upright freezers used to store frozen food.
+            └── 29: Commercial Ice Maker Bins - Commercial bins used to store ice produced by ice makers.
+            └── 31: Commercial Refrigerated Food Preparation Tables - Refrigerated tables used for commercial food preparation.
+            └── 33: Commercial Restaurant Tables - Tables used in commercial restaurants.
+            └── 35: Commercial Service Line Equipment - Equipment used for serving food and drinks in a commercial setting.
+            └── 37: Commercial Bottle Racks - Racks used for storing bottles in a commercial setting.
+            └── 39: Commercial Restaurant Turntables - Rotating platforms used for serving food in a commercial setting.
+            └── 41: Commercial Catering Ventilation - Equipment used for ventilating and controlling air flow in a commercial catering setting.
+        └── 23: Residential Washing Machines - Residential washing machines for cleaning and laundering clothes.
+            └── 13: Residential Chair Beds - Chair beds used in residential settings.
+            └── 15: Residential Coffee Tables - Storage units used in residential settings.
+            └── 17: Residential Chests - Chests or trunks used for storage in homes.
+            └── 19: Residential Dressers - Residential furniture used for storing and organizing clothing and other personal items.
+            └── 23: Residential Rice Cookers - Residential appliance used for cooking rice.
+            └── 25: Residential Gas Dishwashers - Residential gas-powered dishwashers for cleaning dishes and utensils.
+            └── 27: Residential Coffee Dispensers - Residential coffee dispensers for brewing and serving coffee.
+            └── 29: Residential Hot Water Dispensers - Residential appliances for heating and dispensing hot water.
+            └── 33: Residential Refrigerator Freezers - Residential refrigerator-freezer combinations for storing both fresh and frozen items.
+            └── 35: Residential Ice Dispensers - Residential ice dispensers for storing and dispensing ice cubes.
+            └── 37: Residential Food Preparation Tables - Residential tables and surfaces for food preparation and processing.
+            └── 39: Residential Bar Equipment - Residential equipment and accessories for a home bar.
+            └── 41: Residential Bottle Racks - Residential racks and holders for storing bottles and containers.
+            └── 43: Residential Food Ventilation Equipment - Residential equipment for ventilating and removing food-related odors.
+            └── 45: Residential Clothes Lines - Residential clotheslines for drying and airing out clothes.
+            └── 51: Residential Gas Laundry Dryers - Residential gas-powered clothes dryers for drying laundry.
+            └── 53: Residential Top Loading Laundry Washers - Top-loading washing machines designed for residential use.
+        └── 25: Exhibition Equipment and Furnishings - Equipment and furnishings used in exhibitions and displays, such as display cases and pedestals.
+            └── 11: Table Assembly - Individual table assemblies for group seating.
+            └── 13: Stage Curtains - Curtains and drapes for stages and theaters.
+            └── 15: Planetarium Seating - Seating for planetarium audiences.
+            └── 17: Telescopes - Telescopes for observatories.
+            └── 19: Baptisteries - Baptismal fonts for religious ceremonies.
+            └── 21: Study Carrels - Enclosed workstations or study areas for individual use in libraries.
+            └── 23: Shell Schemes - Modular wall systems used to create temporary exhibition spaces.
+        └── 27: Child Dressers - Dressers designed for use by children
+            └── 11: Children Beds - Beds designed for use by children of various ages.
+            └── 13: Cot Carrier - Portable carriers or frames used to transport children's cots.
+            └── 17: Children Benches - Benches or seating designed for use by children.
+            └── 19: Children Bathtubs - Bathtubs or tubs designed for use by children.
+            └── 21: Child Stools - Stools or low seating designed for use by children.
+            └── 25: Toddler Swings - Swings or suspended seating designed for use by toddlers.
+            └── 29: Child Buggies - Wheeled vehicles for transporting infants and young children
+            └── 31: Diaper Changing Tables - Tables designed for changing diapers of infants and young children
+            └── 33: Child Cubbies - Storage cubbies designed for use by children
+        └── 29: Spectator Stands - Seating and stands for spectators at sporting events.
+            └── 11: Tennis Court Windbreakers - Windbreakers used to enclose tennis courts
+            └── 13: Tennis Court Surfacing - Surfacing materials for tennis courts
+            └── 15: Climbing Walls - Climbing walls for athletic and recreational use
+            └── 17: Sandboxes - Sandboxes for playgrounds
+            └── 19: Starting Blocks - Starting blocks for swimming pools and aquatic facilities.
+            └── 21: Lap Pools - Lap pools for swimming laps and exercise.
+            └── 23: Telescoping Chair Platforms - Telescoping platforms with chairs for spectator seating.
+        └── 31: Exercise Pulleys - Pulleys used in exercise equipment.
+            └── 11: Multi Station Weight Training Exercise Apparatus - Multi-station weight training equipment.
+            └── 13: Weightlifting Bars - Bars used for weightlifting and strength training.
+            └── 15: Supine Weightlifting Benches - Supine benches for weightlifting and exercise.
+            └── 17: Raised and Bent Leg Abdominal Exercise Boards - Boards and platforms for raised and bent leg abdominal exercises.
+            └── 19: Leg Exercise Machines - Machines designed to exercise the leg muscles.
+            └── 23: Triplex Exercise Pulleys - Pulleys with three attachment points for exercise.
+        └── 33: Shop Furniture - Furniture used in workshops and shops.
+            └── 13: Work Stations - Workstations used in manufacturing settings.
+            └── 17: Shop Storage Fittings - Storage fittings used in workshops and shops.
+        └── 35: Agricultural Equipment - Equipment used in agricultural settings, such as milking machines, feeders, and waste cleanup tools.
+            └── 11: Darkroom Processing Equipment - Equipment used for processing in darkrooms.
+            └── 13: Vending Machines - Machines used for vending products.
+            └── 19: Vehicle Hoists - Mechanical lifts used to raise vehicles for maintenance and repair.
+            └── 21: Money Cart Pass Through - Equipment used to transfer money or other items between secure areas.
+            └── 23: Detention Furniture - Furniture designed for use in detention facilities.
+            └── 25: Waste Clean Up Equipment - Equipment used to clean up and dispose of animal waste.
+        └── 37: Decoration - Decorative items such as artwork, wall hangings, clocks, and mirrors.
+            └── 11: Tablecloths - Cloth or fabric used to cover tables and other surfaces.
+            └── 13: Decorative Vases - Decorative vases or containers used to hold flowers or other items.
+        └── 39: Drain Boards - Equipment used for commercial laundry operations, such as clothes dryers.
+            └── 11: High Pressure Washing Equipment - Surfaces or structures used to collect and drain water or other liquids.
+        └── 41: Commercial Washing Machines - Machines used to wash commercial laundry items.
+            └── 11: Commercial Clothes Lines - Horizontal lines or cables used to hang and dry commercial laundry items.
+            └── 17: Commercial Dryer Sheet Dispensers - Devices used to dispense fabric softener sheets for commercial dryers.
+            └── 23: Commercial Steam Flat Work Ironers - Steam-powered machines used to iron commercial flat linens and fabrics.
+            └── 31: Commercial Steam Laundry Dryers - Steam-powered machines used to dry commercial laundry items.
+            └── 33: Commercial Steam Laundry Presses - Steam-powered machines used to press commercial laundry items.
+            └── 41: Commercial Tunnel Laundry Washers - Tunnel-style machines used to wash large volumes of commercial laundry items.
+        └── 43: Custodial Washers - Washers designed to clean and sanitize trash cans and other custodial equipment.
+            └── 11: Waste Paper Baskets - Containers used to collect and dispose of waste in commercial facilities.
+            └── 13: Steam Cleaners - Machines that use steam to clean and sanitize surfaces.
+            └── 15: Sanitary Goods Dispensers - Devices used to dispense sanitary products in commercial facilities.
+            └── 19: Floor Washing Machines - Machines used to wash and clean floors.
+            └── 21: Housekeeping Carts - Receptacles for collecting and disposing of sanitary waste.
+            └── 23: Portable Sanitary Waste Receptacles - Sinks and basins used for custodial and cleaning tasks.
+            └── 25: Mop Sinks - Washers and equipment used for cleaning custodial items like trash cans.
+            └── 27: Trash Can Pedestal Washers - Products and materials used for historic preservation and restoration.
+        └── 45: Historic Architectural Items - Historic architectural items, including models, constructions, and designs.
+            └── 11: Fine Art Graphic Designs - Fine art illustrations created using various media and techniques.
+            └── 13: Historic Parchment Documents - Historic parchment documents, which are made from treated animal skin.
+            └── 15: Historic Decorative Architectures - Historic decorative architectures, which are ornamental architectural elements from the past.
+        └── 47: Musical Instrument - Musical instruments, including string instruments, pianos, and other types.
+            └── 11: Conductor Platform - Conductor platforms, which are raised areas for conductors to stand and direct a performance.
+            └── 13: Piano - Pianos, which are keyboard instruments that produce sound through vibrating strings.
+    └── 23: 
+        └── 00: Conveying Systems and Material Handling Products - Conveying systems and material handling products, including elevators, escalators, and lifts.
+        └── 11: Escalators - Escalators, which are moving staircases that transport people between floors.
+            └── 11: Residential Hydraulic Elevators - Residential hydraulic elevators, which are smaller elevators for use in homes or small buildings.
+        └── 13: Lifts - Lifts, which are platforms or devices used to raise or lower people or materials.
+            └── 11: Inclined Platform Lifts - Lifts that move a platform up an inclined surface.
+        └── 15: Transportation Gangways - Movable bridges that connect buildings or platforms.
+            └── 13: Maglevs - Magnetic levitation systems that transport people or materials.
+        └── 17: Hoists - Hoists are lifting devices used to raise and lower loads.
+            └── 11: Traction Dumbwaiters - Dumbwaiters operated by traction power.
+            └── 13: Track Vehicle Material Handling - Material handling systems that use track-based vehicles.
+            └── 15: Oscillating Conveyors - Conveyor systems that oscillate to move materials.
+            └── 17: Refuse Chutes - Chutes used to transport refuse and waste.
+            └── 19: Vibratory Feeders - Feeders that use vibration to move materials.
+            └── 21: Document Conveying Systems - Systems that use pneumatic tubes to transport documents.
+            └── 23: Hydraulic Top Running Overhead Cranes - Cranes that use hydraulic power and have a tower design.
+            └── 27: Manual Trolley Hoists - Manual trolley hoists are operated by hand.
+        └── 19: Vehicular Turntable - Vehicular turntables are used to rotate and maneuver vehicles.
+        └── 21: Car Parking Systems - Car parking systems are used to store and retrieve cars.
+        └── 23: Loading Dock Vehicle Restraints - Loading dock vehicle restraints secure the vehicle to the dock during loading and unloading.
+            └── 13: Hydraulic Dock Levelers - Hydraulic dock levelers use hydraulic fluid to raise and lower the platform.
+            └── 15: Manual Loading Dock Lifts - Manual loading dock lifts are operated by hand.
+            └── 17: Portable Loading Dock Platforms - Portable loading dock platforms can be moved and positioned as needed.
+            └── 19: Loading Dock Weather Seals - Loading dock weather seals protect the dock from the elements.
+            └── 23: Hydraulic Loading Dock Vehicle Restraints - Hydraulic devices that secure vehicles to loading docks to prevent accidental movement during loading/unloading
+        └── 25: Powered Scaffolding - Scaffolding that is powered by electricity or other means
+            └── 11: Hook Suspended Scaffolding - Scaffolding suspended from overhead hooks
+            └── 13: Scaffolding Powered Rope Climbers - Powered devices that allow workers to climb up and down scaffolding
+            └── 15: Pneumatic Scaffolding Telescoping Platforms - Pneumatically-powered telescoping scaffolding platforms
+    └── 25: 
+        └── 00: Medical and Laboratory Equipment - Equipment used in medical and laboratory settings
+        └── 11: Anesthesiology Prefabricated Structures - Columns used to deliver anesthesia gases.
+            └── 13: Anesthesia Inhalation Analgesia Central Vacuum Only Units - Central vacuum-only systems for inhalation analgesia
+            └── 15: Anesthesiology Gas Columns - Medical equipment used to administer anesthesia gas during surgery.
+        └── 13: Audiology Prefabricated Structures - Prefabricated structures used in the field of audiology, such as sound-proof booths.
+            └── 11: Auditory Analyzers - Instruments that analyze a person's auditory system and function.
+            └── 13: Acoustic Hearing Test Chambers - Products used in the field of autopsy and postmortem examination.
+        └── 15: Autopsy and Postmortem Devices - Devices used in autopsy and postmortem procedures.
+            └── 11: Autopsy Dissecting Tank Tables - Headrests used to support the head during autopsy procedures.
+            └── 13: Bone Dust Collectors - Equipment used to collect and contain bone dust generated during medical procedures.
+            └── 15: Autopsy Down Draft Workstations - Autopsy workstations with downward airflow to control dust and fumes.
+        └── 17: Dental Prefabricated Structures - Prefabricated structures used in dental offices and labs.
+            └── 11: Dental Impression Water Baths - Water baths used to prepare dental impressions.
+            └── 13: Dental Resins Processing Units - Machines used to process and fabricate dental resins.
+            └── 15: Dental Lab Surveying and Milling Workcenters - Workcenters used in dental labs for surveying and milling.
+        └── 19: Dermatology Devices - Devices used in dermatology treatments
+            └── 13: Phototherapy Warmer Beds - Beds used to provide phototherapy warmth
+            └── 15: Hand and Foot Ultraviolet Treatment Booths - Booths for treating hands and feet with ultraviolet light
+        └── 21: Emergency Trauma and Intensive Prefabricated Structures - Prefabricated structures used for emergency trauma and intensive care treatment.
+            └── 11: Catheter Storage Cabinets - Cabinets for storing catheters
+            └── 13: Water Rescue Tubes - Flotation devices for water rescue
+            └── 15: Trauma Workcenters - Prefabricated workstations used for trauma treatment.
+        └── 23: Endocrinology Prefabricated Structures - Prefabricated structures used for endocrinology treatment.
+            └── 11: Dialysis Tables - Tables used for dialysis treatments.
+            └── 13: Hemodialysis Conductivity Meters - Meters used to monitor the conductivity of dialysis fluid during hemodialysis.
+        └── 25: Gastroenterology Devices - Devices used in gastroenterology.
+            └── 11: Endoscopic Procedure Carts - Carts used for endoscopic procedures.
+        └── 27: General Internal Medicine Prefabricated Structures - Prefabricated structures for general internal medicine
+            └── 11: Intravenous Wheelchair Poles - Poles for intravenous lines on wheelchairs.
+            └── 13: General Use Intravenous Pumps - General-use intravenous pumps.
+        └── 29: Health Exercise and Physical Therapy Prefabricated Structures - Prefabricated structures used for health exercise and physical therapy activities.
+            └── 11: Therapeutic Tables - Tables used for therapeutic treatments
+            └── 13: Therapeutic Exercise Continuous Passive Motion CPM Equipment - Equipment used for continuous passive motion therapy.
+            └── 15: Nourishment Stations - Stations or areas for providing nourishment or refreshments.
+        └── 31: Hematology Prefabricated Structures - Prefabricated structures or workstations used for hematology testing and analysis.
+            └── 11: Serology Water Baths - Water baths used for serology (blood testing) procedures.
+            └── 13: Blood Containers - Containers used to store and transport blood and blood products.
+            └── 15: Hematology Workcenters - Workstations or areas specifically designed for hematology testing and analysis.
+        └── 33: Medical Gas Valve Boxes - Boxes or enclosures that house medical gas valves and controls.
+        └── 35: Nursing Prefabricated Structures - Prefabricated structures designed for nursing care, such as nurse stations.
+            └── 11: Freestanding Nursing Table Bath and Showers - Freestanding tables with built-in bathing and showering capabilities for nursing care.
+            └── 13: Nurse Room Control Exit Monitors - Monitors that track when patients exit their rooms in nursing care settings.
+            └── 15: Nurse Stations - Dedicated workstations for nurses to provide care and monitor patients.
+        └── 37: Obstetrics and Gynecology Prefabricated Structures - Products used in ophthalmology, including furnishings and equipment.
+            └── 11: Obstetrical Examination Tables - Equipment used in obstetrics and gynecology, such as carts and biopsy products.
+            └── 13: Minimally Invasive Breast Biopsy Vacuum Units - Prefabricated structures designed for obstetrics and gynecology care.
+        └── 39: Ophthalmology Prefabricated Structures - Prefabricated structures for ophthalmology applications.
+            └── 11: Lens Measuring Instrument Cabinets - Equipment used in ophthalmology, such as diagnostic exam products and testing devices.
+            └── 13: Corneal Topography Units - Devices used to measure a patient's depth perception.
+        └── 41: Orthopedics Prefabricated Structures - Prefabricated structures for otolaryngology applications.
+            └── 11: Plaster Sinks - Sinks used for plaster work.
+            └── 13: Plaster Carts - Carts used for plaster work.
+            └── 15: Casting Induction Machines - Machines used for induction casting.
+        └── 43: Otolaryngology Prefabricated Structures - Prefabricated structures for otolaryngology applications.
+            └── 13: Ear Equipment - Equipment used for ear procedures.
+        └── 45: Patient Care Prefabricated Structures - Prefabricated structures used to provide patient care in healthcare settings.
+            └── 11: Patient Baths - Bathtubs or tubs designed for patient use in healthcare settings.
+        └── 47: Patient Clinical Diagnostic Prefabricated Structures - Prefabricated structures for patient clinical diagnostic use.
+            └── 11: Treatment Tables - Tables used for patient treatment in healthcare settings.
+            └── 13: Patient Clinical Testing Products - Products used for various types of patient clinical testing.
+            └── 15: Medical Preparation Work Centers - Workstations for medical preparation.
+        └── 49: Patient lifts - Equipment for lifting and transferring patients.
+            └── 11: MRI Compatible Stretchers - Stretchers compatible with MRI equipment.
+            └── 13: Patient Hoists - Hoists used to lift and transfer patients in a healthcare setting.
+        └── 51: Pediatrics Prefabricated Structures - Prefabricated structures designed for pediatric healthcare settings.
+            └── 11: Pediatric Infant Warmers - Warmers designed to maintain the temperature of infants.
+            └── 13: Infant Intensive Care Ventilators - Ventilators designed for infant intensive care.
+            └── 15: Infant Prefabricated Service Columns - Prefabricated service columns designed for infant care.
+        └── 53: Pharmacology Prefabricated Structures - Prefabricated structures designed for pharmacology settings, such as pharmacy stations.
+            └── 11: Narcotic Cabinets With Safe - Cabinets designed for storing narcotics with a safe.
+            └── 13: Tablet Cutters - Devices designed for cutting tablets.
+            └── 15: Pharmacy Stations - Stations designed for pharmacy operations.
+        └── 55: Psychiatric and Psychology Prefabricated Structures - Prefabricated structures designed for psychiatric and psychological healthcare settings.
+            └── 11: Psychiatric Platform Beds - Platform beds designed for psychiatric patients.
+        └── 57: Sterilizer Equipment - Equipment designed for sterilizing medical instruments and supplies.
+            └── 11: Radiation Sterilizers - Devices that use radiation to sterilize medical instruments and equipment.
+        └── 59: Surgical Prefabricated Structures - Prefabricated service columns designed for use in surgical environments.
+            └── 11: Surgical Operating Tables - Tables used for general surgical procedures.
+            └── 13: Intracardiac Suction Devices - Devices used to suction blood and fluids during surgery.
+            └── 15: Surgical Prefabricated Service Columns - Prefabricated service columns designed for use in surgical environments.
+        └── 61: Veterinary and Animal Prefabricated Structures - Prefabricated structures designed for use in veterinary and animal care settings.
+            └── 11: Veterinary Storage Chests - Storage chests designed for use in veterinary and animal care settings.
+            └── 13: Aquaria Equipment - Equipment used to house and care for aquatic animals, such as fish.
+            └── 15: Veterinary Electrocardiographs ECG - Devices used to record and analyze the electrical activity of the heart in animals.
+        └── 63: Specialized Medical Computer Equipment - Computer equipment for specialized medical applications.
+            └── 11: Portable Radioactive Materials Containers - Portable containers for transporting radioactive materials.
+            └── 13: Medical Positron Emission Tomography PET Units - Positron emission tomography (PET) units for medical imaging.
+            └── 15: Radiological Shielding Safes - Shielded safes for radiation protection.
+            └── 17: Radiation Therapy Treatment Planning Computers - Computers used for planning and simulating radiation therapy treatments
+        └── 65: Cabinet Bases - Bases or stands for supporting biological safety cabinets
+            └── 11: Biological Refrigerators - Refrigerators designed to store biological samples at standard refrigerator temperatures
+            └── 13: Biological Safety Class III Cabinet Bases - Bases or stands for supporting Class III biological safety cabinets
+        └── 67: Hazardous Materials Refrigerators and Freezers - Refrigerators and freezers designed to safely store hazardous materials
+            └── 11: Flammable Storage Cabinets - Cabinets designed to safely store flammable liquids and materials
+            └── 13: Explosion Proof Refrigerator Freezers - Explosion-proof refrigerator-freezer units for safely storing flammable materials
+        └── 69: Laboratory And Scientific Equipment - Equipment and instruments used in scientific laboratories
+            └── 11: Explosion Proof Floor Standing Fume hoods - Explosion-proof floor-standing fume hoods for hazardous materials
+            └── 13: Floor Centrifuges - Floor-standing centrifuges used for larger sample volumes.
+    └── 27: 
+        └── 00: General Facility Services Products - General products and equipment used to provide facility services.
+        └── 11: Infrared Instrument And Controls - Instruments and controls for detecting and monitoring infrared radiation.
+            └── 11: Thermocouple Detectors - Temperature sensors that use thermocouple technology.
+            └── 13: Pressure Indicators - Devices that display the current pressure measurement.
+            └── 15: Flow Indicators - Devices that display the current flow measurement.
+            └── 17: Other Gas Concentration Measuring Instruments - Instruments that measure other gas concentrations.
+            └── 19: Heating Optimizers - Devices that optimize the operation of heating systems.
+            └── 21: Level Indicators - Devices that indicate the level of liquids.
+            └── 23: Weight Sensors - Devices that sense and measure the weight of objects.
+            └── 25: Metal Detectors - Devices that detect the presence of metals.
+            └── 27: Air Pollution Detectors - Devices that detect air pollution levels.
+            └── 29: Hydraulic Infrared Controllers - Hydraulic controllers that use infrared technology to control building systems
+        └── 13: Process Control Panels - Panels that control industrial processes
+            └── 13: Building Monitoring Control Panels - Panels that monitor and control building systems
+            └── 15: Gaseous Waste Monitoring and Control Panels - Panels that monitor and control gaseous waste systems
+        └── 15: Equipment Control Panels - Panels that control various building equipment
+            └── 21: Lighting Relay Control Panel - Panels that control lighting relays in a building
+            └── 23: HVAC Control Clocks - Clocks that control a building's HVAC systems
+        └── 17: Pump Components - Components used in various types of pumps
+            └── 23: Combined Macerator Pumps - Macerator pumps that combine grinding and pumping
+            └── 31: Rotary Vane Pumps - Rotary vane pumps that pump liquids and fluids
+            └── 35: Submersible Sewage Ejectors - Submersible pumps that eject sewage and wastewater
+        └── 19: Turbine Engines - Engines that use turbine blades to convert energy into mechanical power.
+        └── 21: Rotary Compressors - Compressors that use a rotary motion to compress gases.
+            └── 15: Single Acting Reciprocating Compressors - Reciprocating compressors that use a single-acting piston design.
+            └── 17: Rotary Vane Compressors - Rotary compressors that use a vane design.
+        └── 23: Fluid Heat Exchangers - Heat exchangers that transfer heat between fluids.
+            └── 13: Plate and Frame Regenerative Heat Exchangers - Plate and frame heat exchangers that use a regenerative design.
+            └── 15: Shell and Tube Regenerative Heat Exchangers - Shell and tube heat exchangers that use a regenerative design.
+            └── 19: Heat Exchangers for Ventilation Air - Heat exchangers designed for ventilation air systems.
+            └── 23: Wavy Fin Plate and Fin Heat Exchangers - Plate and fin heat exchangers with wavy fin design.
+        └── 25: Liquid Fuel Oil Heaters - Heaters that use fuel oil to heat liquids.
+            └── 17: Fuel Oil Pre Heaters - Heaters that pre-heat fuel oil before use.
+        └── 27: Single Stage Pressure Reducing Stations - Pressure reducing stations with a single stage of pressure reduction.
+        └── 29: Tank Components - Components and accessories used with storage tanks.
+            └── 13: Tank Foundation Slabs - Concrete slabs that serve as the foundation for storage tanks.
+            └── 15: Siphon Tanks - Tanks that use a siphon mechanism to discharge liquids.
+            └── 17: Storage Bunkers - Underground structures used for storing materials, goods, or equipment.
+            └── 19: Single Walled Vented Tanks - Single-walled tanks designed with vents for pressure relief.
+            └── 21: Underground Tertiary Tank Containments - Tertiary underground containment structures for storage tanks.
+            └── 23: Rubber Tank Linings - Rubber-based linings applied to the interior of storage tanks.
+            └── 25: Tank Vents - Vents and openings used to control pressure in storage tanks.
+        └── 31: Valves Boxes - Valve boxes protect and house valves in underground piping systems.
+            └── 13: Diaphragm Balancing Valves - Diaphragm-type balancing valves used to control fluid flow.
+            └── 17: Wafer Pattern Butterfly Valves - Butterfly valves with a wafer pattern for installation.
+            └── 19: Swing Check Valves - Swing check valves allow flow in one direction and close to prevent backflow.
+            └── 29: Thermostatically Controlled Mixing Valves - Thermostatic mixing valves automatically adjust to maintain a set water temperature.
+            └── 45: Water Seal Enabled Preaction Valves - Water seal preaction valves require water pressure to open and allow flow.
+            └── 49: Pressure Temperature Relief Valves - Pressure temperature relief valves open to release excess pressure or temperature.
+            └── 53: Pressure Temperature Safety Valves - Pressure temperature safety valves open to release excess pressure or temperature.
+        └── 33: Pneumatic Valve Actuators - Pneumatic valve actuators use compressed air to operate valves.
+            └── 11: Solenoid Valve Actuators - Solenoid valve actuators use an electromagnetically operated plunger to open and close valves.
+        └── 35: Transmission Devices - Transmission devices transfer power between rotating shafts.
+            └── 11: Hydroviscous Variable Speed Drives - Hydroviscous variable speed drives use fluid viscosity to control motor speed.
+            └── 13: Traction Variable Pitch Drives - Traction variable pitch drives use adjustable traction elements to control speed.
+            └── 15: Gear Boxes - Gear boxes use gears to transfer and control power.
+        └── 37: Steam Traps - Devices used to trap and remove steam from piping systems.
+            └── 15: Orifice Steam Traps - A type of steam trap that uses an orifice to control steam flow.
+        └── 39: Single Walled Pipes - Pipes with a single wall for transporting fluids and gases.
+            └── 11: Underground Double Walled Pipes - Underground double-walled pipes for building systems.
+            └── 13: Underground Single Walled Pipes - Underground single-walled pipes for building systems.
+        └── 41: Pipe Band It Kits - Kits used to band and repair damaged pipes.
+        └── 43: Pipe Expansion Compensators - Fittings used to compensate for pipe expansion and contraction.
+        └── 45: Weldneck Pipe Flanges - Flanges that are welded to the pipe end.
+        └── 47: Red Pipe Adapters - Adapters used to reduce pipe size in a red pipe system.
+        └── 49: Flexible Pipe Couplings - Flexible couplings used to join pipes together.
+            └── 13: Diaphragm Pipe Couplings - Pipe couplings with a diaphragm design for flexibility
+        └── 51: Reducing Pipe Elbows - Pipe elbows that reduce the pipe size
+        └── 53: Vented Pipe Caps - Pipe caps with vents to allow air flow
+        └── 55: Liquid Separators - Devices that separate liquids from other substances.
+            └── 11: Water Filters - Filters specifically designed to purify water
+            └── 23: Tray Type Liquid Deaerators - Tray-type deaerators that remove air from liquids
+            └── 27: Water Softeners - Devices specifically designed to soften water
+            └── 29: Solid Separators - Devices that separate solid materials from liquids or gases.
+            └── 31: Gas Chemical Feeders - Equipment that feeds gaseous chemicals into a system.
+            └── 33: Water Treatment Package Units - Self-contained units that treat water.
+            └── 35: Oil Water Curtain Separators - Separators that remove oil from water.
+        └── 57: Air Treatment Components - Components used to treat air.
+            └── 13: Extractors for Process Air - Extractors specifically for process air.
+            └── 19: Packed Bed Air Scrubbers - Air scrubbers with packed beds.
+            └── 21: Gas Filters - Filters that clean supply gases.
+            └── 27: Air Charcoal Filters - Air filters that use charcoal.
+            └── 35: Moisture Absorbents - Substances that absorb moisture from the air.
+        └── 59: Recycling Compactors - Machines that compact and reduce the volume of recyclable materials.
+            └── 11: Recycling Wood Balers - Balers specifically designed to compress and bale wood for recycling.
+            └── 15: Wood Compactors - Compactors specifically designed to compact wood for recycling.
+        └── 61: Document Incinerators - Incinerators specifically designed to securely destroy confidential documents.
+        └── 63: Equipment Insulation Blankets - Insulation blankets specifically designed to cover and protect equipment.
+        └── 65: Sound Dampening Equipment Mounts - Mounts and supports designed to reduce vibration and noise from equipment.
+        └── 67: Zinc Tapes - Zinc tapes used to protect against corrosion.
+        └── 69: Vibration Equipment Mounts - Mounts and supports designed to reduce vibration from equipment.
+        └── 71: Fall Arrest Systems - Systems used to protect workers from falls when accessing building exteriors.
+            └── 19: Anchors for Building Maintenance - Anchors and attachments used for building maintenance equipment.
+    └── 29: 
+        └── 00: Facility and Occupant Protection Products - Products used to protect facilities and occupants, such as security equipment.
+        └── 11: Vehicle Inspection Devices - Lighting used to inspect the underside of vehicles
+            └── 11: Security Camera Monitoring System Panels - Panels and consoles used to monitor CCTV camera systems.
+            └── 13: Security Digital Video Recorders - Digital video recorders used to capture security video.
+            └── 15: Explosive Detector Spectral Analyzers - Devices that analyze the spectral properties of explosives
+            └── 17: Security Hand Held Metal Detectors - Handheld metal detectors for security
+            └── 19: Security Personnel X Ray Machines - X-ray machines for screening people for security
+            └── 21: Security Vibration Sensors - Sensors that detect vibrations for security
+            └── 23: Break Glass Detection - Devices that detect broken glass for intrusion
+            └── 25: Security Buzzers - Keypads used for security access
+            └── 27: Security Keypads - Devices used to inspect vehicles for security
+            └── 29: Undercarriage Inspection Lighting - Systems that control access to secure areas
+        └── 13: Access Control Turnstiles - Waist-height turnstiles used to control access and monitor entry/exit.
+            └── 11: Vein Recognition Readers - Devices that use vein patterns to identify and authenticate users.
+            └── 13: Proximity Personnel Contactless Card Readers - Equipment used to count the number of people entering or exiting a space.
+            └── 23: Portable Post and Railing Barriers - Structures and products used for secure storage of valuables.
+        └── 15: Lockers - Wooden storage lockers used to secure personal belongings.
+            └── 11: Residential Vaults - Commercial safes used for storing valuables.
+            └── 13: Residential Safes - Metal storage lockers used to secure personal belongings.
+            └── 15: Wire Mesh Storage Lockers - Locks used to secure bicycles.
+        └── 17: Padlocks - Pin tumbler padlocks used to secure personal property.
+            └── 13: Pin Tumbler Padlocks - Prefabricated products used to screen mail for threats.
+        └── 19: Biological Safety Cabinets - Equipment used to centrally read and process security codes.
+        └── 21: Centralized Code Reading Equipment - Gaskets used to provide fire-resistant protection.
+        └── 23: Smoke Seals for Ductwork - Components used in firefighting terminals and systems.
+        └── 25: Fire Extinguishers - Portable devices that extinguish small fires
+            └── 11: Fire Fighting Gas Terminals - Gas terminals used in fire fighting systems
+            └── 13: Wet Barrel Fire Hydrants - Wet barrel fire hydrants with valves below ground
+            └── 15: Fire Fighting Pumper Connections - Connections for fire trucks to pump water into a system
+            └── 17: Fire Electrical Rated Nozzles - Nozzles rated for use around electrical equipment
+            └── 19: Foam Fire Extinguishers - Fire extinguishers that use foam as the extinguishing agent
+        └── 27: Fire Fighting Smoke Extractors - Devices that extract smoke from a building during a fire
+        └── 29: Fire Switches - Switches that activate fire alarm and suppression systems.
+            └── 11: Non Addressable Fire Alarm Pull Stations - Non-addressable pull stations that do not communicate with a panel
+            └── 13: Rate of Rise Heat Detectors - Devices that detect the presence of flames
+            └── 15: Fire Tamper Switches - Switches that detect tampering with fire alarm system components
+        └── 31: Jockey Pump Controllers - Devices that control the operation of a jockey pump
+            └── 11: Combination Fire Alarm Annunicator Panels - Panels that provide both audible and visual notification of a fire alarm
+            └── 13: Fire Alarm Smoke Control Panels - Panels that control smoke control systems in a fire alarm system
+            └── 15: Audible Fire Notification Devices Speaker - Audible fire alarm notification devices in the form of speakers
+            └── 17: Visible Fire Notification Device Lights - Visual fire alarm notification devices in the form of lights
+            └── 23: Fire Alarm Central Station Combination Transmitter and Receivers - Devices that both transmit and receive fire alarm signals
+        └── 33: Fire Blankets - Blankets used to smother and extinguish small fires
+            └── 11: Side Wall Sprinkler Heads - Side wall-style sprinkler heads that discharge water in a fire
+            └── 13: Foam Fire Suppression Equipment - Equipment that uses foam to suppress fires
+        └── 35: Evacuation Slides - Slides used to evacuate people from buildings during emergencies
+        └── 37: Emergency Showers - Showers used to provide emergency decontamination
+            └── 13: Dedicated Emergency Eye Wash Stations - Dedicated eye wash stations for emergency use
+            └── 15: Dedicated Emergency Showers - Dedicated emergency showers for decontamination
+        └── 39: Built In Failure Detection - Built-in systems that detect equipment failures
+            └── 13: Water Pollution Monitoring Systems - Systems that monitor water pollution levels
+            └── 15: Water Leak Detection - Systems that detect water leaks
+    └── 31: 
+        └── 00: Plumbing Specific Products and Equipment - Products and equipment specific to plumbing systems
+        └── 11: Faucet Mixing Valves - Valves that mix hot and cold water in faucets
+            └── 11: Shower Ball Faucets - Ball faucets installed in showers
+            └── 13: Shower Compression Faucets - Compression faucets installed in showers
+            └── 15: Shower Cartridge Faucets - Cartridge faucets installed in showers
+            └── 17: Shower Disc Faucets - Disc faucets installed in showers
+            └── 19: Pressure Balanced Faucet Mixing Valves - Faucet mixing valves that use pressure-balanced control
+        └── 13: Specialty Sinks - Specialized sinks for specific uses, such as in a sacristy, darkroom, or hair salon.
+            └── 17: Sink Drains - The drain and associated hardware for a sink.
+            └── 19: Service Sinks - A sink used for general service and utility purposes.
+        └── 15: Bathtub Components - Components and accessories for bathtubs, such as enclosures, splashbacks, and drains.
+            └── 17: Bathtub Drains - The drain and associated hardware for a bathtub.
+        └── 17: Shower Rods - The rod or bar that supports a shower curtain.
+        └── 19: Water Closets - A water-operated toilet that uses water pressure to flush waste.
+            └── 11: Detention Combination Toilets - A toilet that incinerates waste instead of flushing it.
+            └── 15: Wall Mounted Tankless Toilets - A toilet with a separate water tank for flushing.
+            └── 17: Wall Mounted Toilets With Tank - A toilet that uses water to flush waste.
+            └── 19: Sanitary Disposal Connectors - Connectors for sanitary disposal systems
+        └── 21: Waterless Urinals - Urinals that do not use water
+            └── 13: Wall Mounted Water Flush Urinals - Wall-mounted urinals that flush with water
+            └── 15: Wall Mounted Waterless Urinals - Wall-mounted urinals that do not use water
+        └── 23: Bidets - Fixtures for washing the genital and anal area
+        └── 25: Bathroom Deodorizers - Devices that deodorize bathrooms
+            └── 11: Shower Partitions - Partitions that enclose shower stalls
+            └── 19: Paper Towel Dispenser With Disposal Units - Devices that dispense and dispose of paper towels
+            └── 23: Combination Sanitary Napkin and Tampon Dispenser With Disposal Units - Devices that dispense and dispose of both sanitary napkins and tampons
+            └── 25: Water Heated Towel Bars - Towel bars that are heated by hot water
+            └── 29: Hand Soap Dispensers - Devices that dispense hand soap
+        └── 27: Floor Drain Covers - Covers for floor drains
+        └── 29: Hot Water Tank Heaters - Heaters that store hot water in a tank
+            └── 11: Gas Instantaneous Hot Water Heaters - Gas heaters that instantly heat water
+            └── 13: Hot Water Tank Fuel Oil Heaters - Fuel oil-fired water heaters for hot water tanks
+        └── 31: Drinking Fountains With Direct Expansion Cooling - Drinking fountains with direct expansion cooling systems
+        └── 33: Complete Bathroom Suites - Complete bathroom suites with all fixtures
+        └── 35: Tubing Tees - Tees to split the flow in plumbing tubing
+    └── 33: 
+        └── 00: HVAC Specific Products and Equipment - Products and equipment specifically for HVAC systems
+        └── 11: Boiler Components - Sealants and fillers used to assemble boiler components
+            └── 11: Boiler Burner Controls - Boilers that condense flue gases to improve efficiency
+            └── 15: Low Temperature Hot Water Fire Tube Boilers - Boilers with flexible tube heat exchangers
+            └── 17: Low Temperature Hot Water Flexible Tube Boilers - Boilers with sectionalized cast iron heat exchangers
+            └── 19: Low Temperature Hot Water Sectionalized Cast Iron Boilers - Boilers with water tube heat exchangers
+            └── 21: Low Temperature Hot Water Water Tube Boilers - Boilers that use electricity as the heat source
+            └── 23: Boiler Draft Fans - Furnaces that provide heated air for building heating
+        └── 13: Furnace Components - Components used in the construction and operation of furnaces.
+            └── 11: Furnace Burner Controls - Controls that manage the fuel burners in furnaces.
+            └── 27: Furnace Fuel Gas Heat Recovery Devices - Devices that recover heat from the exhaust of fuel-fired furnaces.
+        └── 15: HVAC Steam Hot Water Converters - Devices that convert steam or hot water to heat HVAC systems.
+            └── 11: Outdoor Propane HVAC Heaters - Propane heaters designed for outdoor use in HVAC systems.
+            └── 13: Heating Stove Pipes - Pipes used to vent the exhaust from heating stoves.
+            └── 15: Heated Ceiling Panels - Heated panels used in ceiling systems.
+            └── 17: Fuel Fired HVAC Air Heaters - Fuel-fired air heaters used in HVAC systems.
+            └── 19: Forced Air Fuel Fired HVAC Air Heaters - Forced-air fuel-fired air heaters used in HVAC systems.
+            └── 21: Radiation Heating Panels - Panels that heat a space primarily by radiant heat transfer.
+            └── 23: Forced Air Radiation Heating Panels - Forced air radiant heating panels.
+            └── 25: Electric HVAC Resitive Unit Heaters - Electric HVAC heaters that use resistance heating elements.
+            └── 27: Forced Air Electric HVAC Resitive Unit Heaters - Forced air HVAC heaters that use resistance heating elements.
+        └── 17: Split System Heat Pumps - Heat pump systems with separate indoor and outdoor units
+            └── 11: Water Source Packaged Heat Pumps - Self-contained heat pump units that extract heat from water source
+            └── 13: Water Source Split System Heat Pumps - Split system heat pumps that extract heat from water source  
+        └── 19: Cooling Freeze Plant Accessories - Accessories and parts for cooling/freezing equipment
+            └── 11: Refrigerant Liquid - Liquid chemicals used as refrigerants in cooling systems
+        └── 21: Chillers - General purpose liquid cooling equipment
+            └── 11: Steam Absorption Chillers - Absorption chillers powered by steam
+            └── 13: Packaged Rotary Chillers - Self-contained chillers with rotary compressors
+        └── 23: Cooling Ponds - Air handling units are central HVAC components that circulate and condition air in a building.
+        └── 25: Pre Fabricated Air Handling Units - Air humidity control equipment regulates the moisture content of indoor air.
+            └── 11: Built Up Rooftop Air Handling Units - Customized air handling units are tailored to specific project requirements.
+            └── 13: Customized Rooftop Air Handling Units - Heating and ventilating units provide both heating and ventilation functions.
+            └── 17: Modular Rooftop Air Handling Units - Pre-fabricated air handling units are fully assembled off-site and delivered to the job site.
+        └── 27: Vaporizers - HVAC dampers regulate the flow of air in ductwork.
+            └── 11: Evaporative Air Washers - Dehumidifiers remove excess moisture from the air.
+            └── 13: Portable Dehumidifiers - Air humidifiers add moisture to the air to maintain desired humidity levels.
+        └── 29: Fire Shutters for Air Ductwork - Fire-rated shutters that close air ducts to prevent the spread of fire.
+            └── 13: Counter Weight Balanced Parallel Backdraft Dampers - Bi-plane dampers have two sets of blades that can move independently.
+            └── 17: Manual Butterfly Dampers - Dampers regulate airflow in HVAC systems.
+            └── 19: Manual Dampers - Diffuser firestop flaps close off air outlets in the event of a fire.
+            └── 23: Automatic Fire Dampers - Self-closing dampers that prevent fire spread in ducts
+            └── 25: Automatic Smoke Dampers - Smoke dampers that automatically close air ducts in a fire.
+            └── 31: Louvre Dampers with Opposed Blade Motion - Louvre dampers with blades that move in opposite directions to control airflow.
+            └── 33: Double Panel Wall Louvers - Wall louvers with two panels that can be opened and closed to control airflow.
+            └── 37: Automatic Parallel Volume Control Dampers - Automatically operated volume control dampers with blades that move in parallel.
+        └── 31: Power Ventilators - Fans that are powered to provide ventilation.
+            └── 11: Non Heated Air Curtains - Air curtains that use unheated air to separate two spaces.
+            └── 13: Portable Blowers - Portable blowers.
+            └── 15: Grease Exhaust Hoods - Exhaust hoods that capture grease-laden air from cooking.
+            └── 17: Gas Exhaust Hood Fire Suppression Systems - Fire suppression systems for gas-fired exhaust hoods.
+            └── 19: Centrifugal Plug Fans - Centrifugal fans with a plug-type impeller.
+            └── 21: Up Blast Propeller Power Ventilators - Up blast propeller fans used for ventilation and air circulation.
+        └── 33: Fan Coil Units - HVAC units that combine a fan and heating/cooling coil.
+            └── 11: 4 Pipe Fan Coil Heating and Cooling Units - HVAC units with a 4-pipe system for heating and cooling.
+        └── 35: HVAC Coils - Coils used in HVAC systems for heating or cooling.
+            └── 11: HVAC Water Coils - Coils that use water for heating or cooling.
+        └── 37: Refrigerant Evaporators - Coils that evaporate refrigerant.
+        └── 39: Split System Air Conditioning Units - Air conditioning units with separate indoor and outdoor components.
+            └── 11: Room Air Conditioners - Air conditioning units installed in a room.
+            └── 15: Make Up Air Units Without Heat - Make up air units without heating capabilities.
+            └── 17: Unitary Air Conditioning Equipment - Unitary air conditioning equipment.
+            └── 19: Water Cooled Window Packaged Terminal Air Conditioners - Window packaged terminal air conditioners with water-cooled condensers.
+        └── 41: Exhaust Terminals - Exhaust terminals are HVAC devices that remove air from a building.
+            └── 11: Dual Duct Mixing Fan Powered Terminal Air Units - Dual duct mixing fan powered terminal air units distribute air through two duct systems.
+            └── 13: Dual Duct Variable Air Volume Induction Terminal Air Units - Dual duct variable air volume induction terminal air units distribute air through two ducts.
+            └── 17: Single Duct Variable Air Volume Terminal Units - Single duct variable air volume terminal units distribute air through a single duct system.
+        └── 43: Water Cooled Condenser Units - Water cooled condenser units use water to condense refrigerant.
+            └── 11: Outdoor Air Cooled Condenser Units - Outdoor air cooled condenser units are located outside a building.
+            └── 15: Water Cooled Refrigeration Condenser Units - Water cooled refrigeration condenser units use water to condense refrigerant.
+            └── 17: Indoor Water Cooled Condenser Units - Indoor water cooled condenser units are located inside a building.
+        └── 45: HVAC Evaporative Coolers - HVAC evaporative coolers cool air using evaporation.
+        └── 47: Regenerative Desiccant Air Dryers - Regenerative desiccant air dryers use desiccants to remove moisture from air.
+        └── 49: Air Ductwork Accessories - Accessories used to support and maintain air ductwork systems.
+            └── 11: Floor Ventilation Diffusers - Floor ventilation diffusers are installed in the floor.
+            └── 13: Square Ventilation Ducts - Square ventilation ducts are rectangular in cross-section.
+            └── 17: Duct Liner Insulation - Insulation materials used to line the interior of ductwork.
+            └── 21: Ductwork Sound Attenuators - Components that reduce noise and vibration in a ductwork system.
+            └── 23: Transfer Air Grilles - Grilles that allow transfer air to move between spaces.
+            └── 25: Supply Air Ventilation Registers - Registers that control the flow of supply air in a ductwork system.
+            └── 27: Intake Ventilators - Ventilators that allow intake of air into a space.
+            └── 29: Mechanical Fasteners for Air Ductwork - Fasteners used to assemble and secure air ductwork.
+        └── 51: Ultraviolet Disinfection Lighting - Lighting that uses ultraviolet radiation to disinfect air.
+        └── 53: Solar Water Heating Collector Units - The complete solar collector unit, including all components.
+            └── 13: Solar Water Heating Reflectors - Reflectors used to concentrate sunlight on a solar collector.
+            └── 15: Solar Water Heating Vacuum Tube Collectors - Vacuum tube solar collectors that use evacuated tubes to absorb heat.
+        └── 55: Heat Wheels - Heat wheels are devices that transfer heat between two air streams.
+    └── 35: 
+        └── 00: Electrical and Lighting Specific Products and Equipment - Electrical and lighting specific products and equipment are items used for electrical and lighting systems.
+        └── 11: Photovoltaic Generators - Photovoltaic generators convert sunlight directly into electricity.
+            └── 11: Motor Electrical Generators - Motor electrical generators use motors to generate electricity.
+            └── 12: Electrical Generation Steam Turbines - Electrical generation steam turbines are used to power electrical generators.
+            └── 13: Multiple Voltage Electrical Generator Sets - Multiple voltage electrical generator sets can generate electricity at different voltages.
+            └── 15: Wind Generator Sets - Wind generator sets use wind turbines to generate electricity.
+            └── 17: Photovoltaic Collectors - Photovoltaic collectors are devices that concentrate sunlight onto photovoltaic cells.
+        └── 13: Transformer Accessories - Accessories for transformers, such as commutators and ballasts
+            └── 13: Voltage Instrument Transformers - Voltage instrument transformers measure the voltage in an electrical circuit.
+            └── 15: Electrical Network Oil Filled Step Up Transformers - Electrical network oil filled step up transformers are liquid-cooled step up transformers.
+            └── 17: Power Oil Filled Step Down Transformers - Oil-filled transformers that step down voltage levels
+            └── 19: Transformer Ballasts - Devices that regulate the voltage or current in a transformer
+        └── 15: Steam Driven Motors - Motors driven by steam power
+            └── 11: Synchronous Three Phase AC Motors - Three-phase AC motors that synchronize with the power grid frequency
+            └── 13: Step DC Motors - DC motors that move in discrete steps
+        └── 17: Variable Frequency Drives - Speed controllers that vary the frequency of the AC power supply
+            └── 15: Variable Voltage Input Variable Frequency Drives - Variable frequency drives that use a variable voltage input
+        └── 19: Rechargeable Batteries - Batteries that can be recharged and used multiple times.
+            └── 13: Zinc Coal Batteries - Zinc coal batteries used to store and provide electrical power.
+            └── 15: Nickel Hydrogen Batteries - Nickel hydrogen batteries used to store and provide electrical power.
+        └── 21: Battery Chargers - Devices used to charge and maintain batteries.
+        └── 23: Uninterrupted Power Supply (UPS) Units - Uninterruptible power supply units used to provide backup power.
+            └── 11: Harmonic Filters - Devices used to filter out electrical harmonics.
+            └── 13: Rotary Converters - Rotary converters used to convert electrical power.
+            └── 15: Frequency Changers - Frequency changers used to convert electrical power.
+            └── 17: Solid State Inverters - Solid state inverters used to convert DC to AC power.
+            └── 19: Power Factor Controls (Cosines Phi) - Controls used to regulate electrical power factor.
+            └── 21: Uninterruptible Power Supply Packaged Units - Packaged uninterruptible power supply units.
+        └── 25: Electrical Line Supervisor Sets - Sets of equipment that monitor and control electrical lines
+            └── 11: Kilowatt Hour Meters - Devices that measure the total electrical energy used
+            └── 13: Watt Hour Recorders - Devices that record the amount of electrical energy used over time
+        └── 27: Electrical Plug Connectors - Devices that interrupt electrical circuits to prevent damage
+            └── 11: Electrical Receptacle Adapters - Devices that connect electrical circuits to power sources
+        └── 29: Fuses - Devices that protect electrical circuits from overcurrent.
+            └── 11: Power Distribution Air Circuit Breakers - Circuit breakers that use gas to interrupt the circuit
+            └── 13: Power Distribution Gas Circuit Breakers - Circuit breakers that detect ground faults and interrupt the circuit
+            └── 17: Shunt Molded Case Circuit Breakers - Circuit breakers that use oil to interrupt the circuit
+            └── 19: Power Distribution Oil Circuit Breakers - Circuit breakers that use a vacuum to interrupt the circuit
+            └── 21: Power Distribution Vacuum Circuit Breakers - Devices that interrupt circuits to prevent ground faults
+            └── 27: Gas Disconnects - Devices that disconnect gas supply to equipment or circuits.
+            └── 29: Fuse Holders - Holders that contain fuses to protect electrical circuits.
+        └── 31: Electrical Feeders - Electrical conductors that supply power to circuits.
+            └── 27: Stand Alone Power Distribution Units - Stand-alone power distribution units.
+            └── 29: Paralleling Switchboards - Switchboards that synchronize multiple power sources.
+            └── 31: Remote Controlled Paralleling Switchgear - Switchgear with remote controls for power synchronization.
+            └── 33: Copper Electrical Busbars - Copper electrical conductors that distribute power.
+        └── 33: Electrical Wireways - Enclosed raceways for routing electrical wiring.
+            └── 13: Conductor Mechanical Fasteners - Fasteners that secure electrical conductors.
+            └── 15: Electrical Wall Junction Boxes - Junction boxes installed in walls.
+            └── 17: Mechanical Fasteners for Trunking - Mechanical fasteners used to secure electrical trunking in place.
+            └── 21: Copper Electrical Bus Ducts - Copper bus ducts for high-voltage electrical distribution.
+            └── 23: Vertical Electrical Racks - Vertical racks for mounting electrical equipment.
+            └── 25: Ceiling Grid Electrical Wire Track Connectors - Connectors for ceiling grid electrical wire tracks.
+        └── 35: Electrical Contactors - Devices that control the flow of electrical current.
+        └── 37: Vacuum Switches - Switches that control the flow of electricity in a vacuum environment.
+            └── 11: Power Seeking Automatic Transfer Switches - Automatic transfer switches that prioritize backup power.
+            └── 15: Barrel Key Switches - Barrel switches with a key-operated actuator.
+            └── 17: Dimmers - Devices used to adjust the brightness of lighting.
+            └── 19: Non Fused Disconnect Switches - Disconnect switches without integrated fuses.
+            └── 27: Reed Switches - Switches that use a magnetic reed to detect motion.
+            └── 33: Differential Pressure Switches - Switches that measure differential pressure.
+            └── 35: Mercury Switches - Switches that use mercury to detect motion.
+        └── 39: Surge Protection Devices - Devices that protect electrical systems from voltage surges.
+            └── 13: Electrical Ground Rods - Metal rods that provide a grounding connection for an electrical system.
+            └── 15: Lightning Rods - Devices that protect electrical systems from lightning strikes.
+        └── 41: Signal Converters - Devices that convert one type of electrical signal to another.
+        └── 43: Voltage Relays - Devices that monitor and control voltage levels in electrical systems.
+            └── 15: Current Differential Solid State Relays - Solid-state relays that detect and respond to differences in electrical current.
+            └── 19: Ground Fault Solid State Relays - Solid-state relays that detect and respond to ground faults.
+            └── 23: Manual Reset Lockout Relays - Relays that require manual reset after a fault condition is cleared.
+            └── 27: Over Current Solid State Relays - Solid-state relays that detect and respond to overcurrent conditions.
+            └── 29: Overload Solid State Relays - Solid-state relays that detect and respond to electrical overload conditions.
+            └── 31: Phase Failure Solid State Relays - Solid-state relays that detect and respond to the loss of one or more electrical phases.
+            └── 35: Power Factor Solid State Time Relays - Solid-state relays that detect and respond to changes in power factor.
+            └── 37: Over Under Voltage Solid State Relays - Solid state relays that detect and respond to both high and low voltage conditions.
+        └── 45: Strobe Light Fixtures - Lighting fixtures that produce flashing or pulsing light.
+            └── 11: Propane Lanterns - Lanterns that use propane as a fuel source.
+            └── 13: Propane Torches - Torches that use propane as a fuel source.
+            └── 15: Propane Lamps - Lamps that use propane as a fuel source.
+        └── 47: Lamps - The light-emitting components of lighting fixtures.
+            └── 11: Submersible Halogen Lighting Fixtures - Submersible high-intensity discharge lighting fixtures.
+            └── 13: Emergency Lighting Strobe - Emergency lighting fixtures that include strobe lights.
+            └── 15: Self Illuminated Exit Illuminated Signs - Self-illuminated exit signs that do not require external power.
+            └── 19: Illuminated Signs Boards - Illuminated signs and boards used for communication and signage.
+            └── 21: Lampshades - Devices used to shade or cover the light source in a lighting fixture.
+            └── 23: Light Emitting Diode Lamps - Semiconductor-based lamps that emit light when an electric current passes through them.
+    └── 37: 
+        └── 00: Information and Communication Specific Products and Equipment - Products and equipment specifically designed for information and communication systems.
+        └── 11: Communication Wireways - Raceways and conduits used to route and contain communication cables.
+            └── 15: Fiber Adapter Panels - Panels used to connect and organize fiber optic cables.
+            └── 17: Complete Visual Signaling - Equipment used to provide visual signaling for communication systems.
+        └── 13: Computer Video Conferencing Equipment - Equipment used in computers for video conferencing.
+            └── 11: Computer Controller Cards - Controller cards used in personal computers.
+            └── 13: Computer Intrusion Protection Devices - Devices used to protect against intrusions on personal computers and networks.
+            └── 15: Local Area Network Tape Drives - Tape drives used in local area networks for data storage and backup.
+            └── 17: Wide Area Network Tape Drives - Tape drives used in wide area networks for data storage and backup.
+            └── 19: Computer Tape Drives - Tape drives used in computers for data storage and backup.
+            └── 21: Computer Catho Ray Tube Monitors - Cathode ray tube monitors used in computers.
+            └── 23: Computer Plotter Printers - Plotter printers used in computers to print large-format documents and images.
+        └── 15: Audio Equipment - Equipment used for playing back and amplifying audio
+            └── 11: Digital Cameras - Digital cameras used to capture images and video.
+            └── 13: Film Camcorders - Film camcorders used to record video and audio on film.
+            └── 17: Projection Screen Stands - Stands used to support projection screens.
+            └── 19: Video Digital Projectors - Digital projectors used to project digital images and video.
+            └── 21: Audio Video Recorders - Devices used to record both audio and video
+            └── 23: Stereo Speakers - Speakers used for stereo audio playback
+            └── 25: Television Mounts - Mounts used to support and position televisions
+            └── 29: Audio Reproducing Units - Devices used to reproduce audio signals
+        └── 17: Public Address Equipment - Equipment used for public address and sound reinforcement
+            └── 13: Speakers - Devices used to generate and amplify audio signals
+        └── 19: Video Walls - Video display systems that use multiple screens
+        └── 21: Video Reproduction - Equipment used for reproducing video content
+        └── 23: Satellite Communication Equipment - Equipment used for satellite communication, including dishes and related components.
+            └── 11: Wireless Phone Chargers - Devices used to charge and power wireless phones
+            └── 13: Multiple Line Telephones - Telephones with multiple telephone lines
+            └── 15: Telephone Patch Panels - Panels used to connect and route telephone signals
+            └── 17: Door Entry Telephones - Telephone systems that allow entry into a building or facility from an exterior location.
+            └── 19: Radio Broadcast Transmission Towers - Towers used for transmitting radio broadcast signals over the airwaves.
+            └── 21: Wireless Radio Communication Equipment - Equipment that uses wireless technology for radio communication.
+            └── 23: Satellite Communication Dishes - Dishes used for satellite communication.
+        └── 25: Broadcasting Equipment - Equipment used for television broadcasting, including transmitters, antennas, and related components.
+            └── 17: Broadcasting Cable Transmission and Reception Control Equipment - Control equipment used for cable transmission and reception in broadcasting.
+            └── 19: Broadcast Control Equipment - Control equipment used for broadcast transmission and reception.
+            └── 21: Broadcasting Microwave Receivers - Receivers used for microwave transmission and reception in broadcasting.
+            └── 23: Broadcasting Light Signals - Equipment used to transmit light signals for broadcasting purposes, such as studio lighting and lighting control systems.
+        └── 27: Emergency Call Equipment - Equipment used to initiate emergency calls, including call buttons, pull stations, and emergency phones.
+            └── 13: Imminent Danger Notification Devices - Devices that are part of a mass notification system, used to warn people of an immediate threat or danger.
+            └── 15: Audio Visual Intercoms - Intercom systems that use both audio and visual signals to communicate.
+            └── 17: Nurse Call Equipment - Equipment used in healthcare settings to allow patients to call for nurse assistance.
+    └── 39: 
+        └── 00: Utility and Transportation Products - Products related to utilities and transportation infrastructure, such as roadway monitoring and control systems.
+        └── 11: Bollards - Bollards that are designed to actively stop or slow down vehicles in an emergency.
+            └── 11: Traffic Speed Bumps - Curbs installed along the edges of a roadway to define the travel lanes.
+            └── 15: Traffic Detectors and Sensors - Barriers installed to control or restrict the movement of vehicles on a roadway.
+            └── 17: Passive Tire Shredders - Vertical posts installed along a roadway to control access or provide visual cues.
+            └── 19: Architectural Bollards - Structures that allow for the passage of vehicles, people, or other traffic under or over a roadway.
+        └── 13: Bridges - Structures that carry roads, railways, or pedestrians over obstacles like rivers or valleys.
+            └── 11: Microtunneling - A trenchless method of installing underground pipes or conduits using a small-diameter boring machine.
+            └── 13: Bridge Movable Mechanism - Mechanisms that allow a bridge to open and close, such as in a drawbridge.
+        └── 15: Railway Cars - Sleeping cars used on overnight train journeys.
+            └── 11: Railway Bumpers - Devices installed at the end of a railway track to stop trains.
+            └── 15: Railway Traction Line Pylons - The poles that support the overhead power lines for electric trains.
+            └── 17: Railway Control Instrumentation - Instrumentation used to monitor and control railway operations.
+            └── 19: Railway Electric Locomotives - Passenger cars used to transport people on trains.
+            └── 21: Railway Tanker Cars - Railway cars used to transport liquids and gases, such as oil or chemicals.
+        └── 17: Ski Lifts - Lift systems used to transport skiers and snowboarders up a slope, typically using a series of chairs or poles.
+            └── 23: Ski Chair Lifts - Ski lift systems that use a series of chairs to transport skiers up the slope.
+        └── 19: Aviation Barriers - Barriers used to reduce noise from aircraft operations.
+            └── 11: Aviation Windsocks - Barriers used to protect aircraft and personnel from jet blast and other aviation-related hazards.
+            └── 13: Aviation Sound Barriers - Components and equipment used in the operation and maintenance of marine navigation facilities.
+        └── 21: Marine Monitoring and Control - Systems for monitoring marine operations
+            └── 11: Canal Radial Gates - Spillway crest gates used to control the flow of water in canals.
+            └── 13: Trash Rakes - Equipment that removes debris from water intakes
+            └── 15: Groins - Structures extending from shore to prevent erosion
+            └── 17: Navigation Monitoring Equipment - Equipment that monitors marine navigation
+        └── 23: Electrical Transmission Equipment - Equipment for transmitting electrical power
+            └── 11: Electrical Utility Towers - Towers that support high voltage power lines
+        └── 25: Natural Gas Utility Pipeline Equipment - Equipment for natural gas pipelines
+        └── 27: Water Utility Pipeline Equipment - Equipment for water pipelines
+        └── 29: Waste Water Channels, Gullies, Gratings, Covers - Components for wastewater collection
+            └── 11: Wastewater Pipework Access Fittings - Fittings for accessing wastewater pipes
+            └── 13: Surface Water Retention Chambers - Chambers for storing surface water
+        └── 31: Packaged Sewage Treatment Plants - Packaged sewage treatment plants that combine multiple treatment processes into a single unit.
+            └── 11: Packaged Lift Stations - Packaged lift stations that combine a pump and related equipment into a single unit for lifting wastewater.
+        └── 33: Oil and Grease Separation and Removal Equipment - Equipment used to separate and remove oil and grease from water and wastewater.
+            └── 11: Spiral Screens - Screens that use a spiral configuration to remove debris from the water flow.
+            └── 13: Grit Storage Containers - Containers used to store grit after removal.
+            └── 15: Modular Grinding-Screening-Compacting Equipment - Modular equipment that combines grinding, screening, and compacting functions.
+            └── 17: Floating Scum Skimming and Removal Equipment - Equipment for removing surface waste
+        └── 35: Dry Chemical Feed Equipment - Equipment that feeds and distributes dry chemicals
+            └── 11: Cleaning Requirements for Oxygen Service - Requirements for cleaning equipment used with oxygen
+            └── 13: Liquid Chemical Transfer Pumps - Pumps for transferring liquid chemicals
+            └── 15: Dry Chemical Feed Accessories and Safety Equipment - Accessories and safety equipment for dry chemical feed systems
+        └── 37: Sediment Removal Equipment - Equipment used to remove sediment from water or wastewater systems.
+            └── 11: Pin Mixers - Pin mixers that mix water and wastewater
+            └── 13: Ballasted High-rate Clarifier Equipment - High-rate clarifier equipment that uses ballasted flocculation to remove solids.
+            └── 15: Water Cannon - Equipment that uses a water cannon to flush out accumulated sediment.
+        └── 39: Biological Treatment Systems - Biological treatment systems that use rotating biological contactors.
+            └── 11: Flexible Membrane Disc Diffusers - Flexible membrane disc diffusers that release fine bubbles to aerate water or wastewater.
+            └── 13: Biologically Activated Filters - Membrane biological reactors used for advanced wastewater treatment.
+        └── 41: Ultraviolet Equipment - Equipment that uses ultraviolet light to disinfect and treat water.
+            └── 11: Microfiltration and Ultrafiltration Membrane Equipment - Membrane-based filters that can remove very small particles and microorganisms.
+            └── 13: Desalination Rising Film Evaporators - Equipment that uses rising film evaporation to desalinate water.
+            └── 15: Open-channel Medium-pressure Ultraviolet Treatment Equipment - Open-channel UV equipment that uses medium-pressure UV light.
+        └── 43: Thermal Treatment of Residuals - Equipment for thermal treatment of wastewater sludge and residuals.
+            └── 11: Scum Concentrator Equipment - Equipment that concentrates and removes scum from the surface of water.
+            └── 13: Radial Beam Floating Gas-holding Digester Covers - Floating gas-holding covers for anaerobic digesters with a radial beam design.
+            └── 15: Indirect-heat Residuals Drying Equipment - Indirect-heat equipment for drying wastewater sludge and residuals.
+            └── 17: Thermal Oxidation Equipment - Equipment for thermal oxidation of wastewater sludge and residuals.
+        └── 45: Solid Waste Handling Systems - Systems used to handle and process solid waste.
+            └── 11: Additives for Waste Water and Sewage Treatment - Additives for treating wastewater and sewage.
+            └── 13: Detectors of Water Pollution - Detectors for monitoring water pollution.
+            └── 15: Pulping Machines - Machines that pulp or shred solid waste materials.
+            └── 21: Packaged Incinerators - Self-contained incinerators used to burn waste on-site.
+            └── 23: Solid Waste Detectors for Other Solids - Detectors used to identify other solids in waste.
+            └── 25: Refuse Chute Decontamination Units - Equipment used to decontaminate refuse chutes.
+            └── 27: Utility Poles - Poles used to support utility lines and equipment.
+        └── 47: Offshore Structures - Structures built in offshore environments.
+33: 
+    └── 55: 
+        └── 24: 
+            └── 23: Facility Security - Providing security services to protect a facility and its occupants.
+35: 
+    └── 11: 
+        └── 23: 
+            └── 23: Electric Power Quality Monitoring Equipment - Equipment used to monitor the quality of electrical power in building systems.
+36: 
+    └── 71: 
+        └── 26: 
+            └── 23: Organization Chart - An organizational chart showing the structure and relationships of the project team.
+        └── 91: 
+            └── 23: Claims Consultant - Consultants hired to assist with construction claims
+49: 
+    └── 11: 
+        └── 11: 
+            └── 23: Unit Number - The number or letter identifying a specific unit within a building or complex
+    └── 61: 
+        └── 81: 
+            └── 23: Actual Application Rate - The actual application rate of a product or material during installation.
+    └── 71: 
+        └── 51: 
+            └── 23: Delta T - The difference between two temperatures.
+    └── 81: 
+        └── 11: 
+            └── 23: Factory Reference Grade - The reference grade assigned to a factory test.
+        └── 21: 
+            └── 23: Ease of storing - The ease with which a material or product can be stored or kept.
+    └── 91: 
+        └── 25: 
+            └── 23: Naturally Vented Only - HVAC system that relies on natural ventilation rather than mechanical means
+        └── 41: 
+            └── 23: Balanced Load - Balanced electrical load
+        └── 61: 
+            └── 23: Twisted Pair - Cable with two or more twisted pairs of conductors

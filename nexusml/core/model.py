@@ -43,6 +43,7 @@ from nexusml.core.evaluation import (
     enhanced_evaluation,
 )
 from nexusml.core.feature_engineering import (
+    GenericFeatureEngineer,
     create_hierarchical_categories,
     enhance_features,
     enhanced_masterformat_mapping,
@@ -113,7 +114,10 @@ def handle_class_imbalance(
 
 
 def train_enhanced_model(
-    data_path: Optional[str] = None, sampling_strategy: str = "random_over", **kwargs
+    data_path: Optional[str] = None,
+    sampling_strategy: str = "random_over",
+    feature_config_path: Optional[str] = None,
+    **kwargs,
 ) -> Tuple[Any, pd.DataFrame]:
     """
     Train and evaluate the enhanced model with better handling of "Other" categories
@@ -121,6 +125,7 @@ def train_enhanced_model(
     Args:
         data_path: Path to the CSV file. Defaults to None, which uses the standard location.
         sampling_strategy: Strategy for handling class imbalance ("random_over", "smote", or "direct")
+        feature_config_path: Path to the feature configuration file. Defaults to None, which uses the standard location.
         **kwargs: Additional parameters for the oversampling method
 
     Returns:
@@ -130,19 +135,16 @@ def train_enhanced_model(
     print("Loading and preprocessing data...")
     df = load_and_preprocess_data(data_path)
 
-    # 2. Enhanced feature engineering
-    print("Enhancing features...")
-    df = enhance_features(df)
+    # 2. Apply Generic Feature Engineering
+    print("Applying Generic Feature Engineering...")
+    feature_engineer = GenericFeatureEngineer(config_path=feature_config_path)
+    df = feature_engineer.transform(df)
 
-    # 3. Create hierarchical categories
-    print("Creating hierarchical categories...")
-    df = create_hierarchical_categories(df)
-
-    # 4. Prepare training data - now including both text and numeric features
+    # 3. Prepare training data - now including both text and numeric features
     # Create a DataFrame with both text and numeric features
     x = pd.DataFrame(
         {
-            "combined_features": df["combined_features"],
+            "combined_features": df["combined_text"],  # Using the name from config
             "service_life": df["service_life"],
         }
     )
@@ -254,8 +256,11 @@ def predict_with_enhanced_model(
     """
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(
-        {"combined_features": [description], "service_life": [service_life]}
+        {"combined_text": [description], "service_life": [service_life]}
     )
+
+    # Rename to match the expected column name in the pipeline
+    input_data.rename(columns={"combined_text": "combined_features"}, inplace=True)
 
     # Predict using the trained pipeline
     pred = model.predict(input_data)[0]
