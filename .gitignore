@@ -197,6 +197,10 @@ __pycache__
 *.log
 *.bak
 
+# Database files
+outputs/**/*.db
+outputs/pipeline/**/*.db
+
 #node_modules
 node_modules/
 examples\output
