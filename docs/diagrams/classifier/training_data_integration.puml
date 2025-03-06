@@ -1,0 +1,122 @@
+@startuml "Training Data Integration with Complete OmniClass Taxonomy"
+
+' Define the components
+package "Reference Data" {
+  class "Complete OmniClass Taxonomy" as OmniClass {
+    + code: String
+    + name: String
+    + description: String
+    + parent_code: String
+  }
+  
+  class "Manufacturer Product Catalog" as ManufCatalog {
+    + manufacturer: String
+    + product_name: String
+    + omniclass_code: String
+    + description: String
+  }
+}
+
+package "Training Data" {
+  class "Equipment Examples" as Equipment {
+    + equipment_tag: String
+    + manufacturer: String
+    + model: String
+    + description: String
+    + omniclass_code: String (FK)
+    + service_life: Float
+    + ...other attributes
+  }
+  
+  class "Synthetic Examples" as Synthetic {
+    + generated_id: String
+    + description: String
+    + omniclass_code: String (FK)
+    + attributes: Map<String, Object>
+  }
+}
+
+package "Classification System" {
+  class "DynamicFieldMapper" as Mapper {
+    + map_dataframe()
+    + get_best_match()
+    + get_classification_targets()
+  }
+  
+  class "OmniClassReferenceManager" as OmniManager {
+    + get_omniclass_by_code()
+    + get_parent_code()
+    + get_children_codes()
+    + find_similar_codes()
+    + get_description()
+  }
+  
+  class "TrainingDataGenerator" as Generator {
+    + generate_synthetic_examples()
+    + augment_training_data()
+    + balance_dataset()
+  }
+  
+  class "ClassificationModel" as Model {
+    + train()
+    + predict()
+    + evaluate()
+    + get_confidence()
+  }
+}
+
+' Define relationships
+OmniClass "1" -- "0..*" Equipment : references >
+OmniClass "1" -- "0..*" Synthetic : references >
+OmniClass "1" -- "0..*" ManufCatalog : categorizes >
+
+Equipment "0..*" -- "1" Model : trains >
+Synthetic "0..*" -- "1" Model : supplements >
+
+OmniManager "1" -- "1" OmniClass : manages >
+Generator "1" -- "1" OmniClass : uses >
+Generator "1" -- "1" ManufCatalog : uses >
+Generator "1" ..> Synthetic : creates >
+
+Mapper "1" -- "1" Model : supports >
+OmniManager "1" -- "1" Model : supports >
+
+' Notes explaining the approach
+note bottom of OmniClass
+  Complete taxonomy includes ALL OmniClass codes,
+  even those without equipment examples
+end note
+
+note bottom of Equipment
+  Real equipment examples cover only
+  a subset of OmniClass codes
+end note
+
+note bottom of Synthetic
+  Generated examples to fill gaps
+  in the training data
+end note
+
+note right of Generator
+  Creates synthetic examples for OmniClass codes
+  that lack real equipment examples
+end note
+
+note right of OmniManager
+  Manages hierarchical relationships
+  and provides fallback mechanisms
+end note
+
+' Add a sequence diagram to show the training process
+legend right
+  **Training Process with Complete OmniClass**
+  
+  1. Load complete OmniClass taxonomy
+  2. Load available equipment examples
+  3. Identify OmniClass codes without examples
+  4. Generate synthetic examples for missing codes
+  5. Train model on combined dataset
+  6. Use hierarchical fallbacks for prediction
+endlegend
+
+@enduml

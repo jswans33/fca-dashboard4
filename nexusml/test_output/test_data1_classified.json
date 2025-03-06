@@ -1,0 +1,197 @@
+[
+  {
+    "original_data": {
+      "Asset Name": "Centrifugal Chiller",
+      "Trade": "H",
+      "System Category": "Chiller Plant",
+      "Sub System Type": "Water-Cooled",
+      "Manufacturer": "York",
+      "Model Number": "YK-8000",
+      "Size": 800,
+      "Unit": "Tons",
+      "Service Life": 20
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Water Cooled",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  },
+  {
+    "original_data": {
+      "Asset Name": "Air Handling Unit",
+      "Trade": "H",
+      "System Category": "HVAC",
+      "Sub System Type": "Air Handler",
+      "Manufacturer": "Trane",
+      "Model Number": "TAHN-5000",
+      "Size": 5000,
+      "Unit": "CFM",
+      "Service Life": 15
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Air Cooled",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  },
+  {
+    "original_data": {
+      "Asset Name": "Boiler",
+      "Trade": "H",
+      "System Category": "Heating Plant",
+      "Sub System Type": "Hot Water",
+      "Manufacturer": "Cleaver Brooks",
+      "Model Number": "CB-200",
+      "Size": 2500,
+      "Unit": "MBH",
+      "Service Life": 25
+    },
+    "classification": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Hot Water",
+      "Asset Tag": "",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 5985,
+        "LocationID": 1
+      }
+    },
+    "db_fields": {
+      "Equipment_Category": {
+        "value": "Unknown Equipment",
+        "table": "Equipment_Categories",
+        "field": "CategoryName",
+        "id_field": "CategoryID"
+      },
+      "Uniformat_Class": {
+        "value": "PL",
+        "table": "UniFormat",
+        "field": "UniFormatCode",
+        "id_field": "UniFormatID"
+      },
+      "System_Type": {
+        "value": "",
+        "table": "Equipment",
+        "field": "System_Type",
+        "id_field": ""
+      }
+    },
+    "eav_template": {
+      "equipment_type": "Unknown Equipment",
+      "required_attributes": [],
+      "classification_ids": {
+        "omniclass_id": "",
+        "masterformat_id": "",
+        "uniformat_id": ""
+      }
+    }
+  }
+]

@@ -1,0 +1,4 @@
+Equipment Type,Discipline,System,Equipment Subtype,Vendor,Model,Capacity,Capacity Unit,Expected Life (Years)
+Pump,P,Pumping System,Centrifugal,Grundfos,CRE-5,100,GPM,15
+Cooling Tower,H,Cooling System,Open,SPX,NC-8400,900,Tons,20
+Fan,H,Ventilation,Centrifugal,Cook,CPS-3000,3000,CFM,15

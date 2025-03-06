@@ -1,0 +1,62 @@
+# Define what classifications to produce
+classification_targets:
+  - name: 'Equipment_Category'
+    description: 'Primary equipment type (e.g., Chiller, Pump, Air Handler)'
+    required: true
+    master_db:
+      table: 'Equipment_Categories'
+      field: 'CategoryName'
+      id_field: 'CategoryID'
+
+  - name: 'Uniformat_Class'
+    description: 'Uniformat classification code (e.g., D3040, D2010)'
+    required: true
+    master_db:
+      table: 'UniFormat'
+      field: 'UniFormatCode'
+      id_field: 'UniFormatID'
+
+  - name: 'System_Type'
+    description: 'System type (e.g., HVAC, Plumbing)'
+    required: true
+    master_db:
+      table: 'Equipment'
+      field: 'System_Type'
+
+  - name: 'MasterFormat_Class'
+    description: 'MasterFormat classification code'
+    required: false
+    master_db:
+      table: 'MasterFormat'
+      field: 'MasterFormatCode'
+      id_field: 'MasterFormatID'
+
+# Input field mapping strategies - flexible matching for incoming data
+input_field_mappings:
+  - target: 'Asset Category'
+    patterns:
+      - 'Asset Name'
+      - 'Asset Type'
+      - 'Equipment Type'
+      - 'Equipment Name'
+      - 'Equip Name'
+      - 'Equip Type'
+
+  - target: 'System Type ID'
+    patterns:
+      - 'Trade'
+      - 'System ID'
+      - 'Discipline'
+
+  - target: 'Precon System'
+    patterns:
+      - 'System Category'
+      - 'System Type'
+      - 'System'
+
+  - target: 'Equip Name ID'
+    patterns:
+      - 'Sub System Type'
+      - 'Asset Subtype'
+      - 'Asset Sub Type'
+      - 'Equipment Subtype'

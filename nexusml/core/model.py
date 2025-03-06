@@ -44,6 +44,7 @@ from nexusml.core.data_mapper import (
 
 # Local imports
 from nexusml.core.data_preprocessing import load_and_preprocess_data
+from nexusml.core.dynamic_mapper import DynamicFieldMapper
 from nexusml.core.eav_manager import EAVManager, EAVTransformer
 from nexusml.core.evaluation import (
     analyze_other_category_features,
@@ -467,6 +468,80 @@ def visualize_category_distribution(
     plt.savefig(system_type_file)
 
     return equipment_category_file, system_type_file
+
+
+def train_model_from_any_data(
+    df: pd.DataFrame, mapper: Optional[DynamicFieldMapper] = None
+):
+    """
+    Train a model using data with any column structure.
+
+    Args:
+        df: Input DataFrame with arbitrary column names
+        mapper: Optional DynamicFieldMapper instance
+
+    Returns:
+        Tuple: (trained model, transformed DataFrame)
+    """
+    # Create mapper if not provided
+    if mapper is None:
+        mapper = DynamicFieldMapper()
+
+    # Map input fields to expected model fields
+    mapped_df = mapper.map_dataframe(df)
+
+    # Get the classification targets
+    classification_targets = mapper.get_classification_targets()
+
+    # Since train_enhanced_model expects a file path, we need to modify our approach
+    # We'll use the core components of train_enhanced_model directly
+
+    # Apply Generic Feature Engineering with EAV integration
+    print("Applying Generic Feature Engineering with EAV integration...")
+    eav_manager = EAVManager()
+    feature_engineer = GenericFeatureEngineer(eav_manager=eav_manager)
+    transformed_df = feature_engineer.transform(mapped_df)
+
+    # Prepare training data - now including both text and numeric features
+    # Create a DataFrame with both text and numeric features
+    x = pd.DataFrame(
+        {
+            "combined_features": transformed_df[
+                "combined_text"
+            ],  # Using the name from config
+            "service_life": transformed_df["service_life"],
+        }
+    )
+
+    # Use hierarchical classification targets
+    y = transformed_df[
+        [
+            "Equipment_Category",
+            "Uniformat_Class",
+            "System_Type",
+            "Equipment_Type",
+            "System_Subtype",
+        ]
+    ]
+
+    # Split the data
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.3, random_state=42
+    )
+
+    # Build enhanced model
+    print("Building enhanced model with balanced class weights...")
+    model = build_enhanced_model(sampling_strategy="direct")
+
+    # Train the model
+    print("Training model...")
+    model.fit(x_train, y_train)
+
+    # Evaluate with focus on "Other" categories
+    print("Evaluating model...")
+    y_pred_df = enhanced_evaluation(model, x_test, y_test)
+
+    return model, transformed_df
 
 
 # Example usage

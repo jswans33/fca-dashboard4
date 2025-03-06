@@ -1,0 +1,65 @@
+Equipment Type,Median Years,Min Years,Max Years,Source
+Air Conditioners - Window unit,9,6,11,Energize Denver
+Air Conditioners - Residential single or Split package,14,9,18,Energize Denver
+Air Conditioners - Commercial through the wall,14,9,18,Energize Denver
+Air Conditioners - Water-cooled package,16,11,20,Energize Denver
+Heat Pumps - Residential or Commercial air-to-air,14,9,18,Energize Denver
+Heat Pumps - Commercial water-to-air,14,9,18,Energize Denver
+"Heat Pumps - Close-coupled, end-suction",17,11,22,Energize Denver
+"Heat Pumps - Frame-mounted, end-suction",21,14,27,Energize Denver
+"Heat Pumps - Split-case, multistage pump",21,14,27,Energize Denver
+"Heat Pumps - Split-case, single stage",32,22,41,Energize Denver
+Heat Pumps - Vertical in-line,21,14,27,Energize Denver
+Rooftop Air Conditioners - Single-zone,12,8,15,Energize Denver
+Rooftop Air Conditioners - Multi-zone,14,9,18,Energize Denver
+"Boilers, Hot Water - Gas fired",20,14,26,Energize Denver
+"Boilers, Hot Water - Oil fired",18,12,23,Energize Denver
+"Boilers, Hot Water - Electric",25,17,32,Energize Denver
+Heating Equipment - Burners,18,12,23,Energize Denver
+Heating Equipment - Furnaces gas or oil fired,17,11,22,Energize Denver
+Unit Heaters - Gas or electric,13,9,16,Energize Denver
+Unit Heaters - Hot water or steam,20,14,26,Energize Denver
+Radiant Heaters - Electric,20,14,26,Energize Denver
+Radiant Heaters - Hot water or steam,25,17,32,Energize Denver
+"Air Terminals - Diffusers, Grilles, and Registers",25,17,32,Energize Denver
+Air Terminals - Induction and fan coil units,24,16,31,Energize Denver
+Air Terminals - VAV and double-duct boxes,18,12,23,Energize Denver
+Air System Components - Air Washers,15,10,19,Energize Denver
+Air System Components - Ductwork,30,21,39,Energize Denver
+Air System Components - Dampers,18,12,23,Energize Denver
+Packaged DX - Air-cooled,13,9,16,Energize Denver
+Packaged DX - Rooftop,14,9,18,Energize Denver
+Packaged DX - Water-cooled,15,10,19,Energize Denver
+Packaged Terminal - Air conditioner or heat pump,24,16,31,Energize Denver
+Fans - Centrifugal,23,16,29,Energize Denver
+Fans - Axial,18,12,23,Energize Denver
+Fans - Propeller,14,9,18,Energize Denver
+Fans - Ventilating roof-mounted,18,12,23,Energize Denver
+"Coils - DX, water, or steam",20,14,26,Energize Denver
+Coils - Electric,15,10,19,Energize Denver
+Heat Transfer Equipment - Heat Exchangers,22,15,28,Energize Denver
+Heat Transfer Equipment - Reciprocating Compressors,18,12,23,Energize Denver
+Packaged Chillers - Reciprocating or centrifugal,18,12,23,Energize Denver
+Packaged Chillers - Absorption,25,17,32,Energize Denver
+Cooling Towers - Galvanized metal,17,11,22,Energize Denver
+Cooling Towers - Wood,20,14,26,Energize Denver
+Cooling Towers - Ceramic,27,18,35,Energize Denver
+Condensers - Air-cooled Condensers,15,10,19,Energize Denver
+Condensers - Evaporative Condensers,18,12,23,Energize Denver
+Insulation - Molded,20,14,26,Energize Denver
+Insulation - Blanket,24,16,31,Energize Denver
+Pumps - Base-mounted,20,14,26,Energize Denver
+Pumps - Pipe-mounted,10,7,13,Energize Denver
+Pumps - Sump and well,10,7,13,Energize Denver
+Pumps - Condensate,15,10,19,Energize Denver
+Engines and Turbines - Reciprocating Engines,20,14,26,Energize Denver
+Engines and Turbines - Steam Turbines,30,21,39,Energize Denver
+Electrical Components - Electric Motors,16,11,20,Energize Denver
+Electrical Components - Motor Starters,15,10,19,Energize Denver
+Electrical Components - Electric Transformers,28,19,36,Energize Denver
+Air Handling Units - Constant volume,25,17,32,Energize Denver
+Air Handling Units - Dual duct,32,22,41,Energize Denver
+Air Handling Units - Multi-zone,22,15,28,Energize Denver
+Air Handling Units - Single-zone,16,11,20,Energize Denver
+Air Handling Units - Variable air volume,18,12,23,Energize Denver
+"Air Handling Units - Variable volume, variable temp",19,13,24,Energize Denver

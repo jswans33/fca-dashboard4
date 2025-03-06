@@ -1,0 +1,4 @@
+Asset Name,Trade,System Category,Sub System Type,Manufacturer,Model Number,Size,Unit,Service Life
+Centrifugal Chiller,H,Chiller Plant,Water-Cooled,York,YK-8000,800,Tons,20
+Air Handling Unit,H,HVAC,Air Handler,Trane,TAHN-5000,5000,CFM,15
+Boiler,H,Heating Plant,Hot Water,Cleaver Brooks,CB-200,2500,MBH,25

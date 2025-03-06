@@ -1,0 +1,81 @@
+# Reference Data Configuration
+# This file centralizes all configuration for reference data sources
+
+# Base paths for reference data sources
+paths:
+  omniclass: 'nexusml/ingest/reference/omniclass'
+  uniformat: 'nexusml/ingest/reference/uniformat'
+  masterformat: 'nexusml/ingest/reference/masterformat'
+  mcaa_glossary: 'nexusml/ingest/reference/mcaa-glossary'
+  mcaa_abbreviations: 'nexusml/ingest/reference/mcaa-glossary'
+  smacna: 'nexusml/ingest/reference/smacna-manufacturers'
+  ashrae: 'nexusml/ingest/reference/service-life/ashrae'
+  energize_denver: 'nexusml/ingest/reference/service-life/energize-denver'
+  equipment_taxonomy: 'nexusml/ingest/reference/equipment-taxonomy'
+
+# File patterns for finding reference data files
+file_patterns:
+  omniclass: '*.xlsx'
+  uniformat: '*.csv'
+  masterformat: '*.csv'
+  mcaa_glossary: 'Glossary.csv'
+  mcaa_abbreviations: 'Abbreviations.csv'
+  smacna: '*.json'
+  ashrae: '*.csv'
+  energize_denver: '*.csv'
+  equipment_taxonomy: '*.csv'
+
+# Column mappings for standardizing reference data
+column_mappings:
+  omniclass:
+    code: 'OmniClass Number'
+    name: 'OmniClass Title'
+    description: 'Definition'
+  uniformat:
+    code: 'UniFormat Code'
+    name: 'UniFormat Title'
+    description: 'Description'
+  masterformat:
+    code: 'MasterFormat Code'
+    name: 'MasterFormat Title'
+    description: 'Description'
+  service_life:
+    equipment_type: 'Equipment Type'
+    median_years: 'Median Years'
+    min_years: 'Min Years'
+    max_years: 'Max Years'
+    source: 'Source'
+  equipment_taxonomy:
+    # Map internal names (keys) to CSV column names (values)
+    asset_category: 'Asset Category'
+    equipment_id: 'Equip Name ID'
+    trade: 'Trade'
+    title: 'Title'
+    drawing_abbreviation: 'Drawing Abbreviation'
+    precon_tag: 'Precon Tag'
+    system_type_id: 'System Type ID'
+    sub_system_type: 'Sub System Type'
+    sub_system_id: 'Sub System ID'
+    sub_system_class: 'Sub System Class'
+    class_id: 'Class ID'
+    equipment_size: 'Equipment Size'
+    unit: 'Unit'
+    service_maintenance_hrs: 'Service Maintenance Hrs'
+    service_life: 'Service Life'
+
+# Hierarchical relationships
+hierarchies:
+  omniclass:
+    separator: '-'
+    levels: 3
+  uniformat:
+    separator: ''
+    levels: 4
+  masterformat:
+    separator: ' '
+    levels: 3
+
+# Default values when data is missing
+defaults:
+  service_life: 15.0
+  confidence: 0.5

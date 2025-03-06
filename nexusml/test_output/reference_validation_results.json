@@ -1,0 +1,105 @@
+{
+  "omniclass": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "uniformat": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "masterformat": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "mcaa_glossary": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "entry_count": 161,
+      "avg_key_length": 14.372670807453416,
+      "avg_value_length": 95.65217391304348
+    }
+  },
+  "mcaa_abbreviations": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "entry_count": 347,
+      "avg_key_length": 3.394812680115274,
+      "avg_value_length": 17.06628242074928
+    }
+  },
+  "smacna": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "ashrae": {
+    "loaded": false,
+    "issues": [
+      "Data not loaded"
+    ],
+    "stats": {}
+  },
+  "energize_denver": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 64,
+      "column_count": 5,
+      "columns": [
+        "equipment_type",
+        "median_years",
+        "min_years",
+        "max_years",
+        "source"
+      ],
+      "avg_service_life": 19.046875,
+      "min_service_life": "9",
+      "max_service_life": "32"
+    }
+  },
+  "equipment_taxonomy": {
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 2277,
+      "column_count": 17,
+      "columns": [
+        "Asset Category",
+        "equipment_id",
+        "trade",
+        "Precon System",
+        "Operations System",
+        "title",
+        "drawing_abbreviation",
+        "precon_tag",
+        "system_type_id",
+        "sub_system_type",
+        "sub_system_id",
+        "sub_system_class",
+        "class_id",
+        "equipment_size",
+        "unit",
+        "service_maintenance_hrs",
+        "service_life"
+      ],
+      "category_count": 63,
+      "equipment_type_count": 171,
+      "avg_service_life": 19.487044356609573,
+      "min_service_life": "10",
+      "max_service_life": "35"
+    }
+  }
+}
