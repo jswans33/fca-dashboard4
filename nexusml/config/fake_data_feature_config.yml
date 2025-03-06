@@ -7,7 +7,6 @@ text_combinations:
         'model',
         'category_name',
         'mcaa_system_category',
-        'building_name',
       ]
     separator: ' '
 
@@ -18,64 +17,55 @@ numeric_columns:
     dtype: 'float'
 
   - name: 'condition_score'
-    new_name: 'service_life' # Map condition_score to service_life
+    new_name: 'service_life' # Renamed to match expected column
     fill_value: 3.0
     dtype: 'float'
 
 hierarchies:
   - new_col: 'Equipment_Type'
-    parents: ['mcaa_system_category', 'category_name']
+    parents: ['category_name', 'equipment_tag']
     separator: '-'
 
   - new_col: 'System_Subtype'
     parents: ['mcaa_system_category', 'category_name']
     separator: '-'
 
+# Remove the keyword_classifications section that's causing issues
+# keyword_classifications:
+#   - name: 'Uniformat'
+#     source_column: 'combined_text'
+#     target_column: 'Uniformat_Class'
+#     reference_manager: 'uniformat_keywords'
+#     max_results: 1
+#     confidence_threshold: 0.0
+
 column_mappings:
   - source: 'category_name'
     target: 'Equipment_Category'
 
-  - source: 'uniformat_code'
+  - source: 'category_name' # Use category_name as a fallback for Uniformat_Class
     target: 'Uniformat_Class'
 
   - source: 'mcaa_system_category'
     target: 'System_Type'
 
+  - source: 'omniclass_code'
+    target: 'OmniClass_ID'
+
+  - source: 'masterformat_code'
+    target: 'MasterFormat_ID'
+
+# Simplify the classification systems to avoid errors
 classification_systems:
   - name: 'OmniClass'
     source_column: 'omniclass_code'
     target_column: 'OmniClass_ID'
-    mapping_type: 'direct' # Use direct mapping instead of eav
-
-  - name: 'MasterFormat'
-    source_column: 'masterformat_code'
-    target_column: 'MasterFormat_ID'
-    mapping_type: 'direct' # Use direct mapping instead of function
+    mapping_type: 'direct' # Changed from 'eav' to 'direct'
 
   - name: 'Uniformat'
     source_column: 'uniformat_code'
     target_column: 'Uniformat_ID'
-    mapping_type: 'direct' # Use direct mapping instead of eav
-
-# Use the ID columns directly
-direct_mappings:
-  - source: 'CategoryID'
-    target: 'Equipment_Subcategory'
-
-  - source: 'OmniClassID'
-    target: 'OmniClass_ID'
-
-  - source: 'UniFormatID'
-    target: 'Uniformat_ID'
-
-  - source: 'MasterFormatID'
-    target: 'MasterFormat_ID'
-
-  - source: 'MCAAID'
-    target: 'MCAA_ID'
-
-  - source: 'LocationID'
-    target: 'Location_ID'
+    mapping_type: 'direct' # Changed from 'eav' to 'direct'
 
 eav_integration:
-  enabled: false # Disable EAV integration since we're using direct mappings
+  enabled: false # Disabled to simplify the process

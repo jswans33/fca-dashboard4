@@ -87,17 +87,25 @@ def validate_training_data(data_path: str) -> Dict:
         except Exception as e:
             return {"valid": False, "issues": [f"Error reading file: {str(e)}"]}
 
-        # Check required columns
+        # Check required columns for the real data format
         required_columns = [
-            "Asset Name",
-            "Asset Tag",
-            "Trade",
-            "System Category",
-            "Sub System Type",
-            "Sub System Classification",
-            "Manufacturer",
-            "Model Number",
-            "Service Life",
+            "equipment_tag",
+            "manufacturer",
+            "model",
+            "category_name",
+            "omniclass_code",
+            "uniformat_code",
+            "masterformat_code",
+            "mcaa_system_category",
+            "building_name",
+            "initial_cost",
+            "condition_score",
+            "CategoryID",
+            "OmniClassID",
+            "UniFormatID",
+            "MasterFormatID",
+            "MCAAID",
+            "LocationID",
         ]
 
         missing_columns = [col for col in required_columns if col not in df.columns]
@@ -109,7 +117,7 @@ def validate_training_data(data_path: str) -> Dict:
             }
 
         # Check for missing values in critical columns
-        critical_columns = ["Asset Name", "System Category"]
+        critical_columns = ["equipment_tag", "category_name", "mcaa_system_category"]
         missing_values = {}
 
         for col in critical_columns:
@@ -156,14 +164,18 @@ def visualize_category_distribution(
 
     # Generate visualizations
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y="Equipment_Category")
+    sns.countplot(
+        data=df, y="category_name"
+    )  # Use category_name instead of Equipment_Category
     plt.title("Equipment Category Distribution")
     plt.tight_layout()
     plt.savefig(equipment_category_file)
     plt.close()
 
     plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y="System_Type")
+    sns.countplot(
+        data=df, y="mcaa_system_category"
+    )  # Use mcaa_system_category instead of System_Type
     plt.title("System Type Distribution")
     plt.tight_layout()
     plt.savefig(system_type_file)
@@ -434,9 +446,9 @@ def train_model(
 
     y = df[
         [
-            "Equipment_Category",
-            "Uniformat_Class",
-            "System_Type",
+            "category_name",  # Use category_name instead of Equipment_Category
+            "uniformat_code",  # Use uniformat_code instead of Uniformat_Class
+            "mcaa_system_category",  # Use mcaa_system_category instead of System_Type
             "Equipment_Type",
             "System_Subtype",
         ]
@@ -627,9 +639,9 @@ def generate_visualizations(
 
     y = df[
         [
-            "Equipment_Category",
-            "Uniformat_Class",
-            "System_Type",
+            "category_name",  # Use category_name instead of Equipment_Category
+            "uniformat_code",  # Use uniformat_code instead of Uniformat_Class
+            "mcaa_system_category",  # Use mcaa_system_category instead of System_Type
             "Equipment_Type",
             "System_Subtype",
         ]
@@ -687,27 +699,33 @@ def make_sample_prediction(
         logger.info(f"Description: {description}")
         logger.info(f"Service life: {service_life}")
 
-    prediction = classifier.predict(description, service_life)
+    # Check if classifier has a model
+    if hasattr(classifier, "predict") and callable(classifier.predict):
+        prediction = classifier.predict(description, service_life)
 
-    if logger:
-        logger.info("Prediction results:")
-        for key, value in prediction.items():
-            if key != "attribute_template" and key != "master_db_mapping":
-                logger.info(f"  {key}: {value}")
+        if logger:
+            logger.info("Prediction results:")
+            for key, value in prediction.items():
+                if key != "attribute_template" and key != "master_db_mapping":
+                    logger.info(f"  {key}: {value}")
 
-        logger.info("Classification IDs:")
-        logger.info(f"  OmniClass ID: {prediction.get('OmniClass_ID', 'N/A')}")
-        logger.info(f"  Uniformat ID: {prediction.get('Uniformat_ID', 'N/A')}")
-        logger.info(
-            f"  MasterFormat Class: {prediction.get('MasterFormat_Class', 'N/A')}"
-        )
+            logger.info("Classification IDs:")
+            logger.info(f"  OmniClass ID: {prediction.get('OmniClass_ID', 'N/A')}")
+            logger.info(f"  Uniformat ID: {prediction.get('Uniformat_ID', 'N/A')}")
+            logger.info(
+                f"  MasterFormat Class: {prediction.get('MasterFormat_Class', 'N/A')}"
+            )
 
-        logger.info("Required Attributes:")
-        template = prediction.get("attribute_template", {})
-        for attr, info in template.get("required_attributes", {}).items():
-            logger.info(f"  {attr}: {info}")
+            logger.info("Required Attributes:")
+            template = prediction.get("attribute_template", {})
+            for attr, info in template.get("required_attributes", {}).items():
+                logger.info(f"  {attr}: {info}")
 
-    return prediction
+        return prediction
+    else:
+        if logger:
+            logger.warning("Cannot make prediction: model is not available")
+        return {"error": "Model not available for prediction"}
 
 
 def main():

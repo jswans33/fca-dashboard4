@@ -1,0 +1,9 @@
+equipment_tag,manufacturer,model,category_name,omniclass_code,uniformat_code,masterformat_code,mcaa_system_category,building_name,initial_cost,condition_score,CategoryID,OmniClassID,UniFormatID,MasterFormatID,MCAAID,LocationID
+HVAC-RTU-01,Trane,XR-14,Rooftop Unit,23-75-00,D3050,23 74 13,HVAC Equipment,Main Hospital,15000,4.5,1,12,7,5,9,32
+PLMB-PMP-03,Grundfos,CRE5-10,Pump,22-11-23,D2020,22 11 23,Plumbing Equipment,Research Wing,3500,4.0,2,13,8,6,10,45
+ELEC-GEN-02,Caterpillar,C32,Generator,26-32-00,D5010,26 32 13,Electrical Equipment,Admin Building,85000,4.2,3,14,9,7,11,51
+HVAC-CHLR-05,York,YK8000,Chiller,23-64-00,D3030,23 64 16,HVAC Equipment,East Tower,75000,3.9,4,15,10,8,12,66
+HVAC-AHU-12,Daikin,Vision AHU,Air Handler,23-73-00,D3040,23 73 13,HVAC Equipment,West Wing,18000,4.7,5,16,11,9,13,72
+FIRE-SPK-07,Tyco,TY325,Fire Sprinkler,21-13-13,D4010,21 13 13,Fire Protection,Storage,12000,4.3,6,17,12,10,14,78
+HVAC-EXF-20,Greenheck,GB-420,Exhaust Fan,23-34-00,D3060,23 34 13,HVAC Equipment,Maintenance,4200,4.6,7,18,13,11,15,81
+ELEC-TRF-11,Siemens,3AX78,Transformer,26-12-00,D5010,26 12 19,Electrical Equipment,Utility Plant,22000,4.4,8,19,14,12,16,88

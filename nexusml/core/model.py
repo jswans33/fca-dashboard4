@@ -108,6 +108,20 @@ class EquipmentClassifier:
             **kwargs,
         )
 
+    def load_model(self, model_path: str) -> None:
+        """
+        Load a trained model from a file.
+
+        Args:
+            model_path: Path to the saved model file
+        """
+        import pickle
+
+        with open(model_path, "rb") as f:
+            self.model = pickle.load(f)
+
+        print(f"Model loaded from {model_path}")
+
     def predict(
         self, description: str, service_life: float = 0.0, asset_tag: str = ""
     ) -> Dict[str, Any]:
@@ -131,7 +145,17 @@ class EquipmentClassifier:
         )
 
         # Add EAV template for the predicted equipment type
-        equipment_type = result["Equipment_Category"]
+        # Use category_name instead of Equipment_Category, and add Equipment_Category for backward compatibility
+        if "category_name" in result:
+            equipment_type = result["category_name"]
+            result["Equipment_Category"] = (
+                equipment_type  # Add for backward compatibility
+            )
+        else:
+            equipment_type = "Unknown"
+            result["Equipment_Category"] = equipment_type
+            result["category_name"] = equipment_type
+
         result["attribute_template"] = self.eav_manager.generate_attribute_template(
             equipment_type
         )
@@ -311,9 +335,9 @@ def train_enhanced_model(
     # Use hierarchical classification targets
     y = df[
         [
-            "Equipment_Category",
-            "Uniformat_Class",
-            "System_Type",
+            "category_name",  # Use category_name instead of Equipment_Category
+            "uniformat_code",  # Use uniformat_code instead of Uniformat_Class
+            "mcaa_system_category",  # Use mcaa_system_category instead of System_Type
             "Equipment_Type",
             "System_Subtype",
         ]
@@ -381,9 +405,11 @@ def predict_with_enhanced_model(
 
     # Extract predictions
     result = {
-        "Equipment_Category": pred[0],
-        "Uniformat_Class": pred[1],
-        "System_Type": pred[2],
+        "category_name": pred[0],  # Use category_name instead of Equipment_Category
+        "uniformat_code": pred[1],  # Use uniformat_code instead of Uniformat_Class
+        "mcaa_system_category": pred[
+            2
+        ],  # Use mcaa_system_category instead of System_Type
         "Equipment_Type": pred[3],
         "System_Subtype": pred[4],
         "Asset Tag": asset_tag,  # Add asset tag for master DB mapping
@@ -391,9 +417,11 @@ def predict_with_enhanced_model(
 
     # Add MasterFormat prediction with enhanced mapping
     result["MasterFormat_Class"] = enhanced_masterformat_mapping(
-        result["Uniformat_Class"],
-        result["System_Type"],
-        result["Equipment_Category"],
+        result["uniformat_code"],  # Use uniformat_code instead of Uniformat_Class
+        result[
+            "mcaa_system_category"
+        ],  # Use mcaa_system_category instead of System_Type
+        result["category_name"],  # Use category_name instead of Equipment_Category
         # Extract equipment subcategory if available
         (
             result["Equipment_Type"].split("-")[1]
@@ -405,14 +433,16 @@ def predict_with_enhanced_model(
     # Add EAV template information
     try:
         eav_manager = EAVManager()
-        equipment_type = result["Equipment_Category"]
+        equipment_type = result[
+            "category_name"
+        ]  # Use category_name instead of Equipment_Category
 
         # Get classification IDs
         classification_ids = eav_manager.get_classification_ids(equipment_type)
         result.update(
             {
-                "OmniClass_ID": classification_ids.get("omniclass_id", ""),
-                "Uniformat_ID": classification_ids.get("uniformat_id", ""),
+                "OmniClass_ID": result["omniclass_code"],  # Use omniclass_code directly
+                "Uniformat_ID": result["uniformat_code"],  # Use uniformat_code directly
             }
         )
 
