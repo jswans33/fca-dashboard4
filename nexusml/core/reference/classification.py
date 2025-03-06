@@ -144,19 +144,19 @@ class OmniClassDataSource(ClassificationDataSource):
 
         try:
             pattern = self.get_file_pattern(self.source_key)
-            excel_files = list(path.glob(pattern))
+            csv_files = list(path.glob(pattern))
 
-            if not excel_files:
+            if not csv_files:
                 print(
                     f"Warning: No OmniClass files found matching pattern {pattern} in {path}"
                 )
                 return
 
-            # Read and combine all Excel files
+            # Read and combine all CSV files
             dfs = []
-            for file in excel_files:
+            for file in csv_files:
                 try:
-                    df = pd.read_excel(file)
+                    df = pd.read_csv(file)
                     # Standardize column names based on mapping
                     if self.column_mappings:
                         df = df.rename(
@@ -173,7 +173,7 @@ class OmniClassDataSource(ClassificationDataSource):
             if dfs:
                 self.data = pd.concat(dfs, ignore_index=True)
                 print(
-                    f"Loaded {len(self.data)} OmniClass entries from {len(excel_files)} files"
+                    f"Loaded {len(self.data)} OmniClass entries from {len(csv_files)} files"
                 )
             else:
                 print("Warning: No OmniClass data loaded")
@@ -188,6 +188,7 @@ class UniformatDataSource(ClassificationDataSource):
     def __init__(self, config: Dict[str, Any], base_path: Path):
         """Initialize the Uniformat data source."""
         super().__init__(config, base_path, "uniformat")
+        self.keywords_data = None
 
     def load(self) -> None:
         """Load Uniformat classification data."""
@@ -210,6 +211,11 @@ class UniformatDataSource(ClassificationDataSource):
             dfs = []
             for file in csv_files:
                 try:
+                    # Skip the keywords file, we'll handle it separately
+                    if "uniformat-keywords.csv" in str(file):
+                        self._load_keywords(file)
+                        continue
+
                     df = pd.read_csv(file)
                     # Standardize column names based on mapping
                     if self.column_mappings:
@@ -234,6 +240,69 @@ class UniformatDataSource(ClassificationDataSource):
 
         except Exception as e:
             print(f"Error loading Uniformat data: {e}")
+
+    def _load_keywords(self, file_path: Path) -> None:
+        """
+        Load Uniformat keywords data from a CSV file.
+
+        Args:
+            file_path: Path to the keywords CSV file
+        """
+        try:
+            self.keywords_data = pd.read_csv(file_path)
+            print(
+                f"Loaded {len(self.keywords_data)} Uniformat keywords from {file_path}"
+            )
+        except Exception as e:
+            print(f"Warning: Could not read Uniformat keywords file {file_path}: {e}")
+            self.keywords_data = None
+
+    def find_codes_by_keyword(
+        self, keyword: str, max_results: int = 10
+    ) -> List[Dict[str, str]]:
+        """
+        Find Uniformat codes by keyword.
+
+        Args:
+            keyword: Keyword to search for
+            max_results: Maximum number of results to return
+
+        Returns:
+            List of dictionaries with Uniformat code, title, and MasterFormat number
+        """
+        if self.keywords_data is None:
+            return []
+
+        # Case-insensitive search
+        keyword = keyword.lower()
+
+        # Search for the keyword in the Keyword column
+        matches = self.keywords_data[
+            self.keywords_data["Keyword"].str.lower().str.contains(keyword, na=False)
+        ]
+
+        if matches.empty:
+            return []
+
+        # Limit the number of results
+        matches = matches.head(max_results)
+
+        # Convert to list of dictionaries
+        results = []
+        for _, row in matches.iterrows():
+            results.append(
+                {
+                    "uniformat_code": (
+                        row["UF Number"] if pd.notna(row["UF Number"]) else ""
+                    ),
+                    "masterformat_code": (
+                        row["MF Number"] if pd.notna(row["MF Number"]) else ""
+                    ),
+                    "keyword": row["Keyword"],
+                }
+            )
+
+        return results
 
 
 class MasterFormatDataSource(ClassificationDataSource):

@@ -1,0 +1,991 @@
+Number,Parent,Title,MF_Number,Explanation
+D10,,CONVEYING,14 00 00,|
+,D10,Conveying Equipment Performance Requirements,01 85 00,|
+,D10,Starting and Adjusting : Z1070.40 .,,|
+,D10,Demonstration and Training : Z1070.80 .,,|
+D1010,,Vertical Conveying Systems,,|
+,D1010,Construction Aids: Z1050.30.,,|
+D1010.10,D10,Elevators,14 20 00,"Includes: Passenger and freight elevators of all types, including cars, enclosures, controls, safety equipment, hoistway equipment, and elevator machinery. Includes associated metal fabrications including pit ladders. |"
+,D1010.10,Elevators Performance Requirements,01 85 00,|
+,D1010.10,Cab Capacity,01 85 00,|
+,D1010.10,Car Load Capacity,01 85 00,|
+,D1010.10,Car Speed,01 85 00,|
+,D1010.10,Door Opening Speed,01 85 00,|
+,D1010.10,Freight Elevators,14 20 00,|
+,D1010.10,Electric Traction Freight Elevators,14 21 13,|
+,D1010.10,Hydraulic Freight Elevators,14 24 13,|
+,D1010.10,Passenger Elevators,14 20 00,|
+,D1010.10,Electric Traction Passenger Elevators,14 21 23,|
+,D1010.10,Hydraulic Passenger Elevators,14 24 23,|
+,D1010.10,Residential Elevators,14 20 00,|
+,D1010.10,Electric Traction Residential Elevators,14 21 33,|
+,D1010.10,Hydraulic Residential Elevators,14 24 33,|
+,D1010.10,Service Elevators,14 20 00,|
+,D1010.10,Electric Traction Service Elevators,14 21 43,|
+,D1010.10,Hydraulic Service Elevators,14 24 43,|
+,D1010.10,Limited-Use/Limited Application Elevators,14 26 00,|
+,D1010.10,Custom Elevator Cabs and Doors,14 27 00,|
+,D1010.10,Elevator Equipment and Controls,14 28 00,|
+,D1010.10,Vents and Hatches: B3060.50.,,|
+,D1010.10,Ladders: B1080.80.,,|
+,D1010.10,Elevator Telephones: D6020.20.,,|
+D1010.20,D10,Lifts,14 40 00,Includes: Vertical or inclined lifts and related equipment for a variety of purposes. Sidewalk lifts include doors. |
+,D1010.20,Lifts Performance Requirements,01 85 00,|
+,D1010.20,Speed,01 85 00,|
+,D1010.20,People Lifts,14 41 00,|
+,D1010.20,Wheelchair Lifts,14 42 00,|
+,D1010.20,Platform Lifts,14 43 00,|
+,D1010.20,Orchestra Lifts,14 43 13,|
+,D1010.20,Stage Lifts,14 43 16,|
+,D1010.20,Sidewalk Lifts,14 44 00,|
+,D1010.20,Vehicle Lifts,14 45 00,|
+D1010.30,D10,Escalators,14 31 00,"Includes: Passenger conveying systems composed of moving treads installed in inclined position including associated components, hardware, controls, safety equipment, and related items. |"
+,D1010.30,Escalators Performance Requirements,01 85 00,|
+,D1010.30,Speed,01 85 00,|
+D1010.50,D10,Dumbwaiters,14 10 00,"Includes: Packaged and field assembled, motorized and hand- operated dumbwaiters including associated components for book lifts, cart lifts, and other applications. Systems include associated components, hardware, controls, and safety equipment. |"
+,D1010.50,Dumbwaiters Performance Requirements,01 85 00,|
+D1010.60,D10,Moving Ramps,14 33 00,"Includes: Passenger conveying systems composed of moving belts installed in inclined position including associated components, hardware, controls, safety equipment, and related items. |"
+,D1010.60,Moving Ramps Performance Requirements,01 85 00,|
+,D1010.60,Speed,01 85 00,|
+D1030,,Horizontal Conveying,,|
+,D1030,Horizontal Conveying Performance Requirements,01 85 00,|
+D1030.10,D10,Moving Walks,14 32 00,"Includes: Passenger conveying systems composed of moving belts installed in horizontal position including associated components, hardware, controls, safety equipment, and related items. |"
+,D1030.10,Moving Walks Performance Requirements,01 85 00,|
+,D1030.10,Speed,01 85 00,|
+D1030.30,D10,Turntables,14 70 00,Includes: Structural turntables for various applications. |
+,D1030.30,Turntables Performance Requirements,01 85 00,|
+,D1030.30,Industrial Turntables,14 71 00,|
+,D1030.30,Vehicle Turntables,14 71 11,|
+,D1030.30,Hospitality Turntables,14 72 00,|
+,D1030.30,Restaurant Turntables,14 72 25,|
+,D1030.30,Exhibit Turntables,14 73 00,|
+,D1030.30,Display Turntables,14 73 59,|
+,D1030.30,Display Cases: C1090.20.,,|
+,D1030.30,Display Lighting: D5040.50.,,|
+,D1030.30,Refrigerated Display Equipment: E1030.30.,,|
+,D1030.30,Exhibit Equipment: E1040.10.,,|
+,D1030.30,Entertainment Turntables,14 74 00,|
+,D1030.30,Stage Turntables,14 74 61,|
+,D1030.30,Theater and Stage Equipment: E1070.10.,,|
+D1030.50,D10,Passenger Loading Bridges,34 77 13,Includes: Operating bridges for loading and unloading of passengers to and from aircraft and ships. |
+,D1030.50,Passenger Loading Bridges Performance Requirements,01 85 00,|
+,D1030.50,Aircraft Passenger Loading Bridges,34 77 13,|
+,D1030.50,Ship Passenger Loading Bridges,34 77 13,|
+D1030.70,D10,People Movers,,|
+,D1030.70,People Mover Performance Requirements,01 85 00,|
+,D1030.70,Car Capacity,,|
+,D1030.70,Car Speed,,|
+,D1030.70,Monorails,34 12 00,"Includes: Single rail vehicles suspended from or straddle the guideway. Includes associated track, equipment, controls, and accessories. |"
+,D1030.70,Funiculars,34 13 00,"Includes: Steep cable railways in which ascending cars counterbalance descending cars. Includes associated track, cable, |"
+,D1030.70,Cable Transportation,34 14 00,"Includes: Steep slope transportation system utilizing moving cable. Includes associated cable, support structures, equipment, controls, and accessories. |"
+D1050,,Material Handling,,|
+,D1050,Material Handling Performance Requirements,01 85 00,|
+,D1050,Load Capacity,01 85 00,|
+,D1050,Construction Aids: Z1050.30.,,|
+D1050.10,D10,Cranes,41 22 13,"Includes: Hoisting towers, cranes, crane rails, and related accessories. |"
+D1050.20,D10,Hoists,41 22 23,Includes: Manual and motor operated hoists and related accessories. |
+D1050.30,D10,Derricks,41 22 33,Includes: Manual and motor operated derricks and related accessories. |
+D1050.40,D10,Conveyors,41 21 00,"Includes: Automatic guided vehicles, conveyors, diverters, and chutes. Includes controls and accessories. |"
+D1050.50,D10,Baggage Handling Equipment,34 77 16,"Includes: Operating equipment for handling, scanning, and weighing of baggage at terminals. Includes controls and accessories. |"
+D1050.60,D10,Chutes,14 91 00,Includes: Chutes which support the operation of the building or structure. |
+,D1050.60,Coal Chutes,14 91 13,|
+,D1050.60,Escape Chutes,14 91 23,|
+,D1050.60,Laundry and Linen Chutes,14 91 33,|
+,D1050.60,Trash Chutes,14 91 82,|
+,D1050.60,*Solid Waste Handling Equipment:*,,|
+,D1050.60,*E1090.10.*,,|
+D1050.70,D10,Pneumatic Tube Systems,14 92 00,Includes: Pneumatically operated tube system for the delivery of small items within a facility. Includes controls and accessories. |
+,D1050.70,*Office Equipment: E1030.75.*,,|
+D1080,,Operable Access Systems,,|
+,D1080,Operable Access Systems Performance Requirements,,|
+,D1080,*Maintenance Equipment: E1030.40.*,,|
+D1080.10,D10,Suspended Scaffolding,14 81 00,Includes: Suspended scaffolding when part of the completed project. |
+D1080.20,D10,Rope Climbers,14 82 00,Includes: Powered rope climbers to access exterior façade. |
+D1080.30,D10,Elevating Platforms,14 83 00,Includes: Fixed elevating platforms to provide a movable elevated working platform for people and materials. |
+,D1080.30,*Platform Lifts: D1010.20.*,,|
+D1080.40,D10,Powered Scaffolding,14 84 00,Includes: Powered scaffolding when part of the completed project. |
+,D1080.40,Window Washing Scaffolding,14 84 13,|
+D1080.50,D10,Building Envelope Access,,|
+,D1080.50,Façade Access Equipment,11 24 23,|
+D20,,PLUMBING,22 00 00,|
+,D20,Plumbing Performance Requirements,01 86 16,|
+,D20,*Starting and Adjusting: Z1070.40.*,,|
+,D20,*Demonstration and Training:*,,|
+,D20,*Z1070.80.*,,|
+D2010,,Domestic Water Distribution,22 11 00,Includes: Facility domestic water distribution system. Include Domestic Water Distribution Supplementary Components as appropriate. |
+,D2010,Domestic Water Distribution Performance Requirements,01 86 16,|
+,D2010,Sustainable Design Requirements,01 86 16,|
+,D2010,Plumbing Fixture Water Consumption,01 86 16,|
+,D2010,*Swimming Pool Plumbing Systems:*,,|
+,D2010,*F1050.10.*,,|
+,D2010,*Pools and Tubs Plumbing Systems:*,,|
+,D2010,*F1050.10.*,,|
+,D2010,*Interior Fountain Plumbing Systems:*,,|
+,D2010,*F1050.20.*,,|
+,D2010,*Site Domestic Water Distribution:*,,|
+,D2010,*G3010.10*,,|
+D2010.10,D20,Facility Potable-Water Storage Tanks,22 12 00,"Includes: Tanks for storage of potable water serving a facility and located within, on, under, or closely associated with a structure. |"
+D2010.20,D20,Domestic Water Equipment,,Includes: Equipment for domestic water distribution system. |
+,D2010.20,Domestic Water Pumps,22 11 23,|
+,D2010.20,Domestic Water Softeners,22 31 00,Includes: Equipment for the softening of domestic water. |
+,D2010.20,Domestic Water Filtration Equipment,22 32 00,Includes: Equipment for the filtering of domestic water. |
+,D2010.20,Domestic Water Heaters,,Includes: Equipment to heat domestic water. Includes electric and fuel-fired equipment. |
+,D2010.20,Electric Domestic Water Heaters,22 33 00,|
+,D2010.20,Fuel-Fired Domestic Water Heaters,22 34 00,|
+,D2010.20,Domestic Water Heat Exchangers,22 35 00,Includes: Equipment to heat domestic water by means of heat exchange. |
+D2010.40,D20,Domestic Water Piping,22 11 16,"Includes: Piping, valves, and specialties associated with domestic water distribution located within, under, or closely associated with a structure. Includes circulating pumps. May Include: Water service from the structure to the utility water service line. |"
+,D2010.40,Domestic Water Piping Specialties,22 11 19,|
+D2010.60,D20,Plumbing Fixtures,22 40 00,"Includes: Terminal devices on the domestic water plumbing system. Includes rough-in piping, trim, fittings, and connection to vent piping. |"
+,D2010.60,Residential Plumbing Fixtures,22 41 00,|
+,D2010.60,Residential Water Closets,22 41 13,|
+,D2010.60,Residential Urinals,22 41 13,|
+,D2010.60,Residential Bidets,22 41 13,|
+,D2010.60,Residential Lavatories,22 41 16,|
+,D2010.60,Residential Sinks,22 41 16,|
+,D2010.60,Residential Bathtubs,22 41 19,|
+,D2010.60,Residential Showers,22 41 23,|
+,D2010.60,Residential Disposers,22 41 26,|
+,D2010.60,Residential Laundry Trays,22 41 36,|
+,D2010.60,Residential Plumbing Fixture Trim,22 41 39,|
+,D2010.60,Commercial Plumbing Fixtures,22 42 00,|
+,D2010.60,Commercial Water Closets,22 42 13,|
+,D2010.60,Commercial Urinals,22 42 13,|
+,D2010.60,Commercial Bidets,22 42 13,|
+,D2010.60,Commercial Lavatories,22 42 16,|
+,D2010.60,Commercial Sinks,22 42 16,|
+,D2010.60,Commercial Bathtubs,22 42 19,|
+,D2010.60,Commercial Showers,22 42 23,|
+,D2010.60,Commercial Disposers,22 42 26,|
+,D2010.60,Shampoo Bowls,22 42 29,|
+,D2010.60,Wash Fountains,22 42 33,|
+,D2010.60,Commercial Laundry Trays,22 42 36,|
+,D2010.60,Commercial Plumbing Fixture Trim,22 42 39,|
+,D2010.60,Flushometers,22 42 43,|
+,D2010.60,Healthcare Plumbing Fixtures,,|
+,D2010.60,Healthcare Water Closets,22 43 13,|
+,D2010.60,Healthcare Sinks,22 43 16,|
+,D2010.60,Healthcare Bathtubs,22 43 19,|
+,D2010.60,Healthcare Showers,22 43 23,|
+,D2010.60,Healthcare Faucets,22 43 39,|
+,D2010.60,Healthcare Flushometers,22 43 43,|
+,D2010.60,Process Support Plumbing Systems: D2060.,,|
+,D2010.60,Healthcare Equipment: E1040.20.,,|
+,D2010.60,Healthcare Casework: E2010.30.,,|
+,D2010.60,Healthcare Furniture: E2050.30.,,|
+,D2010.60,Healthcare Special Procedures: Z1020.70.,,|
+,D2010.60,Emergency Plumbing Fixtures,22 45 00,|
+,D2010.60,Emergency Showers,22 45 13,|
+,D2010.60,Eyewash Equipment,22 45 16,|
+,D2010.60,Eye/Face Wash Equipment,22 45 26,|
+,D2010.60,Hand-Held Emergency Drench Hoses,22 45 29,|
+,D2010.60,Combination Emergency Fixture Units,22 45 33,|
+,D2010.60,Emergency Fixture Water-Tempering Equipment,22 45 36,|
+,D2010.60,Security Plumbing Fixtures,22 46 00,|
+,D2010.60,Security Water Closets,22 46 13,|
+,D2010.60,Security Urinals,22 46 13,|
+,D2010.60,Security Lavatories,22 46 16,|
+,D2010.60,Security Sinks,22 46 16,|
+,D2010.60,Security Plumbing Fixture Trim,22 46 39,|
+,D2010.60,Security Flushometers,22 46 43,|
+,D2010.60,Security Plumbing Fixture Supports,22 46 53,|
+,D2010.60,Electronic Safety and Security: D70.,,|
+,D2010.60,Security Equipment: E1040.60.,,|
+,D2010.60,Security Procedures: Z1020.70.,,|
+,D2010.60,Temporary Security Barriers & Enclosures: Z1050.40.,,|
+,D2010.60,Drinking Fountains and Water Coolers,22 47 00,|
+,D2010.60,Drinking Fountains,22 47 13,|
+,D2010.60,Remote Water Coolers,22 47 23,|
+D2010.90,D20,Domestic Water Distribution Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and |"
+,D2010.90,Mechanical Metal Supports,05 45 13,|
+,D2010.90,Common Work Results for Plumbing,22 05 00,|
+,D2010.90,Expansion Fittings and Loops,22 05 16,|
+,D2010.90,Meters and Gages,22 05 19,|
+,D2010.90,Valves,22 05 23,|
+,D2010.90,Hangers and Supports,22 05 29,|
+,D2010.90,Heat Tracing,22 05 33,|
+,D2010.90,Vibration and Seismic Controls,22 05 48,|
+,D2010.90,Identification,22 05 53,|
+,D2010.90,Insulation,22 07 00,|
+,D2010.90,Instrumentation and Controls,22 09 00,|
+D2020,,Sanitary Drainage,22 13 00,"Includes: Facility sanitary sewerage system located within, under, or closely associated with a structure. Include Sanitary Drainage Supplementary Components as appropriate. |"
+,D2020,Sanitary Drainage Systems Performance Requirements,01 86 16,|
+,D2020,Swimming Pool Plumbing Systems: F1050.10.,,|
+,D2020,Pools and Tubs Plumbing Systems: F1050.10.,,|
+,D2020,Interior Fountain Plumbing Systems: F1050.20.,,|
+,D2020,Sanitary Sewerage Utilities: G3020.,,|
+D2020.10,D20,Sanitary Sewerage Equipment,,"Includes: Interceptor, separator, pumps, and septic tanks that are part of facility sanitary sewerage system. |"
+,D2020.10,Sanitary Waste Interceptors,22 13 23,|
+,D2020.10,Sanitary Waste Separators,22 13 26,|
+,D2020.10,Sanitary Sewerage Pumps,22 13 29,|
+,D2020.10,"Packaged, Submersible Sewerage Pump Units",22 13 33,|
+,D2020.10,"Packaged, Wastewater Pump Units",22 13 36,|
+,D2020.10,"Facility Packaged, Sewerage Pumping Stations",22 13 43,|
+,D2020.10,Facility Septic Tanks,22 13 53,|
+,D2020.10,Utility Septic Tanks: G3020.40.,,|
+D2020.30,D20,Sanitary Sewerage Piping,,Includes: Sanitary waste and vent piping system within and under structures. May Include: Sanitary piping from the structure to the utility sanitary sewer. |
+,D2020.30,Sanitary Sewers,22 13 13,|
+,D2020.30,Sanitary Waste and Vent Piping,22 13 16,|
+,D2020.30,Sanitary Waste Piping Specialties,22 13 19,|
+,D2020.30,Sanitary Drains,22 13 19.13,|
+,D2020.30,"Fats, Oils, and Grease Disposal Systems",22 13 19.23,|
+,D2020.30,Grease Removal Devices,22 13 19.26,|
+,D2020.30,Backwater Valves,22 13 19.33,|
+,D2020.30,Air-Admittance Valves,22 13 19.36,|
+,D2020.30,Sanitary Drainage Manholes,22 05 73,|
+,D2020.30,Sanitary Drainage Piping Cleanouts,22 05 76,|
+D2020.90,D20,Sanitary Drainage Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and control for plumbing to be included with sanitary drainage elements above as appropriate. |"
+,D2020.90,Mechanical Metal Supports,05 45 13,|
+,D2020.90,Common Work Results for Plumbing,22 05 00,|
+,D2020.90,Expansion Fittings and Loops,22 05 16,|
+,D2020.90,Meters and Gages,22 05 19,|
+,D2020.90,Valves,22 05 23,|
+,D2020.90,Hangers and Supports,22 05 29,|
+,D2020.90,Heat Tracing,22 05 33,|
+,D2020.90,Vibration and Seismic Controls,22 05 48,|
+,D2020.90,Identification,22 05 53,|
+,D2020.90,Insulation,22 07 00,|
+,D2020.90,Instrumentation and Controls,22 09 00,|
+D2030,,Building Support Plumbing Systems,22 14 00,Includes: Facility stormwater drainage and gray water systems. Include Building Support Plumbing System Supplementary Components as appropriate. |
+,D2030,Building Support Plumbing Systems Performance Requirements,01 86 16,|
+,D2030,Rainwater Management: B3020.70.,,|
+,D2030,Storm Drainage Utilities: G3020.,,|
+D2030.10,D20,Stormwater Drainage Equipment,,"Includes: Drainage pumps, and sump pumps that are part of stormwater drainage system. |"
+,D2030.10,Stormwater Drainage Pumps,22 14 33 22 14 36,|
+,D2030.10,Stormwater Drainage Sump Pumps,22 14 29,|
+,D2030.10,Rainwater Storage Tanks,22 14 53,|
+D2030.20,D20,Stormwater Drainage Piping,22 14 13,"Includes: Storm drainage piping system within, under, or closely associated with a structure. Includes storm drains for areas closely associated with a structure such as courtyards, plazas, and loading dock areas. May Include: Storm drainage piping from the structure to the utility storm drain. |"
+,D2030.20,Rainwater Leaders,22 14 16,|
+,D2030.20,Stormwater Drainage Piping Specialties,22 14 23,|
+,D2030.20,Stormwater Drainage Manholes,22 05 73,|
+,D2030.20,Stormwater Drainage Piping Cleanouts,22 05 76,|
+D2030.30,D20,Facility Stormwater Drains,22 14 26,Includes: Various types of drains to collect storm water. |
+,D2030.30,Area Drains,22 14 26.13,|
+,D2030.30,Roof Drains,22 14 26.16,|
+,D2030.30,Trench Drains,22 14 26.19,|
+,D2030.30,Site Stormwater Drains: G3030.40.,,|
+D2030.60,D20,Gray Water Systems,,"Includes: Systems to collect, treat, and distribute gray water for other uses such as irrigation. |"
+,D2030.60,Gray Water Tanks,22 13 63,|
+,D2030.60,Gray Water Equipment,,|
+,D2030.60,Gray Water Treatment Equipment,,|
+,D2030.60,Gray Water Piping System,,|
+,D2030.60,Gray Water Specialties,,|
+D2030.90,D20,Building Support Plumbing System Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and control for plumbing to be included with building support plumbing system elements above as appropriate. |"
+,D2030.90,Mechanical Metal Supports,05 45 13,|
+,D2030.90,Common Work Results for Plumbing,22 05 00,|
+,D2030.90,Expansion Fittings and Loops,22 05 16,|
+,D2030.90,Meters and Gages,22 05 19,|
+,D2030.90,Valves,22 05 23,|
+,D2030.90,Hangers and Supports,22 05 29,|
+,D2030.90,Heat Tracing,22 05 33,|
+,D2030.90,Vibration and Seismic Controls,22 05 48,|
+,D2030.90,Identification,22 05 53,|
+,D2030.90,Insulation,22 07 00,|
+,D2030.90,Instrumentation and Controls,22 09 00,|
+D2050,,General Service Compressed-Air,22 15 00,Includes: Compressed air system serving general service requirements |
+,D2050,General Service Compressed-Air Performance Requirements,01 86 16,|
+,D2050,General Service Compressed-Air Piping,22 15 13,|
+,D2050,General Service Compressed-Air Valves,22 15 16,|
+,D2050,General Service Packaged Air Compressors and Receivers,22 15 19,|
+D2060,,Process Support Plumbing Systems,,Includes: Process Support Plumbing System Supplementary Components as appropriate. |
+D2060.10,D20,Compressed-Air Systems,22 61 00,Includes: Compressed-air systems for laboratory and healthcare purposes. |
+,D2060.10,Compressed-Air Systems Performance Requirements,01 86 16,|
+,D2060.10,Laboratory Air Operating Pressure,01 86 16,|
+,D2060.10,Medical Air Operating Pressure,01 86 16,|
+,D2060.10,Dental Air Operating Pressure,01 86 16,|
+,D2060.10,Instrument Air Operating Pressure,01 86 16,|
+,D2060.10,Medical Laboratory Air Operating Pressure,01 86 16,|
+,D2060.10,Air Capacity,01 86 16,|
+,D2060.10,Compressed-Air Piping,22 61 13,|
+,D2060.10,Compressed-Air Equipment,22 61 19,|
+D2060.20,D20,Vacuum Systems,22 62 00,Includes: Vacuum systems for laboratory and healthcare purposes. |
+,D2060.20,Vacuum Systems Performance Requirements,01 86 16,|
+,D2060.20,Laboratory Vacuum Operation Level,01 86 16,|
+,D2060.20,Medical Surgical Vacuum Operation Level,01 86 16,|
+,D2060.20,Waste Anesthetic Gas Disposal Vacuum Operation Level,01 86 16,|
+,D2060.20,Dental Vacuum Operation Level,01 86 16,|
+,D2060.20,Oral-Evacuation Vacuum Operation Level,01 86 16,|
+,D2060.20,Healthcare Laboratory Vacuum Operation Level,01 86 16,|
+,D2060.20,Vacuum Piping,22 62 13,|
+,D2060.20,Vacuum Equipment,22 62 19,|
+,D2060.20,Waste Anesthesia-Gas Piping,22 62 23,|
+D2060.30,D20,Gas Systems,22 63 00,Includes: Gas systems for laboratory and healthcare purposes. |
+,D2060.30,Gas Systems Performance Requirements,01 86 16,|
+,D2060.30,Medical Carbon Dioxide Operating Pressure,01 86 16,|
+,D2060.30,Medical Helium Operating Pressure,01 86 16,|
+,D2060.30,Medical Nitrogen Operating Pressure,01 86 16,|
+,D2060.30,Medical Nitrous Oxide Operating Pressure,01 86 16,|
+,D2060.30,Medical Oxygen Operating Pressure,01 86 16,|
+,D2060.30,Gas Piping,22 63 13,|
+,D2060.30,Gas Storage Tanks,22 63 19,|
+,D2060.30,Gas Equipment,,|
+D2060.40,D20,Chemical-Waste Systems,22 66 00,Includes: Chemical-waste systems for laboratory and healthcare purposes. |
+,D2060.40,Chemical-Waste Systems Performance Requirements,01 86 16,|
+,D2060.40,Single-Wall Piping Pressure Rating,01 86 16,|
+,D2060.40,Double-Containment Piping Pressure Rating,01 86 16,|
+,D2060.40,Field-Fabrication Containment-Piping Pressure Rating,01 86 16,|
+,D2060.40,Laboratory Chemical-Waste Piping,22 66 53,|
+,D2060.40,Healthcare Chemical-Waste Piping,22 66 70,|
+,D2060.40,Chemical-Waste Tanks,22 66 83,|
+D2060.50,D20,Processed Water Systems,22 67 00,Includes: Processed water systems for laboratory and healthcare purposes. |
+,D2060.50,Processed Water Systems Performance,01 86 16,|
+,D2060.50,Reagent-Water Piping Operating Pressure,01 86 16,|
+,D2060.50,Deionized-Water Piping Operating Pressure,01 86 16,|
+,D2060.50,Distilled-Water Piping Operating Pressure,01 86 16,|
+,D2060.50,Reverse-Osmosis-Water Piping Operating Pressure,01 86 16,|
+,D2060.50,Processed Water Piping,22 67 13,|
+,D2060.50,Processed Water Equipment,22 67 19,|
+,D2060.50,Healthcare Plumbing Fixtures: D2010.60.,,|
+,D2060.50,Healthcare Equipment: E1040.20.,,|
+,D2060.50,Laboratory Equipment: E1040.10.,,|
+,D2060.50,Healthcare Special Procedures: Z1020.70.,,|
+D2060.90,D20,Process Support Plumbing System Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and controls to be included with process support plumbing systems elements above as appropriate. |"
+,D2060.90,Mechanical Metal Supports,05 45 13,|
+,D2060.90,Healthcare Metal Supports,05 45 23,|
+,D2060.90,Common Work Results for Plumbing,22 05 00,|
+,D2060.90,Valves,22 05 23,|
+,D2060.90,Hangers and Supports,22 05 29,|
+,D2060.90,Heat Tracing,22 05 33,|
+,D2060.90,Vibration and Seismic Controls,22 05 48,|
+,D2060.90,Identification,22 05 53,|
+,D2060.90,Insulation,22 07 00,|
+,D2060.90,Instrumentation and Controls,22 09 00,|
+D30,,"HEATING, VENTILATION, AND AIR CONDITIONING (HVAC)",23 00 00,|
+,D30,HVAC Performance Requirements,01 86 19,|
+,D30,Starting and Adjusting: Z1070.40.,,|
+,D30,Demonstration and Training: Z1070.80.,,|
+D3010,,Facility Fuel Systems,23 10 00,"Includes: Fuel-oil, gasoline, natural-gas, and liquefied-petroleum fuel systems associated with a structure. |"
+,D3010,Facility Fuel Systems Performance Requirements,01 86 19,|
+,D3010,Fuel System Operating Pressure,01 86 19,|
+,D3010,Fuel Storage Tank Capacity,01 86 19,|
+,D3010,Fuel Pump Capacity,01 86 19,|
+,D3010,Site Fuel Distribution: G3060.,,|
+D3010.10,D30,Fuel Piping,23 11 00,"Includes: Fuel piping, valves, piping specialties, and other components within, under, or closely associated with a structure. |"
+D3010.30,D30,Fuel Pumps,23 12 00,Includes: Fuel pumps within or closely associated with a structure. |
+,D3010.30,Facility Fuel-Oil Pumps,23 12 13,|
+,D3010.30,Facility Gasoline Dispensing Pumps,23 12 16,|
+D3010.50,D30,Fuel Storage Tanks,23 13 00,Includes: Fuel tanks under or closely associated with a structure. |
+D3020,,Heating Systems,,"Includes: Associated ductwork, piping, valves, and specialties. Includes: Heating System Supplementary Components as appropriate. |"
+,D3020,Heating Systems Performance Requirements,01 86 19,|
+,D3020,Sustainable Design Requirements,01 86 19,|
+D3020.10,D30,Heat Generation,,"Includes: Boilers, furnaces, solar, geothermal, and biomass heat generation, fuel fired heaters, and heat exchangers. |"
+,D3020.10,Fuel Heat Generation,,"Includes: Fuel-fired boilers and generators for hot water and steam systems. Includes breechings, chimneys, and stacks. |"
+,D3020.10,"Breechings, Chimneys, and Stacks",23 51 00,|
+,D3020.10,Fuel-Fired Heating Boilers,23 52 00,|
+,D3020.10,Electric Heating Boilers,23 52 13,Includes: Electric boilers and generators for hot water and steam systems. |
+,D3020.10,Heating Boiler Feedwater Equipment,23 53 00,Includes: Equipment to remove oxygen and other dissolved gases in boiler feed. |
+,D3020.10,Boiler Feedwater Pumps,23 53 13,|
+,D3020.10,Deaerators,23 53 16,|
+,D3020.10,Furnaces,23 54 00,Includes: Fuel-fired and electric furnaces. |
+,D3020.10,Solar Heat Generation,23 56 00,Includes: Equipment powered by solar energy. |
+,D3020.10,Heating Solar Collectors,23 56 13,|
+,D3020.10,Packaged Solar Heating Equipment,23 56 16,|
+,D3020.10,Geothermal Heat Generation,,|
+,D3020.10,Biomass Heat Generation,,|
+,D3020.10,Fuel-Fired Heaters,23 55 00,Includes: Fuel-fired radiant and unit heaters. |
+,D3020.10,Heat Exchangers for HVAC,23 57 00,Includes: Equipment used to transfer heat from one medium to another. |
+D3020.30,D30,Thermal Heat Storage,23 71 13,Includes: Equipment to store thermal energy for use in heating and with charging or discharging this energy at a controllable rate. |
+D3020.70,D30,Decentralized Heating Equipment,23 80 00,Includes: Heating equipment that serves a portion of a HVAC system. |
+,D3020.70,Convection Heating Units,23 82 00,Includes: Convection units may provide heating and cooling. |
+,D3020.70,Valance Heating Units,23 82 13,|
+,D3020.70,Chilled Beams,23 82 14,|
+,D3020.70,Air Coils,23 82 16,|
+,D3020.70,Fan Coil Units,23 82 19,|
+,D3020.70,Unit Ventilators,23 82 23,|
+,D3020.70,Induction Units,23 82 26,|
+,D3020.70,Radiators,23 82 29,|
+,D3020.70,Convectors,23 82 33,|
+,D3020.70,Finned-Tube Radiation Heaters,23 82 36,|
+,D3020.70,Unit Heaters,23 82 39,|
+,D3020.70,Radiant Heating Units,23 83 00,Includes: Electric cables or panels and hydronic piping used for radiant heating for space heating. |
+D3020.90,D30,Heating System Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in heating system elements above as appropriate. |"
+,D3020.90,Mechanical Metal Supports,05 45 13,|
+,D3020.90,Common Work Results for HVAC,23 05 00,|
+,D3020.90,Meters and Gages,23 05 19,|
+,D3020.90,General-Duty Valves,23 05 23,|
+,D3020.90,Hangers and Supports,23 05 29,|
+,D3020.90,Vibration and Seismic Controls,23 05 48,|
+,D3020.90,Identification,23 05 53,|
+,D3020.90,Anti-Microbial Coatings,23 05 63,|
+,D3020.90,Anti-Microbial Ultraviolet Emitters,23 05 66,|
+,D3020.90,"Testing, Adjusting, and Balancing",23 05 93,|
+,D3020.90,Insulation,23 07 00,|
+,D3020.90,Instrumentation and Control,23 09 00,|
+D3030,,Cooling Systems,,"Includes: Associated ductwork, piping, valves, and specialties. Includes: Cooling System Supplementary Components as appropriate. |"
+,D3030,Cooling Systems Performance Requirements,01 86 19,|
+,D3030,Sustainable Design Requirements,01 86 19,|
+D3030.10,D30,Central Cooling,23 60 00,"Includes: Refrigerant compressors, condensers, packaged compressor and condenser units, water chillers, and cooling towers. |"
+,D3030.10,Refrigerant Compressors,23 61 00,Includes: Various type of compressors used in refrigeration process. |
+,D3030.10,Refrigerant Condensers,23 63 00,Includes: Condensing units used to reject heat from the refrigeration process. |
+,D3030.10,Packaged Compressor and Condenser Units,23 62 00,Includes: Compressor in combination with condensing units used to reject heat from the refrigeration process. |
+,D3030.10,Water Chillers,23 64 00,Includes: Various types of chillers used for building space cooling. |
+,D3030.10,Cooling Towers,23 65 00,Includes: Factory- and field-fabricated cooling towers and liquid coolers. Includes piping and specialties; chemical water treatment; vibration and seismic controls; and integral controls not a part of the condenser water distribution systems. |
+D3030.30,D30,Evaporative Air-Cooling,23 76 00,Includes: Equipment used to reject heat from the refrigeration process by evaporation. |
+D3030.50,D30,Thermal Cooling Storage,23 71 00,Includes: Equipment to store thermal energy for use in cooling and with charging or discharging this energy at a controllable rate. |
+,D3030.50,Chilled-Water Thermal Storage,23 71 16,|
+,D3030.50,Ice Storage,23 71 19,|
+D3030.70,D30,Decentralized Cooling,23 80 00,Includes: Cooling equipment that serves a portion of a HVAC system. |
+,D3030.70,Air-Conditioners,,|
+,D3030.70,Packaged Terminal Air-Conditioners,23 81 13,|
+,D3030.70,Room Air-Conditioners,23 81 16,|
+,D3030.70,Self-Contained Air-conditioners,23 81 19,|
+,D3030.70,Computer-Room Air-Conditioners,23 81 23,|
+,D3030.70,Split-System Air-Conditioners,23 81 26,|
+,D3030.70,Unitary Heat Pumps,,|
+,D3030.70,Air-Source Heat Pumps,23 81 43,|
+,D3030.70,Water-Source Heat Pumps,23 81 46,|
+,D3030.70,Convection Cooling Units,23 82 00,Note: Convection units may provide heating and cooling. |
+,D3030.70,Valance Cooling Units,23 82 13,|
+,D3030.70,Chilled Beams,23 82 14,|
+,D3030.70,Air Coils,23 82 16,|
+,D3030.70,Fan Coil Units,23 82 19,|
+,D3030.70,Unit Ventilators,23 82 23,|
+,D3030.70,Induction Units,23 82 26,|
+,D3030.70,Convectors,23 82 33,|
+D3030.90,D30,Cooling System Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in cooling system elements above as appropriate. |"
+,D3030.90,Mechanical Metal Supports,05 45 13,|
+,D3030.90,Common Work Results for HVAC,23 05 00,|
+,D3030.90,Meters and Gages,23 05 19,|
+,D3030.90,General-Duty Valves,23 05 23,|
+,D3030.90,Hangers and Supports,23 05 29,|
+,D3030.90,Vibration and Seismic Controls,23 05 48,|
+,D3030.90,Identification,23 05 53,|
+,D3030.90,Anti-Microbial Coatings,23 05 63,|
+,D3030.90,Anti-Microbial Ultraviolet Emitters,23 05 66,|
+,D3030.90,"Testing, Adjusting, and Balancing",23 05 93,|
+,D3030.90,Insulation,23 07 00,|
+,D3030.90,Instrumentation and Control,23 09 00,|
+D3050,,Facility HVAC Distribution Systems,,Includes: Facility Distribution Systems Supplementary Components as appropriate. |
+D3050.10,D30,Facility Hydronic Distribution,,"Includes: Piping systems and equipment for distribution of heating hot water and cooling chilled water. Includes piping systems, pumps, tanks, supports and anchors, vibration and seismic controls, identification, and piping and equipment insulation. |"
+,D3050.10,Hydronic Distribution Performance Requirements,01 86 19,|
+,D3050.10,Hot-Water Heating Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Chilled-Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Dual-Temperature Heating and Cooling Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Condenser-Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Glycol Cooling-Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Makeup-Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.10,Condensate-Drain Piping Working Temperature,01 86 19,|
+,D3050.10,Blowdown-Drain Piping Working Temperature,01 86 19,|
+,D3050.10,Air-Vent Piping Temperature,01 86 19,|
+,D3050.10,Hydronic Pumps Capacities,01 86 19,|
+,D3050.10,Boilers: D3020.10,,|
+,D3050.10,Chillers: D3030.10,,|
+,D3050.10,Cooling Towers: D3030.10,,|
+,D3050.10,Hydronic Piping System,,|
+,D3050.10,Hydronic Pumps,23 21 23,|
+,D3050.10,Hydronic Piping,23 21 13,|
+,D3050.10,Water Treatment for Hydronic Systems,23 25 00,|
+D3050.30,D30,Facility Steam Distribution,,"Includes: Piping systems and equipment for distribution of steam and condensate return. Includes piping systems, pumps, tanks, supports and anchors, vibration and seismic controls, identification, and piping and equipment insulation. |"
+,D3050.30,Steam Distribution Performance Requirements,01 86 19,|
+,D3050.30,High Pressure Steam Piping Working Pressure,01 86 19,|
+,D3050.30,Low Pressure Steam Piping Working Pressure,01 86 19,|
+,D3050.30,Condensate Piping Working Pressure and Temperature,01 86 19,|
+,D3050.30,Makeup-Water Piping Working Pressure and Temperature,01 86 19,|
+,D3050.30,Steam Condensate Pump Capacity,01 86 19,|
+,D3050.30,Boilers: D3020.10,,|
+,D3050.30,Steam Piping System,,|
+,D3050.30,Steam Condensate Pumps,23 22 23,|
+,D3050.30,Steam Piping,23 22 13,|
+,D3050.30,Water Treatment for Steam Systems,23 25 19,|
+D3050.50,D30,HVAC Air Distribution,,"Includes: Systems for distribution of air including supply systems, return systems, and general exhaust systems. Does not include special exhaust systems such as kitchen hood, paint booth, and fume hood exhaust systems. |"
+,D3050.50,HVAC Air Distribution Performance Requirements,01 86 19,|
+,D3050.50,Sustainable Design Requirements,01 86 19,|
+,D3050.50,Fan Total Airflow and External Static Pressure,01 86 19,|
+,D3050.50,"Pressure Class, Seal Class, and Leakage Class for Supply Ducts",01 86 19,|
+,D3050.50,"Pressure Class, Seal Class, and Leakage Class for Return Ducts",01 86 19,|
+,D3050.50,Filtration Efficiency,01 86 19,|
+,D3050.50,Air-Handling Units,,"Includes: Air-handling units consisting of fans, coils, dampers, control devices, and other accessories. |"
+,D3050.50,Indoor Central-Station Air-Handling Units,23 73 00,|
+,D3050.50,Packaged Outdoor HVAC Equipment,23 74 00,|
+,D3050.50,Custom-Packaged Outdoor HVAC Equipment,23 75 00,|
+,D3050.50,HVAC Air Distribution Components,23 30 00,"Includes: Ducts, duct accessories, fans, terminal units, and air inlets and outlets. |"
+,D3050.50,HVAC Fans,23 34 00,|
+,D3050.50,HVAC Ducts and Casings,23 31 00,|
+,D3050.50,Air Plenums and Chases,23 32 00,|
+,D3050.50,Air Duct Accessories,23 33 00,|
+,D3050.50,Air Terminal Units,23 36 00,|
+,D3050.50,Air Outlets and Inlets,23 37 00,|
+,D3050.50,HVAC Air Cleaning Devices,23 40 00,Includes: Devices of a variety of types to clean distribution air. |
+,D3050.50,Particulate Air Filtration,23 41 00,|
+,D3050.50,Gas-Phase Air Filtration,23 42 00,|
+,D3050.50,Electronic Air Cleaners,23 43 00,|
+,D3050.50,Humidity Control,23 84 00,Includes: Equipment that adds or removes moisture from a medium in order to control the humidity. |
+D3050.90,D30,Facility Distribution Systems Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in distribution system elements above as appropriate. |"
+,D3050.90,Mechanical Metal Supports,05 45 13,|
+,D3050.90,Common Work Results for HVAC,23 05 00,|
+,D3050.90,Expansion Fittings and Loops,23 05 16,|
+,D3050.90,Meters and Gages,23 05 19,|
+,D3050.90,General-Duty Valves,23 05 23,|
+,D3050.90,Hangers and Supports,23 05 29,|
+,D3050.90,Heat Tracing,23 05 33,|
+,D3050.90,Vibration and Seismic Controls,23 05 48,|
+,D3050.90,Identification,23 05 53,|
+,D3050.90,Anti-Microbial Coatings,23 05 63,|
+,D3050.90,Anti-Microbial Ultraviolet Emitters,23 05 66,|
+,D3050.90,"Testing, Adjusting, and Balancing",23 05 93,|
+,D3050.90,Insulation,23 07 00,|
+,D3050.90,Instrumentation and Control,23 09 00,|
+D3060,,Ventilation,,"Includes: Supply air, return air, exhaust air, outside air, and air cleaning systems. Includes Ventilation Supplementary Components as appropriate. |"
+,D3060,Ventilation Performance Requirements,01 86 19,|
+,D3060,Sustainable Design Requirements,01 86 19,|
+,D3060,Fan Total Airflow and External Static Pressure,01 86 19,|
+,D3060,"Pressure Class, Seal Class, and Leakage Class for Exhaust Ducts",01 86 19,|
+D3060.10,D30,Supply Air,,|
+,D3060.10,Supply Air HVAC Fans,23 34 00,|
+,D3060.10,Supply Air Ducts and Casings,23 31 00,|
+,D3060.10,Supply Air Plenums and Chases,23 32 00,|
+,D3060.10,Supply Air Duct Accessories,23 33 00,|
+,D3060.10,Supply Air Terminal Units,23 36 00,|
+,D3060.10,Supply Air Outlets,23 37 00,|
+D3060.20,D30,Return Air,,|
+,D3060.20,Return Air HVAC Fans,23 34 00,|
+,D3060.20,Return Air Ducts and Casings,23 31 00,|
+,D3060.20,Return Air Plenums and Chases,23 32 00,|
+,D3060.20,Return Air Duct Accessories,23 33 00,|
+,D3060.20,Return Air Outlets and Inlets,23 37 00,|
+D3060.30,D30,Exhaust Air,,|
+,D3060.30,Special Exhaust Systems,23 35 00,"Includes: Special systems for exhausting air such as kitchen hood, paint booth, and fume hood exhaust systems. |"
+,D3060.30,Air-Borne Particulate Collection Systems,,|
+,D3060.30,Sawdust Collection Systems,23 35 13.13,|
+,D3060.30,Engine Exhaust Systems,23 35 16,|
+,D3060.30,Ventilation Hoods,23 38 00,|
+,D3060.30,Commercial Kitchen Hoods,23 38 13,|
+,D3060.30,Fume Hood Exhaust,23 38 16,|
+,D3060.30,Exhaust Air HVAC Fans,23 34 00,|
+,D3060.30,Exhaust Air Ducts and Casings,23 31 00,|
+,D3060.30,Exhaust Air Plenums and Chases,23 32 00,|
+,D3060.30,Exhaust Air Duct Accessories,23 33 00,|
+,D3060.30,Exhaust Air Inlets,23 37 00,|
+D3060.40,D30,Outside Air,,|
+,D3060.40,Outside Air HVAC Fans,23 34 00,|
+,D3060.40,Outside Air Ducts and Casings,23 31 00,|
+,D3060.40,Outside Air Plenums and Chases,23 32 00,|
+,D3060.40,Outside Air Duct Accessories,23 33 00,|
+,D3060.40,Outside Air Terminal Units,23 36 00,|
+,D3060.40,Outside Air Outlets and Inlets,23 37 00,|
+D3060.60,D30,Air-to-Air Energy Recovery,23 72 00,Includes: Air-to-air energy recovery units. |
+D3060.70,D30,HVAC Air Cleaning,23 40 00,|
+D3060.90,D30,Ventilation Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in ventilation elements above as appropriate. |"
+,D3060.90,Mechanical Metal Supports,05 45 13,|
+,D3060.90,Common Work Results for HVAC,23 05 00,|
+,D3060.90,Hangers and Supports,23 05 29,|
+,D3060.90,Vibration and Seismic Controls,23 05 48,|
+,D3060.90,Identification,23 05 53,|
+,D3060.90,Anti-Microbial Coatings,23 05 63,|
+,D3060.90,Anti-Microbial Ultraviolet Emitters,23 05 66,|
+,D3060.90,"Testing, Adjusting, and Balancing",23 05 93,|
+,D3060.90,Insulation,23 07 00,|
+,D3060.90,Instrumentation and Control,23 09 00,|
+D3070,,Special Purpose HVAC Systems,,|
+D3070.10,D30,Snow Melting,,Includes: Electric cables and hydronic piping used for snow and ice control. |
+,D3070.10,Radiant-Heating Electric Cables,23 83 13,|
+,D3070.10,Radiant-Heating Hydronic Piping,23 83 16,|
+D4010,,Fire Suppression,21 00 00,Includes: Fire Suppression Supplementary Components as appropriate. |
+,D4010,Fire Suppression Performance Requirements,01 86 13,|
+D4010.10,D40,Water-Based Fire-Suppression,21 10 00,"Includes: Systems that use water for fire extinguishing and suppression. Includes piping, fittings, and specialties; hoses, valves, cabinets; fire pumps, accessories, and controls. |"
+,D4010.10,Water-Based Fire Suppression Performance Requirements,01 86 13,|
+,D4010.10,Sprinkler Occupancy Hazard Classifications,01 86 13,|
+,D4010.10,Standard-Pressure Piping Working Pressure,01 86 13,|
+,D4010.10,High-Pressure Piping Working Pressure,01 86 13,|
+,D4010.10,Fire-Suppression Water Storage,21 40 00,|
+,D4010.10,Fire Pumps,21 30 00,|
+,D4010.10,Fire-Suppression Piping,21 11 00,|
+,D4010.10,Fire-Suppression Standpipes,21 12 00,|
+,D4010.10,Fire-Suppression Sprinkler Systems,21 13 00,"Includes: Piping, fittings, valves, hangers, supports, other specialties, and sprinklers for fire protection systems. Includes limited area sprinkler systems, fire pumps, accessories, and controls. |"
+,D4010.10,Wet-Pipe Sprinkler Systems,21 13 13,|
+,D4010.10,Dry-Pipe Sprinkler Systems,21 13 16,|
+,D4010.10,Preaction Sprinkler Systems,21 13 19,|
+,D4010.10,Combined Dry-Pipe and Preaction Sprinkler Systems,21 13 23,|
+,D4010.10,Deluge Fire-Suppression Sprinkler Systems,21 13 26,|
+,D4010.10,Water Spray Fixed Systems,21 13 29,|
+,D4010.10,Antifreeze Sprinkler Systems,21 13 36,|
+,D4010.10,Foam-Water Systems,21 13 39,|
+D4010.50,D40,Fire-Extinguishing,21 20 00,"Includes: Systems that use other than water for fire extinguishing and suppression. Includes piping, fittings, and specialties; valves, accessories, and controls. |"
+,D4010.50,Carbon-Dioxide Fire-Extinguishing Systems,21 21 00,|
+,D4010.50,Clean-Agent Fire-Extinguishing Systems,21 22 00,|
+,D4010.50,Wet-Chemical Fire-Extinguishing Systems,21 23 00,|
+,D4010.50,Dry-Chemical Fire-Extinguishing Systems,21 24 00,|
+D4010.90,D40,Fire Suppression Supplementary Components,,"Includes: Expansion fittings and loops, meters and gages, general-duty valves, hanger and supports, heat tracing, vibration and seismic controls, identification, insulation, and instrumentation and control to be included in fire protection elements above as appropriate. |"
+,D4010.90,Mechanical Metal Supports,05 45 13,|
+,D4010.90,Common Work Results for Fire Suppression,21 05 00,|
+,D4010.90,Expansion Fittings and Loops,21 05 16,|
+,D4010.90,Meters and Gages,21 05 19,|
+,D4010.90,General-Duty Valves,21 05 23,|
+,D4010.90,Hangers and Supports,21 05 29,|
+,D4010.90,Heat Tracing,21 05 33,|
+,D4010.90,Vibration and Seismic Controls,21 05 48,|
+,D4010.90,Identification,21 05 53,|
+,D4010.90,Insulation,21 07 00,|
+,D4010.90,Instrumentation and Control,21 09 00,|
+D4030,,Fire Protection Specialties,10 44 00,Includes: Fire fighting devices and storage cabinets except devices connected to a fire suppression system. |
+D4030.10,D40,Fire Protection Cabinets,10 44 13,|
+D4030.30,D40,Fire Extinguishers,10 44 16,|
+D4030.50,D40,Breathing Air Replenishment Systems,10 44 33,|
+D4030.70,D40,Fire Extinguisher Accessories,10 44 43,|
+D50,,ELECTRICAL,26 00 00,|
+,D50,Electrical Performance Requirements,01 86 26,|
+,D50,Starting and Adjusting: Z1070.40.,,|
+,D50,Demonstration and Training: Z1070.80.,,|
+D5010,,Facility Power Generation,,|
+,D5010,Facility Power Generation Performance Requirements,01 86 26,Includes: Power Generation Supplementary Components as appropriate. |
+,D5010,Voltage,01 86 26,|
+,D5010,Power Output Ratings,01 86 26,|
+D5010.10,D50,Packaged Generator Assemblies,26 32 00,"Includes: Generator, frequency changers, and rotary converters and uninterruptible power units. |"
+,D5010.10,Engine Generators,26 32 13,|
+,D5010.10,Steam-Turbine Generators,26 32 16,|
+,D5010.10,Hydro-Turbine Generators,26 32 19,|
+,D5010.10,Wind Energy Equipment,26 32 23,|
+,D5010.10,Frequency Converters,26 32 26,|
+,D5010.10,Rotary Converters,26 32 29,|
+,D5010.10,Uninterruptible Power Systems,26 32 33,|
+D5010.20,D50,Battery Equipment,26 33 00,"Includes: Batteries, battery racks, battery chargers, static power converters, uninterruptible power supplies, and accessories. |"
+,D5010.20,Batteries,26 33 13,|
+,D5010.20,Battery Racks,26 33 16,|
+,D5010.20,Battery Units,26 33 19,|
+,D5010.20,Central Battery Equipment,26 33 23,|
+,D5010.20,Static Power Converters,26 33 33,|
+,D5010.20,Battery Chargers,26 33 43,|
+,D5010.20,Battery Monitoring,26 33 46,|
+,D5010.20,Static Uninterruptible Power Supply,26 33 53,|
+D5010.30,D50,Photovoltaic Collectors,26 31 00,Includes: Solar cells to convert sunlight to electricity. |
+D5010.40,D50,Fuel Cells,48 18 00,Includes: Fuel cell electricity generating equipment. |
+D5010.60,D50,Power Filtering and Conditioning,26 35 00,"Includes: Capacitors, chokes and inductors, filters, power factor controllers, and voltage regulators. |"
+,D5010.60,Capacitors,26 35 13,|
+,D5010.60,Chokes and Inductors,26 35 16,|
+,D5010.60,Electromagnetic-Interference Filters,26 35 23,|
+,D5010.60,Harmonic Filters,26 35 26,|
+,D5010.60,Power Factor Correction Equipment,26 35 33,|
+,D5010.60,Slip Controllers,26 35 36,|
+,D5010.60,Static-Frequency Converters,26 35 43,|
+,D5010.60,Radio-Frequency-Interference Filters,26 35 46,|
+,D5010.60,Voltage Regulators,26 35 53,|
+D5010.70,D50,Transfer Switches,26 36 00,Includes: Switches that transfer from one source of electricity to another. |
+D5010.90,D50,Facility Power Generation Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceway and boxes, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in power generation system elements above as appropriate. |"
+,D5010.90,Electrical Metal Supports,05 45 16,|
+,D5010.90,Common Work Results for Electrical,26 05 00,|
+,D5010.90,Grounding and Bonding,26 05 26,|
+,D5010.90,Hangers and Supports,26 05 29,|
+,D5010.90,Raceways and Boxes,26 05 33,|
+,D5010.90,Vibration and Seismic Controls,26 05 48,|
+,D5010.90,Identification,26 05 53,|
+,D5010.90,Wiring Connectors,26 05 83,|
+,D5010.90,Instrumentation and Control,26 09 00,|
+D5020,,Electrical Service and Distribution,,Includes: Electrical Service and Distribution Supplementary Components as appropriate. |
+,D5020,Electrical Service and Distribution Performance Requirements,01 86 26,|
+D5020.10,D50,Electrical Service,26 21 00,"Includes: Includes meters, substations, transformers, switchgear, switchboards, and protective devices where electrical power enters structure. |"
+,D5020.10,Electricity Metering,26 16 00,|
+,D5020.10,Substations,26 11 00,|
+,D5020.10,Transformers,26 12 00,|
+,D5020.10,,26 22 00,|
+,D5020.10,Switchgear and Switchboards,26 13 00,|
+,D5020.10,,26 23 00,|
+,D5020.10,Protection Devices,26 18 00,|
+,D5020.10,,26 28 00,|
+D5020.30,D50,Power Distribution,26 20 00,"Includes: Bus assemblies, distribution equipment, and electrical wiring system to distribute electrical power to switchboards, panelboards, and motor control centers. |"
+D5020.70,D50,Facility Grounding,26 05 26,Includes: Raceways and wiring to ground and bond electrical distribution system. |
+D5020.90,D50,Electrical Service and Distribution Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, utility poles, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in electrical service and distribution system elements above as appropriate. |"
+D5030,,General Purpose Electrical Power,,Includes: General Purpose Electrical Power Supplementary Components as appropriate. |
+D5030.10,D50,Branch Wiring System,,"Includes: Raceways, ducts, cable trays, and wiring to deliver power from branch panelboards to point of use. |"
+D5030.50,D50,Wiring Devices,26 27 26,Includes: Electrical devices at point of use including electrical outlets and switches. |
+D5030.90,D50,General Purpose Electrical Power Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in general purpose electrical power elements above as appropriate. |"
+,D5030.90,Electrical Metal Supports,05 45 16,|
+,D5030.90,Common Work Results for Electrical,26 05 00,|
+,D5030.90,Grounding and Bonding,26 05 26,|
+,D5030.90,Hangers and Supports,26 05 29,|
+,D5030.90,Raceways and Boxes,26 05 33,|
+,D5030.90,Cable Trays,26 05 36,|
+,D5030.90,Vibration and Seismic Controls,26 05 48,|
+,D5030.90,Identification,26 05 53,|
+,D5030.90,Wiring Connectors,26 05 83,|
+,D5030.90,Instrumentation and Control,26 09 00,|
+D5040,,Lighting,26 50 00,Includes: Lighting Supplementary Components as appropriate. |
+,D5040,Lighting Performance Requirements,01 86 26,|
+,D5040,Sustainable Design Requirements,01 86 26,|
+,D5040,Lighting Levels for Various Areas of Facility,01 86 26,|
+,D5040,Site Lighting: G4050.,,|
+,D5040,Roadway Lighting: G2010.70,,|
+,D5040,Parking Lot Lighting: G2020.70.,,|
+,D5040,Pedestrian Plaza and Walkway Lighting: G2030.70.,,|
+,D5040,Airfield Lighting: G2040.70.,,|
+,D5040,"Athletic, Recreation, and Playfield Area Lighting: G2050.",,|
+,D5040,Landscape Lighting: G2080.70.,,|
+D5040.10,D50,Lighting Control,26 09 23,"Includes: Clock and calendar, photoelectric switches, occupancy sensors, and light-leveling control devices. |"
+,D5040.10,Lighting Control Devices,26 09 23,|
+,D5040.10,Lighting Control Panels,26 09 26,|
+,D5040.10,Central Dimming Control,26 09 33,|
+,D5040.10,Modular Dimming Control,26 09 36,|
+,D5040.10,Network Lighting Control,26 09 43,|
+,D5040.10,Theatrical Lighting Control,26 09 61,|
+D5040.20,D50,Branch Wiring for Lighting,,"Includes: Raceways, ducts, cable trays, and wiring beyond branch circuit panelboards to lighting fixtures. |"
+,D5040.20,Raceways and Enclosures,26 05 33,|
+,D5040.20,Ducts,26 05 43,|
+,D5040.20,Cable Trays,26 05 36,|
+,D5040.20,Wiring,26 05 19,|
+,D5040.20,Wiring Devices,26 27 26,|
+D5040.50,D50,Lighting Fixtures,26 50 00,"Includes: Luminaries, lighting equipment, ballasts, and accessories. Includes fluorescent, high intensity discharge, incandescent, mercury vapor, neon, and sodium vapor lighting. |"
+,D5040.50,Interior Lighting,26 51 00,|
+,D5040.50,Emergency Lighting,26 52 00,|
+,D5040.50,Exit Signs,26 53 00,|
+,D5040.50,Classified Location Lighting,26 54 00,|
+,D5040.50,Special Purpose Lighting,26 55 00,|
+,D5040.50,Outline Lighting,26 55 23,|
+,D5040.50,Underwater Lighting,26 55 29,|
+,D5040.50,Hazard Warning Lighting,26 55 33,|
+,D5040.50,Obstruction Lighting,26 55 36,|
+,D5040.50,Helipad Lighting,26 55 39,|
+,D5040.50,Security Lighting,26 55 53,|
+,D5040.50,Display Lighting,26 55 59,|
+,D5040.50,Theatrical Lighting,26 55 61,|
+,D5040.50,Detention Lighting,26 55 63,|
+,D5040.50,Healthcare Lighting,26 55 70,|
+,D5040.50,*Integrated Ceiling Assemblies:*,,|
+,D5040.50,*C1070.70.*,,|
+D5040.90,D50,Lighting Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in lighting system elements above as appropriate. |"
+,D5040.90,Electrical Metal Supports,05 45 16,|
+,D5040.90,Common Work Results for Electrical,26 05 00,|
+,D5040.90,Grounding and Bonding,26 05 26,|
+,D5040.90,Hangers and Supports,26 05 29,|
+,D5040.90,Raceways and Boxes,26 05 33,|
+,D5040.90,Cable Trays,26 05 36,|
+,D5040.90,Vibration and Seismic Controls,26 05 48,|
+,D5040.90,Identification,26 05 53,|
+,D5040.90,Wiring Connectors,26 05 83,|
+,D5040.90,Instrumentation and Control,26 09 00,|
+D5080,,Miscellaneous Electrical Systems,,Includes: Miscellaneous Electrical Systems Supplementary Components as appropriate. |
+D5080.10,D50,Lightning Protection,26 41 00,Includes: Wiring and equipment for lightning protection. |
+,D5080.10,Lightning Protection Performance Requirements,01 86 26,|
+,D5080.10,Lightning Protection for Structures,26 41 13,|
+,D5080.10,Lightning Protection and Dissipation,26 41 16,|
+,D5080.10,Early Streamer Emission Lightning Protection,26 41 19,|
+,D5080.10,Lightning Protection Surge Arresters and Suppressors,26 41 23,|
+,D5080.10,*Site Lightning Protection:*,,|
+,D5080.10,*G4010.70.*,,|
+D5080.40,D50,Cathodic Protection,26 42 00,Includes: Equipment and controls for cathodic protection of structures and underground metal construction and piping. |
+,D5080.40,Cathodic Protection Performance Requirements,01 86 26,|
+,D5080.40,Passive Cathodic Protection for Underground and Submerged Piping,26 42 13,|
+,D5080.40,Passive Cathodic Protection for Underground Storage Tanks,26 42 16,|
+D5080.70,D50,Transient Voltage Suppression,26 43 00,Includes: Devices to protect against voltage surges on electrical distribution systems. |
+D5080.90,D50,Miscellaneous Electrical Systems Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in miscellaneous electrical system elements above as appropriate. |"
+,D5080.90,Common Work Results for Electrical,26 05 00,|
+,D5080.90,Grounding and Bonding,26 05 26,|
+,D5080.90,Hangers and Supports,26 05 29,|
+,D5080.90,Raceways and Boxes,26 05 33,|
+,D5080.90,Cable Trays,26 05 36,|
+,D5080.90,Vibration and Seismic Controls,26 05 48,|
+,D5080.90,Identification,26 05 53,|
+,D5080.90,Wiring Connectors,26 05 83,|
+,D5080.90,Instrumentation and Control,26 09 00,|
+D60,,COMMUNICATIONS,27 00 00,|
+,D60,Communications Performance Requirements,01 86 29,|
+D6010,,Data Communications,27 20 00,Includes: Communications Supplementary Components as appropriate. |
+,D6010,Data Communication Performance Requirements,01 86 29,|
+D6010.10,D60,Data Communications Network Equipment,27 21 00,Includes: Switching and routing equipment for data communications. |
+,D6010.10,Data Communications Firewalls,27 21 13,|
+,D6010.10,"Data Communications Routers, CSU/DSU, Multiplexers, Codecs, and Modems",27 21 16,|
+,D6010.10,Data Communications Network Management,27 21 26,|
+,D6010.10,Data Communications Switches and Hubs,27 21 29,|
+,D6010.10,Data Communications Wireless Access Points,27 21 33,|
+D6010.20,D60,Data Communications Hardware,27 22 00,Includes: Computer equipment for data communications. |
+,D6010.20,Data Communications Mainframes,27 22 13,|
+,D6010.20,Data Communications Storage and Backup,27 22 16,|
+,D6010.20,Data Communications Servers,27 22 19,|
+,D6010.20,Data Communications Desktops,27 22 23,|
+,D6010.20,Data Communications Laptops,27 22 26,|
+,D6010.20,Data Communications Handhelds,27 22 29,|
+D6010.30,D60,Data Communications Peripheral Data Equipment,27 24 00,Includes: Additional equipment for data communications. |
+,D6010.30,Printers,27 24 13,|
+,D6010.30,Scanners,27 24 16,|
+,D6010.30,External Devices,27 24 19,|
+,D6010.30,Audio-Video Devices,27 24 23,|
+,D6010.30,Virtual Reality Equipment,27 24 26,|
+,D6010.30,Disaster Recovery Equipment,27 24 29,|
+D6010.50,D60,Data Communications Software,27 25 00,Includes: Software for data communications. |
+,D6010.50,Virus Protection Software,27 25 13,|
+,D6010.50,Application Suites,27 25 16,|
+,D6010.50,Email Software,27 25 19,|
+,D6010.50,Graphics/Multimedia Software,27 25 23,|
+,D6010.50,Customer Relationship Management Software,27 25 26,|
+,D6010.50,Operating System Software,27 25 29,|
+,D6010.50,Database Software,27 25 33,|
+D6010.60,D60,Data Communication Program and Integration Services,27 26 00,Includes: Custom programming and integration requirements. |
+,D6010.60,Virtual Private Network Software,27 25 37,|
+,D6010.60,Internet Conferencing Software,27 25 39,|
+,D6010.60,Web Development,27 26 13,|
+,D6010.60,Database Development,27 26 16,|
+,D6010.60,Application Development,27 26 19,|
+,D6010.60,Network Integration Requirements,27 26 23,|
+,D6010.60,Data Communications Integration Requirements,27 26 26,|
+D6020,,Voice Communications,27 30 00,Includes: Communications Supplementary Components as appropriate. |
+,D6020,Voice Communication Performance Requirements,01 86 29,|
+D6020.10,D60,Voice Communications Switching and Routing Equipment,27 31 00,Includes: Switching and routing equipment for voice communications. |
+,D6020.10,PDX/Key Systems,27 31 13,|
+,D6020.10,Internet Protocol Voice Switches,27 31 23,|
+D6020.20,D60,Voice Communications Terminal Equipment,27 32 00,Includes: Telephones and other equipment associated with use of telephone lines. |
+,D6020.20,Telephone Sets,27 32 13,|
+,D6020.20,Wireless Transceivers,27 32 16,|
+,D6020.20,Elevator Telephones,27 32 23,|
+,D6020.20,Ring-Down Emergency Telephones,27 32 26,|
+,D6020.20,Facsimiles and Modems,27 32 29,|
+,D6020.20,TTY equipment,27 32 36,|
+,D6020.20,Radio Communications Equipment,27 32 43,|
+D6020.30,D60,Voice Communications Messaging,27 33 00,"Includes: Voice mail, fax servers and other automated response systems. |"
+,D6020.30,Voice Mail and Auto Attendant,27 33 16,|
+,D6020.30,Interactive Voice Response,27 33 23,|
+,D6020.30,Facsimile Servers,27 33 26,|
+D6020.40,D60,Call Accounting,27 34 00,Includes: Hardware and software that facilitates call accounting. |
+,D6020.40,Toll Fraud Equipment and Software,27 34 13,|
+,D6020.40,Telemanagement Software,27 34 16,|
+D6020.50,D60,Call Management,27 35 00,Includes: Call center equipment and systems. |
+,D6020.50,Digital Voice Announcers,27 35 13,|
+,D6020.50,Automatic Call Distributors,27 35 16,|
+,D6020.50,Call Status and Management Displays,27 35 19,|
+,D6020.50,Dedicated 911 Systems,27 35 23,|
+D6030,,Audio-Video Communication,27 40 00,Includes: Communications Supplementary Components as appropriate. |
+,D6030,Audio-Video Communication Performance Requirements,01 86 29,|
+D6030.10,D60,Audio-Video Systems,27 41 00,Includes: Stand alone and integrated audio-video systems and equipment that generally support a single room or space in a facility with many components that function as one system. |
+,D6030.10,Architecturally Integrated Audio-Video Equipment,27 41 13,|
+,D6030.10,Integrated Audio-Video Systems and Equipment,27 41 16,|
+,D6030.10,Portable Audio-Video Equipment,27 41 19,|
+,D6030.10,Audio-Video Accessories,27 41 23,|
+,D6030.10,Master Antenna Television Systems,27 41 33,|
+,D6030.10,Audio-Video Conferencing,27 41 43,|
+D6030.50,D60,Electronic Digital Systems,27 42 00,"Includes: Hardware, software, and equipment for digital signage systems. |"
+,D6030.50,Point of Sale Systems,27 42 13,|
+,D6030.50,Transportation Information Display Systems,27 42 16,|
+,D6030.50,Public Information Systems,27 42 19,|
+D6060,,Distributed Communications and Monitoring,27 50 00,Includes: Communications Supplementary Components as appropriate. |
+,D6060,Distributed Communications and Monitoring Performance Requirements,01 86 29,|
+D6060.10,D60,Distributed Audio-Video Communications Systems,27 51 00,"Includes: Paging, public address, sound masking, and intercommunication systems what service all or part of a facility. |"
+,D6060.10,Paging Systems,27 51 13,|
+,D6060.10,Public Address and Mass Notification Systems,27 51 16,|
+,D6060.10,Sound Masking Systems,27 51 19,|
+,D6060.10,Intercommunications and Program Systems,27 51 23,|
+,D6060.10,Assistive Listening Systems,27 51 26,|
+D6060.30,D60,Healthcare Communications and Monitoring,27 52 00,Includes: Communications and monitoring systems for healthcare applications. |
+,D6060.30,Patient Monitoring and Telemetry Systems,27 52 13,|
+,D6060.30,Telemedicine Systems,27 52 16,|
+,D6060.30,Healthcare Imaging Systems,27 52 19,|
+,D6060.30,Nurse Call/Code Blue Systems,27 52 23,|
+D6060.50,D60,Distributed Systems,27 53 00,"Includes: Clocks, interior antenna systems, and tracking systems. |"
+,D6060.50,Clock Systems,27 53 13,|
+,D6060.50,Infrared and Radio Frequency Tracking Systems,27 53 16,|
+,D6060.50,"Internal Cellular, Paging, and Antenna Systems",27 53 19,|
+D6090,,Communications Supplementary Components,,|
+D6090.10,D60,Supplementary Components,,"Includes: Grounding and bonding, pathways, hanger and supports, conduits and back boxes, cable trays, utility poles, vibration and seismic controls, and identification, to be included in communications system elements above as appropriate. |"
+,D6090.10,Communications Metal Supports,05 45 19,|
+,D6090.10,Common Work Results for Communications,27 05 00,|
+,D6090.10,Grounding and Bonding,27 05 26,|
+,D6090.10,Pathways,27 05 28,|
+,D6090.10,Hangers and Supports,27 05 29,|
+,D6090.10,Conduits and Back Boxes,27 05 33,|
+,D6090.10,Cable Trays,27 05 36,|
+,D6090.10,Utility Poles,27 05 46,|
+,D6090.10,Vibration and Seismic Controls,27 05 48,|
+,D6090.10,Identification,27 05 53,|
+D70,,ELECTRONIC SAFETY AND SECURITY,28 00 00,|
+,D70,Electronic Safety and Security Performance Requirements,01 86 33,|
+D7010,,Access Control and Intrusion Detection,28 10 00,Includes: Electronic Safety and Security Supplementary Components as appropriate. |
+,D7010,Access Control and Intrusion Detection Performance Requirements,01 86 33,|
+D7010.10,D70,Access Control,28 13 00,Includes: Control and monitoring equipment and systems for controlling access to a facility. |
+,D7010.10,Access Control Hardware,08 74 00,|
+,D7010.10,Access Control Global Applications,28 13 13,|
+,D7010.10,Access Control Systems and Database Management,28 13 16,|
+,D7010.10,Access Control Systems Infrastructure,28 13 19,|
+,D7010.10,Access Control Remote Devices,28 13 26,|
+,D7010.10,Access Control Interfaces,28 13 33,|
+,D7010.10,Access Control Identification Management Systems,28 13 43,|
+,D7010.10,Security Access Detection,28 13 53,|
+,D7010.10,Access Control Vehicle Identification System,28 13 63,|
+D7010.50,D70,Intrusion Detection,28 16 00,"Includes: Hardware, software, and equipment for burglary systems and perimeter protection systems. |"
+,D7010.50,"Intrusion Detection Control, GUI and Logic Systems",28 16 13,|
+,D7010.50,Intrusion Detection Systems Infrastructure,28 16 16,|
+,D7010.50,Intrusion Detection Remote Devices and Sensors,28 16 19,|
+,D7010.50,Intrusion Detection Interfaces,28 16 33,|
+,D7010.50,Perimeter Security Systems,28 16 43,|
+D7030,,Electronic Surveillance,28 20 00,"Includes: Equipment for detecting and controlling access by persons to a facility site, building, or within a building. Includes Electronic Safety and Security Supplementary Components as appropriate. |"
+,D7030,Electronic Surveillance Performance Requirements,01 86 33,|
+D7030.10,D70,Video Surveillance,28 23 00,Includes: Closed circuit television equipment and systems including cameras and recording equipment. |
+,D7030.10,Video Surveillance Control and Management Systems,28 23 13,|
+,D7030.10,Video Surveillance Monitoring and Supervisory Interfaces,28 23 16,|
+,D7030.10,Digital Video Recorders and Analog Recording Devices,28 23 19,|
+,D7030.10,Video Surveillance Systems Infrastructure,28 23 23,|
+,D7030.10,Video Surveillance Remote Positioning Equipment,28 23 26,|
+,D7030.10,Video Surveillance Remote Devices and Sensors,28 23 29,|
+D7030.50,D70,Electronic Personal Protection,28 26 00,Includes: Systems and equipment that monitor and annunciate the need for assistance. |
+,D7030.50,Electronic Personal Safety Detection Systems,28 26 13,|
+,D7030.50,Electronic Personal Safety Alarm Annunciation and Control Systems,28 26 16,|
+,D7030.50,Electronic Personal Safety Interfaces to Remote Monitoring,28 26 19,|
+,D7030.50,Electronic Personal Safety Emergency Aid Devices,28 26 23,|
+D7050,,Detection and Alarm,28 30 00,"Includes: Equipment for detecting hazardous conditions in a building or on a facility site and communicating an alarm signal. Includes alarm devices, detection devices, safety switches, and associated items. Includes Electronic Safety and Security Supplementary Components as appropriate. |"
+,D7050,Detection and Alarm Performance Requirements,01 86 33,|
+D7050.10,D70,Fire Detection and Alarm,28 31 00,Includes: Monitoring and recording of fire protection devices and fire suppression systems; audio and/or visual warning systems for inhabitants of structures and for fire fighting authorities; activation of elevators and air handling systems to a predetermine fire mode; and other fire protection functions. |
+,D7050.10,Fire Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.10,"Digital, Addressable Fire-Alarm Systems",28 31 11,|
+,D7050.10,Zoned Fire-Alarm Systems,28 31 12,|
+,D7050.10,"Fire Detection and Alarm Control, GUI and Logic Systems",28 31 13,|
+,D7050.10,Fire Detection and Alarm Annunciation Panels and Fire Stations,28 31 23,|
+,D7050.10,Fire Detection and Alarm Interfaces,28 31 33,|
+,D7050.10,Fire Detection Sensors,28 31 43,|
+,D7050.10,Smoke Detection Sensors,28 31 46,|
+,D7050.10,Carbon-Monoxide Detection Sensors,28 31 49,|
+,D7050.10,Fire Alarm Initiating Devices,28 31 53,|
+,D7050.10,Fire Alarm Integrated Audio Visual Evacuation,28 31 63,|
+D7050.20,D70,Radiation Detection and Alarm,28 32 00,Includes: Systems and equipment for the detection and notification of radioactive presence. |
+,D7050.20,Radiation Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.20,"Radiation Detection and Alarm Control, GUI and Logic Systems",28 32 13,|
+,D7050.20,Radiation Detection and Alarm Integrated Audio Evacuation Systems,28 32 23,|
+,D7050.20,Radiation Detection Sensors,28 32 33,|
+,D7050.20,Radiation Dosimeters,28 32 43,|
+D7050.30,D70,Fuel-Gas Detection and Alarm,28 33 00,Includes: Systems and equipment for the detection and notification of fuel gas presence. |
+,D7050.30,Fuel-Gas Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.30,"Fuel-Gas Detection and Alarm Control, GUI and Logic Systems",28 33 13,|
+,D7050.30,Fuel-Gas Detection and Alarm Integrated Audio Evacuation Systems,28 33 23,|
+,D7050.30,Fuel-Gas Detection Sensors,28 33 33,|
+D7050.40,D70,Fuel-Oil Detection and Alarm,28 34 00,Includes: Systems and equipment for the detection and notification of fuel oil presence. |
+,D7050.40,Fuel-Oil Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.40,"Fuel-Oil Detection and Alarm Control, GUI and Logic Systems",28 34 13,|
+,D7050.40,Fuel-Oil Detection and Alarm Integrated Audio Evacuation Systems,28 34 23,|
+,D7050.40,Fuel-Oil Detection Sensors,28 34 33,|
+D7050.50,D70,Refrigeration Detection and Alarm,28 35 00,Includes: Systems and equipment for the detection and notification of refrigerant presence. |
+,D7050.50,Refrigeration Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.50,"Refrigeration Detection and Alarm Control, GUI and Logic Systems",28 35 13,|
+,D7050.50,Refrigeration Detection and Alarm Integrated Audio Evacuation Systems,28 35 23,|
+,D7050.50,Refrigeration Detection Sensors,28 35 33,|
+D7050.60,D70,Water Intrusion Detection and Alarm,28 36 00,Includes: Systems and equipment for the detection and notification of water presence. |
+,D7050.60,Water Intrusion Detection and Alarm Performance Requirements,01 86 33,|
+,D7050.60,"Water Detection and Alarm Control, GUI and Logic Systems",28 36 13,|
+,D7050.60,Water Detection Sensors,28 36 33,|
+D7070,,Electronic Monitoring and Control,28 46 00,Includes: Electronic Safety and Security Supplementary Components as appropriate. |
+,D7070,Electronic Monitoring and Control Performance Requirements,01 86 33,|
+D7070.10,D70,Electronic Detention Monitoring and Control,23 46 00,Includes: Electronic equipment and systems for detention applications. |
+,D7070.10,Hard-Wired Detention Monitoring and Control Systems,28 46 13,|
+,D7070.10,Relay-Logic Detention Monitoring and Control Systems,28 46 16,|
+,D7070.10,PLC Electronic Detention Monitoring and Control Systems,28 46 19,|
+,D7070.10,Computer-Based Detention Monitoring and Control Systems,28 46 23,|
+,D7070.10,Discreet-Logic Detention Monitoring and Control Systems,28 46 26,|
+,D7070.10,Discreet-Distributed Intelligence Detention Monitoring and Control Systems,28 46 29,|
+,D7070.10,Exterior Detention Windows: B2020.50.,,|
+,D7070.10,Exterior Detention Doors: B2050.40.,,|
+,D7070.10,Interior Detention Windows: C1020.50.,,|
+,D7070.10,Interior Detention Doors: C1030.70.,,|
+,D7070.10,Detention Equipment: E1040.70.,,|
+,D7070.10,Detention Furniture: E2050.30.,,|
+,D7070.10,Detention Cell Modules: F1010.10.,,|
+,D7070.10,Metal Detention Enclosures: F1010.50.,,|
+,D7070.10,Detention Project Procedures: Z1020.70.,,|
+D7090,,Electronic Safety and Security Supplementary Components,,|
+D7090.10,D70,Supplementary Components,,"Includes: Conductors and cables, grounding and bonding, pathways, vibration and seismic controls, and identification, to be included in electronic safety and security system elements above as appropriate. |"
+D80,,INTEGRATED AUTOMATION,25 00 00,|
+,D80,Integrated Automation Performance Requirements,01 86 23,|
+,D80,Starting and Adjusting: Z1070.40.,,|
+,D80,Demonstration and Training: Z1070.80.,,|
+D8010,,Integrated Automation Facility Controls,25 50 00,Includes: Hardware and/or software that allows the building automation system to monitor and control other facility equipment and systems. Includes Integrated Automation Supplementary Components as appropriate. |
+,D8010,Integrated Automation Facility Controls Performance Requirements,01 86 23,|
+D8010.10,D80,Integrated Automation Control of Equipment,25 51 00,|
+D8010.20,D80,Integrated Automation Control of Conveying Equipment,25 52 00,|
+D8010.30,D80,Integrated Automation Control of Fire-Suppression Systems,25 53 00,|
+D8010.40,D80,Integrated Automation Control of Plumbing Systems,25 54 00,|
+D8010.50,D80,Integrated Automation Control of HVAC Systems,25 55 00,|
+D8010.60,D80,Integrated Automation Control of Electrical Systems,25 56 00,|
+D8010.70,D80,Integrated Automation Control of Communication Systems,25 57 00,|
+D8010.80,D80,Integrated Automation Control of Electronic Safety and Security Systems,25 58 00,|
+D8010.90,D80,Integrated Automation Supplementary Components,,"Includes: Conductors and cables, grounding and bonding, pathways, vibration and seismic controls, and identification, to be included in integrated automation system elements above as appropriate. |"

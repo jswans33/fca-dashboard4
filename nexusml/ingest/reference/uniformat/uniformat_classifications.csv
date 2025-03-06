@@ -1,0 +1,171 @@
+UniFormat Code,UniFormat Title,MasterFormat Number,Description
+D10,CONVEYING,14 00 00,
+D1010,Vertical Conveying Systems,,
+D1010.10,Elevators,14 20 00,"Includes: Passenger and freight elevators of all types, including cars, enclosures, controls, safety equipment, hoistway equipment, and elevator machinery. Includes associated metal fabrications including pit ladders."
+D1010.20,Lifts,14 40 00,Includes: Vertical or inclined lifts and related equipment for a variety of purposes. Sidewalk lifts include doors.
+D1010.30,Escalators,14 31 00,"Includes: Passenger conveying systems composed of moving treads installed in inclined position including associated components, hardware, controls, safety equipment, and related items."
+D1010.50,Dumbwaiters,14 10 00,"Includes: Packaged and field assembled, motorized and hand- operated dumbwaiters including associated components for book lifts, cart lifts, and other applications. Systems include associated components, hardware, controls, and safety equipment."
+D1010.60,Moving Ramps,14 33 00,"Includes: Passenger conveying systems composed of moving belts installed in inclined position including associated components, hardware, controls, safety equipment, and related items."
+D1030,Horizontal Conveying,,
+D1030.10,Moving Walks,14 32 00,"Includes: Passenger conveying systems composed of moving belts installed in horizontal position including associated components, hardware, controls, safety equipment, and related items."
+D1030.30,Turntables,14 70 00,Includes: Structural turntables for various applications.
+D1030.50,Passenger Loading Bridges,34 77 13,Includes: Operating bridges for loading and unloading of passengers to and from aircraft and ships.
+D1030.70,People Movers,,
+D1050,Material Handling,,
+D1050.10,Cranes,41 22 13,"Includes: Hoisting towers, cranes, crane rails, and related accessories."
+D1050.20,Hoists,41 22 23,Includes: Manual and motor operated hoists and related accessories.
+D1050.30,Derricks,41 22 33,Includes: Manual and motor operated derricks and related accessories.
+D1050.40,Conveyors,41 21 00,"Includes: Automatic guided vehicles, conveyors, diverters, and chutes. Includes controls and accessories."
+D1050.50,Baggage Handling Equipment,34 77 16,"Includes: Operating equipment for handling, scanning, and weighing of baggage at terminals. Includes controls and accessories."
+D1050.60,Chutes,14 91 00,Includes: Chutes which support the operation of the building or structure.
+D1050.70,Pneumatic Tube Systems,14 92 00,Includes: Pneumatically operated tube system for the delivery of small items within a facility. Includes controls and accessories.
+D1080,Operable Access Systems,,
+D1080.10,Suspended Scaffolding,14 81 00,Includes: Suspended scaffolding when part of the completed project.
+D1080.20,Rope Climbers,14 82 00,Includes: Powered rope climbers to access exterior façade.
+D1080.30,Elevating Platforms,14 83 00,Includes: Fixed elevating platforms to provide a movable elevated working platform for people and materials.
+D1080.40,Powered Scaffolding,14 84 00,Includes: Powered scaffolding when part of the completed project.
+D1080.50,Building Envelope Access,,
+D20,PLUMBING,22 00 00,
+D2010,Domestic Water Distribution,22 11 00,Includes: Facility domestic water distribution system. Include Domestic Water Distribution Supplementary Components as appropriate.
+D2010.10,Facility Potable-Water Storage Tanks,22 12 00,"Includes: Tanks for storage of potable water serving a facility and located within, on, under, or closely associated with a structure."
+D2010.20,Domestic Water Equipment,,Includes: Equipment for domestic water distribution system.
+D2010.40,Domestic Water Piping,22 11 16,"Includes: Piping, valves, and specialties associated with domestic water distribution located within, under, or closely associated with a structure. Includes circulating pumps. May Include: Water service from the structure to the utility water service line."
+D2010.60,Plumbing Fixtures,22 40 00,"Includes: Terminal devices on the domestic water plumbing system. Includes rough-in piping, trim, fittings, and connection to vent piping."
+D2010.90,Domestic Water Distribution Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and"
+D2020,Sanitary Drainage,22 13 00,"Includes: Facility sanitary sewerage system located within, under, or closely associated with a structure. Include Sanitary Drainage Supplementary Components as appropriate."
+D2020.10,Sanitary Sewerage Equipment,,"Includes: Interceptor, separator, pumps, and septic tanks that are part of facility sanitary sewerage system."
+D2020.30,Sanitary Sewerage Piping,,Includes: Sanitary waste and vent piping system within and under structures. May Include: Sanitary piping from the structure to the utility sanitary sewer.
+D2020.90,Sanitary Drainage Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and control for plumbing to be included with sanitary drainage elements above as appropriate."
+D2030,Building Support Plumbing Systems,22 14 00,Includes: Facility stormwater drainage and gray water systems. Include Building Support Plumbing System Supplementary Components as appropriate.
+D2030.10,Stormwater Drainage Equipment,,"Includes: Drainage pumps, and sump pumps that are part of stormwater drainage system."
+D2030.20,Stormwater Drainage Piping,22 14 13,"Includes: Storm drainage piping system within, under, or closely associated with a structure. Includes storm drains for areas closely associated with a structure such as courtyards, plazas, and loading dock areas. May Include: Storm drainage piping from the structure to the utility storm drain."
+D2030.30,Facility Stormwater Drains,22 14 26,Includes: Various types of drains to collect storm water.
+D2030.60,Gray Water Systems,,"Includes: Systems to collect, treat, and distribute gray water for other uses such as irrigation."
+D2030.90,Building Support Plumbing System Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and control for plumbing to be included with building support plumbing system elements above as appropriate."
+D2050,General Service Compressed-Air,22 15 00,Includes: Compressed air system serving general service requirements
+D2060,Process Support Plumbing Systems,,Includes: Process Support Plumbing System Supplementary Components as appropriate.
+D2060.10,Compressed-Air Systems,22 61 00,Includes: Compressed-air systems for laboratory and healthcare purposes.
+D2060.20,Vacuum Systems,22 62 00,Includes: Vacuum systems for laboratory and healthcare purposes.
+D2060.30,Gas Systems,22 63 00,Includes: Gas systems for laboratory and healthcare purposes.
+D2060.40,Chemical-Waste Systems,22 66 00,Includes: Chemical-waste systems for laboratory and healthcare purposes.
+D2060.50,Processed Water Systems,22 67 00,Includes: Processed water systems for laboratory and healthcare purposes.
+D2060.90,Process Support Plumbing System Supplementary Components,,"Includes: Common work results for plumbing, plumbing insulation, and instrumentation and controls to be included with process support plumbing systems elements above as appropriate."
+D30,"HEATING, VENTILATION, AND AIR CONDITIONING (HVAC)",23 00 00,
+D3010,Facility Fuel Systems,23 10 00,"Includes: Fuel-oil, gasoline, natural-gas, and liquefied-petroleum fuel systems associated with a structure."
+D3010.10,Fuel Piping,23 11 00,"Includes: Fuel piping, valves, piping specialties, and other components within, under, or closely associated with a structure."
+D3010.30,Fuel Pumps,23 12 00,Includes: Fuel pumps within or closely associated with a structure.
+D3010.50,Fuel Storage Tanks,23 13 00,Includes: Fuel tanks under or closely associated with a structure.
+D3020,Heating Systems,,"Includes: Associated ductwork, piping, valves, and specialties. Includes: Heating System Supplementary Components as appropriate."
+D3020.10,Heat Generation,,"Includes: Boilers, furnaces, solar, geothermal, and biomass heat generation, fuel fired heaters, and heat exchangers."
+D3020.30,Thermal Heat Storage,23 71 13,Includes: Equipment to store thermal energy for use in heating and with charging or discharging this energy at a controllable rate.
+D3020.70,Decentralized Heating Equipment,23 80 00,Includes: Heating equipment that serves a portion of a HVAC system.
+D3020.90,Heating System Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in heating system elements above as appropriate."
+D3030,Cooling Systems,,"Includes: Associated ductwork, piping, valves, and specialties. Includes: Cooling System Supplementary Components as appropriate."
+D3030.10,Central Cooling,23 60 00,"Includes: Refrigerant compressors, condensers, packaged compressor and condenser units, water chillers, and cooling towers."
+D3030.30,Evaporative Air-Cooling,23 76 00,Includes: Equipment used to reject heat from the refrigeration process by evaporation.
+D3030.50,Thermal Cooling Storage,23 71 00,Includes: Equipment to store thermal energy for use in cooling and with charging or discharging this energy at a controllable rate.
+D3030.70,Decentralized Cooling,23 80 00,Includes: Cooling equipment that serves a portion of a HVAC system.
+D3030.90,Cooling System Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in cooling system elements above as appropriate."
+D3050,Facility HVAC Distribution Systems,,Includes: Facility Distribution Systems Supplementary Components as appropriate.
+D3050.10,Facility Hydronic Distribution,,"Includes: Piping systems and equipment for distribution of heating hot water and cooling chilled water. Includes piping systems, pumps, tanks, supports and anchors, vibration and seismic controls, identification, and piping and equipment insulation."
+D3050.30,Facility Steam Distribution,,"Includes: Piping systems and equipment for distribution of steam and condensate return. Includes piping systems, pumps, tanks, supports and anchors, vibration and seismic controls, identification, and piping and equipment insulation."
+D3050.50,HVAC Air Distribution,,"Includes: Systems for distribution of air including supply systems, return systems, and general exhaust systems. Does not include special exhaust systems such as kitchen hood, paint booth, and fume hood exhaust systems."
+D3050.90,Facility Distribution Systems Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in distribution system elements above as appropriate."
+D3060,Ventilation,,"Includes: Supply air, return air, exhaust air, outside air, and air cleaning systems. Includes Ventilation Supplementary Components as appropriate."
+D3060.10,Supply Air,,
+D3060.20,Return Air,,
+D3060.30,Exhaust Air,,
+D3060.40,Outside Air,,
+D3060.60,Air-to-Air Energy Recovery,23 72 00,Includes: Air-to-air energy recovery units.
+D3060.70,HVAC Air Cleaning,23 40 00,
+D3060.90,Ventilation Supplementary Components,,"Includes: Common work results for HVAC, insulation, and instrumentation and control to be included in ventilation elements above as appropriate."
+D3070,Special Purpose HVAC Systems,,
+D3070.10,Snow Melting,,Includes: Electric cables and hydronic piping used for snow and ice control.
+D4010,Fire Suppression,21 00 00,Includes: Fire Suppression Supplementary Components as appropriate.
+D4010.10,Water-Based Fire-Suppression,21 10 00,"Includes: Systems that use water for fire extinguishing and suppression. Includes piping, fittings, and specialties; hoses, valves, cabinets; fire pumps, accessories, and controls."
+D4010.50,Fire-Extinguishing,21 20 00,"Includes: Systems that use other than water for fire extinguishing and suppression. Includes piping, fittings, and specialties; valves, accessories, and controls."
+D4010.90,Fire Suppression Supplementary Components,,"Includes: Expansion fittings and loops, meters and gages, general-duty valves, hanger and supports, heat tracing, vibration and seismic controls, identification, insulation, and instrumentation and control to be included in fire protection elements above as appropriate."
+D4030,Fire Protection Specialties,10 44 00,Includes: Fire fighting devices and storage cabinets except devices connected to a fire suppression system.
+D4030.10,Fire Protection Cabinets,10 44 13,
+D4030.30,Fire Extinguishers,10 44 16,
+D4030.50,Breathing Air Replenishment Systems,10 44 33,
+D4030.70,Fire Extinguisher Accessories,10 44 43,
+D50,ELECTRICAL,26 00 00,
+D5010,Facility Power Generation,,
+D5010.10,Packaged Generator Assemblies,26 32 00,"Includes: Generator, frequency changers, and rotary converters and uninterruptible power units."
+D5010.20,Battery Equipment,26 33 00,"Includes: Batteries, battery racks, battery chargers, static power converters, uninterruptible power supplies, and accessories."
+D5010.30,Photovoltaic Collectors,26 31 00,Includes: Solar cells to convert sunlight to electricity.
+D5010.40,Fuel Cells,48 18 00,Includes: Fuel cell electricity generating equipment.
+D5010.60,Power Filtering and Conditioning,26 35 00,"Includes: Capacitors, chokes and inductors, filters, power factor controllers, and voltage regulators."
+D5010.70,Transfer Switches,26 36 00,Includes: Switches that transfer from one source of electricity to another.
+D5010.90,Facility Power Generation Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceway and boxes, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in power generation system elements above as appropriate."
+D5020,Electrical Service and Distribution,,Includes: Electrical Service and Distribution Supplementary Components as appropriate.
+D5020.10,Electrical Service,26 21 00,"Includes: Includes meters, substations, transformers, switchgear, switchboards, and protective devices where electrical power enters structure."
+D5020.30,Power Distribution,26 20 00,"Includes: Bus assemblies, distribution equipment, and electrical wiring system to distribute electrical power to switchboards, panelboards, and motor control centers."
+D5020.70,Facility Grounding,26 05 26,Includes: Raceways and wiring to ground and bond electrical distribution system.
+D5020.90,Electrical Service and Distribution Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, utility poles, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in electrical service and distribution system elements above as appropriate."
+D5030,General Purpose Electrical Power,,Includes: General Purpose Electrical Power Supplementary Components as appropriate.
+D5030.10,Branch Wiring System,,"Includes: Raceways, ducts, cable trays, and wiring to deliver power from branch panelboards to point of use."
+D5030.50,Wiring Devices,26 27 26,Includes: Electrical devices at point of use including electrical outlets and switches.
+D5030.90,General Purpose Electrical Power Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in general purpose electrical power elements above as appropriate."
+D5040,Lighting,26 50 00,Includes: Lighting Supplementary Components as appropriate.
+D5040.10,Lighting Control,26 09 23,"Includes: Clock and calendar, photoelectric switches, occupancy sensors, and light-leveling control devices."
+D5040.20,Branch Wiring for Lighting,,"Includes: Raceways, ducts, cable trays, and wiring beyond branch circuit panelboards to lighting fixtures."
+D5040.50,Lighting Fixtures,26 50 00,"Includes: Luminaries, lighting equipment, ballasts, and accessories. Includes fluorescent, high intensity discharge, incandescent, mercury vapor, neon, and sodium vapor lighting."
+D5040.90,Lighting Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in lighting system elements above as appropriate."
+D5080,Miscellaneous Electrical Systems,,Includes: Miscellaneous Electrical Systems Supplementary Components as appropriate.
+D5080.10,Lightning Protection,26 41 00,Includes: Wiring and equipment for lightning protection.
+D5080.40,Cathodic Protection,26 42 00,Includes: Equipment and controls for cathodic protection of structures and underground metal construction and piping.
+D5080.70,Transient Voltage Suppression,26 43 00,Includes: Devices to protect against voltage surges on electrical distribution systems.
+D5080.90,Miscellaneous Electrical Systems Supplementary Components,,"Includes: Grounding and bonding, hanger and supports, raceways and boxes, cable trays, vibration and seismic controls, identification, wiring connectors, and instrumentation and control to be included in miscellaneous electrical system elements above as appropriate."
+D60,COMMUNICATIONS,27 00 00,
+D6010,Data Communications,27 20 00,Includes: Communications Supplementary Components as appropriate.
+D6010.10,Data Communications Network Equipment,27 21 00,Includes: Switching and routing equipment for data communications.
+D6010.20,Data Communications Hardware,27 22 00,Includes: Computer equipment for data communications.
+D6010.30,Data Communications Peripheral Data Equipment,27 24 00,Includes: Additional equipment for data communications.
+D6010.50,Data Communications Software,27 25 00,Includes: Software for data communications.
+D6010.60,Data Communication Program and Integration Services,27 26 00,Includes: Custom programming and integration requirements.
+D6020,Voice Communications,27 30 00,Includes: Communications Supplementary Components as appropriate.
+D6020.10,Voice Communications Switching and Routing Equipment,27 31 00,Includes: Switching and routing equipment for voice communications.
+D6020.20,Voice Communications Terminal Equipment,27 32 00,Includes: Telephones and other equipment associated with use of telephone lines.
+D6020.30,Voice Communications Messaging,27 33 00,"Includes: Voice mail, fax servers and other automated response systems."
+D6020.40,Call Accounting,27 34 00,Includes: Hardware and software that facilitates call accounting.
+D6020.50,Call Management,27 35 00,Includes: Call center equipment and systems.
+D6030,Audio-Video Communication,27 40 00,Includes: Communications Supplementary Components as appropriate.
+D6030.10,Audio-Video Systems,27 41 00,Includes: Stand alone and integrated audio-video systems and equipment that generally support a single room or space in a facility with many components that function as one system.
+D6030.50,Electronic Digital Systems,27 42 00,"Includes: Hardware, software, and equipment for digital signage systems."
+D6060,Distributed Communications and Monitoring,27 50 00,Includes: Communications Supplementary Components as appropriate.
+D6060.10,Distributed Audio-Video Communications Systems,27 51 00,"Includes: Paging, public address, sound masking, and intercommunication systems what service all or part of a facility."
+D6060.30,Healthcare Communications and Monitoring,27 52 00,Includes: Communications and monitoring systems for healthcare applications.
+D6060.50,Distributed Systems,27 53 00,"Includes: Clocks, interior antenna systems, and tracking systems."
+D6090,Communications Supplementary Components,,
+D6090.10,Supplementary Components,,"Includes: Grounding and bonding, pathways, hanger and supports, conduits and back boxes, cable trays, utility poles, vibration and seismic controls, and identification, to be included in communications system elements above as appropriate."
+D70,ELECTRONIC SAFETY AND SECURITY,28 00 00,
+D7010,Access Control and Intrusion Detection,28 10 00,Includes: Electronic Safety and Security Supplementary Components as appropriate.
+D7010.10,Access Control,28 13 00,Includes: Control and monitoring equipment and systems for controlling access to a facility.
+D7010.50,Intrusion Detection,28 16 00,"Includes: Hardware, software, and equipment for burglary systems and perimeter protection systems."
+D7030,Electronic Surveillance,28 20 00,"Includes: Equipment for detecting and controlling access by persons to a facility site, building, or within a building. Includes Electronic Safety and Security Supplementary Components as appropriate."
+D7030.10,Video Surveillance,28 23 00,Includes: Closed circuit television equipment and systems including cameras and recording equipment.
+D7030.50,Electronic Personal Protection,28 26 00,Includes: Systems and equipment that monitor and annunciate the need for assistance.
+D7050,Detection and Alarm,28 30 00,"Includes: Equipment for detecting hazardous conditions in a building or on a facility site and communicating an alarm signal. Includes alarm devices, detection devices, safety switches, and associated items. Includes Electronic Safety and Security Supplementary Components as appropriate."
+D7050.10,Fire Detection and Alarm,28 31 00,Includes: Monitoring and recording of fire protection devices and fire suppression systems; audio and/or visual warning systems for inhabitants of structures and for fire fighting authorities; activation of elevators and air handling systems to a predetermine fire mode; and other fire protection functions.
+D7050.20,Radiation Detection and Alarm,28 32 00,Includes: Systems and equipment for the detection and notification of radioactive presence.
+D7050.30,Fuel-Gas Detection and Alarm,28 33 00,Includes: Systems and equipment for the detection and notification of fuel gas presence.
+D7050.40,Fuel-Oil Detection and Alarm,28 34 00,Includes: Systems and equipment for the detection and notification of fuel oil presence.
+D7050.50,Refrigeration Detection and Alarm,28 35 00,Includes: Systems and equipment for the detection and notification of refrigerant presence.
+D7050.60,Water Intrusion Detection and Alarm,28 36 00,Includes: Systems and equipment for the detection and notification of water presence.
+D7070,Electronic Monitoring and Control,28 46 00,Includes: Electronic Safety and Security Supplementary Components as appropriate.
+D7070.10,Electronic Detention Monitoring and Control,23 46 00,Includes: Electronic equipment and systems for detention applications.
+D7090,Electronic Safety and Security Supplementary Components,,
+D7090.10,Supplementary Components,,"Includes: Conductors and cables, grounding and bonding, pathways, vibration and seismic controls, and identification, to be included in electronic safety and security system elements above as appropriate."
+D80,INTEGRATED AUTOMATION,25 00 00,
+D8010,Integrated Automation Facility Controls,25 50 00,Includes: Hardware and/or software that allows the building automation system to monitor and control other facility equipment and systems. Includes Integrated Automation Supplementary Components as appropriate.
+D8010.10,Integrated Automation Control of Equipment,25 51 00,
+D8010.20,Integrated Automation Control of Conveying Equipment,25 52 00,
+D8010.30,Integrated Automation Control of Fire-Suppression Systems,25 53 00,
+D8010.40,Integrated Automation Control of Plumbing Systems,25 54 00,
+D8010.50,Integrated Automation Control of HVAC Systems,25 55 00,
+D8010.60,Integrated Automation Control of Electrical Systems,25 56 00,
+D8010.70,Integrated Automation Control of Communication Systems,25 57 00,
+D8010.80,Integrated Automation Control of Electronic Safety and Security Systems,25 58 00,
+D8010.90,Integrated Automation Supplementary Components,,"Includes: Conductors and cables, grounding and bonding, pathways, vibration and seismic controls, and identification, to be included in integrated automation system elements above as appropriate."

@@ -15,7 +15,7 @@ paths:
 
 # File patterns for finding reference data files
 file_patterns:
-  omniclass: '*.xlsx'
+  omniclass: '*.csv'
   uniformat: '*.csv'
   masterformat: '*.csv'
   mcaa_glossary: 'Glossary.csv'
@@ -28,9 +28,9 @@ file_patterns:
 # Column mappings for standardizing reference data
 column_mappings:
   omniclass:
-    code: 'OmniClass Number'
-    name: 'OmniClass Title'
-    description: 'Definition'
+    code: 'OmniClass_Code'
+    name: 'OmniClass_Title'
+    description: 'Description'
   uniformat:
     code: 'UniFormat Code'
     name: 'UniFormat Title'

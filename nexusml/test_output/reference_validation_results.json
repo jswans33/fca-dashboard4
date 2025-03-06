@@ -1,17 +1,32 @@
 {
   "omniclass": {
-    "loaded": false,
-    "issues": [
-      "Data not loaded"
-    ],
-    "stats": {}
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "row_count": 21706,
+      "column_count": 3,
+      "columns": [
+        "code",
+        "name",
+        "description"
+      ]
+    }
   },
   "uniformat": {
-    "loaded": false,
+    "loaded": true,
     "issues": [
-      "Data not loaded"
+      "Column 'description' has 34 null values"
     ],
-    "stats": {}
+    "stats": {
+      "row_count": 170,
+      "column_count": 4,
+      "columns": [
+        "code",
+        "name",
+        "MasterFormat Number",
+        "description"
+      ]
+    }
   },
   "masterformat": {
     "loaded": false,
@@ -39,11 +54,13 @@
     }
   },
   "smacna": {
-    "loaded": false,
-    "issues": [
-      "Data not loaded"
-    ],
-    "stats": {}
+    "loaded": true,
+    "issues": [],
+    "stats": {
+      "manufacturer_count": 1452,
+      "valid_entries": 1452,
+      "avg_products_per_manufacturer": 1.6101928374655647
+    }
   },
   "ashrae": {
     "loaded": false,
