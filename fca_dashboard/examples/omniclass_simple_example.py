@@ -14,7 +14,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import pandas as pd
 
-from fca_dashboard.generator.omniclass import extract_omniclass_data
+# Import from the compatibility layer
+from fca_dashboard.generator import extract_omniclass_data
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
     
     # Define input and output paths
     input_dir = "files/omniclass_tables"
-    output_file = "fca_dashboard/generator/ingest/omniclass.csv"
+    output_file = "nexusml/ingest/generator/data/omniclass.csv"
     
     print(f"Input directory: {input_dir}")
     print(f"Output file: {output_file}")

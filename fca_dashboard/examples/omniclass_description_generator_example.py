@@ -31,11 +31,15 @@ from dotenv import load_dotenv
 # Add the project root to the Python path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from fca_dashboard.generator.omniclass_description_generator import (
+# Import from the compatibility layer
+from fca_dashboard.generator import (
     generate_descriptions, ApiClientError, DescriptionGeneratorError,
-    OmniClassDescriptionGenerator, AnthropicClient,
-    DEFAULT_INPUT_FILE, DEFAULT_OUTPUT_FILE
+    OmniClassDescriptionGenerator, AnthropicClient
 )
+
+# Update default paths to use nexusml
+DEFAULT_INPUT_FILE = "nexusml/ingest/generator/data/omniclass.csv"
+DEFAULT_OUTPUT_FILE = "nexusml/ingest/generator/data/omniclass_with_descriptions.csv"
 from fca_dashboard.utils.path_util import resolve_path
 from fca_dashboard.utils.logging_config import get_logger, configure_logging
 from fca_dashboard.config.settings import settings

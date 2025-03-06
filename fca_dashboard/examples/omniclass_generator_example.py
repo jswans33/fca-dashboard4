@@ -16,7 +16,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import pandas as pd
 
 from fca_dashboard.config.settings import settings
-from fca_dashboard.generator.omniclass import extract_omniclass_data
+# Import from the compatibility layer
+from fca_dashboard.generator import extract_omniclass_data
 from fca_dashboard.utils.env_utils import get_env_var, ENV_VAR_NAME
 from fca_dashboard.utils.path_util import get_root_dir, resolve_path
 from fca_dashboard.utils.logging_config import get_logger
@@ -203,7 +204,7 @@ def extract_all_omniclass_data():
     
     # Extract OmniClass data using the generator
     input_dir = settings.get("generator.omniclass.input_dir", "files/omniclass_tables")
-    output_file = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/unified_training_data.csv")
+    output_file = settings.get("generator.omniclass.output_file", "nexusml/ingest/generator/data/unified_training_data.csv")
     file_pattern = settings.get("generator.omniclass.file_pattern", "*.xlsx")
     
     # Get column mapping from settings
@@ -425,7 +426,7 @@ def main():
     combined_df = extract_all_omniclass_data()
     
     # Show the path to the output file
-    output_path = settings.get("generator.omniclass.output_file", "fca_dashboard/generator/ingest/unified_training_data.csv")
+    output_path = settings.get("generator.omniclass.output_file", "nexusml/ingest/generator/data/unified_training_data.csv")
     output_file = resolve_path(output_path)
     
     logger.info(f"Unified training data saved to: {output_file}")
