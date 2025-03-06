@@ -5,7 +5,6 @@ This module provides utilities for extracting OmniClass data from Excel files
 and generating a unified CSV file for classifier training.
 """
 
-import glob
 import os
 from pathlib import Path
 from typing import Dict, List, Optional, Union
@@ -13,12 +12,18 @@ from typing import Dict, List, Optional, Union
 import pandas as pd
 import yaml
 
-
-# Define a custom error class for data cleaning
-class DataCleaningError(Exception):
-    """Exception raised for errors during data cleaning."""
-
-    pass
+# Import utility functions from nexusml.utils
+from nexusml.utils.excel_utils import (
+    DataCleaningError,
+    clean_dataframe,
+    extract_excel_with_config,
+    find_flat_sheet,
+    get_logger,
+    get_sheet_names,
+    normalize_sheet_names,
+    resolve_path,
+    standardize_column_names,
+)
 
 
 # Load settings from config file if available
@@ -37,7 +42,11 @@ def load_settings():
             return settings
         except ImportError:
             # Not running in fca_dashboard context, load from local config
-            config_path = Path(__file__).resolve().parent.parent.parent / "config" / "settings.yml"
+            config_path = (
+                Path(__file__).resolve().parent.parent.parent
+                / "config"
+                / "settings.yml"
+            )
             if config_path.exists():
                 with open(config_path, "r") as file:
                     return yaml.safe_load(file)
@@ -49,101 +58,6 @@ def load_settings():
 
 # Initialize settings
 settings = load_settings()
-
-# Import utilities if available, otherwise define minimal versions
-try:
-    from fca_dashboard.utils.data_cleaning_utils import clean_dataframe, standardize_column_names
-    from fca_dashboard.utils.excel import analyze_excel_structure, extract_excel_with_config, get_sheet_names
-    from fca_dashboard.utils.excel.sheet_utils import normalize_sheet_names
-    from fca_dashboard.utils.logging_config import get_logger
-    from fca_dashboard.utils.path_util import get_root_dir, resolve_path
-except ImportError:
-    # Define minimal versions of required functions
-    def get_logger(name):
-        """Simple logger function."""
-        import logging
-
-        logging.basicConfig(level=logging.INFO)
-        return logging.getLogger(name)
-
-    def resolve_path(path):
-        """Resolve a path to an absolute path."""
-        if isinstance(path, str):
-            path = Path(path)
-        return path.resolve()
-
-    def get_sheet_names(file_path):
-        """Get sheet names from an Excel file."""
-        import pandas as pd
-
-        return pd.ExcelFile(file_path).sheet_names
-
-    def extract_excel_with_config(file_path, config):
-        """Extract data from Excel file using a configuration."""
-        import pandas as pd
-
-        result = {}
-        for sheet_name, sheet_config in config.items():
-            header_row = sheet_config.get("header_row", 0)
-            df = pd.read_excel(file_path, sheet_name=sheet_name, header=header_row)
-
-            if sheet_config.get("drop_empty_rows", False):
-                df = df.dropna(how="all")
-
-            if sheet_config.get("strip_whitespace", False):
-                for col in df.select_dtypes(include=["object"]).columns:
-                    df[col] = df[col].str.strip()
-
-            result[sheet_name] = df
-        return result
-
-    def normalize_sheet_names(file_path):
-        """Normalize sheet names in an Excel file."""
-        sheet_names = get_sheet_names(file_path)
-        return {name: name.lower().replace(" ", "_") for name in sheet_names}
-
-    def clean_dataframe(df, is_omniclass=False):
-        """Clean a DataFrame."""
-        # Basic cleaning
-        df = df.copy()
-
-        # Drop completely empty rows
-        df = df.dropna(how="all")
-
-        # Handle OmniClass specific cleaning
-        if is_omniclass:
-            # Look for common OmniClass column names
-            for col in df.columns:
-                if "number" in col.lower():
-                    df.rename(columns={col: "OmniClass_Code"}, inplace=True)
-                elif "title" in col.lower():
-                    df.rename(columns={col: "OmniClass_Title"}, inplace=True)
-                elif "definition" in col.lower():
-                    df.rename(columns={col: "Description"}, inplace=True)
-
-        return df
-
-    def standardize_column_names(df, column_mapping=None):
-        """Standardize column names in a DataFrame."""
-        if column_mapping:
-            df = df.rename(columns={v: k for k, v in column_mapping.items()})
-        return df
-
-
-def find_flat_sheet(sheet_names: List[str]) -> Optional[str]:
-    """
-    Find the sheet name that contains 'FLAT' in it.
-
-    Args:
-        sheet_names: List of sheet names to search through.
-
-    Returns:
-        The name of the sheet containing 'FLAT', or None if not found.
-    """
-    for sheet in sheet_names:
-        if "FLAT" in sheet.upper():
-            return sheet
-    return None
 
 
 def extract_omniclass_data(
@@ -172,7 +86,11 @@ def extract_omniclass_data(
 
     # Use settings if parameters are not provided
     if input_dir is None:
-        input_dir = settings.get("generator", {}).get("omniclass", {}).get("input_dir", "files/omniclass_tables")
+        input_dir = (
+            settings.get("generator", {})
+            .get("omniclass", {})
+            .get("input_dir", "files/omniclass_tables")
+        )
 
     if output_file is None:
         output_file = (
@@ -182,8 +100,15 @@ def extract_omniclass_data(
         )
 
     # Resolve paths
-    input_dir = resolve_path(input_dir)
-    output_file = resolve_path(output_file)
+    if input_dir is not None:
+        input_dir = resolve_path(input_dir)
+    else:
+        input_dir = Path("files/omniclass_tables").resolve()
+
+    if output_file is not None:
+        output_file = resolve_path(output_file)
+    else:
+        output_file = Path("nexusml/ingest/generator/data/omniclass.csv").resolve()
 
     logger.info(f"Extracting OmniClass data from {input_dir}")
 
@@ -197,7 +122,9 @@ def extract_omniclass_data(
     file_paths = list(input_dir.glob(file_pattern))
 
     if not file_paths:
-        error_msg = f"No Excel files found in {input_dir} matching pattern {file_pattern}"
+        error_msg = (
+            f"No Excel files found in {input_dir} matching pattern {file_pattern}"
+        )
         logger.error(error_msg)
         raise ValueError(error_msg)
 
@@ -263,13 +190,19 @@ def extract_omniclass_data(
                     if extracted_data:
                         sheet_name = list(extracted_data.keys())[0]
                         df = extracted_data[sheet_name]
-                        logger.warning(f"Could not find sheet '{flat_sheet}', using '{sheet_name}' instead")
+                        logger.warning(
+                            f"Could not find sheet '{flat_sheet}', using '{sheet_name}' instead"
+                        )
                     else:
-                        logger.warning(f"Failed to extract data from {flat_sheet} in {file_path.name}")
+                        logger.warning(
+                            f"Failed to extract data from {flat_sheet} in {file_path.name}"
+                        )
                         continue
 
             if df is None:
-                logger.warning(f"Failed to extract data from {flat_sheet} in {file_path.name}")
+                logger.warning(
+                    f"Failed to extract data from {flat_sheet} in {file_path.name}"
+                )
                 continue
 
             try:
@@ -281,13 +214,19 @@ def extract_omniclass_data(
                 cleaned_df["source_file"] = file_path.name
 
                 # Add table number from filename (e.g., OmniClass_22_2020-08-15_2022.xlsx -> 22)
-                table_number = file_path.stem.split("_")[1] if len(file_path.stem.split("_")) > 1 else ""
+                table_number = (
+                    file_path.stem.split("_")[1]
+                    if len(file_path.stem.split("_")) > 1
+                    else ""
+                )
                 cleaned_df["table_number"] = table_number
 
                 # Append to the list of dataframes
                 all_data.append(cleaned_df)
 
-                logger.info(f"Cleaned and extracted {len(cleaned_df)} rows from {file_path.name}")
+                logger.info(
+                    f"Cleaned and extracted {len(cleaned_df)} rows from {file_path.name}"
+                )
             except DataCleaningError as e:
                 logger.warning(f"Error cleaning data from {file_path.name}: {str(e)}")
                 continue
@@ -310,7 +249,14 @@ def extract_omniclass_data(
     column_mapping = (
         settings.get("generator", {})
         .get("omniclass", {})
-        .get("column_mapping", {"Number": "OmniClass_Code", "Title": "OmniClass_Title", "Definition": "Description"})
+        .get(
+            "column_mapping",
+            {
+                "Number": "OmniClass_Code",
+                "Title": "OmniClass_Title",
+                "Definition": "Description",
+            },
+        )
     )
 
     # Standardize column names if needed
@@ -332,15 +278,30 @@ def main():
     """
     import argparse
 
-    parser = argparse.ArgumentParser(description="Extract OmniClass data from Excel files")
-    parser.add_argument("--input-dir", type=str, help="Directory containing OmniClass Excel files")
-    parser.add_argument("--output-file", type=str, help="Path to save the output CSV file")
-    parser.add_argument("--file-pattern", type=str, default="*.xlsx", help="Pattern to match Excel files")
+    parser = argparse.ArgumentParser(
+        description="Extract OmniClass data from Excel files"
+    )
+    parser.add_argument(
+        "--input-dir", type=str, help="Directory containing OmniClass Excel files"
+    )
+    parser.add_argument(
+        "--output-file", type=str, help="Path to save the output CSV file"
+    )
+    parser.add_argument(
+        "--file-pattern",
+        type=str,
+        default="*.xlsx",
+        help="Pattern to match Excel files",
+    )
 
     args = parser.parse_args()
 
     # Extract OmniClass data
-    extract_omniclass_data(input_dir=args.input_dir, output_file=args.output_file, file_pattern=args.file_pattern)
+    extract_omniclass_data(
+        input_dir=args.input_dir,
+        output_file=args.output_file,
+        file_pattern=args.file_pattern,
+    )
 
 
 if __name__ == "__main__":

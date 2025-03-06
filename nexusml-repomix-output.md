@@ -1,35 +1,45 @@
-This file is a merged representation of a subset of the codebase, containing specifically included files and files not matching ignore patterns, combined into a single document by Repomix.
-The content has been processed where content has been formatted for parsing in markdown style.
+This file is a merged representation of a subset of the codebase, containing
+specifically included files and files not matching ignore patterns, combined
+into a single document by Repomix. The content has been processed where content
+has been formatted for parsing in markdown style.
 
 # File Summary
 
 ## Purpose
+
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
 
 ## File Format
+
 The content is organized as follows:
+
 1. This summary section
 2. Repository information
 3. Directory structure
-4. Multiple file entries, each consisting of:
-  a. A header with the file path (## File: path/to/file)
-  b. The full contents of the file in a code block
+4. Multiple file entries, each consisting of: a. A header with the file path (##
+   File: path/to/file) b. The full contents of the file in a code block
 
 ## Usage Guidelines
+
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
-- When processing this file, use the file path to distinguish
-  between different files in the repository.
-- Be aware that this file may contain sensitive information. Handle it with
-  the same level of security as you would the original repository.
+- When processing this file, use the file path to distinguish between different
+  files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with the
+  same level of security as you would the original repository.
 
 ## Notes
-- Some files may have been excluded based on .gitignore rules and Repomix's configuration
-- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+
+- Some files may have been excluded based on .gitignore rules and Repomix's
+  configuration
+- Binary files are not included in this packed representation. Please refer to
+  the Repository Structure section for a complete list of file paths, including
+  binary files
 - Only files matching these patterns are included: nexusml/
-- Files matching these patterns are excluded: nexusml/ingest/data/**, nexusml/docs
+- Files matching these patterns are excluded: nexusml/ingest/data/**,
+  nexusml/docs, nexusml/output/**, nexusml/core/deprecated/\*\*
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Content has been formatted for parsing in markdown style
@@ -37,17 +47,17 @@ The content is organized as follows:
 ## Additional Info
 
 # Directory Structure
+
 ```
 nexusml/__init__.py
 nexusml/config/__init__.py
 nexusml/config/.repomixignore
+nexusml/config/feature_config.yml
 nexusml/config/mappings/masterformat_equipment.json
 nexusml/config/mappings/masterformat_primary.json
 nexusml/config/repomix.config.json
 nexusml/core/__init__.py
 nexusml/core/data_preprocessing.py
-nexusml/core/deprecated/model_copy.py
-nexusml/core/deprecated/model_smote.py
 nexusml/core/evaluation.py
 nexusml/core/feature_engineering.py
 nexusml/core/model_building.py
@@ -55,11 +65,16 @@ nexusml/core/model.py
 nexusml/examples/__init__.py
 nexusml/examples/advanced_example.py
 nexusml/examples/common.py
+nexusml/examples/feature_engineering_example.py
 nexusml/examples/omniclass_generator_example.py
+nexusml/examples/omniclass_hierarchy_example.py
 nexusml/examples/simple_example.py
 nexusml/ingest/__init__.py
 nexusml/ingest/generator/__init__.py
 nexusml/ingest/generator/omniclass_description_generator.py
+nexusml/ingest/generator/omniclass_example.py
+nexusml/ingest/generator/omniclass_hierarchy.py
+nexusml/ingest/generator/omniclass_tree.py
 nexusml/ingest/generator/omniclass.py
 nexusml/ingest/generator/README.md
 nexusml/pyproject.toml
@@ -73,14 +88,16 @@ nexusml/tests/unit/__init__.py
 nexusml/tests/unit/test_generator.py
 nexusml/tests/unit/test_pipeline.py
 nexusml/utils/__init__.py
+nexusml/utils/csv_utils.py
 nexusml/utils/logging.py
 nexusml/utils/verification.py
 ```
 
 # Files
 
-## File: nexusml/__init__.py
-````python
+## File: nexusml/**init**.py
+
+```python
 """
 NexusML - Modern machine learning classification engine
 """
@@ -103,10 +120,11 @@ __all__ = [
     "BatchProcessor",
     "AnthropicClient",
 ]
-````
+```
 
-## File: nexusml/config/__init__.py
-````python
+## File: nexusml/config/**init**.py
+
+```python
 """
 Centralized Configuration Module for NexusML
 
@@ -116,7 +134,7 @@ handling both standalone usage and integration with fca_dashboard.
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, cast
+from typing import Any, Dict, Union, cast
 
 import yaml
 
@@ -270,10 +288,11 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
             return default
 
     return current
-````
+```
 
 ## File: nexusml/config/.repomixignore
-````
+
+```
 # Add patterns to ignore here, one per line
 # Example:
 # *.log
@@ -281,10 +300,59 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
 
 
 .csv
-````
+```
+
+## File: nexusml/config/feature_config.yml
+
+```yaml
+text_combinations:
+  - name: 'combined_text'
+    columns:
+      [
+        'Asset Category',
+        'Equip Name ID',
+        'Sub System Type',
+        'Sub System ID',
+        'Title',
+        'Precon System',
+        'Operations System',
+        'Sub System Class',
+        'Drawing Abbreviation',
+      ]
+    separator: ' '
+
+  - name: 'size_feature'
+    columns: ['Equipment Size', 'Unit']
+    separator: ' '
+
+numeric_columns:
+  - name: 'Service Life'
+    new_name: 'service_life'
+    fill_value: 0
+    dtype: 'float'
+
+hierarchies:
+  - new_col: 'Equipment_Type'
+    parents: ['Asset Category', 'Equip Name ID']
+    separator: '-'
+  - new_col: 'System_Subtype'
+    parents: ['Precon System', 'Operations System']
+    separator: '-'
+
+column_mappings:
+  - source: 'Asset Category'
+    target: 'Equipment_Category'
+  - source: 'System Type ID'
+    target: 'Uniformat_Class'
+  - source: 'Precon System'
+    target: 'System_Type'
+  - source: 'Equip Name ID'
+    target: 'Equipment_Subcategory'
+```
 
 ## File: nexusml/config/mappings/masterformat_equipment.json
-````json
+
+```json
 {
   "Heat Exchanger": "23 57 00",
   "Water Softener": "22 31 00",
@@ -302,10 +370,11 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
   "Polishing System": "23 25 00",
   "Ozone Generator": "22 67 00"
 }
-````
+```
 
 ## File: nexusml/config/mappings/masterformat_primary.json
-````json
+
+```json
 {
   "H": {
     "Chiller Plant": "23 64 00",
@@ -325,10 +394,11 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
     "SM Equipment": "23 30 00"
   }
 }
-````
+```
 
 ## File: nexusml/config/repomix.config.json
-````json
+
+```json
 {
   "output": {
     "filePath": "nexusml-repomix-output.md",
@@ -347,7 +417,12 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
   "ignore": {
     "useGitignore": true,
     "useDefaultPatterns": true,
-    "customPatterns": ["nexusml/ingest/data/**", "nexusml/docs"]
+    "customPatterns": [
+      "nexusml/ingest/data/**",
+      "nexusml/docs",
+      "nexusml/output/**",
+      "nexusml/core/deprecated/**"
+    ]
   },
   "security": {
     "enableSecurityCheck": true
@@ -356,10 +431,11 @@ def get_config_value(key_path: str, default: Any = None) -> Any:
     "encoding": "o200k_base"
   }
 }
-````
+```
 
-## File: nexusml/core/__init__.py
-````python
+## File: nexusml/core/**init**.py
+
+```python
 """
 Core functionality for NexusML classification engine.
 """
@@ -367,9 +443,12 @@ Core functionality for NexusML classification engine.
 # Import main functions to expose at the package level
 from nexusml.core.data_preprocessing import load_and_preprocess_data
 from nexusml.core.evaluation import enhanced_evaluation
-from nexusml.core.feature_engineering import create_hierarchical_categories, enhance_features
+from nexusml.core.feature_engineering import (
+    create_hierarchical_categories,
+    enhance_features,
+)
+from nexusml.core.model import predict_with_enhanced_model, train_enhanced_model
 from nexusml.core.model_building import build_enhanced_model, optimize_hyperparameters
-from nexusml.core.training import predict_with_enhanced_model, train_enhanced_model
 
 __all__ = [
     "load_and_preprocess_data",
@@ -381,10 +460,11 @@ __all__ = [
     "train_enhanced_model",
     "predict_with_enhanced_model",
 ]
-````
+```
 
 ## File: nexusml/core/data_preprocessing.py
-````python
+
+```python
 """
 Data Preprocessing Module
 
@@ -473,1300 +553,11 @@ def load_and_preprocess_data(data_path: Optional[str] = None) -> pd.DataFrame:
         df[col] = df[col].fillna("")
 
     return df
-````
-
-## File: nexusml/core/deprecated/model_copy.py
-````python
-"""
-Enhanced Equipment Classification Model
-
-This module implements a machine learning pipeline for classifying equipment based on text descriptions
-and numeric features. Key features include:
-
-1. Combined Text and Numeric Features:
-   - Uses a ColumnTransformer to incorporate both text features (via TF-IDF) and numeric features
-     (like service_life) into a single model.
-
-2. Improved Handling of Imbalanced Classes:
-   - Uses RandomOverSampler instead of SMOTE for text data, which duplicates existing samples
-     rather than creating synthetic samples that don't correspond to meaningful text.
-   - Also uses class_weight='balanced_subsample' in the RandomForestClassifier for additional
-     protection against class imbalance.
-
-3. Better Evaluation Metrics:
-   - Uses f1_macro scoring for hyperparameter optimization, which is more appropriate for
-     imbalanced classes than accuracy.
-   - Provides detailed analysis of "Other" category performance.
-
-4. Feature Importance Analysis:
-   - Analyzes the importance of both text and numeric features in classifying equipment.
-"""
-
-# Standard library imports
-from collections import Counter
-from typing import Dict, List, Tuple, Optional, Union, Any
-
-# Third-party imports
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from imblearn.over_sampling import SMOTE, RandomOverSampler
-from imblearn.under_sampling import RandomUnderSampler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import classification_report, accuracy_score, f1_score
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.multioutput import MultiOutputClassifier
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.compose import ColumnTransformer
-from sklearn.base import BaseEstimator, TransformerMixin
-
-# Note: We've removed the custom NumericFeaturesExtractor class as it was redundant
-# The ColumnTransformer already handles column selection, so we can use StandardScaler directly
-
-# 1. Enhanced Data Preprocessing with Hierarchical Classification
-def load_and_preprocess_data(data_path: Optional[str] = None) -> pd.DataFrame:
-    """
-    Load and preprocess data from a CSV file
-    
-    Args:
-        data_path (str, optional): Path to the CSV file. Defaults to the standard location.
-        
-    Returns:
-        pd.DataFrame: Preprocessed dataframe
-    """
-    # Use default path if none provided
-    if data_path is None:
-        data_path = "C:/Repos/fca-dashboard4/fca_dashboard/classifier/ingest/eq_ids.csv"
-    
-    # Read CSV file using pandas
-    try:
-        df = pd.read_csv(data_path, encoding='utf-8')
-    except UnicodeDecodeError:
-        # Try with a different encoding if utf-8 fails
-        df = pd.read_csv(data_path, encoding='latin1')
-    
-    # Clean up column names (remove any leading/trailing whitespace)
-    df.columns = [col.strip() for col in df.columns]
-    
-    # Fill NaN values with empty strings for text columns
-    for col in df.select_dtypes(include=['object']).columns:
-        df[col] = df[col].fillna('')
-    
-    return df
-
-# 2. Enhanced Feature Engineering
-def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Enhanced feature engineering with hierarchical structure and more granular categories
-    """
-    # Extract primary classification columns
-    df['Equipment_Category'] = df['Asset Category']
-    df['Uniformat_Class'] = df['System Type ID']
-    df['System_Type'] = df['Precon System']
-    
-    # Create subcategory field for more granular classification
-    df['Equipment_Subcategory'] = df['Equip Name ID']
-    
-    # Combine fields for rich text features
-    df['combined_features'] = (
-        df['Asset Category'] + ' ' + 
-        df['Equip Name ID'] + ' ' + 
-        df['Sub System Type'] + ' ' + 
-        df['Sub System ID'] + ' ' + 
-        df['Title'] + ' ' + 
-        df['Precon System'] + ' ' + 
-        df['Operations System'] + ' ' +
-        df['Sub System Class'] + ' ' +
-        df['Drawing Abbreviation']
-    )
-    
-    # Add equipment size and unit as features
-    df['size_feature'] = df['Equipment Size'].astype(str) + ' ' + df['Unit'].astype(str)
-    
-    # Add service life as a feature
-    df['service_life'] = df['Service Life'].fillna(0).astype(float)
-    
-    # Fill NaN values
-    df['combined_features'] = df['combined_features'].fillna('')
-    
-    return df
-
-# 3. Create hierarchical classification structure
-def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Create hierarchical category structure to better handle "Other" categories
-    """
-    # Create Equipment Type - a more detailed category than Equipment_Category
-    df['Equipment_Type'] = df['Asset Category'] + '-' + df['Equip Name ID']
-    
-    # Create System Subtype - a more detailed category than System_Type
-    df['System_Subtype'] = df['Precon System'] + '-' + df['Operations System']
-    
-    # Create target variables for hierarchical classification
-    return df
-
-# 4. Balancing classes for better "Other" category recognition
-def handle_class_imbalance(X: Union[pd.DataFrame, np.ndarray], y: pd.DataFrame) -> Tuple[Union[pd.DataFrame, np.ndarray], pd.DataFrame]:
-    """
-    Handle class imbalance to give proper weight to "Other" categories
-    
-    This function uses RandomOverSampler instead of SMOTE because:
-    1. It's more appropriate for text data
-    2. It duplicates existing samples rather than creating synthetic samples
-    3. The duplicated samples maintain the original text meaning
-    
-    For numeric-only data, SMOTE might still be preferable, but for text or mixed data,
-    RandomOverSampler is generally a better choice.
-    """
-    # Check class distribution
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(y[col].value_counts())
-    
-    # Use RandomOverSampler to duplicate minority class samples
-    # This is more appropriate for text data than SMOTE
-    oversample = RandomOverSampler(sampling_strategy='auto', random_state=42)
-    X_resampled, y_resampled = oversample.fit_resample(X, y)
-    
-    print("\nAfter oversampling:")
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(pd.Series(y_resampled[col]).value_counts())
-    
-    return X_resampled, y_resampled
-
-# 5. Enhanced model with deeper architecture
-def build_enhanced_model() -> Pipeline:
-    """
-    Build an enhanced model with better handling of "Other" categories
-    
-    This model incorporates both text features (via TF-IDF) and numeric features
-    (like service_life) using a ColumnTransformer to create a more comprehensive
-    feature representation.
-    """
-    # Text feature processing
-    text_features = Pipeline([
-        ('tfidf', TfidfVectorizer(
-            max_features=5000,
-            ngram_range=(1, 3),  # Include more n-grams for better feature extraction
-            min_df=2,            # Ignore very rare terms
-            max_df=0.9,          # Ignore very common terms
-            use_idf=True,
-            sublinear_tf=True    # Apply sublinear scaling to term frequencies
-        ))
-    ])
-    
-    # Numeric feature processing - simplified to just use StandardScaler
-    # The ColumnTransformer handles column selection
-    numeric_features = Pipeline([
-        ('scaler', StandardScaler())  # Scale numeric features
-    ])
-    
-    # Combine text and numeric features
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('text', text_features, 'combined_features'),
-            ('numeric', numeric_features, 'service_life')
-        ],
-        remainder='drop'  # Drop any other columns
-    )
-    
-    # Complete pipeline with feature processing and classifier
-    # Note: We use both RandomOverSampler (applied earlier) and class_weight='balanced_subsample'
-    # for a two-pronged approach to handling imbalanced classes
-    pipeline = Pipeline([
-        ('preprocessor', preprocessor),
-        ('clf', MultiOutputClassifier(
-            RandomForestClassifier(
-                n_estimators=200,    # More trees for better generalization
-                max_depth=None,      # Allow trees to grow deeply
-                min_samples_split=2, # Default value
-                min_samples_leaf=1,  # Default value
-                class_weight='balanced_subsample',  # Additional protection against imbalance
-                random_state=42
-            )
-        ))
-    ])
-    
-    return pipeline
-
-# 6. Hyperparameter optimization
-def optimize_hyperparameters(pipeline: Pipeline, X_train: pd.DataFrame, y_train: pd.DataFrame) -> Pipeline:
-    """
-    Optimize hyperparameters for better handling of all classes including "Other"
-    
-    This function uses GridSearchCV to find the best hyperparameters for the model.
-    It optimizes both the text processing parameters and the classifier parameters.
-    The scoring metric has been changed to f1_macro to better handle imbalanced classes.
-    """
-    # Param grid for optimization with updated paths for the new pipeline structure
-    param_grid = {
-        'preprocessor__text__tfidf__max_features': [3000, 5000, 7000],
-        'preprocessor__text__tfidf__ngram_range': [(1, 2), (1, 3)],
-        'clf__estimator__n_estimators': [100, 200, 300],
-        'clf__estimator__min_samples_leaf': [1, 2, 4]
-    }
-    
-    # Use GridSearchCV for hyperparameter optimization
-    # Changed scoring from 'accuracy' to 'f1_macro' for better handling of imbalanced classes
-    grid_search = GridSearchCV(
-        pipeline,
-        param_grid,
-        cv=3,
-        scoring='f1_macro',  # Better for imbalanced classes than accuracy
-        verbose=1
-    )
-    
-    # Fit the grid search to the data
-    # Note: X_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
-    grid_search.fit(X_train, y_train)
-    
-    print(f"Best parameters: {grid_search.best_params_}")
-    print(f"Best cross-validation score: {grid_search.best_score_}")
-    
-    return grid_search.best_estimator_
-
-# 7. Enhanced evaluation with focus on "Other" categories
-def enhanced_evaluation(model: Pipeline, X_test: Union[pd.Series, pd.DataFrame], y_test: pd.DataFrame) -> pd.DataFrame:
-    """
-    Evaluate the model with focus on "Other" categories performance
-    
-    This function has been updated to handle both Series and DataFrame inputs for X_test,
-    to support the new pipeline structure that uses both text and numeric features.
-    """
-    y_pred = model.predict(X_test)
-    y_pred_df = pd.DataFrame(y_pred, columns=y_test.columns)
-    
-    # Print overall evaluation metrics
-    print("Model Evaluation:")
-    for i, col in enumerate(y_test.columns):
-        print(f"\n{col} Classification Report:")
-        print(classification_report(y_test[col], y_pred_df[col]))
-        print(f"{col} Accuracy:", accuracy_score(y_test[col], y_pred_df[col]))
-        
-        # Specifically examine "Other" category performance
-        if "Other" in y_test[col].unique():
-            other_indices = y_test[col] == "Other"
-            other_accuracy = accuracy_score(
-                y_test[col][other_indices], 
-                y_pred_df[col][other_indices]
-            )
-            print(f"'Other' category accuracy for {col}: {other_accuracy:.4f}")
-            
-            # Calculate confusion metrics for "Other" category
-            tp = ((y_test[col] == "Other") & (y_pred_df[col] == "Other")).sum()
-            fp = ((y_test[col] != "Other") & (y_pred_df[col] == "Other")).sum()
-            fn = ((y_test[col] == "Other") & (y_pred_df[col] != "Other")).sum()
-            
-            precision = tp / (tp + fp) if (tp + fp) > 0 else 0
-            recall = tp / (tp + fn) if (tp + fn) > 0 else 0
-            f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
-            
-            print(f"'Other' category metrics for {col}:")
-            print(f"  Precision: {precision:.4f}")
-            print(f"  Recall: {recall:.4f}")
-            print(f"  F1 Score: {f1:.4f}")
-    
-    return y_pred_df
-
-# 8. Feature importance analysis for "Other" categories
-def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
-    """
-    Analyze what features are most important for classifying items as "Other"
-    
-    This function has been updated to work with the new pipeline structure that uses
-    a ColumnTransformer to combine text and numeric features.
-    """
-    # Extract the Random Forest model from the pipeline
-    rf_model = model.named_steps['clf'].estimators_[0]
-    
-    # Get feature names from the TF-IDF vectorizer (now nested in preprocessor)
-    # Access the text transformer from the ColumnTransformer, then the TF-IDF vectorizer
-    tfidf_vectorizer = model.named_steps['preprocessor'].transformers_[0][1].named_steps['tfidf']
-    text_feature_names = tfidf_vectorizer.get_feature_names_out()
-    
-    # Also include numeric features for a complete analysis
-    numeric_feature_names = ['service_life']
-    all_feature_names = list(text_feature_names) + numeric_feature_names
-    
-    # For each classification column
-    for col in y_test.columns:
-        if "Other" in y_test[col].unique():
-            print(f"\nAnalyzing 'Other' category for {col}:")
-            
-            # Find examples predicted as "Other"
-            other_indices = y_pred_df[col] == "Other"
-            
-            if other_indices.sum() > 0:
-                # Create a DataFrame with the required structure for the preprocessor
-                if isinstance(X_test, pd.Series):
-                    X_test_df = pd.DataFrame({
-                        'combined_features': X_test[other_indices],
-                        'service_life': np.zeros(other_indices.sum())  # Placeholder
-                    })
-                    # Transform using the full preprocessor
-                    transformed_features = model.named_steps['preprocessor'].transform(X_test_df)
-                    
-                    # Extract just the text features (first part of the transformed features)
-                    text_feature_count = len(text_feature_names)
-                    text_features = transformed_features[:, :text_feature_count]
-                    
-                    # Get the average feature values for text features
-                    avg_features = text_features.mean(axis=0)
-                    if hasattr(avg_features, 'A1'):  # If it's a sparse matrix
-                        avg_features = avg_features.A1
-                    
-                    # Get the top text features
-                    top_indices = np.argsort(avg_features)[-20:]
-                    
-                    print("Top text features for 'Other' classification:")
-                    for idx in top_indices:
-                        print(f"  {text_feature_names[idx]}: {avg_features[idx]:.4f}")
-                    
-                    # Also analyze feature importance from the Random Forest model
-                    # This will show the importance of both text and numeric features
-                    print("\nFeature importance from Random Forest:")
-                    
-                    # Get feature importances for this specific estimator (for the current target column)
-                    # Find the index of the current column in the target columns
-                    col_idx = list(y_test.columns).index(col)
-                    rf_estimator = model.named_steps['clf'].estimators_[col_idx]
-                    
-                    # Get feature importances
-                    importances = rf_estimator.feature_importances_
-                    
-                    # Create a DataFrame to sort and display importances
-                    importance_df = pd.DataFrame({
-                        'feature': all_feature_names[:len(importances)],
-                        'importance': importances
-                    })
-                    
-                    # Sort by importance
-                    importance_df = importance_df.sort_values('importance', ascending=False)
-                    
-                    # Display top 10 features
-                    print("Top 10 features by importance:")
-                    for i, (feature, importance) in enumerate(zip(importance_df['feature'].head(10),
-                                                                importance_df['importance'].head(10))):
-                        print(f"  {feature}: {importance:.4f}")
-                    
-                    # Check if service_life is important
-                    service_life_importance = importance_df[importance_df['feature'] == 'service_life']
-                    if not service_life_importance.empty:
-                        print(f"\nService life importance: {service_life_importance.iloc[0]['importance']:.4f}")
-                        print(f"Service life rank: {importance_df['feature'].tolist().index('service_life') + 1} out of {len(importance_df)}")
-                else:
-                    print("Cannot analyze features: X_test is not a pandas Series")
-            else:
-                print("No examples predicted as 'Other'")
-
-# 9. Analysis of misclassifications specifically for "Other" categories
-def analyze_other_misclassifications(X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
-    """
-    Analyze cases where "Other" was incorrectly predicted or missed
-    """
-    for col in y_test.columns:
-        if "Other" in y_test[col].unique():
-            print(f"\nMisclassifications for 'Other' in {col}:")
-            
-            # False positives: Predicted as "Other" but actually something else
-            fp_indices = (y_test[col] != "Other") & (y_pred_df[col] == "Other")
-            
-            if fp_indices.sum() > 0:
-                print(f"\nFalse Positives (predicted as 'Other' but weren't): {fp_indices.sum()} cases")
-                fp_examples = X_test[fp_indices].values[:5]  # Show first 5
-                fp_actual = y_test[col][fp_indices].values[:5]
-                
-                for i, (example, actual) in enumerate(zip(fp_examples, fp_actual)):
-                    print(f"Example {i+1}:")
-                    print(f"  Text: {example[:100]}...")  # Show first 100 chars
-                    print(f"  Actual class: {actual}")
-            
-            # False negatives: Actually "Other" but predicted as something else
-            fn_indices = (y_test[col] == "Other") & (y_pred_df[col] != "Other")
-            
-            if fn_indices.sum() > 0:
-                print(f"\nFalse Negatives (were 'Other' but predicted as something else): {fn_indices.sum()} cases")
-                fn_examples = X_test[fn_indices].values[:5]  # Show first 5
-                fn_predicted = y_pred_df[col][fn_indices].values[:5]
-                
-                for i, (example, predicted) in enumerate(zip(fn_examples, fn_predicted)):
-                    print(f"Example {i+1}:")
-                    print(f"  Text: {example[:100]}...")  # Show first 100 chars
-                    print(f"  Predicted as: {predicted}")
-
-# 10. MasterFormat mapping enhanced to handle specialty equipment
-def enhanced_masterformat_mapping(uniformat_class: str, system_type: str, equipment_category: str, equipment_subcategory: Optional[str] = None) -> str:
-    """
-    Enhanced mapping with better handling of specialty equipment types
-    """
-    # Primary mapping
-    primary_mapping = {
-        'H': {
-            'Chiller Plant': '23 64 00',  # Commercial Water Chillers
-            'Cooling Tower Plant': '23 65 00',  # Cooling Towers
-            'Heating Water Boiler Plant': '23 52 00',  # Heating Boilers
-            'Steam Boiler Plant': '23 52 33',  # Steam Heating Boilers
-            'Air Handling Units': '23 73 00',  # Indoor Central-Station Air-Handling Units
-        },
-        'P': {
-            'Domestic Water Plant': '22 11 00',  # Facility Water Distribution
-            'Medical/Lab Gas Plant': '22 63 00',  # Gas Systems for Laboratory and Healthcare Facilities
-            'Sanitary Equipment': '22 13 00',  # Facility Sanitary Sewerage
-        },
-        'SM': {
-            'Air Handling Units': '23 74 00',  # Packaged Outdoor HVAC Equipment
-            'SM Accessories': '23 33 00',  # Air Duct Accessories
-            'SM Equipment': '23 30 00',  # HVAC Air Distribution
-        }
-    }
-    
-    # Secondary mapping for specific equipment types that were in "Other"
-    equipment_specific_mapping = {
-        'Heat Exchanger': '23 57 00',  # Heat Exchangers for HVAC
-        'Water Softener': '22 31 00',  # Domestic Water Softeners
-        'Humidifier': '23 84 13',  # Humidifiers
-        'Radiant Panel': '23 83 16',  # Radiant-Heating Hydronic Piping
-        'Make-up Air Unit': '23 74 23',  # Packaged Outdoor Heating-Only Makeup Air Units
-        'Energy Recovery Ventilator': '23 72 00',  # Air-to-Air Energy Recovery Equipment
-        'DI/RO Equipment': '22 31 16',  # Deionized-Water Piping
-        'Bypass Filter Feeder': '23 25 00',  # HVAC Water Treatment
-        'Grease Interceptor': '22 13 23',  # Sanitary Waste Interceptors
-        'Heat Trace': '23 05 33',  # Heat Tracing for HVAC Piping
-        'Dust Collector': '23 35 16',  # Engine Exhaust Systems
-        'Venturi VAV Box': '23 36 00',  # Air Terminal Units
-        'Water Treatment Controller': '23 25 13',  # Water Treatment for Closed-Loop Hydronic Systems
-        'Polishing System': '23 25 00',  # HVAC Water Treatment
-        'Ozone Generator': '22 67 00',  # Processed Water Systems for Laboratory and Healthcare Facilities
-    }
-    
-    # Try equipment-specific mapping first
-    if equipment_subcategory in equipment_specific_mapping:
-        return equipment_specific_mapping[equipment_subcategory]
-    
-    # Then try primary mapping
-    if uniformat_class in primary_mapping and system_type in primary_mapping[uniformat_class]:
-        return primary_mapping[uniformat_class][system_type]
-    
-    # Refined fallback mappings by Uniformat class
-    fallbacks = {
-        'H': '23 00 00',  # Heating, Ventilating, and Air Conditioning (HVAC)
-        'P': '22 00 00',  # Plumbing
-        'SM': '23 00 00',  # HVAC
-        'R': '11 40 00',  # Foodservice Equipment (Refrigeration)
-    }
-    
-    return fallbacks.get(uniformat_class, '00 00 00')  # Return unknown if no match
-
-# 11. Main function to train and evaluate the enhanced model
-def train_enhanced_model(data_path: Optional[str] = None) -> Tuple[Pipeline, pd.DataFrame]:
-    """
-    Train and evaluate the enhanced model with better handling of "Other" categories
-    
-    Args:
-        data_path (str, optional): Path to the CSV file. Defaults to None, which uses the standard location.
-        
-    Returns:
-        tuple: (trained model, preprocessed dataframe)
-    """
-    # 1. Load and preprocess data
-    print("Loading and preprocessing data...")
-    df = load_and_preprocess_data(data_path)
-    
-    # 2. Enhanced feature engineering
-    print("Enhancing features...")
-    df = enhance_features(df)
-    
-    # 3. Create hierarchical categories
-    print("Creating hierarchical categories...")
-    df = create_hierarchical_categories(df)
-    
-    # 4. Prepare training data - now including both text and numeric features
-    # Create a DataFrame with both text and numeric features
-    X = pd.DataFrame({
-        'combined_features': df['combined_features'],
-        'service_life': df['service_life']
-    })
-    
-    # Use hierarchical classification targets
-    y = df[['Equipment_Category', 'Uniformat_Class', 'System_Type', 'Equipment_Type', 'System_Subtype']]
-    
-    # 5. Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    
-    # 6. Handle class imbalance using RandomOverSampler instead of SMOTE
-    # RandomOverSampler is more appropriate for text data as it duplicates existing samples
-    # rather than creating synthetic samples that don't correspond to meaningful text
-    print("Handling class imbalance with RandomOverSampler...")
-    
-    # Apply RandomOverSampler directly to the DataFrame
-    # This will duplicate minority class samples rather than creating synthetic samples
-    oversampler = RandomOverSampler(random_state=42)
-    
-    # We need to convert the DataFrame to a format suitable for RandomOverSampler
-    # For this, we'll create a temporary unique ID for each sample
-    X_train_with_id = X_train.copy()
-    X_train_with_id['temp_id'] = range(len(X_train_with_id))
-    
-    # Fit and transform using the oversampler
-    # We use the ID column as the feature for oversampling, but the actual resampling
-    # is based on the class distribution in y_train
-    X_resampled_ids, y_train_resampled = oversampler.fit_resample(
-        X_train_with_id[['temp_id']], y_train
-    )
-    
-    # Map the resampled IDs back to the original DataFrame rows
-    # This effectively duplicates rows from the original DataFrame
-    X_train_resampled = pd.DataFrame(columns=X_train.columns)
-    for idx in X_resampled_ids['temp_id']:
-        X_train_resampled = pd.concat([X_train_resampled, X_train.iloc[[idx]]], ignore_index=True)
-    
-    # Print statistics about the resampling
-    original_sample_count = X_train.shape[0]
-    total_resampled_count = X_train_resampled.shape[0]
-    print(f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}")
-    print(f"Shape of X_train_resampled: {X_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}")
-    
-    # Verify that the shapes match
-    assert X_train_resampled.shape[0] == y_train_resampled.shape[0], "Mismatch in sample counts after resampling"
-    
-    # 7. Build enhanced model
-    print("Building enhanced model...")
-    model = build_enhanced_model()
-    
-    # 8. Train the model
-    print("Training model...")
-    model.fit(X_train_resampled, y_train_resampled)
-    
-    # 9. Evaluate with focus on "Other" categories
-    print("Evaluating model...")
-    y_pred_df = enhanced_evaluation(model, X_test, y_test)
-    
-    # 10. Analyze "Other" category features
-    print("Analyzing 'Other' category features...")
-    analyze_other_category_features(model, X_test, y_test, y_pred_df)
-    
-    # 11. Analyze misclassifications for "Other" categories
-    print("Analyzing 'Other' category misclassifications...")
-    analyze_other_misclassifications(X_test, y_test, y_pred_df)
-    
-    return model, df
-
-# 12. Enhanced prediction function
-def predict_with_enhanced_model(model: Pipeline, description: str, service_life: float = 0.0) -> dict:
-    """
-    Make predictions with enhanced detail for "Other" categories
-    
-    This function has been updated to work with the new pipeline structure that uses
-    both text and numeric features.
-    
-    Args:
-        model (Pipeline): Trained model pipeline
-        description (str): Text description to classify
-        service_life (float, optional): Service life value. Defaults to 0.0.
-        
-    Returns:
-        dict: Prediction results with classifications
-    """
-    # Create a DataFrame with the required structure for the pipeline
-    input_data = pd.DataFrame({
-        'combined_features': [description],
-        'service_life': [service_life]
-    })
-    
-    # Predict using the trained pipeline
-    pred = model.predict(input_data)[0]
-    
-    # Extract predictions
-    result = {
-        'Equipment_Category': pred[0],
-        'Uniformat_Class': pred[1],
-        'System_Type': pred[2],
-        'Equipment_Type': pred[3],
-        'System_Subtype': pred[4]
-    }
-    
-    # Add MasterFormat prediction with enhanced mapping
-    result['MasterFormat_Class'] = enhanced_masterformat_mapping(
-        result['Uniformat_Class'],
-        result['System_Type'],
-        result['Equipment_Category'],
-        # Extract equipment subcategory if available
-        result['Equipment_Type'].split('-')[1] if '-' in result['Equipment_Type'] else None
-    )
-    
-    return result
-
-# Example usage
-if __name__ == "__main__":
-    # Path to the CSV file
-    data_path = "C:/Repos/fca-dashboard4/fca_dashboard/classifier/ingest/eq_ids.csv"
-    
-    # Train enhanced model using the CSV file
-    model, df = train_enhanced_model(data_path)
-    
-    # Example prediction with service life
-    description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
-    service_life = 20.0  # Example service life in years
-    prediction = predict_with_enhanced_model(model, description, service_life)
-    
-    print("\nEnhanced Prediction:")
-    for key, value in prediction.items():
-        print(f"{key}: {value}")
-
-    # Visualize category distribution to better understand "Other" classes
-    plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y='Equipment_Category')
-    plt.title('Equipment Category Distribution')
-    plt.tight_layout()
-    plt.savefig('equipment_category_distribution.png')
-    
-    plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y='System_Type')
-    plt.title('System Type Distribution')
-    plt.tight_layout()
-    plt.savefig('system_type_distribution.png')
-````
-
-## File: nexusml/core/deprecated/model_smote.py
-````python
-# Standard library imports
-from collections import Counter
-from typing import Dict, List, Tuple, Optional, Union, Any
-
-# Third-party imports
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import RandomUnderSampler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import classification_report, accuracy_score, f1_score
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.multioutput import MultiOutputClassifier
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.compose import ColumnTransformer
-from sklearn.base import BaseEstimator, TransformerMixin
-
-# Note: We've removed the custom NumericFeaturesExtractor class as it was redundant
-# The ColumnTransformer already handles column selection, so we can use StandardScaler directly
-
-# 1. Enhanced Data Preprocessing with Hierarchical Classification
-def load_and_preprocess_data(data_path: Optional[str] = None) -> pd.DataFrame:
-    """
-    Load and preprocess data from a CSV file
-    
-    Args:
-        data_path (str, optional): Path to the CSV file. Defaults to the standard location.
-        
-    Returns:
-        pd.DataFrame: Preprocessed dataframe
-    """
-    # Use default path if none provided
-    if data_path is None:
-        data_path = "C:/Repos/fca-dashboard4/fca_dashboard/classifier/ingest/eq_ids.csv"
-    
-    # Read CSV file using pandas
-    try:
-        df = pd.read_csv(data_path, encoding='utf-8')
-    except UnicodeDecodeError:
-        # Try with a different encoding if utf-8 fails
-        df = pd.read_csv(data_path, encoding='latin1')
-    
-    # Clean up column names (remove any leading/trailing whitespace)
-    df.columns = [col.strip() for col in df.columns]
-    
-    # Fill NaN values with empty strings for text columns
-    for col in df.select_dtypes(include=['object']).columns:
-        df[col] = df[col].fillna('')
-    
-    return df
-
-# 2. Enhanced Feature Engineering
-def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Enhanced feature engineering with hierarchical structure and more granular categories
-    """
-    # Extract primary classification columns
-    df['Equipment_Category'] = df['Asset Category']
-    df['Uniformat_Class'] = df['System Type ID']
-    df['System_Type'] = df['Precon System']
-    
-    # Create subcategory field for more granular classification
-    df['Equipment_Subcategory'] = df['Equip Name ID']
-    
-    # Combine fields for rich text features
-    df['combined_features'] = (
-        df['Asset Category'] + ' ' + 
-        df['Equip Name ID'] + ' ' + 
-        df['Sub System Type'] + ' ' + 
-        df['Sub System ID'] + ' ' + 
-        df['Title'] + ' ' + 
-        df['Precon System'] + ' ' + 
-        df['Operations System'] + ' ' +
-        df['Sub System Class'] + ' ' +
-        df['Drawing Abbreviation']
-    )
-    
-    # Add equipment size and unit as features
-    df['size_feature'] = df['Equipment Size'].astype(str) + ' ' + df['Unit'].astype(str)
-    
-    # Add service life as a feature
-    df['service_life'] = df['Service Life'].fillna(0).astype(float)
-    
-    # Fill NaN values
-    df['combined_features'] = df['combined_features'].fillna('')
-    
-    return df
-
-# 3. Create hierarchical classification structure
-def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Create hierarchical category structure to better handle "Other" categories
-    """
-    # Create Equipment Type - a more detailed category than Equipment_Category
-    df['Equipment_Type'] = df['Asset Category'] + '-' + df['Equip Name ID']
-    
-    # Create System Subtype - a more detailed category than System_Type
-    df['System_Subtype'] = df['Precon System'] + '-' + df['Operations System']
-    
-    # Create target variables for hierarchical classification
-    return df
-
-# 4. Balancing classes for better "Other" category recognition
-def handle_class_imbalance(X: Union[pd.DataFrame, np.ndarray], y: pd.DataFrame) -> Tuple[Union[pd.DataFrame, np.ndarray], pd.DataFrame]:
-    """
-    Handle class imbalance to give proper weight to "Other" categories
-    """
-    # Check class distribution
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(y[col].value_counts())
-    
-    # For demonstration, let's use SMOTE to oversample minority classes
-    # In a real implementation, you'd need to tune this for your specific data
-    oversample = SMOTE(sampling_strategy='auto', random_state=42)
-    X_resampled, y_resampled = oversample.fit_resample(X, y)
-    
-    print("\nAfter oversampling:")
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(pd.Series(y_resampled[col]).value_counts())
-    
-    return X_resampled, y_resampled
-
-# 5. Enhanced model with deeper architecture
-def build_enhanced_model() -> Pipeline:
-    """
-    Build an enhanced model with better handling of "Other" categories
-    
-    This model incorporates both text features (via TF-IDF) and numeric features
-    (like service_life) using a ColumnTransformer to create a more comprehensive
-    feature representation.
-    """
-    # Text feature processing
-    text_features = Pipeline([
-        ('tfidf', TfidfVectorizer(
-            max_features=5000,
-            ngram_range=(1, 3),  # Include more n-grams for better feature extraction
-            min_df=2,            # Ignore very rare terms
-            max_df=0.9,          # Ignore very common terms
-            use_idf=True,
-            sublinear_tf=True    # Apply sublinear scaling to term frequencies
-        ))
-    ])
-    
-    # Numeric feature processing - simplified to just use StandardScaler
-    # The ColumnTransformer handles column selection
-    numeric_features = Pipeline([
-        ('scaler', StandardScaler())  # Scale numeric features
-    ])
-    
-    # Combine text and numeric features
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('text', text_features, 'combined_features'),
-            ('numeric', numeric_features, 'service_life')
-        ],
-        remainder='drop'  # Drop any other columns
-    )
-    
-    # Complete pipeline with feature processing and classifier
-    pipeline = Pipeline([
-        ('preprocessor', preprocessor),
-        ('clf', MultiOutputClassifier(
-            RandomForestClassifier(
-                n_estimators=200,    # More trees for better generalization
-                max_depth=None,      # Allow trees to grow deeply
-                min_samples_split=2, # Default value
-                min_samples_leaf=1,  # Default value
-                class_weight='balanced_subsample',  # Handle imbalanced classes
-                random_state=42
-            )
-        ))
-    ])
-    
-    return pipeline
-
-# 6. Hyperparameter optimization
-def optimize_hyperparameters(pipeline: Pipeline, X_train: pd.DataFrame, y_train: pd.DataFrame) -> Pipeline:
-    """
-    Optimize hyperparameters for better handling of all classes including "Other"
-    
-    This function uses GridSearchCV to find the best hyperparameters for the model.
-    It optimizes both the text processing parameters and the classifier parameters.
-    The scoring metric has been changed to f1_macro to better handle imbalanced classes.
-    """
-    # Param grid for optimization with updated paths for the new pipeline structure
-    param_grid = {
-        'preprocessor__text__tfidf__max_features': [3000, 5000, 7000],
-        'preprocessor__text__tfidf__ngram_range': [(1, 2), (1, 3)],
-        'clf__estimator__n_estimators': [100, 200, 300],
-        'clf__estimator__min_samples_leaf': [1, 2, 4]
-    }
-    
-    # Use GridSearchCV for hyperparameter optimization
-    # Changed scoring from 'accuracy' to 'f1_macro' for better handling of imbalanced classes
-    grid_search = GridSearchCV(
-        pipeline,
-        param_grid,
-        cv=3,
-        scoring='f1_macro',  # Better for imbalanced classes than accuracy
-        verbose=1
-    )
-    
-    # Fit the grid search to the data
-    # Note: X_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
-    grid_search.fit(X_train, y_train)
-    
-    print(f"Best parameters: {grid_search.best_params_}")
-    print(f"Best cross-validation score: {grid_search.best_score_}")
-    
-    return grid_search.best_estimator_
-
-# 7. Enhanced evaluation with focus on "Other" categories
-def enhanced_evaluation(model: Pipeline, X_test: Union[pd.Series, pd.DataFrame], y_test: pd.DataFrame) -> pd.DataFrame:
-    """
-    Evaluate the model with focus on "Other" categories performance
-    
-    This function has been updated to handle both Series and DataFrame inputs for X_test,
-    to support the new pipeline structure that uses both text and numeric features.
-    """
-    y_pred = model.predict(X_test)
-    y_pred_df = pd.DataFrame(y_pred, columns=y_test.columns)
-    
-    # Print overall evaluation metrics
-    print("Model Evaluation:")
-    for i, col in enumerate(y_test.columns):
-        print(f"\n{col} Classification Report:")
-        print(classification_report(y_test[col], y_pred_df[col]))
-        print(f"{col} Accuracy:", accuracy_score(y_test[col], y_pred_df[col]))
-        
-        # Specifically examine "Other" category performance
-        if "Other" in y_test[col].unique():
-            other_indices = y_test[col] == "Other"
-            other_accuracy = accuracy_score(
-                y_test[col][other_indices], 
-                y_pred_df[col][other_indices]
-            )
-            print(f"'Other' category accuracy for {col}: {other_accuracy:.4f}")
-            
-            # Calculate confusion metrics for "Other" category
-            tp = ((y_test[col] == "Other") & (y_pred_df[col] == "Other")).sum()
-            fp = ((y_test[col] != "Other") & (y_pred_df[col] == "Other")).sum()
-            fn = ((y_test[col] == "Other") & (y_pred_df[col] != "Other")).sum()
-            
-            precision = tp / (tp + fp) if (tp + fp) > 0 else 0
-            recall = tp / (tp + fn) if (tp + fn) > 0 else 0
-            f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
-            
-            print(f"'Other' category metrics for {col}:")
-            print(f"  Precision: {precision:.4f}")
-            print(f"  Recall: {recall:.4f}")
-            print(f"  F1 Score: {f1:.4f}")
-    
-    return y_pred_df
-
-# 8. Feature importance analysis for "Other" categories
-def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
-    """
-    Analyze what features are most important for classifying items as "Other"
-    
-    This function has been updated to work with the new pipeline structure that uses
-    a ColumnTransformer to combine text and numeric features.
-    """
-    # Extract the Random Forest model from the pipeline
-    rf_model = model.named_steps['clf'].estimators_[0]
-    
-    # Get feature names from the TF-IDF vectorizer (now nested in preprocessor)
-    # Access the text transformer from the ColumnTransformer, then the TF-IDF vectorizer
-    tfidf_vectorizer = model.named_steps['preprocessor'].transformers_[0][1].named_steps['tfidf']
-    text_feature_names = tfidf_vectorizer.get_feature_names_out()
-    
-    # Also include numeric features for a complete analysis
-    numeric_feature_names = ['service_life']
-    all_feature_names = list(text_feature_names) + numeric_feature_names
-    
-    # For each classification column
-    for col in y_test.columns:
-        if "Other" in y_test[col].unique():
-            print(f"\nAnalyzing 'Other' category for {col}:")
-            
-            # Find examples predicted as "Other"
-            other_indices = y_pred_df[col] == "Other"
-            
-            if other_indices.sum() > 0:
-                # Create a DataFrame with the required structure for the preprocessor
-                if isinstance(X_test, pd.Series):
-                    X_test_df = pd.DataFrame({
-                        'combined_features': X_test[other_indices],
-                        'service_life': np.zeros(other_indices.sum())  # Placeholder
-                    })
-                    # Transform using the full preprocessor
-                    transformed_features = model.named_steps['preprocessor'].transform(X_test_df)
-                    
-                    # Extract just the text features (first part of the transformed features)
-                    text_feature_count = len(text_feature_names)
-                    text_features = transformed_features[:, :text_feature_count]
-                    
-                    # Get the average feature values for text features
-                    avg_features = text_features.mean(axis=0)
-                    if hasattr(avg_features, 'A1'):  # If it's a sparse matrix
-                        avg_features = avg_features.A1
-                    
-                    # Get the top text features
-                    top_indices = np.argsort(avg_features)[-20:]
-                    
-                    print("Top text features for 'Other' classification:")
-                    for idx in top_indices:
-                        print(f"  {text_feature_names[idx]}: {avg_features[idx]:.4f}")
-                    
-                    # Also analyze feature importance from the Random Forest model
-                    # This will show the importance of both text and numeric features
-                    print("\nFeature importance from Random Forest:")
-                    
-                    # Get feature importances for this specific estimator (for the current target column)
-                    # Find the index of the current column in the target columns
-                    col_idx = list(y_test.columns).index(col)
-                    rf_estimator = model.named_steps['clf'].estimators_[col_idx]
-                    
-                    # Get feature importances
-                    importances = rf_estimator.feature_importances_
-                    
-                    # Create a DataFrame to sort and display importances
-                    importance_df = pd.DataFrame({
-                        'feature': all_feature_names[:len(importances)],
-                        'importance': importances
-                    })
-                    
-                    # Sort by importance
-                    importance_df = importance_df.sort_values('importance', ascending=False)
-                    
-                    # Display top 10 features
-                    print("Top 10 features by importance:")
-                    for i, (feature, importance) in enumerate(zip(importance_df['feature'].head(10),
-                                                                importance_df['importance'].head(10))):
-                        print(f"  {feature}: {importance:.4f}")
-                    
-                    # Check if service_life is important
-                    service_life_importance = importance_df[importance_df['feature'] == 'service_life']
-                    if not service_life_importance.empty:
-                        print(f"\nService life importance: {service_life_importance.iloc[0]['importance']:.4f}")
-                        print(f"Service life rank: {importance_df['feature'].tolist().index('service_life') + 1} out of {len(importance_df)}")
-                else:
-                    print("Cannot analyze features: X_test is not a pandas Series")
-            else:
-                print("No examples predicted as 'Other'")
-
-# 9. Analysis of misclassifications specifically for "Other" categories
-def analyze_other_misclassifications(X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
-    """
-    Analyze cases where "Other" was incorrectly predicted or missed
-    """
-    for col in y_test.columns:
-        if "Other" in y_test[col].unique():
-            print(f"\nMisclassifications for 'Other' in {col}:")
-            
-            # False positives: Predicted as "Other" but actually something else
-            fp_indices = (y_test[col] != "Other") & (y_pred_df[col] == "Other")
-            
-            if fp_indices.sum() > 0:
-                print(f"\nFalse Positives (predicted as 'Other' but weren't): {fp_indices.sum()} cases")
-                fp_examples = X_test[fp_indices].values[:5]  # Show first 5
-                fp_actual = y_test[col][fp_indices].values[:5]
-                
-                for i, (example, actual) in enumerate(zip(fp_examples, fp_actual)):
-                    print(f"Example {i+1}:")
-                    print(f"  Text: {example[:100]}...")  # Show first 100 chars
-                    print(f"  Actual class: {actual}")
-            
-            # False negatives: Actually "Other" but predicted as something else
-            fn_indices = (y_test[col] == "Other") & (y_pred_df[col] != "Other")
-            
-            if fn_indices.sum() > 0:
-                print(f"\nFalse Negatives (were 'Other' but predicted as something else): {fn_indices.sum()} cases")
-                fn_examples = X_test[fn_indices].values[:5]  # Show first 5
-                fn_predicted = y_pred_df[col][fn_indices].values[:5]
-                
-                for i, (example, predicted) in enumerate(zip(fn_examples, fn_predicted)):
-                    print(f"Example {i+1}:")
-                    print(f"  Text: {example[:100]}...")  # Show first 100 chars
-                    print(f"  Predicted as: {predicted}")
-
-# 10. MasterFormat mapping enhanced to handle specialty equipment
-def enhanced_masterformat_mapping(uniformat_class: str, system_type: str, equipment_category: str, equipment_subcategory: Optional[str] = None) -> str:
-    """
-    Enhanced mapping with better handling of specialty equipment types
-    """
-    # Primary mapping
-    primary_mapping = {
-        'H': {
-            'Chiller Plant': '23 64 00',  # Commercial Water Chillers
-            'Cooling Tower Plant': '23 65 00',  # Cooling Towers
-            'Heating Water Boiler Plant': '23 52 00',  # Heating Boilers
-            'Steam Boiler Plant': '23 52 33',  # Steam Heating Boilers
-            'Air Handling Units': '23 73 00',  # Indoor Central-Station Air-Handling Units
-        },
-        'P': {
-            'Domestic Water Plant': '22 11 00',  # Facility Water Distribution
-            'Medical/Lab Gas Plant': '22 63 00',  # Gas Systems for Laboratory and Healthcare Facilities
-            'Sanitary Equipment': '22 13 00',  # Facility Sanitary Sewerage
-        },
-        'SM': {
-            'Air Handling Units': '23 74 00',  # Packaged Outdoor HVAC Equipment
-            'SM Accessories': '23 33 00',  # Air Duct Accessories
-            'SM Equipment': '23 30 00',  # HVAC Air Distribution
-        }
-    }
-    
-    # Secondary mapping for specific equipment types that were in "Other"
-    equipment_specific_mapping = {
-        'Heat Exchanger': '23 57 00',  # Heat Exchangers for HVAC
-        'Water Softener': '22 31 00',  # Domestic Water Softeners
-        'Humidifier': '23 84 13',  # Humidifiers
-        'Radiant Panel': '23 83 16',  # Radiant-Heating Hydronic Piping
-        'Make-up Air Unit': '23 74 23',  # Packaged Outdoor Heating-Only Makeup Air Units
-        'Energy Recovery Ventilator': '23 72 00',  # Air-to-Air Energy Recovery Equipment
-        'DI/RO Equipment': '22 31 16',  # Deionized-Water Piping
-        'Bypass Filter Feeder': '23 25 00',  # HVAC Water Treatment
-        'Grease Interceptor': '22 13 23',  # Sanitary Waste Interceptors
-        'Heat Trace': '23 05 33',  # Heat Tracing for HVAC Piping
-        'Dust Collector': '23 35 16',  # Engine Exhaust Systems
-        'Venturi VAV Box': '23 36 00',  # Air Terminal Units
-        'Water Treatment Controller': '23 25 13',  # Water Treatment for Closed-Loop Hydronic Systems
-        'Polishing System': '23 25 00',  # HVAC Water Treatment
-        'Ozone Generator': '22 67 00',  # Processed Water Systems for Laboratory and Healthcare Facilities
-    }
-    
-    # Try equipment-specific mapping first
-    if equipment_subcategory in equipment_specific_mapping:
-        return equipment_specific_mapping[equipment_subcategory]
-    
-    # Then try primary mapping
-    if uniformat_class in primary_mapping and system_type in primary_mapping[uniformat_class]:
-        return primary_mapping[uniformat_class][system_type]
-    
-    # Refined fallback mappings by Uniformat class
-    fallbacks = {
-        'H': '23 00 00',  # Heating, Ventilating, and Air Conditioning (HVAC)
-        'P': '22 00 00',  # Plumbing
-        'SM': '23 00 00',  # HVAC
-        'R': '11 40 00',  # Foodservice Equipment (Refrigeration)
-    }
-    
-    return fallbacks.get(uniformat_class, '00 00 00')  # Return unknown if no match
-
-# 11. Main function to train and evaluate the enhanced model
-def train_enhanced_model(data_path: Optional[str] = None) -> Tuple[Pipeline, pd.DataFrame]:
-    """
-    Train and evaluate the enhanced model with better handling of "Other" categories
-    
-    Args:
-        data_path (str, optional): Path to the CSV file. Defaults to None, which uses the standard location.
-        
-    Returns:
-        tuple: (trained model, preprocessed dataframe)
-    """
-    # 1. Load and preprocess data
-    print("Loading and preprocessing data...")
-    df = load_and_preprocess_data(data_path)
-    
-    # 2. Enhanced feature engineering
-    print("Enhancing features...")
-    df = enhance_features(df)
-    
-    # 3. Create hierarchical categories
-    print("Creating hierarchical categories...")
-    df = create_hierarchical_categories(df)
-    
-    # 4. Prepare training data - now including both text and numeric features
-    # Create a DataFrame with both text and numeric features
-    X = pd.DataFrame({
-        'combined_features': df['combined_features'],
-        'service_life': df['service_life']
-    })
-    
-    # Use hierarchical classification targets
-    y = df[['Equipment_Category', 'Uniformat_Class', 'System_Type', 'Equipment_Type', 'System_Subtype']]
-    
-    # 5. Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    
-    # 6. Handle class imbalance using SMOTE
-    print("Handling class imbalance with SMOTE...")
-    # We need to convert the DataFrame to a format suitable for SMOTE
-    # SMOTE requires a 2D array of numeric features
-    # We'll create a temporary TF-IDF representation of the text features
-    temp_vectorizer = TfidfVectorizer(max_features=1000)  # Simplified for SMOTE
-    X_train_text_features = temp_vectorizer.fit_transform(X_train['combined_features'])
-    
-    # Combine with numeric features
-    X_train_numeric = X_train[['service_life']].values
-    X_train_combined = np.hstack((X_train_text_features.toarray(), X_train_numeric))
-    
-    # Apply SMOTE to the combined features
-    X_train_resampled_array, y_train_resampled = handle_class_imbalance(X_train_combined, y_train)
-    
-    # After SMOTE, we need to properly reconstruct the DataFrame for our pipeline
-    # The challenge is that SMOTE creates synthetic samples that don't have original text
-    # We need to separate the numeric features from the synthetic samples
-    
-    # Get the number of features from the TF-IDF vectorizer
-    n_text_features = X_train_text_features.shape[1]
-    
-    # Extract the service_life values from the resampled array (last column)
-    resampled_service_life = X_train_resampled_array[:, -1].reshape(-1, 1)
-    
-    # For the text features, we have two options:
-    # 1. Use the original text for original samples and empty strings for synthetic samples
-    # 2. Try to reconstruct text from TF-IDF (difficult and imprecise)
-    
-    # We'll use option 1 for simplicity and clarity
-    # First, determine which samples are original and which are synthetic
-    original_sample_count = X_train.shape[0]
-    total_resampled_count = X_train_resampled_array.shape[0]
-    
-    # Create a DataFrame with the right structure for our pipeline
-    X_train_resampled = pd.DataFrame(columns=['combined_features', 'service_life'])
-    
-    # For original samples, use the original text
-    if original_sample_count <= total_resampled_count:
-        X_train_resampled['combined_features'] = list(X_train['combined_features']) + [''] * (total_resampled_count - original_sample_count)
-    else:
-        X_train_resampled['combined_features'] = list(X_train['combined_features'][:total_resampled_count])
-    
-    # Use the resampled service_life values for all samples
-    X_train_resampled['service_life'] = resampled_service_life
-    
-    print(f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}")
-    print(f"Shape of X_train_resampled: {X_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}")
-    
-    # 7. Build enhanced model
-    print("Building enhanced model...")
-    model = build_enhanced_model()
-    
-    # 8. Train the model
-    print("Training model...")
-    model.fit(X_train_resampled, y_train_resampled)
-    
-    # 9. Evaluate with focus on "Other" categories
-    print("Evaluating model...")
-    y_pred_df = enhanced_evaluation(model, X_test, y_test)
-    
-    # 10. Analyze "Other" category features
-    print("Analyzing 'Other' category features...")
-    analyze_other_category_features(model, X_test, y_test, y_pred_df)
-    
-    # 11. Analyze misclassifications for "Other" categories
-    print("Analyzing 'Other' category misclassifications...")
-    analyze_other_misclassifications(X_test, y_test, y_pred_df)
-    
-    return model, df
-
-# 12. Enhanced prediction function
-def predict_with_enhanced_model(model: Pipeline, description: str, service_life: float = 0.0) -> dict:
-    """
-    Make predictions with enhanced detail for "Other" categories
-    
-    This function has been updated to work with the new pipeline structure that uses
-    both text and numeric features.
-    
-    Args:
-        model (Pipeline): Trained model pipeline
-        description (str): Text description to classify
-        service_life (float, optional): Service life value. Defaults to 0.0.
-        
-    Returns:
-        dict: Prediction results with classifications
-    """
-    # Create a DataFrame with the required structure for the pipeline
-    input_data = pd.DataFrame({
-        'combined_features': [description],
-        'service_life': [service_life]
-    })
-    
-    # Predict using the trained pipeline
-    pred = model.predict(input_data)[0]
-    
-    # Extract predictions
-    result = {
-        'Equipment_Category': pred[0],
-        'Uniformat_Class': pred[1],
-        'System_Type': pred[2],
-        'Equipment_Type': pred[3],
-        'System_Subtype': pred[4]
-    }
-    
-    # Add MasterFormat prediction with enhanced mapping
-    result['MasterFormat_Class'] = enhanced_masterformat_mapping(
-        result['Uniformat_Class'],
-        result['System_Type'],
-        result['Equipment_Category'],
-        # Extract equipment subcategory if available
-        result['Equipment_Type'].split('-')[1] if '-' in result['Equipment_Type'] else None
-    )
-    
-    return result
-
-# Example usage
-if __name__ == "__main__":
-    # Path to the CSV file
-    data_path = "C:/Repos/fca-dashboard4/fca_dashboard/classifier/ingest/eq_ids.csv"
-    
-    # Train enhanced model using the CSV file
-    model, df = train_enhanced_model(data_path)
-    
-    # Example prediction with service life
-    description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
-    service_life = 20.0  # Example service life in years
-    prediction = predict_with_enhanced_model(model, description, service_life)
-    
-    print("\nEnhanced Prediction:")
-    for key, value in prediction.items():
-        print(f"{key}: {value}")
-
-    # Visualize category distribution to better understand "Other" classes
-    plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y='Equipment_Category')
-    plt.title('Equipment Category Distribution')
-    plt.tight_layout()
-    plt.savefig('equipment_category_distribution.png')
-    
-    plt.figure(figsize=(10, 6))
-    sns.countplot(data=df, y='System_Type')
-    plt.title('System Type Distribution')
-    plt.tight_layout()
-    plt.savefig('system_type_distribution.png')
-````
+```
 
 ## File: nexusml/core/evaluation.py
-````python
+
+```python
 """
 Evaluation Module
 
@@ -1785,61 +576,61 @@ from sklearn.pipeline import Pipeline
 def enhanced_evaluation(model: Pipeline, X_test: Union[pd.Series, pd.DataFrame], y_test: pd.DataFrame) -> pd.DataFrame:
     """
     Evaluate the model with focus on "Other" categories performance
-    
+
     This function has been updated to handle both Series and DataFrame inputs for X_test,
     to support the new pipeline structure that uses both text and numeric features.
-    
+
     Args:
         model (Pipeline): Trained model pipeline
         X_test: Test features
         y_test (pd.DataFrame): Test targets
-        
+
     Returns:
         pd.DataFrame: Predictions dataframe
     """
     y_pred = model.predict(X_test)
     y_pred_df = pd.DataFrame(y_pred, columns=y_test.columns)
-    
+
     # Print overall evaluation metrics
     print("Model Evaluation:")
     for i, col in enumerate(y_test.columns):
         print(f"\n{col} Classification Report:")
         print(classification_report(y_test[col], y_pred_df[col]))
         print(f"{col} Accuracy:", accuracy_score(y_test[col], y_pred_df[col]))
-        
+
         # Specifically examine "Other" category performance
         if "Other" in y_test[col].unique():
             other_indices = y_test[col] == "Other"
             other_accuracy = accuracy_score(
-                y_test[col][other_indices], 
+                y_test[col][other_indices],
                 y_pred_df[col][other_indices]
             )
             print(f"'Other' category accuracy for {col}: {other_accuracy:.4f}")
-            
+
             # Calculate confusion metrics for "Other" category
             tp = ((y_test[col] == "Other") & (y_pred_df[col] == "Other")).sum()
             fp = ((y_test[col] != "Other") & (y_pred_df[col] == "Other")).sum()
             fn = ((y_test[col] == "Other") & (y_pred_df[col] != "Other")).sum()
-            
+
             precision = tp / (tp + fp) if (tp + fp) > 0 else 0
             recall = tp / (tp + fn) if (tp + fn) > 0 else 0
             f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
-            
+
             print(f"'Other' category metrics for {col}:")
             print(f"  Precision: {precision:.4f}")
             print(f"  Recall: {recall:.4f}")
             print(f"  F1 Score: {f1:.4f}")
-    
+
     return y_pred_df
 
 
 def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
     """
     Analyze what features are most important for classifying items as "Other"
-    
+
     This function has been updated to work with the new pipeline structure that uses
     a ColumnTransformer to combine text and numeric features.
-    
+
     Args:
         model (Pipeline): Trained model pipeline
         X_test (pd.Series): Test features
@@ -1848,24 +639,24 @@ def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: 
     """
     # Extract the Random Forest model from the pipeline
     rf_model = model.named_steps['clf'].estimators_[0]
-    
+
     # Get feature names from the TF-IDF vectorizer (now nested in preprocessor)
     # Access the text transformer from the ColumnTransformer, then the TF-IDF vectorizer
     tfidf_vectorizer = model.named_steps['preprocessor'].transformers_[0][1].named_steps['tfidf']
     text_feature_names = tfidf_vectorizer.get_feature_names_out()
-    
+
     # Also include numeric features for a complete analysis
     numeric_feature_names = ['service_life']
     all_feature_names = list(text_feature_names) + numeric_feature_names
-    
+
     # For each classification column
     for col in y_test.columns:
         if "Other" in y_test[col].unique():
             print(f"\nAnalyzing 'Other' category for {col}:")
-            
+
             # Find examples predicted as "Other"
             other_indices = y_pred_df[col] == "Other"
-            
+
             if other_indices.sum() > 0:
                 # Create a DataFrame with the required structure for the preprocessor
                 if isinstance(X_test, pd.Series):
@@ -1875,50 +666,50 @@ def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: 
                     })
                     # Transform using the full preprocessor
                     transformed_features = model.named_steps['preprocessor'].transform(X_test_df)
-                    
+
                     # Extract just the text features (first part of the transformed features)
                     text_feature_count = len(text_feature_names)
                     text_features = transformed_features[:, :text_feature_count]
-                    
+
                     # Get the average feature values for text features
                     avg_features = text_features.mean(axis=0)
                     if hasattr(avg_features, 'A1'):  # If it's a sparse matrix
                         avg_features = avg_features.A1
-                    
+
                     # Get the top text features
                     top_indices = np.argsort(avg_features)[-20:]
-                    
+
                     print("Top text features for 'Other' classification:")
                     for idx in top_indices:
                         print(f"  {text_feature_names[idx]}: {avg_features[idx]:.4f}")
-                    
+
                     # Also analyze feature importance from the Random Forest model
                     # This will show the importance of both text and numeric features
                     print("\nFeature importance from Random Forest:")
-                    
+
                     # Get feature importances for this specific estimator (for the current target column)
                     # Find the index of the current column in the target columns
                     col_idx = list(y_test.columns).index(col)
                     rf_estimator = model.named_steps['clf'].estimators_[col_idx]
-                    
+
                     # Get feature importances
                     importances = rf_estimator.feature_importances_
-                    
+
                     # Create a DataFrame to sort and display importances
                     importance_df = pd.DataFrame({
                         'feature': all_feature_names[:len(importances)],
                         'importance': importances
                     })
-                    
+
                     # Sort by importance
                     importance_df = importance_df.sort_values('importance', ascending=False)
-                    
+
                     # Display top 10 features
                     print("Top 10 features by importance:")
                     for i, (feature, importance) in enumerate(zip(importance_df['feature'].head(10),
                                                                 importance_df['importance'].head(10))):
                         print(f"  {feature}: {importance:.4f}")
-                    
+
                     # Check if service_life is important
                     service_life_importance = importance_df[importance_df['feature'] == 'service_life']
                     if not service_life_importance.empty:
@@ -1933,7 +724,7 @@ def analyze_other_category_features(model: Pipeline, X_test: pd.Series, y_test: 
 def analyze_other_misclassifications(X_test: pd.Series, y_test: pd.DataFrame, y_pred_df: pd.DataFrame) -> None:
     """
     Analyze cases where "Other" was incorrectly predicted or missed
-    
+
     Args:
         X_test (pd.Series): Test features
         y_test (pd.DataFrame): Test targets
@@ -1942,36 +733,37 @@ def analyze_other_misclassifications(X_test: pd.Series, y_test: pd.DataFrame, y_
     for col in y_test.columns:
         if "Other" in y_test[col].unique():
             print(f"\nMisclassifications for 'Other' in {col}:")
-            
+
             # False positives: Predicted as "Other" but actually something else
             fp_indices = (y_test[col] != "Other") & (y_pred_df[col] == "Other")
-            
+
             if fp_indices.sum() > 0:
                 print(f"\nFalse Positives (predicted as 'Other' but weren't): {fp_indices.sum()} cases")
                 fp_examples = X_test[fp_indices].values[:5]  # Show first 5
                 fp_actual = y_test[col][fp_indices].values[:5]
-                
+
                 for i, (example, actual) in enumerate(zip(fp_examples, fp_actual)):
                     print(f"Example {i+1}:")
                     print(f"  Text: {example[:100]}...")  # Show first 100 chars
                     print(f"  Actual class: {actual}")
-            
+
             # False negatives: Actually "Other" but predicted as something else
             fn_indices = (y_test[col] == "Other") & (y_pred_df[col] != "Other")
-            
+
             if fn_indices.sum() > 0:
                 print(f"\nFalse Negatives (were 'Other' but predicted as something else): {fn_indices.sum()} cases")
                 fn_examples = X_test[fn_indices].values[:5]  # Show first 5
                 fn_predicted = y_pred_df[col][fn_indices].values[:5]
-                
+
                 for i, (example, predicted) in enumerate(zip(fn_examples, fn_predicted)):
                     print(f"Example {i+1}:")
                     print(f"  Text: {example[:100]}...")  # Show first 100 chars
                     print(f"  Predicted as: {predicted}")
-````
+```
 
 ## File: nexusml/core/feature_engineering.py
-````python
+
+```python
 """
 Feature Engineering Module
 
@@ -1980,16 +772,222 @@ It follows the Single Responsibility Principle by focusing solely on feature tra
 """
 
 import json
-from typing import Dict, Optional, Tuple
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
+import yaml
+from sklearn.base import BaseEstimator, TransformerMixin
 
 from nexusml.config import get_project_root
+
+
+class TextCombiner(BaseEstimator, TransformerMixin):
+    """
+    Combines multiple text columns into one column.
+
+    Config example: {"columns": ["Asset Category","Equip Name ID"], "separator": " "}
+    """
+
+    def __init__(
+        self,
+        columns: List[str],
+        separator: str = " ",
+        new_column: str = "combined_text",
+    ):
+        self.columns = columns
+        self.separator = separator
+        self.new_column = new_column
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Create a single text column from self.columns
+        X[self.new_column] = (
+            X[self.columns]
+            .astype(str)
+            .apply(lambda row: self.separator.join(row.values), axis=1)
+        )
+        X[self.new_column] = X[self.new_column].fillna("")
+        return X
+
+
+class NumericCleaner(BaseEstimator, TransformerMixin):
+    """
+    Cleans and transforms numeric columns.
+
+    Config example: {"name": "Service Life", "new_name": "service_life", "fill_value": 0, "dtype": "float"}
+    """
+
+    def __init__(
+        self,
+        column: str,
+        new_name: Optional[str] = None,
+        fill_value: Union[int, float] = 0,
+        dtype: str = "float",
+    ):
+        self.column = column
+        self.new_name = new_name or column
+        self.fill_value = fill_value
+        self.dtype = dtype
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Clean and transform the numeric column
+        if self.dtype == "float":
+            X[self.new_name] = X[self.column].fillna(self.fill_value).astype(float)
+        elif self.dtype == "int":
+            X[self.new_name] = X[self.column].fillna(self.fill_value).astype(int)
+        return X
+
+
+class HierarchyBuilder(BaseEstimator, TransformerMixin):
+    """
+    Creates hierarchical category columns by combining parent columns.
+
+    Config example: {"new_col": "Equipment_Type", "parents": ["Asset Category", "Equip Name ID"], "separator": "-"}
+    """
+
+    def __init__(
+        self, new_column: str, parent_columns: List[str], separator: str = "-"
+    ):
+        self.new_column = new_column
+        self.parent_columns = parent_columns
+        self.separator = separator
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Create hierarchical column from parent columns
+        X[self.new_column] = (
+            X[self.parent_columns]
+            .astype(str)
+            .apply(lambda row: self.separator.join(row.values), axis=1)
+        )
+        return X
+
+
+class ColumnMapper(BaseEstimator, TransformerMixin):
+    """
+    Maps source columns to target columns.
+
+    Config example: {"source": "Asset Category", "target": "Equipment_Category"}
+    """
+
+    def __init__(self, mappings: List[Dict[str, str]]):
+        self.mappings = mappings
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+        # Map source columns to target columns
+        for mapping in self.mappings:
+            source = mapping["source"]
+            target = mapping["target"]
+            X[target] = X[source]
+        return X
+
+
+class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
+    """
+    A generic feature engineering transformer that applies multiple transformations
+    based on a configuration file.
+    """
+
+    def __init__(self, config_path: Optional[str] = None):
+        """
+        Initialize the transformer with a configuration file path.
+
+        Args:
+            config_path: Path to the YAML configuration file. If None, uses the default path.
+        """
+        self.config_path = config_path
+        self.transformers = []
+        self.config = {}
+        self._load_config()
+
+    def _load_config(self):
+        """Load the configuration from the YAML file."""
+        config_path = self.config_path
+        if config_path is None:
+            # Use default path
+            root = get_project_root()
+            config_path = root / "config" / "feature_config.yml"
+
+        # Load the configuration
+        with open(config_path, "r") as f:
+            self.config = yaml.safe_load(f)
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        """
+        Transform the input DataFrame based on the configuration.
+
+        Args:
+            X: Input DataFrame
+
+        Returns:
+            Transformed DataFrame
+        """
+        X = X.copy()
+
+        # 1. Apply column mappings
+        if "column_mappings" in self.config:
+            mapper = ColumnMapper(self.config["column_mappings"])
+            X = mapper.transform(X)
+
+        # 2. Apply text combinations
+        if "text_combinations" in self.config:
+            for combo in self.config["text_combinations"]:
+                combiner = TextCombiner(
+                    columns=combo["columns"],
+                    separator=combo.get("separator", " "),
+                    new_column=combo.get("name", "combined_text"),
+                )
+                X = combiner.transform(X)
+
+        # 3. Apply numeric column cleaning
+        if "numeric_columns" in self.config:
+            for num_col in self.config["numeric_columns"]:
+                cleaner = NumericCleaner(
+                    column=num_col["name"],
+                    new_name=num_col.get("new_name", num_col["name"]),
+                    fill_value=num_col.get("fill_value", 0),
+                    dtype=num_col.get("dtype", "float"),
+                )
+                X = cleaner.transform(X)
+
+        # 4. Apply hierarchical categories
+        if "hierarchies" in self.config:
+            for hierarchy in self.config["hierarchies"]:
+                builder = HierarchyBuilder(
+                    new_column=hierarchy["new_col"],
+                    parent_columns=hierarchy["parents"],
+                    separator=hierarchy.get("separator", "-"),
+                )
+                X = builder.transform(X)
+
+        return X
 
 
 def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Enhanced feature engineering with hierarchical structure and more granular categories
+
+    This function now uses the GenericFeatureEngineer transformer to apply
+    transformations based on the configuration file.
 
     Args:
         df (pd.DataFrame): Input dataframe with raw features
@@ -1997,50 +995,17 @@ def enhance_features(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with enhanced features
     """
-    # Extract primary classification columns
-    df["Equipment_Category"] = df["Asset Category"]
-    df["Uniformat_Class"] = df["System Type ID"]
-    df["System_Type"] = df["Precon System"]
-
-    # Create subcategory field for more granular classification
-    df["Equipment_Subcategory"] = df["Equip Name ID"]
-
-    # Combine fields for rich text features
-    df["combined_features"] = (
-        df["Asset Category"]
-        + " "
-        + df["Equip Name ID"]
-        + " "
-        + df["Sub System Type"]
-        + " "
-        + df["Sub System ID"]
-        + " "
-        + df["Title"]
-        + " "
-        + df["Precon System"]
-        + " "
-        + df["Operations System"]
-        + " "
-        + df["Sub System Class"]
-        + " "
-        + df["Drawing Abbreviation"]
-    )
-
-    # Add equipment size and unit as features
-    df["size_feature"] = df["Equipment Size"].astype(str) + " " + df["Unit"].astype(str)
-
-    # Add service life as a feature
-    df["service_life"] = df["Service Life"].fillna(0).astype(float)
-
-    # Fill NaN values
-    df["combined_features"] = df["combined_features"].fillna("")
-
-    return df
+    # Use the GenericFeatureEngineer to apply transformations
+    engineer = GenericFeatureEngineer()
+    return engineer.transform(df)
 
 
 def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     """
     Create hierarchical category structure to better handle "Other" categories
+
+    This function is kept for backward compatibility but now simply returns the
+    input DataFrame as the hierarchical categories are created by the GenericFeatureEngineer.
 
     Args:
         df (pd.DataFrame): Input dataframe with basic features
@@ -2048,12 +1013,8 @@ def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with hierarchical category features
     """
-    # Create Equipment Type - a more detailed category than Equipment_Category
-    df["Equipment_Type"] = df["Asset Category"] + "-" + df["Equip Name ID"]
-
-    # Create System Subtype - a more detailed category than System_Type
-    df["System_Subtype"] = df["Precon System"] + "-" + df["Operations System"]
-
+    # This function is kept for backward compatibility
+    # The hierarchical categories are now created by the GenericFeatureEngineer
     return df
 
 
@@ -2121,10 +1082,11 @@ def enhanced_masterformat_mapping(
     }
 
     return fallbacks.get(uniformat_class, "00 00 00")  # Return unknown if no match
-````
+```
 
 ## File: nexusml/core/model_building.py
-````python
+
+```python
 """
 Model Building Module
 
@@ -2134,6 +1096,7 @@ It follows the Single Responsibility Principle by focusing solely on model defin
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from sklearn.compose import ColumnTransformer
@@ -2143,21 +1106,29 @@ from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from nexusml.core.feature_engineering import GenericFeatureEngineer
 
-def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pipeline:
+
+def build_enhanced_model(
+    sampling_strategy: str = "random_over",
+    feature_config_path: Optional[str] = None,
+    **kwargs,
+) -> Pipeline:
     """
     Build an enhanced model with configurable sampling strategy
 
     This model incorporates both text features (via TF-IDF) and numeric features
     (like service_life) using a ColumnTransformer to create a more comprehensive
-    feature representation.
+    feature representation. It now includes a GenericFeatureEngineer step for
+    more flexible feature engineering.
 
     Args:
         sampling_strategy: Sampling strategy to use ("random_over", "smote", or "direct")
+        feature_config_path: Path to the feature configuration file. If None, uses the default path.
         **kwargs: Additional parameters for the model
 
     Returns:
-        Pipeline: Scikit-learn pipeline with preprocessor and classifier
+        Pipeline: Scikit-learn pipeline with feature engineering, preprocessor and classifier
     """
     # Try to load settings from configuration file
     try:
@@ -2180,7 +1151,7 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
                     Path(settings_path_str) if settings_path_str else Path("")
                 )
                 if not settings_path_str or not settings_path.exists():
-                    raise FileNotFoundError("Could not find settings.yml")
+                    raise FileNotFoundError("Could not find settings.yml") from None
 
         with open(settings_path, "r") as file:
             settings = yaml.safe_load(file)
@@ -2258,11 +1229,17 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
         remainder="drop",  # Drop any other columns
     )
 
-    # Complete pipeline with feature processing and classifier
+    # Complete pipeline with feature engineering, feature processing and classifier
     # Note: We use both RandomOverSampler (applied earlier) and class_weight='balanced_subsample'
     # for a two-pronged approach to handling imbalanced classes
     pipeline = Pipeline(
         [
+            # Optional feature engineering step - only used if called directly, not through train_enhanced_model
+            # In train_enhanced_model, this is applied separately before the pipeline
+            (
+                "feature_engineer",
+                GenericFeatureEngineer(config_path=feature_config_path),
+            ),
             ("preprocessor", preprocessor),
             (
                 "clf",
@@ -2283,7 +1260,7 @@ def build_enhanced_model(sampling_strategy: str = "random_over", **kwargs) -> Pi
     return pipeline
 
 
-def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
+def optimize_hyperparameters(pipeline: Pipeline, x_train, y_train) -> Pipeline:
     """
     Optimize hyperparameters for better handling of all classes including "Other"
 
@@ -2293,7 +1270,7 @@ def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
 
     Args:
         pipeline (Pipeline): Model pipeline to optimize
-        X_train: Training features
+        x_train: Training features
         y_train: Training targets
 
     Returns:
@@ -2320,17 +1297,18 @@ def optimize_hyperparameters(pipeline: Pipeline, X_train, y_train) -> Pipeline:
     )
 
     # Fit the grid search to the data
-    # Note: X_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
-    grid_search.fit(X_train, y_train)
+    # Note: x_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
+    grid_search.fit(x_train, y_train)
 
     print(f"Best parameters: {grid_search.best_params_}")
     print(f"Best cross-validation score: {grid_search.best_score_}")
 
     return grid_search.best_estimator_
-````
+```
 
 ## File: nexusml/core/model.py
-````python
+
+```python
 """
 Enhanced Equipment Classification Model
 
@@ -2376,6 +1354,7 @@ from nexusml.core.evaluation import (
     enhanced_evaluation,
 )
 from nexusml.core.feature_engineering import (
+    GenericFeatureEngineer,
     create_hierarchical_categories,
     enhance_features,
     enhanced_masterformat_mapping,
@@ -2446,7 +1425,10 @@ def handle_class_imbalance(
 
 
 def train_enhanced_model(
-    data_path: Optional[str] = None, sampling_strategy: str = "random_over", **kwargs
+    data_path: Optional[str] = None,
+    sampling_strategy: str = "random_over",
+    feature_config_path: Optional[str] = None,
+    **kwargs,
 ) -> Tuple[Any, pd.DataFrame]:
     """
     Train and evaluate the enhanced model with better handling of "Other" categories
@@ -2454,6 +1436,7 @@ def train_enhanced_model(
     Args:
         data_path: Path to the CSV file. Defaults to None, which uses the standard location.
         sampling_strategy: Strategy for handling class imbalance ("random_over", "smote", or "direct")
+        feature_config_path: Path to the feature configuration file. Defaults to None, which uses the standard location.
         **kwargs: Additional parameters for the oversampling method
 
     Returns:
@@ -2463,19 +1446,16 @@ def train_enhanced_model(
     print("Loading and preprocessing data...")
     df = load_and_preprocess_data(data_path)
 
-    # 2. Enhanced feature engineering
-    print("Enhancing features...")
-    df = enhance_features(df)
+    # 2. Apply Generic Feature Engineering
+    print("Applying Generic Feature Engineering...")
+    feature_engineer = GenericFeatureEngineer(config_path=feature_config_path)
+    df = feature_engineer.transform(df)
 
-    # 3. Create hierarchical categories
-    print("Creating hierarchical categories...")
-    df = create_hierarchical_categories(df)
-
-    # 4. Prepare training data - now including both text and numeric features
+    # 3. Prepare training data - now including both text and numeric features
     # Create a DataFrame with both text and numeric features
     x = pd.DataFrame(
         {
-            "combined_features": df["combined_features"],
+            "combined_features": df["combined_text"],  # Using the name from config
             "service_life": df["service_life"],
         }
     )
@@ -2587,8 +1567,11 @@ def predict_with_enhanced_model(
     """
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(
-        {"combined_features": [description], "service_life": [service_life]}
+        {"combined_text": [description], "service_life": [service_life]}
     )
+
+    # Rename to match the expected column name in the pipeline
+    input_data.rename(columns={"combined_text": "combined_features"}, inplace=True)
 
     # Predict using the trained pipeline
     pred = model.predict(input_data)[0]
@@ -2674,17 +1657,19 @@ if __name__ == "__main__":
     print("\nVisualizations saved to:")
     print(f"  - {equipment_category_file}")
     print(f"  - {system_type_file}")
-````
+```
 
-## File: nexusml/examples/__init__.py
-````python
+## File: nexusml/examples/**init**.py
+
+```python
 """
 Example scripts for NexusML.
 """
-````
+```
 
 ## File: nexusml/examples/advanced_example.py
-````python
+
+```python
 """
 Advanced Example Usage of NexusML
 
@@ -2973,10 +1958,11 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-````
+```
 
 ## File: nexusml/examples/common.py
-````python
+
+```python
 """
 Common Utilities for NexusML Examples
 
@@ -3138,10 +2124,104 @@ def visualize_results(
 
     logger.info(f"Visualizations saved to: {output_dir}")
     return visualization_files
-````
+```
+
+## File: nexusml/examples/feature_engineering_example.py
+
+```python
+"""
+Feature Engineering Example
+
+This example demonstrates how to use the new config-driven feature engineering approach.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+import pandas as pd
+
+# Add the parent directory to the path so we can import nexusml
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
+from nexusml.core.data_preprocessing import load_and_preprocess_data
+from nexusml.core.feature_engineering import GenericFeatureEngineer
+from nexusml.core.model import predict_with_enhanced_model, train_enhanced_model
+
+
+def demonstrate_generic_feature_engineering():
+    """
+    Demonstrate how to use the GenericFeatureEngineer class directly.
+    """
+    print("\n=== Demonstrating GenericFeatureEngineer ===\n")
+
+    # Load sample data
+    print("Loading sample data...")
+    df = load_and_preprocess_data()
+
+    # Print original columns
+    print("\nOriginal columns:")
+    print(df.columns.tolist())
+
+    # Apply generic feature engineering
+    print("\nApplying generic feature engineering...")
+    engineer = GenericFeatureEngineer()
+    df_transformed = engineer.transform(df)
+
+    # Print new columns
+    print("\nNew columns after transformation:")
+    print(df_transformed.columns.tolist())
+
+    # Print sample of combined text
+    print("\nSample of combined_text:")
+    print(df_transformed["combined_text"].iloc[0][:200] + "...")
+
+    # Print sample of hierarchical categories
+    print("\nSample of hierarchical categories:")
+    print(f"Equipment_Type: {df_transformed['Equipment_Type'].iloc[0]}")
+    print(f"System_Subtype: {df_transformed['System_Subtype'].iloc[0]}")
+
+    return df_transformed
+
+
+def demonstrate_model_training_with_config():
+    """
+    Demonstrate how to train a model using the config-driven approach.
+    """
+    print("\n=== Demonstrating Model Training with Config ===\n")
+
+    # Train model with config-driven feature engineering
+    print("Training model with config-driven feature engineering...")
+    model, df = train_enhanced_model(
+        sampling_strategy="direct"
+    )  # Use direct to speed up example
+
+    # Make a prediction
+    print("\nMaking a prediction...")
+    description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
+    service_life = 20.0
+    prediction = predict_with_enhanced_model(model, description, service_life)
+
+    print("\nPrediction results:")
+    for key, value in prediction.items():
+        print(f"{key}: {value}")
+
+    return model, df
+
+
+if __name__ == "__main__":
+    # Demonstrate using GenericFeatureEngineer directly
+    df_transformed = demonstrate_generic_feature_engineering()
+
+    # Demonstrate training a model with config-driven feature engineering
+    model, df = demonstrate_model_training_with_config()
+
+    print("\nExample completed successfully!")
+```
 
 ## File: nexusml/examples/omniclass_generator_example.py
-````python
+
+```python
 """
 Example script demonstrating how to use the OmniClass generator in NexusML.
 
@@ -3203,10 +2283,151 @@ def main():
 
 if __name__ == "__main__":
     main()
-````
+```
+
+## File: nexusml/examples/omniclass_hierarchy_example.py
+
+```python
+"""
+OmniClass Hierarchy Visualization Example
+
+This example demonstrates how to use the OmniClass hierarchy visualization tools
+to display OmniClass data in a hierarchical tree structure.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+import pandas as pd
+
+# Add path to allow importing from nexusml package
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+
+from nexusml.ingest.data import __file__ as data_file
+from nexusml.ingest.generator.omniclass_hierarchy import (
+    build_tree,
+    print_tree_markdown,
+    print_tree_terminal,
+)
+from nexusml.utils import clean_omniclass_csv, get_logger, read_csv_safe
+
+# Path to the data directory
+DATA_DIR = os.path.dirname(data_file)
+logger = get_logger(__name__)
+
+
+def main():
+    """
+    Main function to demonstrate OmniClass hierarchy visualization.
+    """
+    # Default output directory
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../output"))
+
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Load the OmniClass data
+    omniclass_file = os.path.join(DATA_DIR, "omniclass.csv")
+    logger.info(f"Loading OmniClass data from: {omniclass_file}")
+    print(f"Loading OmniClass data from: {omniclass_file}")
+
+    try:
+        # Try to read the CSV file safely
+        try:
+            logger.info("Attempting to read CSV file")
+            df = read_csv_safe(omniclass_file)
+            logger.info(f"Successfully loaded {len(df)} rows")
+        except Exception as e:
+            logger.warning(f"Error reading CSV file: {e}")
+            logger.info("Cleaning the CSV file...")
+            print("CSV file has issues. Cleaning it...")
+
+            # Clean the CSV file
+            cleaned_file = clean_omniclass_csv(omniclass_file)
+            logger.info(f"Using cleaned file: {cleaned_file}")
+            print(f"Using cleaned file: {cleaned_file}")
+
+            # Read the cleaned file
+            df = read_csv_safe(cleaned_file)
+            logger.info(f"Successfully loaded {len(df)} rows from cleaned file")
+
+        # Display available columns
+        print("\nAvailable columns:")
+        for i, col in enumerate(df.columns):
+            print(f"{i+1}. {col}")
+
+        # Set column names
+        code_col = "OmniClass_Code"
+        title_col = "OmniClass_Title"
+        desc_col = "Description"
+
+        # Filter data (optional)
+        # For example, filter to only show Table 23 (Products) entries
+        filter_value = "23-"
+        logger.info(f"Filtering by: {filter_value}")
+        print(f"\nFiltering by: {filter_value}")
+        filtered_df = df[df[code_col].str.contains(filter_value, na=False)]
+        logger.info(f"Filtered to {len(filtered_df)} rows")
+
+        # Further filter to limit the number of entries for the example
+        # For example, only show entries related to HVAC
+        hvac_filter = "HVAC|mechanical|boiler|pump|chiller"
+        logger.info(f"Further filtering by: {hvac_filter}")
+        print(f"Further filtering by: {hvac_filter}")
+        hvac_df = filtered_df[
+            (filtered_df[title_col].str.contains(hvac_filter, case=False, na=False))
+            | (filtered_df[desc_col].str.contains(hvac_filter, case=False, na=False))
+        ]
+        logger.info(f"Final dataset has {len(hvac_df)} rows")
+
+        # Build the tree
+        logger.info("Building hierarchy tree...")
+        print("\nBuilding hierarchy tree...")
+        tree = build_tree(hvac_df, code_col, title_col, desc_col)
+
+        # Display the tree in terminal format
+        logger.info("Generating terminal output...")
+        print("\nOmniClass Hierarchy Tree (Terminal Format):")
+        print_tree_terminal(tree)
+
+        # Display the tree in markdown format
+        logger.info("Generating markdown output...")
+        print("\nOmniClass Hierarchy Tree (Markdown Format):")
+        markdown_lines = print_tree_markdown(tree)
+        print("\n".join(markdown_lines))
+
+        # Save to file
+        output_file = os.path.join(output_dir, "omniclass_hvac_hierarchy.md")
+        with open(output_file, "w") as f:
+            f.write("\n".join(markdown_lines))
+        logger.info(f"Saved markdown output to {output_file}")
+        print(f"\nSaved to {output_file}")
+
+        # Save terminal output to file as well
+        terminal_output_file = os.path.join(output_dir, "omniclass_hvac_hierarchy.txt")
+        with open(terminal_output_file, "w", encoding="utf-8") as f:
+            # Redirect stdout to file temporarily
+            import contextlib
+
+            with contextlib.redirect_stdout(f):
+                print("OmniClass Hierarchy Tree (Terminal Format):")
+                print_tree_terminal(tree)
+        logger.info(f"Saved terminal output to {terminal_output_file}")
+        print(f"Saved terminal output to {terminal_output_file}")
+
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+```
 
 ## File: nexusml/examples/simple_example.py
-````python
+
+```python
 """
 Simplified Example Usage of NexusML
 
@@ -3227,13 +2448,13 @@ from nexusml.core.model import predict_with_enhanced_model, train_enhanced_model
 def load_settings():
     """
     Load settings from the configuration file
-    
+
     Returns:
         dict: Configuration settings
     """
     # Try to find a settings file
     settings_path = Path(__file__).resolve().parent.parent.parent / "config" / "settings.yml"
-    
+
     if not settings_path.exists():
         # Check if we're running in the context of fca_dashboard
         try:
@@ -3251,7 +2472,7 @@ def load_settings():
                     }
                 }
             }
-    
+
     try:
         with open(settings_path, 'r') as file:
             return yaml.safe_load(file)
@@ -3276,43 +2497,43 @@ def main():
     """
     # Load settings
     settings = load_settings()
-    
+
     # Try to get settings from both nexusml and classifier sections (for compatibility)
     nexusml_settings = settings.get('nexusml', {})
     classifier_settings = settings.get('classifier', {})
-    
+
     # Merge settings, preferring nexusml if available
     merged_settings = {**classifier_settings, **nexusml_settings}
-    
+
     # Get data path from settings
     data_path = merged_settings.get('data_paths', {}).get('training_data')
     if not data_path:
         print("Warning: Training data path not found in settings, using default path")
         data_path = str(Path(__file__).resolve().parent.parent / "ingest" / "data" / "eq_ids.csv")
-    
+
     # Get output paths from settings
     example_settings = merged_settings.get('examples', {})
     output_dir = example_settings.get('output_dir', str(Path(__file__).resolve().parent / "outputs"))
     prediction_file = example_settings.get('prediction_file',
                                         os.path.join(output_dir, 'example_prediction.txt'))
-    
+
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
-    
+
     # Train enhanced model using the CSV file
     print(f"Training the model using data from: {data_path}")
     model, df = train_enhanced_model(data_path)
-    
+
     # Example prediction with service life
     description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
     service_life = 20.0  # Example service life in years
-    
+
     print("\nMaking a prediction for:")
     print(f"Description: {description}")
     print(f"Service Life: {service_life} years")
-    
+
     prediction = predict_with_enhanced_model(model, description, service_life)
-    
+
     print("\nEnhanced Prediction:")
     for key, value in prediction.items():
         print(f"{key}: {value}")
@@ -3328,7 +2549,7 @@ def main():
         f.write("Prediction:\n")
         for key, value in prediction.items():
             f.write(f"  {key}: {value}\n")
-        
+
         # Add placeholder for model performance metrics
         f.write("\nModel Performance Metrics\n")
         f.write("========================\n")
@@ -3342,10 +2563,11 @@ def main():
 
 if __name__ == "__main__":
     main()
-````
+```
 
-## File: nexusml/ingest/__init__.py
-````python
+## File: nexusml/ingest/**init**.py
+
+```python
 """
 Data ingestion functionality for NexusML.
 """
@@ -3367,10 +2589,11 @@ __all__ = [
     'BatchProcessor',
     'AnthropicClient',
 ]
-````
+```
 
-## File: nexusml/ingest/generator/__init__.py
-````python
+## File: nexusml/ingest/generator/**init**.py
+
+```python
 """
 Generator module for NexusML.
 
@@ -3393,10 +2616,11 @@ __all__ = [
     'BatchProcessor',
     'AnthropicClient',
 ]
-````
+```
 
 ## File: nexusml/ingest/generator/omniclass_description_generator.py
-````python
+
+```python
 """
 Utility for generating descriptions for OmniClass codes using the Claude API.
 
@@ -4009,10 +3233,825 @@ def main():
 
 if __name__ == "__main__":
     main()
-````
+```
+
+## File: nexusml/ingest/generator/omniclass_example.py
+
+```python
+"""
+OmniClass Example Visualization Tool
+
+This module provides a simple example of visualizing OmniClass data in a hierarchical tree structure.
+It uses a hardcoded example dataset of medical equipment (dialysis products) to demonstrate the
+hierarchy visualization capabilities.
+"""
+
+import os
+import re
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+# Add path to allow importing from nexusml package
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
+from nexusml.utils import get_logger
+
+logger = get_logger(__name__)
+
+
+def parse_omniclass_code(code):
+    """
+    Parse an OmniClass code into its hierarchical components.
+    Format: xx-yy yy yy-zz where:
+    - xx: OmniClass table
+    - yy yy yy: hierarchy
+    - zz: detail number
+    """
+    # Remove any whitespace and split by hyphens and spaces
+    parts = re.split(r"[-\s]+", code.strip())
+
+    # Return the parsed components
+    if len(parts) >= 4:  # Full format with detail number
+        return {"table": parts[0], "hierarchy": parts[1:-1], "detail": parts[-1]}
+    else:  # Partial format without detail number
+        return {"table": parts[0], "hierarchy": parts[1:], "detail": None}
+
+
+def build_tree(data_lines):
+    """
+    Build a hierarchical tree from OmniClass data lines.
+
+    Args:
+        data_lines: List of strings in format "code,title,description"
+
+    Returns:
+        A nested dictionary representing the tree structure
+    """
+    tree = {}
+
+    for line in data_lines:
+        # Split the line into code, title, and description
+        parts = line.split(",", 2)
+        if len(parts) < 2:
+            continue
+
+        code = parts[0].strip()
+        title = parts[1].strip()
+        description = parts[2].strip() if len(parts) > 2 else ""
+
+        # Remove quotes from description if present
+        if description.startswith('"') and description.endswith('"'):
+            description = description[1:-1]
+
+        # Parse the code
+        parsed = parse_omniclass_code(code)
+
+        # Navigate to the correct position in the tree
+        current = tree
+        path = [parsed["table"]] + parsed["hierarchy"]
+
+        for i, part in enumerate(path):
+            # Create the node if it doesn't exist
+            if part not in current:
+                current[part] = {"title": "", "description": "", "children": {}}
+
+            if i == len(path) - 1:  # Last part (leaf node)
+                # Update the leaf node with actual data
+                current[part]["title"] = title
+                current[part]["description"] = description
+            else:
+                # Ensure children dictionary exists for intermediate nodes
+                if "children" not in current[part]:
+                    current[part]["children"] = {}
+
+                # Move to the next level
+                current = current[part]["children"]
+
+    return tree
+
+
+def print_tree_terminal(tree, indent=0, prefix=""):
+    """
+    Print the tree structure to the terminal.
+    """
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Print the current node
+            if description:
+                print(f"{' ' * indent}{prefix}{key}: {title} - {description}")
+            else:
+                print(f"{' ' * indent}{prefix}{key}: {title}")
+
+            # Print children
+            if "children" in node and node["children"]:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+        else:
+            # Handle case where node is not properly formatted
+            print(f"{' ' * indent}{prefix}{key}")
+            if isinstance(node, dict) and "children" in node:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+
+
+def print_tree_markdown(tree, indent=0, prefix=""):
+    """
+    Print the tree structure in Markdown format.
+    """
+    markdown = []
+
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Create the current node line
+            if description:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
+            else:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title}"
+
+            markdown.append(line)
+
+            # Add children
+            if "children" in node and node["children"]:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+        else:
+            # Handle case where node is not properly formatted
+            line = f"{'  ' * indent}{prefix}**{key}**"
+            markdown.append(line)
+            if isinstance(node, dict) and "children" in node:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+
+    return markdown
+
+
+# Example data of medical equipment (dialysis products)
+example_data = """
+23-25 23 13-1,Peritoneal Dialysis Products,"Products used for peritoneal dialysis, a type of renal replacement therapy."
+23-25 23 13-2,Continuous Ambulatory Peritoneal Dialysis Transfer Units,"Units used for continuous ambulatory peritoneal dialysis, a type of dialysis."
+23-25 23 13-3,Dialysis Boxes,Boxes used in peritoneal dialysis treatments.
+23-25 23 13-4,Pheresis Units,"Units used for pheresis, a type of blood filtration therapy."
+23-25 23 13-5,Peritoneal Dialysis Units,"Units used for peritoneal dialysis, a type of renal replacement therapy."
+23-25 23 13-6,Hollow Peritoneal Dialysis Units,"Units used for hollow fiber peritoneal dialysis, a type of dialysis."
+23-25 23 13-7,Hemodialysis Products,"Products used for hemodialysis, a type of renal replacement therapy."
+23-25 23 13-8,Hemodialysis Blood Oxygen Demand Units,Units that monitor the oxygen demand of blood during hemodialysis.
+23-25 23 13-9,Hemodialysis Conductivity Meters,Meters used to monitor the conductivity of dialysis fluid during hemodialysis.
+23-25 23 13-10,Hemodialysis Filters,Filters used in hemodialysis to remove waste and excess water from the blood.
+23-25 23 13-11,Hemodialysis Level Detectors,Devices used to monitor the level of dialysis fluid during hemodialysis.
+23-25 23 13-12,Hemodialysis Pressure Pumps,Pumps used to circulate blood during hemodialysis.
+23-25 23 13-13,Hemodialysis Reprocessing Units,Units used to reprocess dialysis equipment for reuse.
+23-25 23 13-14,Hemodialysis Tanks,Tanks used to hold dialysis fluid during hemodialysis.
+"""
+
+
+def main():
+    try:
+        # Default output directory
+        output_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../../nexusml/output")
+        )
+
+        # Create output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Process the example data
+        logger.info("Processing example OmniClass data for medical equipment")
+        data_lines = [
+            line.strip() for line in example_data.strip().split("\n") if line.strip()
+        ]
+        logger.info(f"Loaded {len(data_lines)} example data lines")
+
+        # Build the tree
+        logger.info("Building hierarchy tree from example data")
+        tree = build_tree(data_lines)
+
+        # Ask for output directory
+        output_dir_input = input(f"Enter output directory (default: {output_dir}): ")
+        if output_dir_input:
+            output_dir = output_dir_input
+            os.makedirs(output_dir, exist_ok=True)
+
+        # Output format
+        output_format = (
+            input("Output format (terminal/markdown, default: terminal): ").lower()
+            or "terminal"
+        )
+
+        if output_format == "markdown":
+            logger.info("Generating markdown output")
+            markdown_lines = print_tree_markdown(tree)
+            print("\n".join(markdown_lines))
+
+            # Option to save to file
+            save_option = input("Save to file? (y/n, default: y): ").lower() or "y"
+            if save_option == "y":
+                filename = (
+                    input("Enter output file name (default: omniclass_example.md): ")
+                    or "omniclass_example.md"
+                )
+                output_file = os.path.join(output_dir, filename)
+                with open(output_file, "w", encoding="utf-8") as f:
+                    f.write("\n".join(markdown_lines))
+                logger.info(f"Saved markdown output to {output_file}")
+                print(f"Saved to {output_file}")
+        else:
+            logger.info("Generating terminal output")
+            print("\nOmniClass Hierarchy Tree:")
+            print_tree_terminal(tree)
+
+            # Save terminal output to file as well
+            save_option = input("Save to file? (y/n, default: y): ").lower() or "y"
+            if save_option == "y":
+                filename = (
+                    input("Enter output file name (default: omniclass_example.txt): ")
+                    or "omniclass_example.txt"
+                )
+                output_file = os.path.join(output_dir, filename)
+                with open(output_file, "w", encoding="utf-8") as f:
+                    # Redirect stdout to file temporarily
+                    import contextlib
+
+                    with contextlib.redirect_stdout(f):
+                        print("OmniClass Hierarchy Tree:")
+                        print_tree_terminal(tree)
+                logger.info(f"Saved terminal output to {output_file}")
+                print(f"Saved to {output_file}")
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+## File: nexusml/ingest/generator/omniclass_hierarchy.py
+
+```python
+"""
+OmniClass Hierarchy Visualization Tool
+
+This module provides functionality to visualize OmniClass data in a hierarchical tree structure.
+It can parse OmniClass codes in the format xx-yy yy yy-zz and display the hierarchy in terminal
+or markdown format.
+"""
+
+import os
+import re
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+import pandas as pd
+
+# Add path to allow importing from nexusml package
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
+from nexusml.ingest.data import __file__ as data_file
+from nexusml.utils import clean_omniclass_csv, get_logger, read_csv_safe
+
+# Path to the data directory
+DATA_DIR = os.path.dirname(data_file)
+logger = get_logger(__name__)
+
+
+def parse_omniclass_code(code):
+    """
+    Parse an OmniClass code into its hierarchical components.
+    Format: xx-yy yy yy-zz where:
+    - xx: OmniClass table
+    - yy yy yy: hierarchy
+    - zz: detail number
+    """
+    # Remove any whitespace and split by hyphens
+    parts = re.split(r"[-\s]+", code.strip())
+
+    # Return the parsed components
+    if len(parts) >= 4:  # Full format with detail number
+        return {"table": parts[0], "hierarchy": parts[1:-1], "detail": parts[-1]}
+    else:  # Partial format without detail number
+        return {"table": parts[0], "hierarchy": parts[1:], "detail": None}
+
+
+def build_tree(df, code_column, title_column, description_column=None):
+    """
+    Build a hierarchical tree from OmniClass data.
+
+    Args:
+        df: DataFrame containing OmniClass data
+        code_column: Name of the column containing OmniClass codes
+        title_column: Name of the column containing titles
+        description_column: Optional name of the column containing descriptions
+
+    Returns:
+        A nested dictionary representing the tree structure
+    """
+    tree = {}
+
+    # Sort by code to ensure parent nodes are processed before children
+    df_sorted = df.sort_values(by=code_column)
+
+    for _, row in df_sorted.iterrows():
+        code = row[code_column]
+        title = row[title_column]
+        description = row[description_column] if description_column else ""
+
+        # Parse the code
+        parsed = parse_omniclass_code(code)
+
+        # Navigate to the correct position in the tree
+        current = tree
+        path = [parsed["table"]] + parsed["hierarchy"]
+
+        for i, part in enumerate(path):
+            # Create the node if it doesn't exist
+            if part not in current:
+                current[part] = {"title": "", "description": "", "children": {}}
+
+            if i == len(path) - 1:  # Last part (leaf node)
+                # Update the leaf node with actual data
+                current[part]["title"] = title
+                current[part]["description"] = description
+            else:
+                # Ensure children dictionary exists for intermediate nodes
+                if "children" not in current[part]:
+                    current[part]["children"] = {}
+
+                # Move to the next level
+                current = current[part]["children"]
+
+    return tree
+
+
+def print_tree_terminal(tree, indent=0, prefix=""):
+    """
+    Print the tree structure to the terminal.
+    """
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Print the current node
+            if description:
+                print(f"{' ' * indent}{prefix}{key}: {title} - {description}")
+            else:
+                print(f"{' ' * indent}{prefix}{key}: {title}")
+
+            # Print children
+            if "children" in node and node["children"]:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+        else:
+            # Handle case where node is not properly formatted
+            print(f"{' ' * indent}{prefix}{key}")
+            if isinstance(node, dict) and "children" in node:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+
+
+def print_tree_markdown(tree, indent=0, prefix=""):
+    """
+    Print the tree structure in Markdown format.
+    """
+    markdown = []
+
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Create the current node line
+            if description:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
+            else:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title}"
+
+            markdown.append(line)
+
+            # Add children
+            if "children" in node and node["children"]:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+        else:
+            # Handle case where node is not properly formatted
+            line = f"{'  ' * indent}{prefix}**{key}**"
+            markdown.append(line)
+            if isinstance(node, dict) and "children" in node:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+
+    return markdown
+
+
+def main():
+    # Default values
+    output_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "../../../nexusml/output")
+    )
+
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Load the OmniClass data
+    try:
+        default_file = os.path.join(DATA_DIR, "omniclass.csv")
+        file_path = (
+            input(
+                f"Enter the path to the OmniClass CSV file (default: {default_file}): "
+            )
+            or default_file
+        )
+
+        # Ask for output directory
+        output_dir_input = input(f"Enter output directory (default: {output_dir}): ")
+        if output_dir_input:
+            output_dir = output_dir_input
+            os.makedirs(output_dir, exist_ok=True)
+
+        # Check if the file needs cleaning
+        try:
+            logger.info(f"Attempting to read CSV file: {file_path}")
+            df = read_csv_safe(file_path)
+            logger.info("CSV file read successfully")
+        except Exception as e:
+            logger.warning(f"Error reading CSV file: {e}")
+            logger.info("Attempting to clean the CSV file...")
+
+            # Ask user if they want to clean the file
+            clean_option = (
+                input("CSV file has issues. Clean it? (y/n, default: y): ").lower()
+                or "y"
+            )
+            if clean_option == "y":
+                cleaned_file = clean_omniclass_csv(file_path)
+                logger.info(f"Using cleaned file: {cleaned_file}")
+                file_path = cleaned_file
+                df = read_csv_safe(file_path)
+            else:
+                raise ValueError("Cannot proceed without cleaning the CSV file")
+
+        # Determine column names
+        print("\nAvailable columns:")
+        for i, col in enumerate(df.columns):
+            print(f"{i+1}. {col}")
+
+        code_col = (
+            input(
+                "\nEnter the name of the column containing OmniClass codes (default: OmniClass_Code): "
+            )
+            or "OmniClass_Code"
+        )
+        title_col = (
+            input(
+                "Enter the name of the column containing titles (default: OmniClass_Title): "
+            )
+            or "OmniClass_Title"
+        )
+        desc_col = input(
+            "Enter the name of the column containing descriptions (optional, press Enter to skip): "
+        )
+
+        # Optional filtering
+        filter_option = (
+            input("\nDo you want to filter the data? (y/n, default: n): ").lower()
+            or "n"
+        )
+        if filter_option == "y":
+            filter_column = (
+                input("Enter the column to filter on (default: OmniClass_Code): ")
+                or "OmniClass_Code"
+            )
+            filter_value = input(
+                "Enter the value to filter for (e.g., '23-' for Table 23): "
+            )
+            df = df[df[filter_column].str.contains(filter_value, na=False)]
+            logger.info(f"Filtered data to {len(df)} rows matching '{filter_value}'")
+
+        # Build the tree
+        logger.info("Building hierarchy tree...")
+        tree = build_tree(df, code_col, title_col, desc_col if desc_col else None)
+
+        # Output format
+        output_format = (
+            input("\nOutput format (terminal/markdown, default: terminal): ").lower()
+            or "terminal"
+        )
+
+        if output_format == "markdown":
+            logger.info("Generating markdown output...")
+            markdown_lines = print_tree_markdown(tree)
+            print("\n".join(markdown_lines))
+
+            # Option to save to file
+            save_option = input("\nSave to file? (y/n, default: y): ").lower() or "y"
+            if save_option == "y":
+                filename = (
+                    input("Enter output file name (default: omniclass_hierarchy.md): ")
+                    or "omniclass_hierarchy.md"
+                )
+                output_file = os.path.join(output_dir, filename)
+                with open(output_file, "w", encoding="utf-8") as f:
+                    f.write("\n".join(markdown_lines))
+                logger.info(f"Saved markdown output to {output_file}")
+                print(f"Saved to {output_file}")
+        else:
+            logger.info("Generating terminal output...")
+            print("\nOmniClass Hierarchy Tree:")
+            print_tree_terminal(tree)
+
+            # Save terminal output to file as well
+            save_option = input("\nSave to file? (y/n, default: y): ").lower() or "y"
+            if save_option == "y":
+                filename = (
+                    input("Enter output file name (default: omniclass_hierarchy.txt): ")
+                    or "omniclass_hierarchy.txt"
+                )
+                output_file = os.path.join(output_dir, filename)
+                with open(output_file, "w", encoding="utf-8") as f:
+                    # Redirect stdout to file temporarily
+                    import contextlib
+
+                    with contextlib.redirect_stdout(f):
+                        print("OmniClass Hierarchy Tree:")
+                        print_tree_terminal(tree)
+                logger.info(f"Saved terminal output to {output_file}")
+                print(f"Saved to {output_file}")
+
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+## File: nexusml/ingest/generator/omniclass_tree.py
+
+```python
+"""
+OmniClass Tree Visualization Tool
+
+This module provides a simplified command-line tool to visualize OmniClass data in a hierarchical tree structure.
+It can parse OmniClass codes in the format xx-yy yy yy-zz and display the hierarchy in terminal or markdown format.
+"""
+
+import os
+import re
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+import pandas as pd
+
+# Add path to allow importing from nexusml package
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
+from nexusml.ingest.data import __file__ as data_file
+from nexusml.utils import clean_omniclass_csv, get_logger, read_csv_safe
+
+# Path to the data directory
+DATA_DIR = os.path.dirname(data_file)
+logger = get_logger(__name__)
+
+
+def parse_omniclass_code(code):
+    """
+    Parse an OmniClass code into its hierarchical components.
+    Format: xx-yy yy yy-zz where:
+    - xx: OmniClass table
+    - yy yy yy: hierarchy
+    - zz: detail number
+    """
+    # Remove any whitespace and split by hyphens and spaces
+    parts = re.split(r"[-\s]+", code.strip())
+
+    # Return the parsed components
+    if len(parts) >= 4:  # Full format with detail number
+        return {"table": parts[0], "hierarchy": parts[1:-1], "detail": parts[-1]}
+    else:  # Partial format without detail number
+        return {"table": parts[0], "hierarchy": parts[1:], "detail": None}
+
+
+def build_tree(df, code_column, title_column, description_column=None):
+    """
+    Build a hierarchical tree from OmniClass data.
+    """
+    tree = {}
+
+    # Sort by code to ensure parent nodes are processed before children
+    df_sorted = df.sort_values(by=code_column)
+
+    for _, row in df_sorted.iterrows():
+        code = row[code_column]
+        title = row[title_column]
+        description = (
+            row[description_column]
+            if description_column and description_column in row
+            else ""
+        )
+
+        # Parse the code
+        parsed = parse_omniclass_code(code)
+
+        # Navigate to the correct position in the tree
+        current = tree
+        path = [parsed["table"]] + parsed["hierarchy"]
+
+        for i, part in enumerate(path):
+            # Create the node if it doesn't exist
+            if part not in current:
+                current[part] = {"title": "", "description": "", "children": {}}
+
+            if i == len(path) - 1:  # Last part (leaf node)
+                # Update the leaf node with actual data
+                current[part]["title"] = title
+                current[part]["description"] = description
+            else:
+                # Ensure children dictionary exists for intermediate nodes
+                if "children" not in current[part]:
+                    current[part]["children"] = {}
+
+                # Move to the next level
+                current = current[part]["children"]
+
+    return tree
+
+
+def print_tree_terminal(tree, indent=0, prefix=""):
+    """
+    Print the tree structure to the terminal.
+    """
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Print the current node
+            if description:
+                print(f"{' ' * indent}{prefix}{key}: {title} - {description}")
+            else:
+                print(f"{' ' * indent}{prefix}{key}: {title}")
+
+            # Print children
+            if "children" in node and node["children"]:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+        else:
+            # Handle case where node is not properly formatted
+            print(f"{' ' * indent}{prefix}{key}")
+            if isinstance(node, dict) and "children" in node:
+                print_tree_terminal(node["children"], indent + 4, "└── ")
+
+
+def print_tree_markdown(tree, indent=0, prefix=""):
+    """
+    Print the tree structure in Markdown format.
+    """
+    markdown = []
+
+    for key, node in sorted(tree.items()):
+        if isinstance(node, dict) and "title" in node:
+            title = node["title"]
+            description = node["description"]
+
+            # Create the current node line
+            if description:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title} - *{description}*"
+            else:
+                line = f"{'  ' * indent}{prefix}**{key}**: {title}"
+
+            markdown.append(line)
+
+            # Add children
+            if "children" in node and node["children"]:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+        else:
+            # Handle case where node is not properly formatted
+            line = f"{'  ' * indent}{prefix}**{key}**"
+            markdown.append(line)
+            if isinstance(node, dict) and "children" in node:
+                child_md = print_tree_markdown(node["children"], indent + 1, "- ")
+                markdown.extend(child_md)
+
+    return markdown
+
+
+def main():
+    # Default values
+    default_file = os.path.join(DATA_DIR, "omniclass.csv")
+    file_path = default_file
+    code_column = "OmniClass_Code"
+    title_column = "OmniClass_Title"
+    description_column = "Description"
+    output_format = "terminal"
+    filter_value = None
+    clean_csv = False
+    output_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "../../../nexusml/output")
+    )
+
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Check for command line arguments
+    if len(sys.argv) > 1:
+        file_path = sys.argv[1]
+
+    # Additional command line arguments
+    if len(sys.argv) > 2:
+        filter_value = sys.argv[2]
+
+    if len(sys.argv) > 3:
+        output_format = sys.argv[3]
+
+    if len(sys.argv) > 4:
+        if sys.argv[4].lower() == "clean":
+            clean_csv = True
+        else:
+            output_dir = sys.argv[4]
+
+    if len(sys.argv) > 5 and sys.argv[5].lower() == "clean":
+        clean_csv = True
+
+    # Load the OmniClass data
+    try:
+        logger.info(f"Loading data from {file_path}...")
+
+        if clean_csv:
+            logger.info("Cleaning CSV file before loading...")
+            file_path = clean_omniclass_csv(file_path)
+            logger.info(f"Using cleaned file: {file_path}")
+
+        try:
+            df = read_csv_safe(file_path)
+            logger.info(f"Successfully loaded {len(df)} rows from {file_path}")
+        except Exception as e:
+            logger.error(f"Error reading CSV file: {e}")
+            logger.info("Attempting to clean the CSV file...")
+            file_path = clean_omniclass_csv(file_path)
+            logger.info(f"Using cleaned file: {file_path}")
+            df = read_csv_safe(file_path)
+            logger.info(f"Successfully loaded {len(df)} rows from cleaned file")
+
+        # Apply filter if specified
+        if filter_value:
+            logger.info(f"Filtering by: {filter_value}")
+            df = df[df[code_column].str.contains(filter_value, na=False)]
+            logger.info(f"Filtered to {len(df)} rows")
+
+        # Build the tree
+        logger.info("Building hierarchy tree...")
+        tree = build_tree(df, code_column, title_column, description_column)
+
+        # Output the tree
+        if output_format.lower() == "markdown":
+            logger.info("Generating markdown output...")
+            markdown_lines = print_tree_markdown(tree)
+            print("\n".join(markdown_lines))
+
+            # Save to file
+            output_file = os.path.join(
+                output_dir,
+                f"omniclass_{filter_value if filter_value else 'all'}_hierarchy.md",
+            )
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write("\n".join(markdown_lines))
+            logger.info(f"Saved markdown output to {output_file}")
+            print(f"Saved to {output_file}")
+        else:
+            logger.info("Generating terminal output...")
+            print("\nOmniClass Hierarchy Tree:")
+            print_tree_terminal(tree)
+
+            # Save terminal output to file as well
+            output_file = os.path.join(
+                output_dir,
+                f"omniclass_{filter_value if filter_value else 'all'}_hierarchy.txt",
+            )
+            with open(output_file, "w", encoding="utf-8") as f:
+                # Redirect stdout to file temporarily
+                import contextlib
+
+                with contextlib.redirect_stdout(f):
+                    print("OmniClass Hierarchy Tree:")
+                    print_tree_terminal(tree)
+            logger.info(f"Saved terminal output to {output_file}")
+            print(f"Saved to {output_file}")
+
+    except Exception as e:
+        logger.error(f"Error: {e}")
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+```
 
 ## File: nexusml/ingest/generator/omniclass.py
-````python
+
+```python
 """
 OmniClass data extraction module for the NexusML application.
 
@@ -4360,14 +4399,16 @@ def main():
 
 if __name__ == "__main__":
     main()
-````
+```
 
 ## File: nexusml/ingest/generator/README.md
+
 ````markdown
 # NexusML Generator Module
 
 This module provides utilities for generating data for the NexusML module,
-including OmniClass data extraction and description generation.
+including OmniClass data extraction, description generation, and hierarchy
+visualization.
 
 ## Components
 
@@ -4393,6 +4434,26 @@ Key components:
 - `BatchProcessor`: Processor for batch processing data.
 - `AnthropicClient`: Client for the Anthropic Claude API.
 - `generate_descriptions`: Generate descriptions for OmniClass codes.
+
+### OmniClass Hierarchy Visualization
+
+The module includes several tools for visualizing OmniClass data in a
+hierarchical tree structure:
+
+- `omniclass_hierarchy.py`: Interactive tool for visualizing OmniClass data in a
+  hierarchical tree structure.
+- `omniclass_tree.py`: Command-line tool for quickly generating OmniClass
+  hierarchy trees.
+- `omniclass_example.py`: Example tool with hardcoded medical equipment data to
+  demonstrate hierarchy visualization.
+
+Key functions:
+
+- `parse_omniclass_code`: Parse OmniClass codes in the format xx-yy yy yy-zz.
+- `build_tree`: Build a hierarchical tree from OmniClass data.
+- `print_tree_terminal`: Display the hierarchy tree in terminal format.
+- `print_tree_markdown`: Generate a markdown representation of the hierarchy
+  tree.
 
 ## Usage
 
@@ -4425,6 +4486,25 @@ result_df = generate_descriptions(
 )
 ```
 
+### OmniClass Hierarchy Visualization
+
+```python
+from nexusml.ingest.generator.omniclass_hierarchy import build_tree, print_tree_terminal
+
+# Load OmniClass data
+import pandas as pd
+df = pd.read_csv("nexusml/ingest/data/omniclass.csv")
+
+# Filter data (optional)
+filtered_df = df[df["OmniClass_Code"].str.contains("23-", na=False)]
+
+# Build the hierarchy tree
+tree = build_tree(filtered_df, "OmniClass_Code", "OmniClass_Title", "Description")
+
+# Display the tree in terminal format
+print_tree_terminal(tree)
+```
+
 ## Requirements
 
 - Python 3.8+
@@ -4432,19 +4512,24 @@ result_df = generate_descriptions(
 - anthropic
 - dotenv
 - tqdm
+- re
 
 ## Environment Variables
 
-- `ANTHROPIC_API_KEY`: API key for the Anthropic Claude API.
+- `ANTHROPIC_API_KEY`: API key for the Anthropic Claude API (only needed for
+  description generation).
 
-## Example
+## Examples
 
-See `nexusml/examples/omniclass_generator_example.py` for a complete example of
-how to use the generator module.
+- See `nexusml/examples/omniclass_generator_example.py` for a complete example
+  of how to use the generator module.
+- See `nexusml/examples/omniclass_hierarchy_example.py` for an example of how to
+  use the hierarchy visualization tools.
 ````
 
 ## File: nexusml/pyproject.toml
-````toml
+
+```toml
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -4511,9 +4596,10 @@ ignore_missing_imports = true  # Added to handle third-party libraries
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
-````
+```
 
 ## File: nexusml/README.md
+
 ````markdown
 # NexusML
 
@@ -4641,7 +4727,8 @@ MIT
 ````
 
 ## File: nexusml/setup.py
-````python
+
+```python
 """
 Setup script for NexusML.
 
@@ -4652,17 +4739,19 @@ from setuptools import setup  # type: ignore
 
 if __name__ == "__main__":
     setup()
-````
+```
 
-## File: nexusml/tests/__init__.py
-````python
+## File: nexusml/tests/**init**.py
+
+```python
 """
 Test suite for NexusML.
 """
-````
+```
 
 ## File: nexusml/tests/conftest.py
-````python
+
+```python
 """
 Pytest configuration for NexusML tests.
 """
@@ -4681,7 +4770,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 def sample_data_path():
     """
     Fixture that provides the path to sample data for testing.
-    
+
     Returns:
         str: Path to sample data file
     """
@@ -4692,7 +4781,7 @@ def sample_data_path():
 def sample_description():
     """
     Fixture that provides a sample equipment description for testing.
-    
+
     Returns:
         str: Sample equipment description
     """
@@ -4703,22 +4792,24 @@ def sample_description():
 def sample_service_life():
     """
     Fixture that provides a sample service life value for testing.
-    
+
     Returns:
         float: Sample service life value
     """
     return 20.0
-````
+```
 
-## File: nexusml/tests/integration/__init__.py
-````python
+## File: nexusml/tests/integration/**init**.py
+
+```python
 """
 Integration tests for NexusML.
 """
-````
+```
 
 ## File: nexusml/tests/integration/test_integration.py
-````python
+
+```python
 """
 Integration tests for NexusML.
 
@@ -4741,35 +4832,35 @@ from nexusml.core.model_building import build_enhanced_model
 def test_full_pipeline(sample_data_path, sample_description, sample_service_life, tmp_path):
     """
     Test the full NexusML pipeline from data loading to prediction.
-    
+
     This test is marked as skip by default because it can take a long time to run.
     """
     # Load and preprocess data
     df = load_and_preprocess_data(sample_data_path)
-    
+
     # Enhance features
     df = enhance_features(df)
-    
+
     # Create hierarchical categories
     df = create_hierarchical_categories(df)
-    
+
     # Prepare training data
     X = pd.DataFrame({
         'combined_features': df['combined_features'],
         'service_life': df['service_life']
     })
-    
+
     y = df[['Equipment_Category', 'Uniformat_Class', 'System_Type', 'Equipment_Type', 'System_Subtype']]
-    
+
     # Build model
     model = build_enhanced_model()
-    
+
     # Train model (this would take time)
     model.fit(X, y)
-    
+
     # Make a prediction
     prediction = predict_with_enhanced_model(model, sample_description, sample_service_life)
-    
+
     # Check the prediction
     assert isinstance(prediction, dict)
     assert 'Equipment_Category' in prediction
@@ -4778,13 +4869,13 @@ def test_full_pipeline(sample_data_path, sample_description, sample_service_life
     assert 'Equipment_Type' in prediction
     assert 'System_Subtype' in prediction
     assert 'MasterFormat_Class' in prediction
-    
+
     # Test visualization (optional)
     output_dir = str(tmp_path)
     from nexusml.core.model import visualize_category_distribution
-    
+
     equipment_category_file, system_type_file = visualize_category_distribution(df, output_dir)
-    
+
     assert os.path.exists(equipment_category_file)
     assert os.path.exists(system_type_file)
 
@@ -4793,30 +4884,32 @@ def test_full_pipeline(sample_data_path, sample_description, sample_service_life
 def test_fca_dashboard_integration():
     """
     Test integration with FCA Dashboard.
-    
+
     This test is marked as skip by default because it requires FCA Dashboard to be available.
     """
     try:
         # Try to import from FCA Dashboard
         from fca_dashboard.classifier import predict_with_enhanced_model as fca_predict_model
         from fca_dashboard.classifier import train_enhanced_model as fca_train_model
-        
+
         # If imports succeed, test the integration
         # This would be a more complex test that verifies the integration works
         pass
     except ImportError:
         pytest.skip("FCA Dashboard not available")
-````
+```
 
-## File: nexusml/tests/unit/__init__.py
-````python
+## File: nexusml/tests/unit/**init**.py
+
+```python
 """
 Unit tests for NexusML.
 """
-````
+```
 
 ## File: nexusml/tests/unit/test_generator.py
-````python
+
+```python
 """
 Unit tests for the generator module.
 """
@@ -4900,10 +4993,11 @@ class TestOmniClassGenerator:
 
 if __name__ == "__main__":
     pytest.main()
-````
+```
 
 ## File: nexusml/tests/unit/test_pipeline.py
-````python
+
+```python
 """
 Unit tests for the NexusML pipeline.
 """
@@ -4946,9 +5040,9 @@ def test_enhance_features():
         'Unit': ['GPM', 'Tons'],
         'Service Life': [15, 20]
     })
-    
+
     enhanced_df = enhance_features(df)
-    
+
     # Check that new columns were added
     assert 'Equipment_Category' in enhanced_df.columns
     assert 'Uniformat_Class' in enhanced_df.columns
@@ -4968,13 +5062,13 @@ def test_create_hierarchical_categories():
         'Precon System': ['Domestic Water', 'Chiller Plant'],
         'Operations System': ['Domestic', 'HVAC']
     })
-    
+
     hierarchical_df = create_hierarchical_categories(df)
-    
+
     # Check that new columns were added
     assert 'Equipment_Type' in hierarchical_df.columns
     assert 'System_Subtype' in hierarchical_df.columns
-    
+
     # Check the values
     assert hierarchical_df['Equipment_Type'][0] == 'Pump-Centrifugal'
     assert hierarchical_df['System_Subtype'][0] == 'Domestic Water-Domestic'
@@ -4984,7 +5078,7 @@ def test_build_enhanced_model():
     """Test that the model can be built."""
     model = build_enhanced_model()
     assert model is not None
-    
+
     # Check that the model has the expected structure
     assert hasattr(model, 'steps')
     assert 'preprocessor' in dict(model.steps)
@@ -4996,16 +5090,16 @@ def test_predict_with_enhanced_model(sample_description, sample_service_life):
     """Test that predictions can be made with the model."""
     # This is a more complex test that requires a trained model
     # In a real test suite, you might use a pre-trained model or mock the model
-    
+
     # For now, we'll skip this test, but here's how it would look
     from nexusml.core.model import train_enhanced_model
-    
+
     # Train a model (this would take time)
     model, _ = train_enhanced_model()
-    
+
     # Make a prediction
     prediction = predict_with_enhanced_model(model, sample_description, sample_service_life)
-    
+
     # Check the prediction
     assert isinstance(prediction, dict)
     assert 'Equipment_Category' in prediction
@@ -5014,24 +5108,352 @@ def test_predict_with_enhanced_model(sample_description, sample_service_life):
     assert 'Equipment_Type' in prediction
     assert 'System_Subtype' in prediction
     assert 'MasterFormat_Class' in prediction
-````
+```
 
-## File: nexusml/utils/__init__.py
-````python
+## File: nexusml/utils/**init**.py
+
+```python
 """
 Utility functions for NexusML.
 """
 
 # Import utility functions to expose at the package level
-# These will be populated as we migrate the utilities
-
 from typing import List
 
-__all__: List[str] = []
-````
+from nexusml.utils.csv_utils import clean_omniclass_csv, read_csv_safe, verify_csv_file
+from nexusml.utils.logging import configure_logging, get_logger
+
+__all__: List[str] = [
+    "configure_logging",
+    "get_logger",
+    "verify_csv_file",
+    "read_csv_safe",
+    "clean_omniclass_csv",
+]
+```
+
+## File: nexusml/utils/csv_utils.py
+
+```python
+"""
+CSV Utilities for NexusML
+
+This module provides utilities for working with CSV files, including cleaning,
+verification, and safe reading of potentially malformed CSV files.
+"""
+
+import csv
+import logging
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import pandas as pd
+from pandas import DataFrame
+
+from nexusml.utils.logging import get_logger
+
+logger = get_logger(__name__)
+
+
+def verify_csv_file(
+    filepath: Union[str, Path],
+    expected_columns: Optional[List[str]] = None,
+    expected_field_count: Optional[int] = None,
+    fix_issues: bool = False,
+    output_filepath: Optional[Union[str, Path]] = None,
+) -> Tuple[bool, Optional[str]]:
+    """
+    Verify a CSV file for common issues and optionally fix them.
+
+    Args:
+        filepath: Path to the CSV file
+        expected_columns: List of column names that should be present
+        expected_field_count: Expected number of fields per row
+        fix_issues: Whether to attempt to fix issues
+        output_filepath: Path to save the fixed file (if fix_issues is True)
+                         If None, will use the original filename with "_fixed" appended
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if the file is valid or was fixed successfully
+        - error_message: Description of the issue if not valid, or None if valid
+    """
+    filepath = Path(filepath)
+
+    if not filepath.exists():
+        return False, f"File not found: {filepath}"
+
+    if output_filepath is None and fix_issues:
+        output_filepath = filepath.parent / f"{filepath.stem}_fixed{filepath.suffix}"
+
+    try:
+        # First, try to read the file with pandas to check for basic validity
+        try:
+            df = pd.read_csv(filepath)
+
+            # Check expected columns if provided
+            if expected_columns:
+                missing_columns = [
+                    col for col in expected_columns if col not in df.columns
+                ]
+                if missing_columns:
+                    if not fix_issues:
+                        return (
+                            False,
+                            f"Missing expected columns: {', '.join(missing_columns)}",
+                        )
+                    logger.warning(
+                        f"Missing expected columns: {', '.join(missing_columns)}"
+                    )
+
+            # If we got here without errors and don't need to check field count, the file is valid
+            if expected_field_count is None:
+                return True, None
+
+        except Exception as e:
+            # If pandas can't read it, we'll try a more manual approach
+            logger.warning(f"Pandas couldn't read the CSV file: {e}")
+
+            if not fix_issues:
+                return False, str(e)
+
+        # Manually check each row for the correct number of fields
+        issues = []
+        with open(filepath, "r", newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+
+            # Get the header row
+            try:
+                header = next(reader)
+                field_count = len(header)
+
+                # If expected_field_count wasn't provided, use the header length
+                if expected_field_count is None:
+                    expected_field_count = field_count
+
+                # Check if header has the expected number of fields
+                if field_count != expected_field_count:
+                    issues.append(
+                        (
+                            0,
+                            header,
+                            f"Header has {field_count} fields, expected {expected_field_count}",
+                        )
+                    )
+
+                # Check each data row
+                for i, row in enumerate(reader, start=1):
+                    if len(row) != expected_field_count:
+                        issues.append(
+                            (
+                                i,
+                                row,
+                                f"Line {i+1} has {len(row)} fields, expected {expected_field_count}",
+                            )
+                        )
+
+            except Exception as e:
+                return False, f"Error reading CSV file: {e}"
+
+        # If there are no issues, the file is valid
+        if not issues:
+            return True, None
+
+        # Log the issues found
+        logger.warning(f"Found {len(issues)} issues in {filepath}")
+        for line_num, row, msg in issues[:5]:  # Log first 5 issues
+            logger.warning(f"  {msg}")
+
+        if len(issues) > 5:
+            logger.warning(f"  ... and {len(issues) - 5} more issues")
+
+        # If we're not fixing issues, return False
+        if not fix_issues:
+            return False, f"Found {len(issues)} rows with incorrect field count"
+
+        # Fix the issues by reading and writing the file manually
+        logger.info(f"Fixing issues and writing to {output_filepath}")
+        with open(filepath, "r", newline="", encoding="utf-8") as f_in, open(
+            output_filepath, "w", newline="", encoding="utf-8"
+        ) as f_out:
+            reader = csv.reader(f_in)
+            writer = csv.writer(f_out)
+
+            # Write the header
+            header = next(reader)
+            if len(header) != expected_field_count:
+                # Fix header if needed
+                if len(header) < expected_field_count:
+                    # Add empty columns if there are too few
+                    header.extend([""] * (expected_field_count - len(header)))
+                else:
+                    # Combine extra columns if there are too many
+                    header = header[: expected_field_count - 1] + [
+                        " ".join(header[expected_field_count - 1 :])
+                    ]
+
+            writer.writerow(header)
+
+            # Write each data row, fixing as needed
+            for i, row in enumerate(reader, start=1):
+                if len(row) != expected_field_count:
+                    if len(row) < expected_field_count:
+                        # Add empty columns if there are too few
+                        row.extend([""] * (expected_field_count - len(row)))
+                    else:
+                        # Combine extra columns if there are too many
+                        row = row[: expected_field_count - 1] + [
+                            " ".join(row[expected_field_count - 1 :])
+                        ]
+
+                writer.writerow(row)
+
+        logger.info(f"Fixed CSV file saved to {output_filepath}")
+        return True, None
+
+    except Exception as e:
+        return False, f"Error verifying CSV file: {e}"
+
+
+def read_csv_safe(
+    filepath: Union[str, Path],
+    expected_columns: Optional[List[str]] = None,
+    expected_field_count: Optional[int] = None,
+    fix_issues: bool = True,
+    **kwargs: Any,
+) -> DataFrame:
+    """
+    Safely read a CSV file, handling common issues.
+
+    Args:
+        filepath: Path to the CSV file
+        expected_columns: List of column names that should be present
+        expected_field_count: Expected number of fields per row
+        fix_issues: Whether to attempt to fix issues
+        **kwargs: Additional arguments to pass to pd.read_csv
+
+    Returns:
+        DataFrame containing the CSV data
+
+    Raises:
+        ValueError: If the file is invalid and couldn't be fixed
+    """
+    filepath = Path(filepath)
+
+    # First, verify the file
+    is_valid, error_message = verify_csv_file(
+        filepath,
+        expected_columns=expected_columns,
+        expected_field_count=expected_field_count,
+        fix_issues=fix_issues,
+    )
+
+    if is_valid:
+        # If the file is valid, read it directly
+        return pd.read_csv(filepath, **kwargs)
+    elif fix_issues:
+        # If we tried to fix issues but still got an error, try reading the fixed file
+        fixed_filepath = filepath.parent / f"{filepath.stem}_fixed{filepath.suffix}"
+        if fixed_filepath.exists():
+            logger.info(f"Reading fixed CSV file: {fixed_filepath}")
+            return pd.read_csv(fixed_filepath, **kwargs)
+
+    # If we got here, the file is invalid and couldn't be fixed
+    raise ValueError(f"Invalid CSV file: {error_message}")
+
+
+def clean_omniclass_csv(
+    input_filepath: Union[str, Path],
+    output_filepath: Optional[Union[str, Path]] = None,
+    expected_columns: Optional[List[str]] = None,
+) -> str:
+    """
+    Clean the OmniClass CSV file, handling specific issues with this format.
+
+    Args:
+        input_filepath: Path to the input OmniClass CSV file
+        output_filepath: Path to save the cleaned file (if None, will use input_filepath with "_cleaned" appended)
+        expected_columns: List of expected column names
+
+    Returns:
+        Path to the cleaned CSV file
+
+    Raises:
+        ValueError: If the file couldn't be cleaned
+    """
+    input_filepath = Path(input_filepath)
+
+    if output_filepath is None:
+        output_filepath = (
+            input_filepath.parent
+            / f"{input_filepath.stem}_cleaned{input_filepath.suffix}"
+        )
+    else:
+        output_filepath = Path(output_filepath)
+
+    logger.info(f"Cleaning OmniClass CSV file: {input_filepath}")
+
+    # Determine the expected field count
+    if expected_columns:
+        expected_field_count = len(expected_columns)
+    else:
+        # Try to determine from the header row
+        try:
+            with open(input_filepath, "r", newline="", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                header = next(reader)
+                expected_field_count = len(header)
+        except Exception:
+            # Default to 3 fields for OmniClass CSV (code, title, description)
+            expected_field_count = 3
+
+    # Verify and fix the CSV file
+    is_valid, error_message = verify_csv_file(
+        input_filepath,
+        expected_columns=expected_columns,
+        expected_field_count=expected_field_count,
+        fix_issues=True,
+        output_filepath=output_filepath,
+    )
+
+    if not is_valid:
+        raise ValueError(f"Failed to clean OmniClass CSV file: {error_message}")
+
+    logger.info(f"OmniClass CSV file cleaned and saved to: {output_filepath}")
+    return str(output_filepath)
+
+
+if __name__ == "__main__":
+    # If run as a script, clean the OmniClass CSV file
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Clean and verify CSV files")
+    parser.add_argument("input_file", help="Path to the input CSV file")
+    parser.add_argument("--output", "-o", help="Path to the output CSV file")
+    parser.add_argument(
+        "--fields", "-f", type=int, help="Expected number of fields per row"
+    )
+    parser.add_argument("--columns", "-c", nargs="+", help="Expected column names")
+
+    args = parser.parse_args()
+
+    # Configure logging
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+    try:
+        output_file = clean_omniclass_csv(
+            args.input_file, args.output, expected_columns=args.columns
+        )
+        print(f"CSV file cleaned and saved to: {output_file}")
+    except Exception as e:
+        print(f"Error: {e}")
+        exit(1)
+```
 
 ## File: nexusml/utils/logging.py
-````python
+
+```python
 """
 Unified Logging Module for NexusML
 
@@ -5139,10 +5561,11 @@ def get_logger(name: str = "nexusml") -> logging.Logger:
         logging.Logger: Logger instance
     """
     return logging.getLogger(name)
-````
+```
 
 ## File: nexusml/utils/verification.py
-````python
+
+```python
 """
 Classifier Verification Script
 
@@ -5377,4 +5800,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-````
+```
