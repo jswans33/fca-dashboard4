@@ -1,0 +1,127 @@
+@startuml "ML Classification Data Flow"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ArrowColor #333333
+skinparam ActivityBorderColor #666666
+skinparam ActivityBackgroundColor #EEEEEE
+skinparam ActivityDiamondBackgroundColor #E0F7FA
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam PartitionBackgroundColor #F5F5F5
+skinparam PartitionBorderColor #BDBDBD
+skinparam ArrowFontSize 11
+skinparam ActivityFontSize 12
+
+' Title
+title ML Classification Data Flow
+
+|#E3F2FD|Staging Data|
+start
+:Load staging data from CSV/Excel;
+note right
+  Columns:
+  - Asset Name
+  - Asset Tag
+  - Trade
+  - System Category
+  - Sub System Type
+  - Manufacturer
+  - Model Number
+  - Service Life
+end note
+
+|#E8F5E9|Data Mapping|
+:Map staging columns to ML model format;
+note right
+  Data Mapper transforms:
+  - Asset Name → Equipment_Category
+  - Trade → Uniformat_Class
+  - System Category → System_Type
+  - etc.
+end note
+
+:Convert numeric fields;
+note right
+  - Service Life → service_life
+  - Motor HP → motor_hp
+  - Size → equipment_size
+end note
+
+|#FFF3E0|Feature Engineering|
+:Combine text columns;
+note right
+  Combined text feature includes:
+  - Asset Name
+  - Manufacturer
+  - Model Number
+  - System Category
+  - Sub System Type
+end note
+
+:Create hierarchical categories;
+note right
+  - Equipment_Type = System Category + Asset Name
+  - System_Subtype = System Category + Sub System Type
+end note
+
+:Apply column mappings;
+note right
+  Maps source columns to target columns
+  based on feature_config.yml
+end note
+
+|#F3E5F5|ML Model|
+:Vectorize text using TF-IDF;
+:Train Random Forest Classifier;
+note right
+  Uses balanced class weights
+  to handle imbalanced classes
+end note
+
+:Generate predictions;
+note right
+  Predicts:
+  - Equipment_Category
+  - Uniformat_Class
+  - System_Type
+  - Equipment_Type
+  - System_Subtype
+end note
+
+|#E0F2F1|EAV Integration|
+:Add classification IDs;
+note right
+  - OmniClass_ID
+  - Uniformat_ID
+  - MasterFormat_ID
+end note
+
+:Generate attribute template;
+note right
+  Creates equipment-specific
+  attribute templates based
+  on equipment type
+end note
+
+|#FFEBEE|Master DB Mapping|
+:Map to master database fields;
+note right
+  Maps predictions to:
+  - CategoryID (from Equipment_Category)
+  - LocationID (default value)
+  - EquipmentTag (from Asset Tag)
+  - Classification IDs (from EAV)
+end note
+
+|#F9FBE7|Database|
+:Prepare for database insertion;
+note right
+  Data ready for insertion into:
+  - Equipment table
+  - Equipment_Categories table
+end note
+
+stop
+
+@enduml

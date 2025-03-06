@@ -1,0 +1,188 @@
+@startuml "ML Model ER Diagram"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ClassBorderColor #666666
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam PackageBackgroundColor #F5F5F5
+skinparam PackageBorderColor #BDBDBD
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+
+' Title
+title ML Model Entity Relationship Diagram
+
+' Define packages
+package "Training Data" as TrainingData {
+  class "Equipment Data" as EquipmentData {
+    +Asset Category: string
+    +Equip Name ID: string
+    +System Type ID: string
+    +Sub System Type: string
+    +Sub System ID: string
+    +Title: string
+    +Precon System: string
+    +Operations System: string
+    +Sub System Class: string
+    +Drawing Abbreviation: string
+    +Equipment Size: float
+    +Unit: string
+    +Service Life: float
+  }
+}
+
+package "Feature Engineering" as FeatureEngineering {
+  class "Feature Config" as FeatureConfig {
+    +text_combinations: list
+    +numeric_columns: list
+    +hierarchies: list
+    +column_mappings: list
+    +classification_systems: list
+    +eav_integration: dict
+  }
+  
+  class "Engineered Features" as EngineeredFeatures {
+    +combined_text: string
+    +size_feature: string
+    +service_life: float
+    +equipment_size: float
+    +Equipment_Type: string
+    +System_Subtype: string
+    +Full_Classification: string
+    +Equipment_Category: string
+    +Uniformat_Class: string
+    +System_Type: string
+    +Equipment_Subcategory: string
+    +Subsystem_Type: string
+    +Subsystem_ID: string
+  }
+}
+
+package "ML Model" as MLModel {
+  class "Model Pipeline" as ModelPipeline {
+    +preprocessor: ColumnTransformer
+    +classifier: RandomForestClassifier
+    +fit(X, y): void
+    +predict(X): array
+    +score(X, y): float
+  }
+  
+  class "ColumnTransformer" as ColumnTransformer {
+    +transformers: list
+    +remainder: string
+    +sparse_threshold: float
+    +n_jobs: int
+    +transformer_weights: dict
+  }
+  
+  class "TfidfVectorizer" as TfidfVectorizer {
+    +max_features: int
+    +min_df: float
+    +max_df: float
+    +ngram_range: tuple
+    +stop_words: string
+  }
+  
+  class "RandomForestClassifier" as RandomForestClassifier {
+    +n_estimators: int
+    +max_depth: int
+    +min_samples_split: int
+    +min_samples_leaf: int
+    +class_weight: string
+    +criterion: string
+    +random_state: int
+  }
+  
+  class "HyperparameterTuning" as HyperparameterTuning {
+    +param_grid: dict
+    +cv: int
+    +scoring: string
+    +n_jobs: int
+    +verbose: int
+  }
+}
+
+package "EAV System" as EAVSystem {
+  class "EAV Manager" as EAVManager {
+    +equipment_templates: dict
+    +classification_systems: dict
+    +get_equipment_template(type): dict
+    +get_classification_ids(type): dict
+    +get_performance_fields(type): dict
+    +get_required_attributes(type): list
+  }
+  
+  class "Equipment Template" as EquipmentTemplate {
+    +equipment_type: string
+    +classification: dict
+    +required_attributes: dict
+    +optional_attributes: dict
+    +performance_fields: dict
+  }
+  
+  class "Classification System" as ClassificationSystem {
+    +name: string
+    +id: string
+    +description: string
+    +parent_id: string
+  }
+}
+
+package "Master Database" as MasterDB {
+  class "Equipment" as Equipment {
+    +EquipmentID: int <<PK>>
+    +CategoryID: int <<FK>>
+    +LocationID: int <<FK>>
+    +EquipmentTag: string
+    +OmniClass_ID: string
+    +Uniformat_ID: string
+    +MasterFormat_ID: string
+  }
+  
+  class "Equipment_Categories" as EquipmentCategories {
+    +CategoryID: int <<PK>>
+    +CategoryName: string
+    +Description: string
+  }
+}
+
+' Define relationships
+EquipmentData --> EngineeredFeatures : "transformed by\nFeature Engineering"
+FeatureConfig --> EngineeredFeatures : "configures"
+
+EngineeredFeatures --> ModelPipeline : "input to"
+ModelPipeline *-- ColumnTransformer : "contains"
+ColumnTransformer *-- TfidfVectorizer : "uses for text"
+ModelPipeline *-- RandomForestClassifier : "uses as classifier"
+HyperparameterTuning --> RandomForestClassifier : "tunes"
+
+ModelPipeline --> EAVManager : "predictions enhanced by"
+EAVManager *-- EquipmentTemplate : "contains"
+EAVManager *-- ClassificationSystem : "contains"
+
+ModelPipeline --> Equipment : "predictions mapped to"
+Equipment --> EquipmentCategories : "belongs to"
+
+' Add notes
+note bottom of FeatureConfig
+  Located at: nexusml/config/feature_config.yml
+  Defines how features are engineered
+end note
+
+note bottom of HyperparameterTuning
+  Hyperparameters tuned via GridSearchCV:
+  - n_estimators: [50, 100, 200]
+  - max_depth: [None, 10, 20]
+  - min_samples_split: [2, 5, 10]
+  - min_samples_leaf: [1, 2, 4]
+end note
+
+note bottom of EAVManager
+  EAV = Entity-Attribute-Value
+  Provides flexible attribute storage
+  for different equipment types
+end note
+
+@enduml

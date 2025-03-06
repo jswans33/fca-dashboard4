@@ -1,0 +1,283 @@
+@startuml "ML Alternative Classification Strategies"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ClassBorderColor #666666
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam PackageBackgroundColor #F5F5F5
+skinparam PackageBorderColor #BDBDBD
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+
+' Title
+title Alternative ML Classification Strategies for Equipment Classification
+
+' Define packages
+package "Current Approach" as CurrentApproach {
+  class "Random Forest" as RandomForest {
+    +Strengths
+    +Good with mixed data types
+    +Handles non-linear relationships
+    +Feature importance
+    +Robust to outliers
+    +Less prone to overfitting
+    
+    -Weaknesses
+    -Black box model
+    -Memory intensive
+    -Slower prediction time
+    -Less efficient with high-dimensional sparse data
+  }
+}
+
+package "Traditional ML Alternatives" as TraditionalML {
+  class "Support Vector Machines" as SVM {
+    +Strengths
+    +Effective in high-dimensional spaces
+    +Memory efficient
+    +Versatile (different kernel functions)
+    +Good for text classification
+    
+    -Weaknesses
+    -Sensitive to parameter tuning
+    -Slower training time
+    -Less interpretable
+    -Struggles with large datasets
+  }
+  
+  class "Gradient Boosting" as GradientBoosting {
+    +Strengths
+    +Often highest accuracy
+    +Feature importance
+    +Handles mixed data types
+    +Can handle imbalanced data
+    
+    -Weaknesses
+    -Prone to overfitting
+    -Sensitive to noisy data
+    -Longer training time
+    -Sequential nature (hard to parallelize)
+  }
+  
+  class "Naive Bayes" as NaiveBayes {
+    +Strengths
+    +Very fast training and prediction
+    +Works well with text data
+    +Requires less training data
+    +Simple implementation
+    
+    -Weaknesses
+    -Assumes feature independence
+    -Less accurate for complex relationships
+    -Poor estimator of probabilities
+    -Sensitive to irrelevant features
+  }
+  
+  class "K-Nearest Neighbors" as KNN {
+    +Strengths
+    +Simple to understand
+    +No training phase
+    +Naturally handles multi-class
+    +Effective for small datasets
+    
+    -Weaknesses
+    -Computationally expensive prediction
+    -Sensitive to irrelevant features
+    -Requires feature scaling
+    -Memory intensive
+  }
+}
+
+package "Deep Learning Approaches" as DeepLearning {
+  class "Neural Networks" as NeuralNetworks {
+    +Strengths
+    +Can learn complex patterns
+    +Automatic feature extraction
+    +Highly accurate with enough data
+    +Versatile architecture options
+    
+    -Weaknesses
+    -Requires large amounts of data
+    -Computationally intensive
+    -Black box model
+    -Prone to overfitting
+  }
+  
+  class "Transformer Models" as Transformers {
+    +Strengths
+    +State-of-the-art for text
+    +Transfer learning capabilities
+    +Captures contextual relationships
+    +Handles long-range dependencies
+    
+    -Weaknesses
+    -Very computationally intensive
+    -Requires large amounts of data
+    -Complex to implement and tune
+    -Black box model
+  }
+}
+
+package "Ensemble Methods" as EnsembleMethods {
+  class "Voting Classifier" as VotingClassifier {
+    +Strengths
+    +Combines multiple models
+    +Reduces overfitting
+    +Often improves accuracy
+    +Can combine different model types
+    
+    -Weaknesses
+    -Increased complexity
+    -Slower prediction time
+    -Harder to interpret
+    -May not always improve performance
+  }
+  
+  class "Stacking" as Stacking {
+    +Strengths
+    +Can achieve higher accuracy
+    +Learns optimal combination
+    +Reduces bias and variance
+    +Versatile architecture
+    
+    -Weaknesses
+    -Complex implementation
+    -Computationally expensive
+    +Risk of overfitting
+    -Difficult to interpret
+  }
+}
+
+package "Specialized Approaches" as SpecializedApproaches {
+  class "One-vs-Rest" as OneVsRest {
+    +Strengths
+    +Simplifies multi-class problems
+    +Can use any binary classifier
+    +Easier to interpret
+    +Handles class imbalance
+    
+    -Weaknesses
+    -Training multiple models
+    -May miss inter-class relationships
+    -Prediction time scales with classes
+    -Potential for conflicting predictions
+  }
+  
+  class "Hierarchical Classification" as HierarchicalClassification {
+    +Strengths
+    +Leverages class hierarchy
+    +Reduces complexity
+    +More interpretable
+    +Often more accurate for taxonomies
+    
+    -Weaknesses
+    -Error propagation
+    -Requires hierarchical data
+    -More complex implementation
+    -May need more training data
+  }
+}
+
+package "Hybrid Approaches" as HybridApproaches {
+  class "TF-IDF + ML" as TFIDFML {
+    +Strengths
+    +Effective for text classification
+    +Captures term importance
+    +Simple and interpretable
+    +Fast implementation
+    
+    -Weaknesses
+    -Ignores word order
+    -Sparse feature representation
+    -Limited semantic understanding
+    -Fixed vocabulary
+  }
+  
+  class "Word Embeddings + ML" as WordEmbeddingsML {
+    +Strengths
+    +Captures semantic relationships
+    +Dense representation
+    +Transfer learning possible
+    +Better generalization
+    
+    -Weaknesses
+    -Requires pre-trained embeddings
+    -Fixed context window
+    -May lose domain-specific meaning
+    -More complex pipeline
+  }
+}
+
+' Define relationships
+RandomForest --> SVM : "Alternative"
+RandomForest --> GradientBoosting : "Alternative"
+RandomForest --> NaiveBayes : "Alternative"
+RandomForest --> KNN : "Alternative"
+RandomForest --> NeuralNetworks : "Alternative"
+RandomForest --> Transformers : "Alternative"
+RandomForest --> VotingClassifier : "Can be combined with"
+RandomForest --> Stacking : "Can be combined with"
+RandomForest --> OneVsRest : "Can be combined with"
+RandomForest --> HierarchicalClassification : "Can be combined with"
+RandomForest --> TFIDFML : "Current approach"
+RandomForest --> WordEmbeddingsML : "Alternative"
+
+' Add notes
+note bottom of RandomForest
+  Currently used in the system with TF-IDF
+  for text features and standard scaling
+  for numeric features
+end note
+
+note bottom of GradientBoosting
+  XGBoost, LightGBM, or CatBoost could
+  provide improved accuracy with proper
+  hyperparameter tuning
+end note
+
+note bottom of Transformers
+  BERT or similar models could better
+  understand equipment descriptions
+  through contextual embeddings
+end note
+
+note bottom of HierarchicalClassification
+  Particularly suitable for equipment
+  classification due to natural taxonomy
+  (System Category → Equipment Type)
+end note
+
+note bottom of WordEmbeddingsML
+  Word2Vec, GloVe, or FastText embeddings
+  could capture semantic relationships
+  between equipment terms
+end note
+
+' Add legend
+legend right
+  <b>Recommended Alternatives</b>
+  
+  1. <b>Gradient Boosting (XGBoost/LightGBM)</b>
+     - Often achieves higher accuracy than Random Forest
+     - Better handles imbalanced equipment categories
+     - Still provides feature importance
+  
+  2. <b>Hierarchical Classification</b>
+     - Leverages natural equipment taxonomy
+     - Reduces complexity of classification problem
+     - More interpretable results
+  
+  3. <b>Word Embeddings + ML</b>
+     - Better captures semantic relationships in equipment descriptions
+     - Improved generalization to new equipment types
+     - Can use domain-specific embeddings
+  
+  4. <b>Ensemble Approach</b>
+     - Combine multiple models for improved accuracy
+     - Reduces risk of misclassification
+     - Can leverage strengths of different approaches
+end legend
+
+@enduml

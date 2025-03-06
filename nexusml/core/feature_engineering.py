@@ -15,6 +15,7 @@ import yaml
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from nexusml.config import get_project_root
+from nexusml.core.eav_manager import EAVManager, EAVTransformer
 
 
 class TextCombiner(BaseEstimator, TransformerMixin):
@@ -39,12 +40,32 @@ class TextCombiner(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         X = X.copy()
-        # Create a single text column from self.columns
-        X[self.new_column] = (
-            X[self.columns]
-            .astype(str)
-            .apply(lambda row: self.separator.join(row.values), axis=1)
-        )
+        # Check if all columns exist
+        missing_columns = [col for col in self.columns if col not in X.columns]
+        if missing_columns:
+            print(
+                f"Warning: Columns {missing_columns} not found for TextCombiner. Using available columns only."
+            )
+            available_columns = [col for col in self.columns if col in X.columns]
+            if not available_columns:
+                print(
+                    f"No columns available for TextCombiner. Creating empty column {self.new_column}."
+                )
+                X[self.new_column] = ""
+                return X
+            # Create a single text column from available columns
+            X[self.new_column] = (
+                X[available_columns]
+                .astype(str)
+                .apply(lambda row: self.separator.join(row.values), axis=1)
+            )
+        else:
+            # Create a single text column from all specified columns
+            X[self.new_column] = (
+                X[self.columns]
+                .astype(str)
+                .apply(lambda row: self.separator.join(row.values), axis=1)
+            )
         X[self.new_column] = X[self.new_column].fillna("")
         return X
 
@@ -73,6 +94,17 @@ class NumericCleaner(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         X = X.copy()
+        # Check if the column exists
+        if self.column not in X.columns:
+            print(
+                f"Warning: Column '{self.column}' not found for NumericCleaner. Creating column with default value."
+            )
+            if self.dtype == "float":
+                X[self.new_name] = float(self.fill_value)
+            elif self.dtype == "int":
+                X[self.new_name] = int(self.fill_value)
+            return X
+
         # Clean and transform the numeric column
         if self.dtype == "float":
             X[self.new_name] = X[self.column].fillna(self.fill_value).astype(float)
@@ -100,12 +132,32 @@ class HierarchyBuilder(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         X = X.copy()
-        # Create hierarchical column from parent columns
-        X[self.new_column] = (
-            X[self.parent_columns]
-            .astype(str)
-            .apply(lambda row: self.separator.join(row.values), axis=1)
-        )
+        # Check if all parent columns exist
+        missing_columns = [col for col in self.parent_columns if col not in X.columns]
+        if missing_columns:
+            print(
+                f"Warning: Columns {missing_columns} not found for HierarchyBuilder. Using available columns only."
+            )
+            available_columns = [col for col in self.parent_columns if col in X.columns]
+            if not available_columns:
+                print(
+                    f"No columns available for HierarchyBuilder. Creating empty column {self.new_column}."
+                )
+                X[self.new_column] = ""
+                return X
+            # Create hierarchical column from available parent columns
+            X[self.new_column] = (
+                X[available_columns]
+                .astype(str)
+                .apply(lambda row: self.separator.join(row.values), axis=1)
+            )
+        else:
+            # Create hierarchical column from all parent columns
+            X[self.new_column] = (
+                X[self.parent_columns]
+                .astype(str)
+                .apply(lambda row: self.separator.join(row.values), axis=1)
+            )
         return X
 
 
@@ -128,7 +180,135 @@ class ColumnMapper(BaseEstimator, TransformerMixin):
         for mapping in self.mappings:
             source = mapping["source"]
             target = mapping["target"]
-            X[target] = X[source]
+            if source in X.columns:
+                X[target] = X[source]
+            else:
+                print(
+                    f"Warning: Source column '{source}' not found in DataFrame. Skipping mapping to '{target}'."
+                )
+        return X
+
+
+class ClassificationSystemMapper(BaseEstimator, TransformerMixin):
+    """
+    Maps equipment categories to classification system IDs (OmniClass, MasterFormat, Uniformat).
+
+    Config example: {
+        "name": "OmniClass",
+        "source_column": "Equipment_Category",
+        "target_column": "OmniClass_ID",
+        "mapping_type": "eav"
+    }
+    """
+
+    def __init__(
+        self,
+        name: str,
+        source_column: Union[str, List[str]],
+        target_column: str,
+        mapping_type: str = "eav",
+        mapping_function: Optional[str] = None,
+        eav_manager: Optional[EAVManager] = None,
+    ):
+        self.name = name
+        self.source_column = source_column
+        self.target_column = target_column
+        self.mapping_type = mapping_type
+        self.mapping_function = mapping_function
+        self.eav_manager = eav_manager or EAVManager()
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X = X.copy()
+
+        # Handle different mapping types
+        if self.mapping_type == "eav":
+            # Use EAV manager to get classification IDs
+            if isinstance(self.source_column, str):
+                # Check if the source column exists
+                if self.source_column not in X.columns:
+                    print(
+                        f"Warning: Source column '{self.source_column}' not found for ClassificationSystemMapper. Setting target column to empty."
+                    )
+                    X[self.target_column] = ""
+                    return X
+
+                # Single source column
+                if self.name.lower() == "omniclass":
+                    X[self.target_column] = X[self.source_column].apply(
+                        lambda x: self.eav_manager.get_classification_ids(x).get(
+                            "omniclass_id", ""
+                        )
+                    )
+                elif self.name.lower() == "masterformat":
+                    X[self.target_column] = X[self.source_column].apply(
+                        lambda x: self.eav_manager.get_classification_ids(x).get(
+                            "masterformat_id", ""
+                        )
+                    )
+                elif self.name.lower() == "uniformat":
+                    X[self.target_column] = X[self.source_column].apply(
+                        lambda x: self.eav_manager.get_classification_ids(x).get(
+                            "uniformat_id", ""
+                        )
+                    )
+            else:
+                # Multiple source columns not supported for EAV mapping
+                print(
+                    f"Warning: Multiple source columns not supported for EAV mapping of {self.name}"
+                )
+
+        elif self.mapping_function == "enhanced_masterformat_mapping":
+            # Use the enhanced_masterformat_mapping function
+            if isinstance(self.source_column, list) and len(self.source_column) >= 3:
+                # Extract the required columns
+                uniformat_col = self.source_column[0]
+                system_type_col = self.source_column[1]
+                equipment_category_col = self.source_column[2]
+                equipment_subcategory_col = (
+                    self.source_column[3] if len(self.source_column) > 3 else None
+                )
+
+                # Check if all required columns exist
+                missing_columns = [
+                    col
+                    for col in [uniformat_col, system_type_col, equipment_category_col]
+                    if col not in X.columns
+                ]
+                if (
+                    equipment_subcategory_col
+                    and equipment_subcategory_col not in X.columns
+                ):
+                    missing_columns.append(equipment_subcategory_col)
+
+                if missing_columns:
+                    print(
+                        f"Warning: Columns {missing_columns} not found for enhanced_masterformat_mapping. Setting target column to empty."
+                    )
+                    X[self.target_column] = ""
+                    return X
+
+                # Apply the mapping function
+                X[self.target_column] = X.apply(
+                    lambda row: enhanced_masterformat_mapping(
+                        row[uniformat_col],
+                        row[system_type_col],
+                        row[equipment_category_col],
+                        (
+                            row[equipment_subcategory_col]
+                            if equipment_subcategory_col
+                            else None
+                        ),
+                    ),
+                    axis=1,
+                )
+            else:
+                print(
+                    f"Warning: enhanced_masterformat_mapping requires at least 3 source columns"
+                )
+
         return X
 
 
@@ -138,16 +318,22 @@ class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
     based on a configuration file.
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(
+        self,
+        config_path: Optional[str] = None,
+        eav_manager: Optional[EAVManager] = None,
+    ):
         """
         Initialize the transformer with a configuration file path.
 
         Args:
             config_path: Path to the YAML configuration file. If None, uses the default path.
+            eav_manager: EAVManager instance. If None, creates a new one.
         """
         self.config_path = config_path
         self.transformers = []
         self.config = {}
+        self.eav_manager = eav_manager or EAVManager()
         self._load_config()
 
     def _load_config(self):
@@ -212,6 +398,28 @@ class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
                     separator=hierarchy.get("separator", "-"),
                 )
                 X = builder.transform(X)
+
+        # 5. Apply classification system mappings
+        if "classification_systems" in self.config:
+            for system in self.config["classification_systems"]:
+                mapper = ClassificationSystemMapper(
+                    name=system["name"],
+                    source_column=system.get("source_column")
+                    or system.get("source_columns", []),
+                    target_column=system["target_column"],
+                    mapping_type=system.get("mapping_type", "eav"),
+                    mapping_function=system.get("mapping_function"),
+                    eav_manager=self.eav_manager,
+                )
+                X = mapper.transform(X)
+
+        # 6. Apply EAV integration if enabled
+        if "eav_integration" in self.config and self.config["eav_integration"].get(
+            "enabled", False
+        ):
+            eav_config = self.config["eav_integration"]
+            eav_transformer = EAVTransformer(eav_manager=self.eav_manager)
+            X = eav_transformer.transform(X)
 
         return X
 
@@ -306,6 +514,17 @@ def enhanced_masterformat_mapping(
         and system_type in primary_mapping[uniformat_class]
     ):
         return primary_mapping[uniformat_class][system_type]
+
+    # Try EAV-based mapping
+    try:
+        eav_manager = EAVManager()
+        masterformat_id = eav_manager.get_classification_ids(equipment_category).get(
+            "masterformat_id", ""
+        )
+        if masterformat_id:
+            return masterformat_id
+    except Exception as e:
+        print(f"Warning: Could not use EAV for MasterFormat mapping: {e}")
 
     # Refined fallback mappings by Uniformat class
     fallbacks = {

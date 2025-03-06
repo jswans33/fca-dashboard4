@@ -1,18 +1,15 @@
 """
-Enhanced Equipment Classification Model
+Enhanced Equipment Classification Model with EAV Integration
 
 This module implements a machine learning pipeline for classifying equipment based on text descriptions
-and numeric features. Key features include:
+and numeric features, with integrated EAV (Entity-Attribute-Value) structure. Key features include:
 
 1. Combined Text and Numeric Features:
    - Uses a ColumnTransformer to incorporate both text features (via TF-IDF) and numeric features
      (like service_life) into a single model.
 
 2. Improved Handling of Imbalanced Classes:
-   - Uses RandomOverSampler instead of SMOTE for text data, which duplicates existing samples
-     rather than creating synthetic samples that don't correspond to meaningful text.
-   - Also uses class_weight='balanced_subsample' in the RandomForestClassifier for additional
-     protection against class imbalance.
+   - Uses class_weight='balanced_subsample' in the RandomForestClassifier for handling imbalanced classes.
 
 3. Better Evaluation Metrics:
    - Uses f1_macro scoring for hyperparameter optimization, which is more appropriate for
@@ -21,22 +18,33 @@ and numeric features. Key features include:
 
 4. Feature Importance Analysis:
    - Analyzes the importance of both text and numeric features in classifying equipment.
+
+5. EAV Integration:
+   - Incorporates EAV structure for flexible equipment attributes
+   - Uses classification systems (OmniClass, MasterFormat, Uniformat) for comprehensive taxonomy
+   - Includes performance fields (service life, maintenance intervals) in feature engineering
+   - Can predict missing attribute values based on equipment descriptions
 """
 
 # Standard library imports
 import os
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 # Third-party imports
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
+
+from nexusml.core.data_mapper import (
+    map_predictions_to_master_db,
+    map_staging_to_model_input,
+)
 
 # Local imports
 from nexusml.core.data_preprocessing import load_and_preprocess_data
+from nexusml.core.eav_manager import EAVManager, EAVTransformer
 from nexusml.core.evaluation import (
     analyze_other_category_features,
     analyze_other_misclassifications,
@@ -51,82 +59,225 @@ from nexusml.core.feature_engineering import (
 from nexusml.core.model_building import build_enhanced_model
 
 
-def handle_class_imbalance(
-    x: Union[pd.DataFrame, np.ndarray],
-    y: pd.DataFrame,
-    method: str = "random_over",
-    **kwargs,
-) -> Tuple[Any, Any]:
+class EquipmentClassifier:
     """
-    Handle class imbalance with configurable method
-
-    This function supports multiple oversampling strategies:
-    - "random_over": Uses RandomOverSampler, which duplicates existing samples
-      (better for text data as it preserves original text meaning)
-    - "smote": Uses SMOTE to create synthetic samples
-      (better for numeric-only data, but can create meaningless text)
-
-    Args:
-        x: Features
-        y: Target variables
-        method: Method to use ("random_over" or "smote")
-        **kwargs: Additional parameters for the oversampler
-
-    Returns:
-        Tuple: (Resampled features, resampled targets)
+    Comprehensive equipment classifier with EAV integration.
     """
-    # Check class distribution
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(y[col].value_counts())
 
-    # Set default parameters
-    params = {"sampling_strategy": "auto", "random_state": 42}
-    params.update(kwargs)
+    def __init__(
+        self,
+        model=None,
+        feature_engineer=None,
+        eav_manager=None,
+        sampling_strategy="direct",
+    ):
+        """
+        Initialize the equipment classifier.
 
-    # Select oversampling method
-    if method.lower() == "smote":
-        try:
-            from imblearn.over_sampling import SMOTE
+        Args:
+            model: Trained ML model (if None, needs to be trained)
+            feature_engineer: Feature engineering transformer
+            eav_manager: EAV manager for attribute templates
+            sampling_strategy: Strategy for handling class imbalance
+        """
+        self.model = model
+        self.feature_engineer = feature_engineer or GenericFeatureEngineer()
+        self.eav_manager = eav_manager or EAVManager()
+        self.sampling_strategy = sampling_strategy
 
-            oversample = SMOTE(**params)
-            print("Using SMOTE for oversampling...")
-        except ImportError:
-            print("SMOTE not available, falling back to RandomOverSampler...")
-            oversample = RandomOverSampler(**params)
-    else:  # default to random_over
-        oversample = RandomOverSampler(**params)
-        print("Using RandomOverSampler for oversampling...")
+    def train(
+        self,
+        data_path: Optional[str] = None,
+        feature_config_path: Optional[str] = None,
+        **kwargs,
+    ) -> None:
+        """
+        Train the equipment classifier.
 
-    # Apply oversampling
-    # Handle the case where fit_resample might return 2 or 3 values
-    result = oversample.fit_resample(x, y)
+        Args:
+            data_path: Path to the training data
+            feature_config_path: Path to the feature configuration
+            **kwargs: Additional parameters for training
+        """
+        # Train the model using the train_enhanced_model function
+        self.model, self.df = train_enhanced_model(
+            data_path=data_path,
+            sampling_strategy=self.sampling_strategy,
+            feature_config_path=feature_config_path,
+            **kwargs,
+        )
 
-    # Extract the first two elements regardless of tuple size
-    x_resampled, y_resampled = result[0], result[1]
+    def predict(
+        self, description: str, service_life: float = 0.0, asset_tag: str = ""
+    ) -> Dict[str, Any]:
+        """
+        Predict equipment classifications from a description.
 
-    print("\nAfter oversampling:")
-    for col in y.columns:
-        print(f"\nClass distribution for {col}:")
-        print(pd.Series(y_resampled[col]).value_counts())
+        Args:
+            description: Text description of the equipment
+            service_life: Service life value (optional)
+            asset_tag: Asset tag for equipment (optional)
 
-    return x_resampled, y_resampled
+        Returns:
+            Dictionary with classification results and master DB mappings
+        """
+        if self.model is None:
+            raise ValueError("Model has not been trained yet. Call train() first.")
+
+        # Use the predict_with_enhanced_model function
+        result = predict_with_enhanced_model(
+            self.model, description, service_life, asset_tag
+        )
+
+        # Add EAV template for the predicted equipment type
+        equipment_type = result["Equipment_Category"]
+        result["attribute_template"] = self.eav_manager.generate_attribute_template(
+            equipment_type
+        )
+
+        return result
+
+    def predict_attributes(
+        self, equipment_type: str, description: str
+    ) -> Dict[str, Any]:
+        """
+        Predict attribute values for a given equipment type and description.
+
+        Args:
+            equipment_type: Type of equipment
+            description: Text description of the equipment
+
+        Returns:
+            Dictionary with predicted attribute values
+        """
+        # This is a placeholder for attribute prediction
+        # In a real implementation, this would use ML to predict attribute values
+        # based on the description and equipment type
+        template = self.eav_manager.get_equipment_template(equipment_type)
+        required_attrs = template.get("required_attributes", [])
+
+        # Simple rule-based attribute prediction based on keywords in description
+        predictions = {}
+
+        # Extract numeric values with units from description
+        import re
+
+        # Look for patterns like "100 tons", "5 HP", etc.
+        capacity_pattern = r"(\d+(?:\.\d+)?)\s*(?:ton|tons)"
+        flow_pattern = r"(\d+(?:\.\d+)?)\s*(?:gpm|GPM)"
+        pressure_pattern = r"(\d+(?:\.\d+)?)\s*(?:psi|PSI|psig|PSIG)"
+        temp_pattern = r"(\d+(?:\.\d+)?)\s*(?:°F|F|deg F)"
+        airflow_pattern = r"(\d+(?:\.\d+)?)\s*(?:cfm|CFM)"
+
+        # Check for cooling capacity
+        if "cooling_capacity_tons" in required_attrs:
+            match = re.search(capacity_pattern, description)
+            if match:
+                predictions["cooling_capacity_tons"] = float(match.group(1))
+
+        # Check for flow rate
+        if "flow_rate_gpm" in required_attrs:
+            match = re.search(flow_pattern, description)
+            if match:
+                predictions["flow_rate_gpm"] = float(match.group(1))
+
+        # Check for pressure
+        pressure_attrs = [attr for attr in required_attrs if "pressure" in attr]
+        if pressure_attrs and re.search(pressure_pattern, description):
+            match = re.search(pressure_pattern, description)
+            if match:
+                predictions[pressure_attrs[0]] = float(match.group(1))
+
+        # Check for temperature
+        temp_attrs = [attr for attr in required_attrs if "temp" in attr]
+        if temp_attrs and re.search(temp_pattern, description):
+            match = re.search(temp_pattern, description)
+            if match:
+                predictions[temp_attrs[0]] = float(match.group(1))
+
+        # Check for airflow
+        if "airflow_cfm" in required_attrs:
+            match = re.search(airflow_pattern, description)
+            if match:
+                predictions["airflow_cfm"] = float(match.group(1))
+
+        # Check for equipment types
+        if "chiller_type" in required_attrs:
+            if "centrifugal" in description.lower():
+                predictions["chiller_type"] = "Centrifugal"
+            elif "absorption" in description.lower():
+                predictions["chiller_type"] = "Absorption"
+            elif "screw" in description.lower():
+                predictions["chiller_type"] = "Screw"
+            elif "scroll" in description.lower():
+                predictions["chiller_type"] = "Scroll"
+            elif "reciprocating" in description.lower():
+                predictions["chiller_type"] = "Reciprocating"
+
+        if "pump_type" in required_attrs:
+            if "centrifugal" in description.lower():
+                predictions["pump_type"] = "Centrifugal"
+            elif "positive displacement" in description.lower():
+                predictions["pump_type"] = "Positive Displacement"
+            elif "submersible" in description.lower():
+                predictions["pump_type"] = "Submersible"
+            elif "vertical" in description.lower():
+                predictions["pump_type"] = "Vertical Turbine"
+
+        # Add more attribute predictions as needed
+
+        return predictions
+
+    def fill_missing_attributes(
+        self, equipment_type: str, attributes: Dict[str, Any], description: str
+    ) -> Dict[str, Any]:
+        """
+        Fill in missing attributes using ML predictions and rules.
+
+        Args:
+            equipment_type: Type of equipment
+            attributes: Dictionary of existing attribute name-value pairs
+            description: Text description of the equipment
+
+        Returns:
+            Dictionary with filled attributes
+        """
+        return self.eav_manager.fill_missing_attributes(
+            equipment_type, attributes, description, self
+        )
+
+    def validate_attributes(
+        self, equipment_type: str, attributes: Dict[str, Any]
+    ) -> Dict[str, List[str]]:
+        """
+        Validate attributes against the template for an equipment type.
+
+        Args:
+            equipment_type: Type of equipment
+            attributes: Dictionary of attribute name-value pairs
+
+        Returns:
+            Dictionary with validation results
+        """
+        return self.eav_manager.validate_attributes(equipment_type, attributes)
 
 
 def train_enhanced_model(
     data_path: Optional[str] = None,
-    sampling_strategy: str = "random_over",
+    sampling_strategy: str = "direct",
     feature_config_path: Optional[str] = None,
+    eav_manager: Optional[EAVManager] = None,
     **kwargs,
 ) -> Tuple[Any, pd.DataFrame]:
     """
-    Train and evaluate the enhanced model with better handling of "Other" categories
+    Train and evaluate the enhanced model with EAV integration
 
     Args:
         data_path: Path to the CSV file. Defaults to None, which uses the standard location.
-        sampling_strategy: Strategy for handling class imbalance ("random_over", "smote", or "direct")
+        sampling_strategy: Strategy for handling class imbalance ("direct" is the only supported option for now)
         feature_config_path: Path to the feature configuration file. Defaults to None, which uses the standard location.
-        **kwargs: Additional parameters for the oversampling method
+        eav_manager: EAVManager instance. If None, creates a new one.
+        **kwargs: Additional parameters for the model
 
     Returns:
         tuple: (trained model, preprocessed dataframe)
@@ -135,9 +286,16 @@ def train_enhanced_model(
     print("Loading and preprocessing data...")
     df = load_and_preprocess_data(data_path)
 
-    # 2. Apply Generic Feature Engineering
-    print("Applying Generic Feature Engineering...")
-    feature_engineer = GenericFeatureEngineer(config_path=feature_config_path)
+    # 1.5. Map staging data columns to model input format
+    print("Mapping staging data columns to model input format...")
+    df = map_staging_to_model_input(df)
+
+    # 2. Apply Generic Feature Engineering with EAV integration
+    print("Applying Generic Feature Engineering with EAV integration...")
+    eav_manager = eav_manager or EAVManager()
+    feature_engineer = GenericFeatureEngineer(
+        config_path=feature_config_path, eav_manager=eav_manager
+    )
     df = feature_engineer.transform(df)
 
     # 3. Prepare training data - now including both text and numeric features
@@ -160,77 +318,34 @@ def train_enhanced_model(
         ]
     ]
 
-    # 5. Split the data
+    # 4. Split the data
     x_train, x_test, y_train, y_test = train_test_split(
         x, y, test_size=0.3, random_state=42
     )
 
-    # 6. Handle class imbalance using the specified strategy
-    print(f"Handling class imbalance with {sampling_strategy}...")
+    # 5. Print class distribution information
+    print("\nClass distribution information:")
+    for col in y.columns:
+        print(f"\nClass distribution for {col}:")
+        print(y[col].value_counts())
 
-    if sampling_strategy.lower() == "direct":
-        # Skip oversampling entirely
-        print("Skipping oversampling as requested...")
-        x_train_resampled, y_train_resampled = x_train, y_train
-    else:
-        # For text data, we need a special approach with RandomOverSampler
-        # We create a temporary unique ID for each sample
-        x_train_with_id = x_train.copy()
-        x_train_with_id["temp_id"] = range(len(x_train_with_id))
-
-        # Handle class imbalance with the specified strategy
-        if sampling_strategy.lower() == "smote":
-            # For SMOTE, we need to apply it directly to the features
-            # This might create synthetic text samples that don't make sense
-            x_train_resampled, y_train_resampled = handle_class_imbalance(
-                x_train, y_train, method="smote", **kwargs
-            )
-        else:  # default to random_over with ID-based approach
-            # Fit and transform using the oversampler
-            # We use the ID column as the feature for oversampling
-            x_resampled_ids, y_train_resampled = handle_class_imbalance(
-                x_train_with_id[["temp_id"]], y_train, method="random_over", **kwargs
-            )
-
-            # Map the resampled IDs back to the original DataFrame rows
-            x_train_resampled = pd.DataFrame(columns=x_train.columns)
-            for idx in x_resampled_ids["temp_id"]:
-                x_train_resampled = pd.concat(
-                    [x_train_resampled, x_train.iloc[[idx]]], ignore_index=True
-                )
-
-    # Print statistics about the resampling
-    original_sample_count = x_train.shape[0]
-    total_resampled_count = x_train_resampled.shape[0]
-    print(
-        f"Original samples: {original_sample_count}, Resampled samples: {total_resampled_count}"
-    )
-    print(
-        f"Shape of x_train_resampled: {x_train_resampled.shape}, Shape of y_train_resampled: {y_train_resampled.shape}"
-    )
-
-    # Verify that the shapes match
-    assert (
-        x_train_resampled.shape[0] == y_train_resampled.shape[0]
-    ), "Mismatch in sample counts after resampling"
-
-    # 7. Build enhanced model
-    print("Building enhanced model...")
+    # 6. Build enhanced model with class_weight='balanced_subsample'
+    print("\nBuilding enhanced model with balanced class weights...")
     model = build_enhanced_model(sampling_strategy=sampling_strategy, **kwargs)
 
-    # 8. Train the model
+    # 7. Train the model
     print("Training model...")
-    model.fit(x_train_resampled, y_train_resampled)
+    model.fit(x_train, y_train)
 
-    # 9. Evaluate with focus on "Other" categories
+    # 8. Evaluate with focus on "Other" categories
     print("Evaluating model...")
     y_pred_df = enhanced_evaluation(model, x_test, y_test)
 
-    # 10. Analyze "Other" category features
+    # 9. Analyze "Other" category features
     print("Analyzing 'Other' category features...")
     analyze_other_category_features(model, x_test, y_test, y_pred_df)
 
-    # 11. Analyze misclassifications for "Other" categories
+    # 10. Analyze misclassifications for "Other" categories
     print("Analyzing 'Other' category misclassifications...")
     analyze_other_misclassifications(x_test, y_test, y_pred_df)
 
@@ -238,7 +353,7 @@ def train_enhanced_model(
 
 
 def predict_with_enhanced_model(
-    model: Any, description: str, service_life: float = 0.0
+    model: Any, description: str, service_life: float = 0.0, asset_tag: str = ""
 ) -> dict:
     """
     Make predictions with enhanced detail for "Other" categories
@@ -250,17 +365,15 @@ def predict_with_enhanced_model(
         model: Trained model pipeline
         description (str): Text description to classify
         service_life (float, optional): Service life value. Defaults to 0.0.
+        asset_tag (str, optional): Asset tag for equipment. Defaults to "".
 
     Returns:
-        dict: Prediction results with classifications
+        dict: Prediction results with classifications and master DB mappings
     """
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(
-        {"combined_text": [description], "service_life": [service_life]}
+        {"combined_features": [description], "service_life": [service_life]}
     )
-
-    # Rename to match the expected column name in the pipeline
-    input_data.rename(columns={"combined_text": "combined_features"}, inplace=True)
 
     # Predict using the trained pipeline
     pred = model.predict(input_data)[0]
@@ -272,6 +385,7 @@ def predict_with_enhanced_model(
         "System_Type": pred[2],
         "Equipment_Type": pred[3],
         "System_Subtype": pred[4],
+        "Asset Tag": asset_tag,  # Add asset tag for master DB mapping
     }
 
     # Add MasterFormat prediction with enhanced mapping
@@ -286,6 +400,35 @@ def predict_with_enhanced_model(
             else None
         ),
     )
+
+    # Add EAV template information
+    try:
+        eav_manager = EAVManager()
+        equipment_type = result["Equipment_Category"]
+
+        # Get classification IDs
+        classification_ids = eav_manager.get_classification_ids(equipment_type)
+        result.update(
+            {
+                "OmniClass_ID": classification_ids.get("omniclass_id", ""),
+                "Uniformat_ID": classification_ids.get("uniformat_id", ""),
+            }
+        )
+
+        # Get performance fields
+        performance_fields = eav_manager.get_performance_fields(equipment_type)
+        for field, info in performance_fields.items():
+            result[field] = info.get("default", 0)
+
+        # Get required attributes
+        result["required_attributes"] = eav_manager.get_required_attributes(
+            equipment_type
+        )
+    except Exception as e:
+        print(f"Warning: Could not add EAV information to prediction: {e}")
+
+    # Map predictions to master database fields
+    result["master_db_mapping"] = map_predictions_to_master_db(result)
 
     return result
 
@@ -328,20 +471,32 @@ def visualize_category_distribution(
 
 # Example usage
 if __name__ == "__main__":
-    # Train enhanced model
-    model, df = train_enhanced_model()
+    # Create and train the equipment classifier
+    classifier = EquipmentClassifier()
+    classifier.train()
 
     # Example prediction with service life
     description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
     service_life = 20.0  # Example service life in years
-    prediction = predict_with_enhanced_model(model, description, service_life)
+    prediction = classifier.predict(description, service_life)
 
-    print("\nEnhanced Prediction:")
+    print("\nEnhanced Prediction with EAV Integration:")
     for key, value in prediction.items():
-        print(f"{key}: {value}")
+        if key != "attribute_template":  # Skip printing the full template
+            print(f"{key}: {value}")
+
+    print("\nAttribute Template:")
+    template = prediction["attribute_template"]
+    print(f"Equipment Type: {template['equipment_type']}")
+    print(f"Classification: {template['classification']}")
+    print("Required Attributes:")
+    for attr, info in template["required_attributes"].items():
+        print(f"  {attr}: {info}")
 
     # Visualize category distribution
-    equipment_category_file, system_type_file = visualize_category_distribution(df)
+    equipment_category_file, system_type_file = visualize_category_distribution(
+        classifier.df
+    )
 
     print("\nVisualizations saved to:")
     print(f"  - {equipment_category_file}")

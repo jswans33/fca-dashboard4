@@ -1,0 +1,90 @@
+@startuml "ML Model Parameter Tuning"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ActivityBorderColor #666666
+skinparam ActivityBackgroundColor #EEEEEE
+skinparam ActivityDiamondBackgroundColor #E0F7FA
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+skinparam ActivityFontSize 12
+
+' Title
+title ML Model Parameter Tuning Process
+
+|#E3F2FD|Configuration|
+start
+:Load hyperparameter configuration;
+note right
+  Located in model_building.py
+  Default parameters defined in build_enhanced_model()
+end note
+
+|#E8F5E9|Parameter Grid|
+:Define parameter grid for GridSearchCV;
+note right
+  Parameter Grid:
+  {
+    'classifier__n_estimators': [50, 100, 200],
+    'classifier__max_depth': [None, 10, 20],
+    'classifier__min_samples_split': [2, 5, 10],
+    'classifier__min_samples_leaf': [1, 2, 4],
+    'classifier__class_weight': ['balanced', 'balanced_subsample']
+  }
+end note
+
+|#FFF3E0|Cross-Validation|
+:Set up cross-validation;
+note right
+  - 5-fold cross-validation
+  - f1_macro scoring (better for imbalanced classes)
+  - n_jobs=-1 (use all available cores)
+end note
+
+|#F3E5F5|Model Pipeline|
+:Create model pipeline;
+note right
+  Pipeline components:
+  1. preprocessor (ColumnTransformer)
+     - TF-IDF for text features
+     - StandardScaler for numeric features
+  2. classifier (RandomForestClassifier)
+end note
+
+|#E0F2F1|Grid Search|
+:Perform grid search with cross-validation;
+note right
+  GridSearchCV performs:
+  - Training with each parameter combination
+  - Evaluation using cross-validation
+  - Selection of best parameters
+end note
+
+|#FFEBEE|Best Parameters|
+:Select best parameters;
+note right
+  Default best parameters:
+  - n_estimators: 100
+  - max_depth: None
+  - min_samples_split: 2
+  - min_samples_leaf: 1
+  - class_weight: 'balanced_subsample'
+end note
+
+|#F9FBE7|Final Model|
+:Train final model with best parameters;
+:Evaluate final model performance;
+note right
+  Evaluation metrics:
+  - Accuracy
+  - Precision
+  - Recall
+  - F1 Score
+  - Confusion Matrix
+end note
+
+stop
+
+@enduml

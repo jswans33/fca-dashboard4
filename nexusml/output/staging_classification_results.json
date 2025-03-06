@@ -1,0 +1,110 @@
+[
+  {
+    "original_data": {
+      "Asset Name": "Centrifugal Chiller",
+      "Asset Tag": "CH-01",
+      "Trade": "H",
+      "Equip Served by": "AHU-1",
+      "Vendor": "Johnson Controls",
+      "Manufacturer": "York",
+      "Model Number": "YK-EP-8400",
+      "Serial Number": 123456,
+      "Size": 800,
+      "Unit": "Tons",
+      "Motor HP": 0.0,
+      "Estimated Operating Hours": 8760,
+      "USAssetID": "A123",
+      "System Category": "Chiller Plant",
+      "Sub System Type": "Water-Cooled",
+      "Sub System Classification": "Centrifugal",
+      "Asset Size (Rounded up)": 800,
+      "ID Unit": "Tons",
+      "Service Life": 20,
+      "Date Installed": "2020-01-15",
+      "Floor": 1,
+      "Area": "East Wing",
+      "Room Number": "M101",
+      "Notes": "Main building chiller"
+    },
+    "prediction": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Water Cooled",
+      "Asset Tag": "CH-01",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "CH-01",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 6668,
+        "LocationID": 1
+      },
+      "attribute_template": {
+        "error": "No template found for equipment type: Unknown Equipment"
+      }
+    }
+  },
+  {
+    "original_data": {
+      "Asset Name": "Air Handling Unit",
+      "Asset Tag": "AHU-01",
+      "Trade": "H",
+      "Equip Served by": "RM-101",
+      "Vendor": "Trane",
+      "Manufacturer": "Trane",
+      "Model Number": "T-AHU-5000",
+      "Serial Number": 234567,
+      "Size": 5000,
+      "Unit": "CFM",
+      "Motor HP": 7.5,
+      "Estimated Operating Hours": 8760,
+      "USAssetID": "A124",
+      "System Category": "HVAC",
+      "Sub System Type": "Air Handler",
+      "Sub System Classification": "VAV",
+      "Asset Size (Rounded up)": 5000,
+      "ID Unit": "CFM",
+      "Service Life": 15,
+      "Date Installed": "2020-02-15",
+      "Floor": 2,
+      "Area": "North Wing",
+      "Room Number": "M201",
+      "Notes": "Primary AHU for offices"
+    },
+    "prediction": {
+      "Equipment_Category": "Unknown Equipment",
+      "Uniformat_Class": "PL",
+      "System_Type": "",
+      "Equipment_Type": "-Unknown Equipment",
+      "System_Subtype": "-Air Cooled",
+      "Asset Tag": "AHU-01",
+      "MasterFormat_Class": "00 00 00",
+      "OmniClass_ID": "",
+      "Uniformat_ID": "",
+      "required_attributes": [],
+      "master_db_mapping": {
+        "Equipment_Category": "Unknown Equipment",
+        "Uniformat_Class": "PL",
+        "System_Type": "",
+        "MasterFormat_Class": "00 00 00",
+        "EquipmentTag": "AHU-01",
+        "OmniClass_ID": "",
+        "Uniformat_ID": "",
+        "CategoryID": 6668,
+        "LocationID": 1
+      },
+      "attribute_template": {
+        "error": "No template found for equipment type: Unknown Equipment"
+      }
+    }
+  }
+]

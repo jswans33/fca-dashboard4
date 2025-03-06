@@ -1,0 +1,3 @@
+Asset Name,Asset Tag,Trade,Equip Served by,Vendor,Manufacturer,Model Number,Serial Number,Size,Unit,Motor HP,Estimated Operating Hours,USAssetID,System Category,Sub System Type,Sub System Classification,Asset Size (Rounded up),ID Unit,Service Life,Date Installed,Floor,Area,Room Number,Notes
+Centrifugal Chiller,CH-01,H,AHU-1,Johnson Controls,York,YK-EP-8400,123456,800,Tons,0,8760,A123,Chiller Plant,Water-Cooled,Centrifugal,800,Tons,20,2020-01-15,1,East Wing,M101,Main building chiller
+Air Handling Unit,AHU-01,H,RM-101,Trane,Trane,T-AHU-5000,234567,5000,CFM,7.5,8760,A124,HVAC,Air Handler,VAV,5000,CFM,15,2020-02-15,2,North Wing,M201,Primary AHU for offices

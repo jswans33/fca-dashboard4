@@ -1,43 +1,75 @@
 text_combinations:
   - name: 'combined_text'
-    columns:
-      [
-        'Asset Category',
-        'Equip Name ID',
-        'Sub System Type',
-        'Sub System ID',
-        'Title',
-        'Precon System',
-        'Operations System',
-        'Sub System Class',
-        'Drawing Abbreviation',
+    columns: [
+        'Asset Name', # From staging table
+        'Manufacturer', # From staging table
+        'Model Number', # From staging table
+        'System Category', # From staging table
+        'Sub System Type', # From staging table
+        'Sub System Classification', # From staging table
       ]
     separator: ' '
 
   - name: 'size_feature'
-    columns: ['Equipment Size', 'Unit']
+    columns: ['Size', 'Unit']
     separator: ' '
 
 numeric_columns:
   - name: 'Service Life'
     new_name: 'service_life'
+    fill_value: 20
+    dtype: 'float'
+
+  - name: 'Motor HP'
+    new_name: 'motor_hp'
     fill_value: 0
     dtype: 'float'
 
 hierarchies:
   - new_col: 'Equipment_Type'
-    parents: ['Asset Category', 'Equip Name ID']
+    parents: ['System Category', 'Asset Name']
     separator: '-'
+
   - new_col: 'System_Subtype'
-    parents: ['Precon System', 'Operations System']
+    parents: ['System Category', 'Sub System Type']
     separator: '-'
 
 column_mappings:
-  - source: 'Asset Category'
+  - source: 'Asset Name'
     target: 'Equipment_Category'
-  - source: 'System Type ID'
+
+  - source: 'Trade'
     target: 'Uniformat_Class'
-  - source: 'Precon System'
+
+  - source: 'System Category'
     target: 'System_Type'
-  - source: 'Equip Name ID'
-    target: 'Equipment_Subcategory'
+
+classification_systems:
+  - name: 'OmniClass'
+    source_column: 'Equipment_Category'
+    target_column: 'OmniClass_ID'
+    mapping_type: 'eav'
+
+  - name: 'MasterFormat'
+    source_columns:
+      [
+        'Uniformat_Class',
+        'System_Type',
+        'Equipment_Category',
+        'Equipment_Subcategory',
+      ]
+    target_column: 'MasterFormat_ID'
+    mapping_function: 'enhanced_masterformat_mapping'
+
+  - name: 'Uniformat'
+    source_column: 'Uniformat_Class'
+    target_column: 'Uniformat_ID'
+    mapping_type: 'eav'
+
+eav_integration:
+  enabled: true
+  equipment_type_column: 'Equipment_Category'
+  description_column: 'combined_text'
+  service_life_column: 'service_life'
+  add_classification_ids: true
+  add_performance_fields: true

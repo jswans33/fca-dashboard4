@@ -1,0 +1,300 @@
+[
+  {
+    "description": "Centrifugal chiller with 500 tons cooling capacity, 0.6 kW/ton efficiency, using R-134a refrigerant",
+    "service_life": 20.0,
+    "Equipment_Category": "Pump",
+    "Uniformat_Class": "H",
+    "System_Type": "SM Equipment",
+    "MasterFormat_Class": "22 11 23",
+    "OmniClass_ID": "23-27 11 11 11",
+    "Uniformat_ID": "D2010",
+    "extracted_attributes": {
+      "pump_type": "Centrifugal"
+    },
+    "attribute_template": {
+      "equipment_type": "Pump",
+      "classification": {
+        "omniclass_id": "23-27 11 11 11",
+        "masterformat_id": "22 11 23",
+        "uniformat_id": "D2010"
+      },
+      "required_attributes": {
+        "flow_rate_gpm": {
+          "value": null,
+          "unit": "GPM"
+        },
+        "head_pressure_ft": {
+          "value": null,
+          "unit": "ft"
+        },
+        "pump_type": {
+          "value": null,
+          "unit": ""
+        },
+        "motor_hp": {
+          "value": null,
+          "unit": "HP"
+        }
+      },
+      "optional_attributes": {
+        "impeller_diameter": {
+          "value": null,
+          "unit": "in"
+        },
+        "efficiency_percent": {
+          "value": null,
+          "unit": "%"
+        },
+        "motor_speed_rpm": {
+          "value": null,
+          "unit": "RPM"
+        },
+        "motor_voltage": {
+          "value": null,
+          "unit": "V"
+        },
+        "motor_phase": {
+          "value": null,
+          "unit": ""
+        }
+      },
+      "performance_fields": {
+        "service_life": {
+          "default": 15,
+          "unit": "years"
+        },
+        "maintenance_interval": {
+          "default": 6,
+          "unit": "months"
+        }
+      }
+    }
+  },
+  {
+    "description": "Air handling unit with 10,000 CFM airflow, 2.5 inch WG static pressure, and MERV 13 filters",
+    "service_life": 15.0,
+    "Equipment_Category": "Air Handling Unit",
+    "Uniformat_Class": "H",
+    "System_Type": "Air Handling Units",
+    "MasterFormat_Class": "23 73 00",
+    "OmniClass_ID": "",
+    "Uniformat_ID": "",
+    "extracted_attributes": {},
+    "attribute_template": {
+      "error": "No template found for equipment type: Air Handling Unit"
+    }
+  },
+  {
+    "description": "Hot water boiler with 2,000 MBH heating capacity, 85% efficiency, natural gas fired",
+    "service_life": 25.0,
+    "Equipment_Category": "Boiler",
+    "Uniformat_Class": "H",
+    "System_Type": "Heating Water Boiler Plant",
+    "MasterFormat_Class": "23 52 00",
+    "OmniClass_ID": "23-33 11 21 11",
+    "Uniformat_ID": "D3020",
+    "extracted_attributes": {},
+    "attribute_template": {
+      "equipment_type": "Boiler",
+      "classification": {
+        "omniclass_id": "23-33 11 21 11",
+        "masterformat_id": "23 52 00",
+        "uniformat_id": "D3020"
+      },
+      "required_attributes": {
+        "heating_capacity_mbh": {
+          "value": null,
+          "unit": "MBH"
+        },
+        "efficiency_percent": {
+          "value": null,
+          "unit": "%"
+        },
+        "fuel_type": {
+          "value": null,
+          "unit": ""
+        },
+        "boiler_type": {
+          "value": null,
+          "unit": ""
+        }
+      },
+      "optional_attributes": {
+        "pressure_rating_psig": {
+          "value": null,
+          "unit": "PSIG"
+        },
+        "flow_rate_gpm": {
+          "value": null,
+          "unit": "GPM"
+        },
+        "temperature_rise_f": {
+          "value": null,
+          "unit": "\u00c2\u00b0F"
+        },
+        "burner_type": {
+          "value": null,
+          "unit": ""
+        },
+        "nox_emissions": {
+          "value": null,
+          "unit": ""
+        }
+      },
+      "performance_fields": {
+        "service_life": {
+          "default": 25,
+          "unit": "years"
+        },
+        "maintenance_interval": {
+          "default": 6,
+          "unit": "months"
+        }
+      }
+    }
+  },
+  {
+    "description": "Cooling tower with 600 tons capacity, 1,800 GPM flow rate, induced draft design",
+    "service_life": 15.0,
+    "Equipment_Category": "Cooling Tower",
+    "Uniformat_Class": "H",
+    "System_Type": "Cooling Tower Plant",
+    "MasterFormat_Class": "23 65 00",
+    "OmniClass_ID": "23-33 11 14 11",
+    "Uniformat_ID": "D3030",
+    "extracted_attributes": {
+      "cooling_capacity_tons": 600.0,
+      "flow_rate_gpm": 800.0
+    },
+    "attribute_template": {
+      "equipment_type": "Cooling Tower",
+      "classification": {
+        "omniclass_id": "23-33 11 14 11",
+        "masterformat_id": "23 65 00",
+        "uniformat_id": "D3030"
+      },
+      "required_attributes": {
+        "cooling_capacity_tons": {
+          "value": null,
+          "unit": "tons"
+        },
+        "flow_rate_gpm": {
+          "value": null,
+          "unit": "GPM"
+        },
+        "tower_type": {
+          "value": null,
+          "unit": ""
+        },
+        "fan_type": {
+          "value": null,
+          "unit": ""
+        }
+      },
+      "optional_attributes": {
+        "fan_hp": {
+          "value": null,
+          "unit": "HP"
+        },
+        "design_wet_bulb": {
+          "value": null,
+          "unit": "\u00c2\u00b0F"
+        },
+        "design_range": {
+          "value": null,
+          "unit": "\u00c2\u00b0F"
+        },
+        "design_approach": {
+          "value": null,
+          "unit": "\u00c2\u00b0F"
+        },
+        "basin_capacity_gal": {
+          "value": null,
+          "unit": "gal"
+        }
+      },
+      "performance_fields": {
+        "service_life": {
+          "default": 15,
+          "unit": "years"
+        },
+        "maintenance_interval": {
+          "default": 1,
+          "unit": "months"
+        }
+      }
+    }
+  },
+  {
+    "description": "Centrifugal pump with 500 GPM flow rate, 60 ft head pressure, 5 HP motor",
+    "service_life": 15.0,
+    "Equipment_Category": "Pump",
+    "Uniformat_Class": "H",
+    "System_Type": "SM Equipment",
+    "MasterFormat_Class": "22 11 23",
+    "OmniClass_ID": "23-27 11 11 11",
+    "Uniformat_ID": "D2010",
+    "extracted_attributes": {
+      "flow_rate_gpm": 500.0,
+      "pump_type": "Centrifugal"
+    },
+    "attribute_template": {
+      "equipment_type": "Pump",
+      "classification": {
+        "omniclass_id": "23-27 11 11 11",
+        "masterformat_id": "22 11 23",
+        "uniformat_id": "D2010"
+      },
+      "required_attributes": {
+        "flow_rate_gpm": {
+          "value": null,
+          "unit": "GPM"
+        },
+        "head_pressure_ft": {
+          "value": null,
+          "unit": "ft"
+        },
+        "pump_type": {
+          "value": null,
+          "unit": ""
+        },
+        "motor_hp": {
+          "value": null,
+          "unit": "HP"
+        }
+      },
+      "optional_attributes": {
+        "impeller_diameter": {
+          "value": null,
+          "unit": "in"
+        },
+        "efficiency_percent": {
+          "value": null,
+          "unit": "%"
+        },
+        "motor_speed_rpm": {
+          "value": null,
+          "unit": "RPM"
+        },
+        "motor_voltage": {
+          "value": null,
+          "unit": "V"
+        },
+        "motor_phase": {
+          "value": null,
+          "unit": ""
+        }
+      },
+      "performance_fields": {
+        "service_life": {
+          "default": 15,
+          "unit": "years"
+        },
+        "maintenance_interval": {
+          "default": 6,
+          "unit": "months"
+        }
+      }
+    }
+  }
+]

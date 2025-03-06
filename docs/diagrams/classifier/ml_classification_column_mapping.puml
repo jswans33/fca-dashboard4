@@ -1,0 +1,155 @@
+@startuml "ML Classification Column Mapping"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ArrowColor #333333
+skinparam ClassBorderColor #666666
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam PackageBackgroundColor #F5F5F5
+skinparam PackageBorderColor #BDBDBD
+skinparam ArrowFontSize 11
+
+' Title
+title ML Classification Column Mapping
+
+' Define classes
+class "Staging Data" as StagingData {
+  +Asset Name: string
+  +Asset Tag: string
+  +Trade: string
+  +Manufacturer: string
+  +Model Number: string
+  +Size: float
+  +Unit: string
+  +Motor HP: float
+  +System Category: string
+  +Sub System Type: string
+  +Sub System Classification: string
+  +Service Life: float
+}
+
+class "ML Model Input" as MLInput {
+  +Equipment_Category: string
+  +Uniformat_Class: string
+  +System_Type: string
+  +Equipment_Type: string
+  +System_Subtype: string
+  +combined_text: string
+  +service_life: float
+}
+
+class "ML Model Output" as MLOutput {
+  +Equipment_Category: string
+  +Uniformat_Class: string
+  +System_Type: string
+  +Equipment_Type: string
+  +System_Subtype: string
+  +MasterFormat_Class: string
+  +OmniClass_ID: string
+  +Uniformat_ID: string
+}
+
+class "Master DB Fields" as MasterDB {
+  +CategoryID: int
+  +LocationID: int
+  +EquipmentTag: string
+  +Equipment_Category: string
+  +Uniformat_Class: string
+  +System_Type: string
+  +MasterFormat_Class: string
+  +OmniClass_ID: string
+  +Uniformat_ID: string
+}
+
+' Define mapping classes
+class "Data Mapper" as DataMapper {
+  +map_staging_to_model_input()
+  +map_predictions_to_master_db()
+}
+
+class "Feature Engineering" as FeatureEng {
+  +TextCombiner
+  +NumericCleaner
+  +HierarchyBuilder
+  +ColumnMapper
+}
+
+class "EAV Manager" as EAVManager {
+  +get_classification_ids()
+  +generate_attribute_template()
+  +get_required_attributes()
+}
+
+' Define relationships with mapping details
+StagingData --> DataMapper : "Input"
+DataMapper --> MLInput : "Output"
+note on link
+  <b>Column Mapping:</b>
+  Asset Name → Equipment_Category
+  Trade → Uniformat_Class
+  System Category → System_Type
+  
+  <b>Text Combination:</b>
+  Asset Name + Manufacturer + Model Number + 
+  System Category + Sub System Type → combined_text
+  
+  <b>Numeric Conversion:</b>
+  Service Life → service_life (float)
+  Motor HP → motor_hp (float)
+  Size → equipment_size (float)
+end note
+
+MLInput --> FeatureEng : "Input"
+FeatureEng --> MLOutput : "Output"
+note on link
+  <b>Hierarchical Categories:</b>
+  System Category + Asset Name → Equipment_Type
+  System Category + Sub System Type → System_Subtype
+  
+  <b>Classification Mapping:</b>
+  Equipment_Category → OmniClass_ID
+  Uniformat_Class → Uniformat_ID
+  Multiple fields → MasterFormat_Class
+end note
+
+MLOutput --> DataMapper : "Input"
+DataMapper --> MasterDB : "Output"
+note on link
+  <b>Database Field Mapping:</b>
+  Equipment_Category → CategoryID (via hash function)
+  Asset Tag → EquipmentTag
+  Default value → LocationID
+  
+  <b>Classification IDs:</b>
+  Preserve OmniClass_ID, Uniformat_ID, MasterFormat_ID
+end note
+
+MLOutput --> EAVManager : "Input"
+EAVManager --> MLOutput : "Enhances with EAV data"
+note on link
+  <b>EAV Integration:</b>
+  Equipment_Category → attribute_template
+  Equipment_Category → required_attributes
+  Equipment_Category → classification_ids
+end note
+
+' Add legend
+legend right
+  <b>Column Mapping Process</b>
+  
+  1. <b>Staging to ML Model:</b>
+     Maps staging data columns to ML model input format
+  
+  2. <b>Feature Engineering:</b>
+     Creates combined features and hierarchical categories
+  
+  3. <b>EAV Integration:</b>
+     Adds attribute templates and classification IDs
+  
+  4. <b>ML to Master DB:</b>
+     Maps ML predictions to master database fields
+end legend
+
+@enduml

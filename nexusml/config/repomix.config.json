@@ -7,7 +7,7 @@
     "directoryStructure": true,
     "removeComments": false,
     "removeEmptyLines": false,
-    "compress": false,
+    "compress": true,
     "topFilesLength": 5,
     "showLineNumbers": false,
     "copyToClipboard": true
@@ -20,7 +20,8 @@
       "nexusml/ingest/data/**",
       "nexusml/docs",
       "nexusml/output/**",
-      "nexusml/core/deprecated/**"
+      "nexusml/core/deprecated/**",
+      "nexusml/test/**"
     ]
   },
   "security": {

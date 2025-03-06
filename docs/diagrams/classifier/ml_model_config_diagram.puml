@@ -1,0 +1,148 @@
+@startuml "ML Model Configuration Files"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ComponentStyle uml2
+skinparam ComponentBorderColor #666666
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam FileBorderColor #999999
+skinparam FileBackgroundColor #FFFFFF
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+
+' Title
+title ML Model Configuration Files and Relationships
+
+' Define file components
+component "feature_config.yml" as FeatureConfig #LightBlue {
+  file "text_combinations" as TextCombinations
+  file "numeric_columns" as NumericColumns
+  file "hierarchies" as Hierarchies
+  file "column_mappings" as ColumnMappings
+  file "classification_systems" as ClassificationSystems
+  file "eav_integration" as EAVIntegration
+}
+
+component "data_config.yml" as DataConfig #LightGreen {
+  file "required_columns" as RequiredColumns
+  file "training_data" as TrainingDataConfig
+}
+
+component "equipment_attributes.json" as EquipmentAttributes #LightYellow {
+  file "equipment_templates" as EquipmentTemplates
+  file "attribute_definitions" as AttributeDefinitions
+}
+
+component "classification_mappings" as ClassificationMappings #LightPink {
+  file "masterformat_primary.json" as MasterformatPrimary
+  file "masterformat_equipment.json" as MasterformatEquipment
+  file "omniclass_mappings.json" as OmniclassMappings
+  file "uniformat_mappings.json" as UniformatMappings
+}
+
+' Define code components
+component "model_building.py" as ModelBuilding #LightCyan {
+  file "build_enhanced_model()" as BuildEnhancedModel
+  file "create_pipeline()" as CreatePipeline
+  file "get_param_grid()" as GetParamGrid
+}
+
+component "feature_engineering.py" as FeatureEngineering #LightSalmon {
+  file "GenericFeatureEngineer" as GenericFeatureEngineer
+  file "TextCombiner" as TextCombinerClass
+  file "NumericCleaner" as NumericCleanerClass
+  file "HierarchyBuilder" as HierarchyBuilderClass
+  file "ColumnMapper" as ColumnMapperClass
+}
+
+component "model.py" as Model #LightGoldenRodYellow {
+  file "train_enhanced_model()" as TrainEnhancedModel
+  file "predict_with_enhanced_model()" as PredictWithEnhancedModel
+  file "EquipmentClassifier" as EquipmentClassifierClass
+}
+
+component "eav_manager.py" as EAVManager #Lavender {
+  file "EAVManager" as EAVManagerClass
+  file "EAVTransformer" as EAVTransformerClass
+}
+
+component "data_mapper.py" as DataMapper #PaleGreen {
+  file "map_staging_to_model_input()" as MapStagingToModelInput
+  file "map_predictions_to_master_db()" as MapPredictionsToMasterDB
+}
+
+' Define file locations
+note bottom of FeatureConfig
+  Location: nexusml/config/feature_config.yml
+  
+  Purpose: Defines how features are engineered
+  from raw data, including text combinations,
+  numeric columns, hierarchies, and mappings
+end note
+
+note bottom of DataConfig
+  Location: nexusml/config/data_config.yml
+  
+  Purpose: Defines data loading parameters,
+  required columns, and default values
+end note
+
+note bottom of EquipmentAttributes
+  Location: nexusml/config/eav/equipment_attributes.json
+  
+  Purpose: Defines equipment templates and
+  attribute definitions for the EAV system
+end note
+
+note bottom of ClassificationMappings
+  Location: nexusml/config/mappings/
+  
+  Purpose: Contains mapping files for
+  classification systems (OmniClass,
+  MasterFormat, Uniformat)
+end note
+
+' Define relationships
+FeatureConfig --> GenericFeatureEngineer : "used by"
+DataConfig --> TrainEnhancedModel : "used by"
+EquipmentAttributes --> EAVManagerClass : "used by"
+ClassificationMappings --> EAVManagerClass : "used by"
+
+GenericFeatureEngineer --> TextCombinerClass : "creates"
+GenericFeatureEngineer --> NumericCleanerClass : "creates"
+GenericFeatureEngineer --> HierarchyBuilderClass : "creates"
+GenericFeatureEngineer --> ColumnMapperClass : "creates"
+
+BuildEnhancedModel --> CreatePipeline : "calls"
+BuildEnhancedModel --> GetParamGrid : "calls"
+
+TrainEnhancedModel --> BuildEnhancedModel : "calls"
+EquipmentClassifierClass --> TrainEnhancedModel : "uses"
+EquipmentClassifierClass --> PredictWithEnhancedModel : "uses"
+
+EAVManagerClass --> EAVTransformerClass : "creates"
+TrainEnhancedModel --> EAVManagerClass : "uses"
+PredictWithEnhancedModel --> EAVManagerClass : "uses"
+
+TrainEnhancedModel --> MapStagingToModelInput : "calls"
+PredictWithEnhancedModel --> MapPredictionsToMasterDB : "calls"
+
+' Add legend
+legend right
+  <b>Configuration Files Overview</b>
+  
+  The ML model uses several configuration files:
+  
+  1. <b>feature_config.yml</b>: Feature engineering configuration
+  2. <b>data_config.yml</b>: Data loading and preprocessing
+  3. <b>equipment_attributes.json</b>: EAV system templates
+  4. <b>classification_mappings/*.json</b>: Classification system mappings
+  
+  These files control the behavior of the model without
+  requiring code changes, making the system flexible and
+  configurable for different datasets and requirements.
+end legend
+
+@enduml

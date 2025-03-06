@@ -1,0 +1,124 @@
+@startuml "ML Model Workflow"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ActivityBorderColor #666666
+skinparam ActivityBackgroundColor #EEEEEE
+skinparam ActivityDiamondBackgroundColor #E0F7FA
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+skinparam ActivityFontSize 12
+
+' Title
+title ML Model Workflow and Data Processing Flow
+
+|#E3F2FD|Data Loading|
+start
+:Load training data from eq_ids.csv;
+note right
+  Located at: nexusml/ingest/data/eq_ids.csv
+  Contains labeled equipment data
+end note
+
+|#E8F5E9|Data Preprocessing|
+:Clean column names;
+:Fill missing values;
+:Verify required columns;
+
+|#FFF3E0|Feature Engineering|
+:Apply feature configuration from feature_config.yml;
+note right
+  Located at: nexusml/config/feature_config.yml
+  Defines text combinations, numeric columns,
+  hierarchies, and column mappings
+end note
+
+:Create combined text features;
+note right
+  Combines multiple text columns into
+  a single feature for TF-IDF
+end note
+
+:Clean numeric features;
+note right
+  Converts to proper data types
+  and fills missing values
+end note
+
+:Create hierarchical categories;
+note right
+  Creates hierarchical relationships
+  between categories
+end note
+
+:Apply EAV integration;
+note right
+  Adds attribute templates and
+  classification system IDs
+end note
+
+|#F3E5F5|Model Training|
+:Split data into training and test sets;
+note right
+  70% training, 30% testing
+  with random_state=42
+end note
+
+:Create ColumnTransformer for feature processing;
+note right
+  - TF-IDF for text features
+  - StandardScaler for numeric features
+end note
+
+:Initialize RandomForestClassifier;
+note right
+  Parameters:
+  - n_estimators=100
+  - max_depth=None
+  - min_samples_split=2
+  - min_samples_leaf=1
+  - class_weight='balanced_subsample'
+end note
+
+:Train model with cross-validation;
+note right
+  - 5-fold cross-validation
+  - f1_macro scoring
+  - GridSearchCV for hyperparameter tuning
+end note
+
+|#E0F2F1|Model Evaluation|
+:Evaluate model on test set;
+note right
+  Metrics:
+  - Accuracy
+  - Precision
+  - Recall
+  - F1 Score
+end note
+
+:Analyze feature importance;
+:Analyze "Other" category performance;
+:Analyze misclassifications;
+
+|#FFEBEE|Model Prediction|
+:Create prediction function;
+note right
+  predict_with_enhanced_model()
+  takes description and service_life
+  as input
+end note
+
+:Add EAV information to predictions;
+:Map predictions to master DB fields;
+
+|#F9FBE7|Model Deployment|
+:Save model for production use;
+:Create API for model access;
+:Integrate with data pipeline;
+
+stop
+
+@enduml

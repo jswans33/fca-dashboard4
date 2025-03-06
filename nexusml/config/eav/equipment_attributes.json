@@ -1,0 +1,286 @@
+{
+  "Chiller": {
+    "omniclass_id": "23-33 11 11 11",
+    "masterformat_id": "23 64 00",
+    "uniformat_id": "D3020",
+    "required_attributes": [
+      "cooling_capacity_tons",
+      "efficiency_kw_per_ton",
+      "refrigerant_type",
+      "chiller_type"
+    ],
+    "optional_attributes": [
+      "condenser_type",
+      "compressor_type",
+      "min_part_load_ratio",
+      "evaporator_flow_rate_gpm",
+      "condenser_flow_rate_gpm"
+    ],
+    "units": {
+      "cooling_capacity_tons": "tons",
+      "efficiency_kw_per_ton": "kW/ton",
+      "evaporator_flow_rate_gpm": "GPM",
+      "condenser_flow_rate_gpm": "GPM"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 20,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 3,
+        "unit": "months"
+      }
+    }
+  },
+  "Air Handler": {
+    "omniclass_id": "23-33 11 13 11",
+    "masterformat_id": "23 73 00",
+    "uniformat_id": "D3040",
+    "required_attributes": [
+      "airflow_cfm",
+      "static_pressure_in_wg",
+      "cooling_capacity_mbh",
+      "fan_type"
+    ],
+    "optional_attributes": [
+      "heating_capacity_mbh",
+      "filter_type",
+      "filter_efficiency",
+      "motor_hp",
+      "motor_voltage"
+    ],
+    "units": {
+      "airflow_cfm": "CFM",
+      "static_pressure_in_wg": "in WG",
+      "cooling_capacity_mbh": "MBH",
+      "heating_capacity_mbh": "MBH",
+      "motor_hp": "HP",
+      "motor_voltage": "V"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 15,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 1,
+        "unit": "months"
+      }
+    }
+  },
+  "Boiler": {
+    "omniclass_id": "23-33 11 21 11",
+    "masterformat_id": "23 52 00",
+    "uniformat_id": "D3020",
+    "required_attributes": [
+      "heating_capacity_mbh",
+      "efficiency_percent",
+      "fuel_type",
+      "boiler_type"
+    ],
+    "optional_attributes": [
+      "pressure_rating_psig",
+      "flow_rate_gpm",
+      "temperature_rise_f",
+      "burner_type",
+      "nox_emissions"
+    ],
+    "units": {
+      "heating_capacity_mbh": "MBH",
+      "efficiency_percent": "%",
+      "pressure_rating_psig": "PSIG",
+      "flow_rate_gpm": "GPM",
+      "temperature_rise_f": "°F"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 25,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 6,
+        "unit": "months"
+      }
+    }
+  },
+  "Pump": {
+    "omniclass_id": "23-27 11 11 11",
+    "masterformat_id": "22 11 23",
+    "uniformat_id": "D2010",
+    "required_attributes": [
+      "flow_rate_gpm",
+      "head_pressure_ft",
+      "pump_type",
+      "motor_hp"
+    ],
+    "optional_attributes": [
+      "impeller_diameter",
+      "efficiency_percent",
+      "motor_speed_rpm",
+      "motor_voltage",
+      "motor_phase"
+    ],
+    "units": {
+      "flow_rate_gpm": "GPM",
+      "head_pressure_ft": "ft",
+      "impeller_diameter": "in",
+      "efficiency_percent": "%",
+      "motor_speed_rpm": "RPM",
+      "motor_hp": "HP",
+      "motor_voltage": "V"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 15,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 6,
+        "unit": "months"
+      }
+    }
+  },
+  "Heat Exchanger": {
+    "omniclass_id": "23-33 11 31 11",
+    "masterformat_id": "23 57 00",
+    "uniformat_id": "D3020",
+    "required_attributes": [
+      "heat_transfer_capacity_mbh",
+      "primary_fluid",
+      "secondary_fluid",
+      "exchanger_type"
+    ],
+    "optional_attributes": [
+      "primary_flow_rate_gpm",
+      "secondary_flow_rate_gpm",
+      "primary_pressure_drop_ft",
+      "secondary_pressure_drop_ft",
+      "material"
+    ],
+    "units": {
+      "heat_transfer_capacity_mbh": "MBH",
+      "primary_flow_rate_gpm": "GPM",
+      "secondary_flow_rate_gpm": "GPM",
+      "primary_pressure_drop_ft": "ft",
+      "secondary_pressure_drop_ft": "ft"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 20,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 12,
+        "unit": "months"
+      }
+    }
+  },
+  "Cooling Tower": {
+    "omniclass_id": "23-33 11 14 11",
+    "masterformat_id": "23 65 00",
+    "uniformat_id": "D3030",
+    "required_attributes": [
+      "cooling_capacity_tons",
+      "flow_rate_gpm",
+      "tower_type",
+      "fan_type"
+    ],
+    "optional_attributes": [
+      "fan_hp",
+      "design_wet_bulb",
+      "design_range",
+      "design_approach",
+      "basin_capacity_gal"
+    ],
+    "units": {
+      "cooling_capacity_tons": "tons",
+      "flow_rate_gpm": "GPM",
+      "fan_hp": "HP",
+      "design_wet_bulb": "°F",
+      "design_range": "°F",
+      "design_approach": "°F",
+      "basin_capacity_gal": "gal"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 15,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 1,
+        "unit": "months"
+      }
+    }
+  },
+  "Fan": {
+    "omniclass_id": "23-33 11 13 17",
+    "masterformat_id": "23 34 00",
+    "uniformat_id": "D3040",
+    "required_attributes": [
+      "airflow_cfm",
+      "static_pressure_in_wg",
+      "fan_type",
+      "motor_hp"
+    ],
+    "optional_attributes": [
+      "motor_voltage",
+      "motor_phase",
+      "motor_speed_rpm",
+      "drive_type",
+      "wheel_diameter"
+    ],
+    "units": {
+      "airflow_cfm": "CFM",
+      "static_pressure_in_wg": "in WG",
+      "motor_hp": "HP",
+      "motor_voltage": "V",
+      "motor_speed_rpm": "RPM",
+      "wheel_diameter": "in"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 15,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 3,
+        "unit": "months"
+      }
+    }
+  },
+  "VAV Box": {
+    "omniclass_id": "23-33 11 13 23",
+    "masterformat_id": "23 36 00",
+    "uniformat_id": "D3040",
+    "required_attributes": [
+      "airflow_cfm",
+      "heating_capacity_mbh",
+      "box_type",
+      "inlet_size"
+    ],
+    "optional_attributes": [
+      "pressure_drop_in_wg",
+      "control_type",
+      "sound_rating",
+      "reheat_coil_type",
+      "damper_type"
+    ],
+    "units": {
+      "airflow_cfm": "CFM",
+      "heating_capacity_mbh": "MBH",
+      "inlet_size": "in",
+      "pressure_drop_in_wg": "in WG"
+    },
+    "performance_fields": {
+      "service_life": {
+        "default": 15,
+        "unit": "years"
+      },
+      "maintenance_interval": {
+        "default": 6,
+        "unit": "months"
+      }
+    }
+  }
+}

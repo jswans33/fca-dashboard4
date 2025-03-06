@@ -21,7 +21,7 @@ from nexusml.core.feature_engineering import GenericFeatureEngineer
 
 
 def build_enhanced_model(
-    sampling_strategy: str = "random_over",
+    sampling_strategy: str = "direct",
     feature_config_path: Optional[str] = None,
     **kwargs,
 ) -> Pipeline:
@@ -34,7 +34,7 @@ def build_enhanced_model(
     more flexible feature engineering.
 
     Args:
-        sampling_strategy: Sampling strategy to use ("random_over", "smote", or "direct")
+        sampling_strategy: Sampling strategy to use ("direct" is the only supported option for now)
         feature_config_path: Path to the feature configuration file. If None, uses the default path.
         **kwargs: Additional parameters for the model
 
@@ -141,8 +141,7 @@ def build_enhanced_model(
     )
 
     # Complete pipeline with feature engineering, feature processing and classifier
-    # Note: We use both RandomOverSampler (applied earlier) and class_weight='balanced_subsample'
-    # for a two-pronged approach to handling imbalanced classes
+    # Use class_weight='balanced_subsample' for handling imbalanced classes
     pipeline = Pipeline(
         [
             # Optional feature engineering step - only used if called directly, not through train_enhanced_model
@@ -160,7 +159,7 @@ def build_enhanced_model(
                         max_depth=max_depth,  # Allow trees to grow deeply
                         min_samples_split=min_samples_split,  # Default value
                         min_samples_leaf=min_samples_leaf,  # Default value
-                        class_weight=class_weight,  # Additional protection against imbalance
+                        class_weight=class_weight,  # Protection against imbalance
                         random_state=random_state,
                     )
                 ),

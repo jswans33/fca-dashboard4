@@ -1,0 +1,146 @@
+@startuml "ML Model Evaluation"
+
+' Define styles
+skinparam backgroundColor white
+skinparam ActivityBorderColor #666666
+skinparam ActivityBackgroundColor #EEEEEE
+skinparam ActivityDiamondBackgroundColor #E0F7FA
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+skinparam ActivityFontSize 12
+
+' Title
+title ML Model Evaluation Process
+
+|#E3F2FD|Evaluation Setup|
+start
+:Split data into training and test sets;
+note right
+  - 70% training, 30% testing
+  - random_state=42 for reproducibility
+  - stratified split to maintain class distribution
+end note
+
+|#E8F5E9|Cross-Validation|
+:Perform k-fold cross-validation;
+note right
+  - 5-fold cross-validation
+  - StratifiedKFold to handle imbalanced classes
+  - f1_macro scoring metric
+end note
+
+:Calculate cross-validation scores;
+note right
+  Metrics calculated for each fold:
+  - Accuracy
+  - Precision
+  - Recall
+  - F1 Score
+end note
+
+|#FFF3E0|Test Set Evaluation|
+:Evaluate model on test set;
+note right
+  Final evaluation on held-out test data
+  that model hasn't seen during training
+end note
+
+:Calculate classification metrics;
+note right
+  - Accuracy: Overall correctness
+  - Precision: Exactness (TP/(TP+FP))
+  - Recall: Completeness (TP/(TP+FN))
+  - F1 Score: Harmonic mean of precision and recall
+  - ROC-AUC: Area under ROC curve
+end note
+
+|#F3E5F5|Confusion Matrix|
+:Generate confusion matrix;
+note right
+  Visual representation of:
+  - True Positives (TP)
+  - False Positives (FP)
+  - True Negatives (TN)
+  - False Negatives (FN)
+end note
+
+:Analyze misclassifications;
+note right
+  - Identify commonly confused classes
+  - Find patterns in misclassified examples
+  - Determine if certain equipment types
+    are consistently misclassified
+end note
+
+|#E0F2F1|Feature Importance|
+:Calculate feature importance;
+note right
+  For Random Forest:
+  - Gini importance
+  - Mean decrease in impurity
+  - Permutation importance
+end note
+
+:Visualize feature importance;
+note right
+  - Bar chart of top N features
+  - Identify which features contribute
+    most to classification decisions
+end note
+
+|#FFEBEE|Class Performance|
+:Analyze per-class performance;
+note right
+  - Precision, recall, F1 for each class
+  - Identify underperforming classes
+  - Special focus on "Other" category
+end note
+
+:Generate classification report;
+note right
+  Detailed report with:
+  - Per-class precision
+  - Per-class recall
+  - Per-class F1 score
+  - Support (number of instances)
+end note
+
+|#F9FBE7|Model Comparison|
+:Compare with baseline models;
+note right
+  Baseline models:
+  - Majority class classifier
+  - Simple decision tree
+  - Logistic regression
+end note
+
+:Perform statistical significance tests;
+note right
+  - McNemar's test for paired comparisons
+  - Cochran's Q test for multiple comparisons
+end note
+
+|#E1F5FE|Evaluation Output|
+:Generate evaluation report;
+note right
+  Comprehensive report with:
+  - All metrics
+  - Confusion matrix
+  - Feature importance
+  - Per-class performance
+  - Comparison with baselines
+end note
+
+:Save evaluation results;
+note right
+  Save results to:
+  - CSV files for metrics
+  - PNG/SVG files for visualizations
+  - JSON for structured data
+end note
+
+stop
+
+@enduml

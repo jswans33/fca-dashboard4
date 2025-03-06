@@ -1,0 +1,91 @@
+@startuml "ML Classification Mapping Architecture"
+
+' Define styles
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #333333
+skinparam ComponentBorderColor #666666
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam DatabaseBackgroundColor #E0F7FA
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FFD54F
+skinparam PackageBackgroundColor #F5F5F5
+skinparam PackageBorderColor #BDBDBD
+
+' Title
+title ML Classification Model Architecture
+
+' Define packages
+package "Data Sources" {
+  [Staging Data\n(CSV/Excel)] as StagingData
+  [Training Data\n(eq_ids.csv)] as TrainingData
+  note right of TrainingData
+    Located at: nexusml/ingest/data/eq_ids.csv
+    Contains labeled equipment data with
+    categories and classifications
+  end note
+}
+
+package "Data Mapping Layer" {
+  [Data Mapper] as DataMapper
+  note right of DataMapper
+    Maps staging data columns to ML model format
+    - Asset Name → Equipment_Category
+    - Trade → Uniformat_Class
+    - System Category → System_Type
+    - etc.
+  end note
+}
+
+package "Feature Engineering" {
+  [Text Combiner] as TextCombiner
+  [Numeric Cleaner] as NumericCleaner
+  [Hierarchy Builder] as HierarchyBuilder
+  [Column Mapper] as ColumnMapper
+}
+
+package "ML Model" {
+  [TF-IDF Vectorizer] as TFIDF
+  [Random Forest\nClassifier] as RandomForest
+}
+
+package "EAV Integration" {
+  [EAV Manager] as EAVManager
+  [Classification\nSystem Mapper] as ClassificationMapper
+}
+
+package "Master DB Mapping" {
+  [DB Field Mapper] as DBFieldMapper
+}
+
+database "Master Database" {
+  [Equipment] as EquipmentTable
+  [Equipment_Categories] as CategoriesTable
+}
+
+' Define relationships
+StagingData --> DataMapper : "1. Input"
+TrainingData --> MLModel : "Training"
+
+DataMapper --> TextCombiner : "2. Mapped Data"
+DataMapper --> NumericCleaner
+DataMapper --> HierarchyBuilder
+DataMapper --> ColumnMapper
+
+TextCombiner --> TFIDF : "3. Text Features"
+NumericCleaner --> RandomForest : "Numeric Features"
+HierarchyBuilder --> RandomForest : "Hierarchical Features"
+ColumnMapper --> RandomForest : "Mapped Columns"
+
+TFIDF --> RandomForest : "4. Vectorized Text"
+
+RandomForest --> EAVManager : "5. Predictions"
+RandomForest --> ClassificationMapper
+
+EAVManager --> DBFieldMapper : "6. EAV Attributes"
+ClassificationMapper --> DBFieldMapper : "Classification IDs"
+
+DBFieldMapper --> EquipmentTable : "7. Insert/Update"
+DBFieldMapper --> CategoriesTable
+
+@enduml
