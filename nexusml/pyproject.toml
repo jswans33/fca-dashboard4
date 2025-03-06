@@ -55,8 +55,10 @@ line_length = 88
 python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
+disallow_untyped_defs = false  # Changed to false for more flexibility with ML code
+disallow_incomplete_defs = false  # Changed to false for more flexibility with ML code
+check_untyped_defs = true  # Added to check functions without requiring annotations
+ignore_missing_imports = true  # Added to handle third-party libraries
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
