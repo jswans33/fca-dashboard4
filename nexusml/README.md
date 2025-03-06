@@ -17,6 +17,7 @@ development and reuse.
 - Model evaluation and validation
 - Visualization of results
 - Easy-to-use API for predictions
+- OmniClass data extraction and description generation
 
 ## Installation
 
@@ -64,11 +65,34 @@ prediction = predict_with_enhanced_model(model, description, service_life)
 print(prediction)
 ```
 
+### OmniClass Generator Usage
+
+```python
+from nexusml import extract_omniclass_data, generate_descriptions
+
+# Extract OmniClass data from Excel files
+df = extract_omniclass_data(
+    input_dir="files/omniclass_tables",
+    output_file="nexusml/ingest/generator/data/omniclass.csv",
+    file_pattern="*.xlsx"
+)
+
+# Generate descriptions for OmniClass codes
+result_df = generate_descriptions(
+    input_file="nexusml/ingest/generator/data/omniclass.csv",
+    output_file="nexusml/ingest/generator/data/omniclass_with_descriptions.csv",
+    batch_size=50,
+    description_column="Description"
+)
+```
+
 ### Advanced Usage
 
 See the examples directory for more detailed usage examples:
 
 - `simple_example.py`: Basic usage without visualizations
+- `advanced_example.py`: Complete workflow with visualizations
+- `omniclass_generator_example.py`: Example of using the OmniClass generator
 - `advanced_example.py`: Complete workflow with visualizations
 
 ## Development
