@@ -1,4 +1,4 @@
-.PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration
+.PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration nexusml-test nexusml-coverage nexusml-install nexusml-run-simple nexusml-run-advanced
 
 lint:
 	python -m black --check .
@@ -71,6 +71,54 @@ run-classifier-example:
 run-classifier-simple:
 	# Run the simplified version without matplotlib/seaborn dependencies
 	python -m fca_dashboard.examples.classifier_example_simple
+
+# NexusML targets
+
+# Test NexusML
+nexusml-test:
+	python -m pytest nexusml/tests/
+
+# Run NexusML unit tests
+nexusml-test-unit:
+	python -m pytest nexusml/tests/unit/
+
+# Run NexusML integration tests
+nexusml-test-integration:
+	python -m pytest nexusml/tests/integration/
+
+# Generate coverage report for NexusML
+nexusml-coverage:
+	python -m pytest --cov=nexusml --cov-report=html --cov-report=term nexusml/tests/
+	@echo "HTML coverage report generated in htmlcov/"
+	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
+
+# Install NexusML in the current environment
+nexusml-install:
+	python -m pip install --upgrade pip
+	python -m pip install -e nexusml/
+
+# Create a dedicated virtual environment for NexusML
+nexusml-venv:
+	python -m venv nexusml-venv
+	@echo "Virtual environment created at nexusml-venv/"
+	@echo "Activate with: source nexusml-venv/bin/activate (Linux/Mac) or nexusml-venv\\Scripts\\activate (Windows)"
+	@echo "Then install with: make nexusml-install"
+
+# Install uv package manager
+install-uv:
+	pip install uv
+
+# Install NexusML using uv (recommended for monorepo)
+nexusml-install-uv: install-uv
+	uv pip install -e nexusml/
+
+# Run NexusML simple example
+nexusml-run-simple:
+	python -m nexusml.examples.simple_example
+
+# Run NexusML advanced example
+nexusml-run-advanced:
+	python -m nexusml.examples.advanced_example
 
 # PlantUML Utilities
 
