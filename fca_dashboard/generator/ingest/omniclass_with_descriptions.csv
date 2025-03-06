@@ -49,56 +49,56 @@ OmniClass_Code,OmniClass_Title,Description
 11-15 11 47-4,Outdoor Basketball Court,An outdoor facility that provides a designated court for playing basketball.
 11-15 11 52,Outdoor Sports Training Facility,An outdoor facility that provides a designated area for sports training and practice.
 11-15 11 55,Pavilion,An outdoor structure or pavilion that provides a covered and sheltered space for various activities.
-11-15 11 58,Animal Recreation Facility,nan
-11-15 11 58-1,Zoo/Nature Facility,nan
-11-21 12 19,Critical Access Hospital,nan
-11-21 12 23,Freestanding Urgent Care Facility,nan
-11-21 12 27,Freestanding Cancer Treatment Facility,nan
-11-21 12 31,Rehabilitation Hospital,nan
-11-21 15 00,Outpatient Care Facility,nan
-11-21 15 11,Primary Care Outpatient Care Facility,nan
-11-21 15 15,Small Outpatient Care Facility,nan
-11-21 15 19,Freestanding Outpatient Diagnostic and Treatment Facility,nan
-11-21 15 23,Outpatient Surgery Facility,nan
-11-21 15 27,Office Surgery Facility,nan
-11-21 15 31,Gastrointestinal Endoscopy Facility,nan
-11-21 15 35,Renal Dialysis Center,nan
-11-21 15 39,Outpatient Rehabilitation Facility,nan
-11-21 15 43,Freestanding Birth Center,nan
-11-21 15 47,Adult Day Health Care Facility,nan
-11-21 17 00,Medical Office Building (MOB),nan
-11-21 22 00,Ambulatory Care Facility,nan
-11-21 22 11,Ambulatory Surgery Center,nan
-11-21 22 15,Comprehensive Ambulatory Care Center,nan
-11-21 25 00,Residential Health Care Facility,nan
-11-21 25 11,Residential Nursing Facility,nan
-11-21 25 15,Residential Hospice Facility,nan
-11-21 25 19,Assisted Living Facility,nan
-11-21 28 00,"Mobile, Transportable, Relocatable Health Care Unit",nan
-11-21 32 00,"Mental, Behavioral Care Facility",nan
-11-21 32 11,Psychiatric Hospital,nan
-11-21 32 15,Psychiatric Outpatient Facility,nan
-11-21 35 00,Maternity Facility,nan
-11-21 38 00,Animal Healthcare Facility,nan
-11-21 42 00,Dental Facility,nan
-11-21 45 00,Medical Center,nan
-11-21 48 00,Medical Warehouse,nan
-11-21 52 00,Ambulance Shelter,nan
-11-21 55 00,Death Facility,nan
-11-21 55 11,Funeral Home,nan
-11-21 55 15,Cremation Facility,nan
-11-21 55 19,Cemetery,nan
-11-21 55 23,Columbarium,nan
-11-23 00 00,Hospitality Facility,nan
-11-23 12 00,Dining Establishment,nan
-11-23 12 11,Military Dining Facility,nan
-11-23 12 15,Military Dining Support Facility,nan
-11-23 12 19,Military Open Mess and Club Facility,nan
-11-23 12 23,Military Exchange Eating Facility,nan
-11-23 12 27,Military Non-Exchange Eating Facility,nan
-11-23 12 31,Fast Food Restaurant,nan
-11-23 12 35,Full Service Restaurant,nan
-11-23 12 43,Limited Service Restaurant,nan
+11-15 11 58,Animal Recreation Facility,A facility designed for animal recreation and exercise activities, such as dog parks or pet playgrounds.
+11-15 11 58-1,Zoo/Nature Facility,A facility housing and displaying various animal species for public viewing, education, and conservation purposes.
+11-21 12 19,Critical Access Hospital,A rural hospital facility providing emergency and essential healthcare services to remote communities with limited access to medical care.
+11-21 12 23,Freestanding Urgent Care Facility,A standalone medical facility providing immediate care for non-life-threatening conditions without appointment requirements.
+11-21 12 27,Freestanding Cancer Treatment Facility,A specialized medical center dedicated to cancer diagnosis, treatment, and support services outside of a hospital setting.
+11-21 12 31,Rehabilitation Hospital,A healthcare facility focused on physical rehabilitation and therapy services for patients recovering from injuries or surgeries.
+11-21 15 00,Outpatient Care Facility,A medical facility providing healthcare services without overnight stays, including diagnostics and treatments.
+11-21 15 11,Primary Care Outpatient Care Facility,A medical facility providing basic healthcare services and preventive care on an outpatient basis.
+11-21 15 15,Small Outpatient Care Facility,A compact medical facility offering limited outpatient services in a smaller setting.
+11-21 15 19,Freestanding Outpatient Diagnostic and Treatment Facility,A standalone facility providing diagnostic testing and medical treatments without hospital admission.
+11-21 15 23,Outpatient Surgery Facility,A medical center performing same-day surgical procedures without overnight hospital stays.
+11-21 15 27,Office Surgery Facility,A medical office equipped for minor surgical procedures in an outpatient setting.
+11-21 15 31,Gastrointestinal Endoscopy Facility,A specialized facility for digestive system examination and procedures using endoscopic equipment.
+11-21 15 35,Renal Dialysis Center,A medical facility providing kidney dialysis treatments and related care services.
+11-21 15 39,Outpatient Rehabilitation Facility,A facility offering physical therapy and rehabilitation services without overnight stays.
+11-21 15 43,Freestanding Birth Center,A healthcare facility specializing in natural childbirth and maternity care outside of a hospital setting.
+11-21 15 47,Adult Day Health Care Facility,A facility providing daytime health monitoring and social activities for elderly or disabled adults.
+11-21 17 00,Medical Office Building (MOB),A building housing multiple medical practices and healthcare-related offices.
+11-21 22 00,Ambulatory Care Facility,A healthcare facility providing outpatient medical services and procedures.
+11-21 22 11,Ambulatory Surgery Center,A facility specializing in same-day surgical procedures and recovery care.
+11-21 22 15,Comprehensive Ambulatory Care Center,A full-service outpatient facility offering diverse medical services and treatments.
+11-21 25 00,Residential Health Care Facility,A facility providing long-term healthcare services in a residential setting.
+11-21 25 11,Residential Nursing Facility,A healthcare facility providing 24-hour nursing care and assistance for long-term residents.
+11-21 25 15,Residential Hospice Facility,A facility providing end-of-life care and comfort in a home-like setting.
+11-21 25 19,Assisted Living Facility,A residential facility providing support services and care for elderly or disabled individuals.
+11-21 28 00,"Mobile, Transportable, Relocatable Health Care Unit",A portable medical facility that can be moved to different locations as needed.
+11-21 32 00,"Mental, Behavioral Care Facility",A healthcare facility specializing in mental health and behavioral treatment services.
+11-21 32 11,Psychiatric Hospital,A hospital dedicated to treating mental health conditions and disorders.
+11-21 32 15,Psychiatric Outpatient Facility,A facility providing mental health services without overnight stays.
+11-21 35 00,Maternity Facility,A healthcare facility specializing in pregnancy, childbirth, and newborn care services.
+11-21 38 00,Animal Healthcare Facility,A facility providing medical care and treatment services for animals.
+11-21 42 00,Dental Facility,A healthcare facility specializing in dental and oral health services.
+11-21 45 00,Medical Center,A comprehensive healthcare facility offering multiple medical services and specialties.
+11-21 48 00,Medical Warehouse,A facility for storing medical supplies, equipment, and pharmaceuticals.
+11-21 52 00,Ambulance Shelter,A structure housing ambulances and emergency medical response vehicles.
+11-21 55 00,Death Facility,A facility providing services related to death care and memorial services.
+11-21 55 11,Funeral Home,A facility for preparing deceased individuals and conducting funeral services.
+11-21 55 15,Cremation Facility,A facility equipped for cremating deceased individuals.
+11-21 55 19,Cemetery,A land area designated for burying deceased individuals.
+11-21 55 23,Columbarium,A structure designed to store funeral urns containing cremated remains.
+11-23 00 00,Hospitality Facility,A facility providing accommodations, food service, or entertainment to guests.
+11-23 12 00,Dining Establishment,A facility serving food and beverages to customers.
+11-23 12 11,Military Dining Facility,A dining facility serving military personnel on base or installation.
+11-23 12 15,Military Dining Support Facility,A facility supporting food service operations at military dining facilities.
+11-23 12 19,Military Open Mess and Club Facility,A social and dining facility for military personnel and guests.
+11-23 12 23,Military Exchange Eating Facility,A dining facility operated by military exchange services.
+11-23 12 27,Military Non-Exchange Eating Facility,A military dining facility not operated by exchange services.
+11-23 12 31,Fast Food Restaurant,A restaurant providing quick-service meals with minimal table service.
+11-23 12 35,Full Service Restaurant,A restaurant offering complete table service and varied menu options.
+11-23 12 43,Limited Service Restaurant,A restaurant with limited menu options and partial table service.
 11-23 12 47,Student Dining Hall,A dining hall for students to eat meals.
 11-23 15 00,"Tavern, Bar, or Micro-Brewery","A tavern, bar, or micro-brewery where alcoholic beverages are served."
 11-23 18 00,Nightclub,A nightclub or dance club where people go to socialize and dance.
@@ -299,56 +299,56 @@ OmniClass_Code,OmniClass_Title,Description
 22-01 26 19,Clarification Notices,Notices of clarification during a construction project.
 22-01 26 33,Minor Changes in the Work,Minor changes to the work during a construction project.
 22-01 26 36,Supplemental Instructions,Supplemental instructions during a construction project.
-22-01 26 39,Field Orders,nan
-22-01 26 43,Amendments,nan
-22-01 26 46,Construction Change Directives,nan
-22-01 26 49,Work Change Directives,nan
-22-01 26 53,Proposal Requests,nan
-22-01 26 54,Proposal Worksheet Summaries,nan
-22-01 26 57,Change Order Requests,nan
-22-01 26 63,Change Orders,nan
-22-01 29 00,Payment Procedures,nan
-22-01 29 73,Schedule of Values,nan
-22-01 29 76,Progress Payment Procedures,nan
-22-01 29 83,Payment Procedures for Testing Laboratory Services,nan
-22-01 30 00,Administrative Requirements,nan
-22-01 31 00,Project Management and Coordination,nan
-22-01 31 13,Project Coordination,nan
-22-01 31 14,Facility Services Coordination,nan
-22-01 31 16,Multiple Contract Coordination,nan
-22-01 31 19,Project Meetings,nan
-22-01 31 19-1,Preconstruction Meetings,nan
-22-01 31 19-2,Site Mobilization Meetings,nan
-22-01 31 19-3,Progress Meetings,nan
-22-01 31 19-4,Preinstallation Meetings,nan
-22-01 31 23,Project Web Site,nan
-22-01 31 26,Electronic Communication Protocols,nan
-22-01 32 00,Construction Progress Documentation,nan
-22-01 32 13,Scheduling of Work,nan
-22-01 32 16,Construction Progress Schedule,nan
-22-01 32 16-1,Network Analysis Schedules,nan
-22-01 32 19,Submittals Schedule,nan
-22-01 32 23,Survey and Layout Data,nan
-22-01 32 26,Construction Progress Reporting,nan
-22-01 32 29,Periodic Work Observation,nan
-22-01 32 33,Photographic Documentation,nan
-22-01 32 36,Video Monitoring and Documentation,nan
-22-01 32 43,Purchase Order Tracking,nan
-22-01 33 00,Submittal Procedures,nan
-22-01 33 13,Certificates,nan
-22-01 33 16,Design Data,nan
-22-01 33 19,Field Test Reporting,nan
-22-01 33 23,"Shop Drawings, Product Data, and Samples",nan
-22-01 33 26,Source Quality Control Reporting,nan
-22-01 33 29,Sustainable Design Reporting,nan
-22-01 33 29-1,Material Cost Summary Form,nan
-22-01 33 29-2,Wood-Containing Product List,nan
-22-01 33 29-3,Metal-Containing Product List,nan
-22-01 33 29-4,Material Content Form,nan
-22-01 33 29-5,New Product Source Form,nan
-22-01 33 29-6,Reused Product Form,nan
-22-01 33 29-7,Prohibited Content Installer Certification,nan
-22-01 35 00,Special Procedures,nan
+22-01 26 39,Field Orders,Changes or instructions issued by the field supervisor to modify construction work during project execution.
+22-01 26 43,Amendments,Formal modifications to construction contract documents that change scope, terms, or conditions.
+22-01 26 46,Construction Change Directives,Written orders to proceed with construction changes before final agreement on cost/time.
+22-01 26 49,Work Change Directives,Instructions to modify work tasks or procedures during ongoing construction activities.
+22-01 26 53,Proposal Requests,Formal requests for contractors to submit pricing and timeline impacts for potential changes.
+22-01 26 54,Proposal Worksheet Summaries,Documents summarizing contractor responses to proposal requests including costs and schedule impacts.
+22-01 26 57,Change Order Requests,Formal requests to modify construction contract scope, price, or schedule through change orders.
+22-01 26 63,Change Orders,Approved modifications to construction contracts that alter scope, cost, or schedule requirements.
+22-01 29 00,Payment Procedures,Methods and processes for requesting, approving, and issuing payments for construction work.
+22-01 29 73,Schedule of Values,Detailed breakdown of contract sum showing monetary value allocated to various portions of work.
+22-01 29 76,Progress Payment Procedures,Processes for requesting and issuing periodic payments based on completed construction work.
+22-01 29 83,Payment Procedures for Testing Laboratory Services,Methods for processing payments for construction testing and laboratory services.
+22-01 30 00,Administrative Requirements,General administrative procedures and requirements for managing construction projects.
+22-01 31 00,Project Management and Coordination,Oversight and coordination of all aspects of construction project execution.
+22-01 31 13,Project Coordination,Activities to coordinate work between different trades and contractors on construction projects.
+22-01 31 14,Facility Services Coordination,Coordination of mechanical, electrical, and other building systems installation and operation.
+22-01 31 16,Multiple Contract Coordination,Management of multiple construction contracts and contractors on a single project.
+22-01 31 19,Project Meetings,Regular gatherings to discuss construction progress, issues, and coordination requirements.
+22-01 31 19-1,Preconstruction Meetings,Initial meetings held before construction begins to review requirements and procedures.
+22-01 31 19-2,Site Mobilization Meetings,Meetings to coordinate contractor mobilization and site setup activities.
+22-01 31 19-3,Progress Meetings,Regular meetings to review construction progress and address ongoing project needs.
+22-01 31 19-4,Preinstallation Meetings,Meetings held before starting major installations to review requirements and procedures.
+22-01 31 23,Project Web Site,Online platform for sharing and managing construction project information and documents.
+22-01 31 26,Electronic Communication Protocols,Standards for electronic communication and document sharing on construction projects.
+22-01 32 00,Construction Progress Documentation,Records and reports tracking construction progress and milestone completion.
+22-01 32 13,Scheduling of Work,Planning and sequencing of construction activities to meet project timeline requirements.
+22-01 32 16,Construction Progress Schedule,Timeline showing planned sequence and duration of construction activities.
+22-01 32 16-1,Network Analysis Schedules,Detailed schedules showing relationships and dependencies between construction activities.
+22-01 32 19,Submittals Schedule,Timeline for contractor submission of required documentation and samples.
+22-01 32 23,Survey and Layout Data,Information from construction surveys used for building layout and positioning.
+22-01 32 26,Construction Progress Reporting,Regular reports documenting status of construction activities and milestone completion.
+22-01 32 29,Periodic Work Observation,Regular site visits to observe and document construction progress and quality.
+22-01 32 33,Photographic Documentation,Photos taken to record construction progress and completed work.
+22-01 32 36,Video Monitoring and Documentation,Video recording of construction activities and completed work.
+22-01 32 43,Purchase Order Tracking,Monitoring and documentation of construction materials and equipment procurement.
+22-01 33 00,Submittal Procedures,Processes for submitting and reviewing construction documents and samples.
+22-01 33 13,Certificates,Official documents certifying compliance with specified requirements.
+22-01 33 16,Design Data,Technical information supporting construction design decisions.
+22-01 33 19,Field Test Reporting,Documentation of construction materials and installation testing results.
+22-01 33 23,"Shop Drawings, Product Data, and Samples",Detailed drawings and samples submitted for review before fabrication/installation.
+22-01 33 26,Source Quality Control Reporting,Documentation of quality control testing at material/product manufacturing locations.
+22-01 33 29,Sustainable Design Reporting,Documentation of compliance with sustainable construction requirements.
+22-01 33 29-1,Material Cost Summary Form,Form documenting costs of materials used in sustainable construction.
+22-01 33 29-2,Wood-Containing Product List,List of wood products used in sustainable construction.
+22-01 33 29-3,Metal-Containing Product List,List of metal products used in sustainable construction.
+22-01 33 29-4,Material Content Form,Form documenting material composition for sustainable construction compliance.
+22-01 33 29-5,New Product Source Form,Form documenting sources of new materials used in sustainable construction.
+22-01 33 29-6,Reused Product Form,Form documenting reused/recycled materials in sustainable construction.
+22-01 33 29-7,Prohibited Content Installer Certification,Certification that installed materials comply with prohibited content restrictions.
+22-01 35 00,Special Procedures,Unique or specialized procedures required for specific construction activities.
 22-02 21 13-1,Boundary and Survey Markers,Markers used to define property boundaries and survey locations
 22-02 21 13-2,Archaeological and Historic Surveys,Investigations of archaeological and historic sites
 22-02 21 16,Measured Drawings,Detailed drawings of existing conditions and measurements
@@ -398,7 +398,7 @@ OmniClass_Code,OmniClass_Title,Description
 22-02 32 23,Geotechnical Monitoring Before Construction,Geotechnical monitoring and data collection before construction
 22-02 32 23-1,Groundwater Monitoring Before Construction,Monitoring of groundwater conditions before construction
 22-02 40 00,Demolition and Structure Moving,Demolition and relocation of existing structures
-22-02 41 00,Demolition,nan
+22-02 41 00,Demolition, "selective,Selective demolition of specific site elements"
 22-02 41 13,Selective Site Demolition,"Selective demolition of specific site elements, such as buildings or structures."
 22-02 54 19-1,Bioremediation Using Landfarming,"Bioremediation using landfarming, a process that uses microorganisms to break down contaminants in soil."
 22-02 83 33,Removal and Disposal of Material Containing Lead,"Removal and disposal of materials containing lead, a hazardous substance."
@@ -448,57 +448,57 @@ OmniClass_Code,OmniClass_Title,Description
 22-07 03 32,Conservation Treatment for Period Roof Tiles,"Cold fluid-applied waterproofing, a type of waterproofing membrane."
 22-07 14 16,Cold Fluid-Applied Waterproofing,"Sheet metal waterproofing, such as metal roofing or flashing."
 22-07 15 00,Sheet Metal Waterproofing,"Sheet lead waterproofing, a type of waterproofing membrane."
-22-07 15 13,Sheet Lead Waterproofing,nan
-22-07 16 00,Cementitious and Reactive Waterproofing,nan
-22-07 16 13,Polymer Modified Cement Waterproofing,nan
-22-07 16 16,Crystalline Waterproofing,nan
-22-07 16 19,Metal Oxide Waterproofing,nan
-22-07 17 00,Bentonite Waterproofing,nan
-22-07 17 13,Bentonite Panel Waterproofing,nan
-22-07 17 16,Bentonite Composite Sheet Waterproofing,nan
-22-07 18 00,Traffic Coatings,nan
-22-07 18 13,Pedestrian Traffic Coatings,nan
-22-07 18 16,Vehicular Traffic Coatings,nan
-22-07 19 00,Water Repellents,nan
-22-07 19 13,Acrylic Water Repellents,nan
-22-07 19 16,Silane Water Repellents,nan
-22-07 19 19,Silicone Water Repellents,nan
-22-07 19 23,Siloxane Water Repellents,nan
-22-07 19 26,Stearate Water Repellents,nan
-22-07 19 29,Penetrating Polyester Water Repellents,nan
-22-07 20 00,Thermal Protection,nan
-22-07 21 00,Thermal Insulation,nan
-22-07 21 13,Board Insulation,nan
-22-07 21 13-1,Foam Board Insulation,nan
-22-07 21 13-2,Fibrous Board Insulation,nan
-22-07 21 13-3,Mineral Board Insulation,nan
-22-07 21 16,Blanket Insulation,nan
-22-07 21 19,Foamed-In-Place Insulation,nan
-22-07 21 23,Loose-Fill Insulation,nan
-22-07 21 26,Blown Insulation,nan
-22-07 21 29,Sprayed Insulation,nan
-22-07 21 53,Reflective Insulation,nan
-22-07 21 63,Fluid-Applied Insulative Coating,nan
-22-07 22 00,Roof and Deck Insulation,nan
-22-07 22 13,Asphaltic Perlite Concrete Deck,nan
-22-07 22 16,Roof Board Insulation,nan
-22-07 24 00,Exterior Insulation and Finish Systems,nan
-22-07 24 13,Polymer-Based Exterior Insulation and Finish System,nan
-22-07 24 16,Polymer-Modified Exterior Insulation and Finish System,nan
-22-07 24 19,Water-Drainage Exterior Insulation and Finish System,nan
-22-07 24 23,Direct-Applied Finish Systems,nan
-22-07 25 00,Weather Barriers,nan
-22-07 26 00,Vapor Retarders,nan
-22-07 26 13,Above-Grade Vapor Retarders,nan
-22-07 26 16,Below-Grade Vapor Retarders,nan
-22-07 26 23,Below-Grade Gas Retarders,nan
-22-07 27 00,Air Barriers,nan
-22-07 27 13,Modified Bituminous Sheet Air Barriers,nan
-22-07 27 16,Sheet Metal Membrane Air Barriers,nan
-22-07 27 19,Plastic Sheet Air Barriers,nan
-22-07 42 46,Cementitious Wall Panels,nan
-22-07 42 63,Fabricated Wall Panel Assemblies,nan
-22-07 42 93,Soffit Panels,nan
+22-07 15 13,Sheet Lead Waterproofing,"Lead sheets used as a waterproofing membrane to prevent water infiltration in buildings and structures. Provides excellent moisture barrier properties."
+22-07 16 00,Cementitious and Reactive Waterproofing,"Waterproofing systems that use cement-based or chemically reactive materials to create a water-resistant barrier in construction applications."
+22-07 16 13,Polymer Modified Cement Waterproofing,"Cement-based waterproofing enhanced with polymers for improved flexibility, adhesion and crack resistance. Used for concrete and masonry protection."
+22-07 16 16,Crystalline Waterproofing,"Chemical treatment that forms crystalline structures within concrete to block water penetration. Creates permanent waterproof barrier."
+22-07 16 19,Metal Oxide Waterproofing,"Waterproofing compound containing metal oxides that react with moisture to form an impermeable barrier. Used for concrete protection."
+22-07 17 00,Bentonite Waterproofing,"Clay-based waterproofing that swells when wet to form a water barrier. Commonly used for below-grade and foundation waterproofing."
+22-07 17 13,Bentonite Panel Waterproofing,"Rigid panels containing bentonite clay used as waterproofing barrier. Panels expand when wet to seal against water infiltration."
+22-07 17 16,Bentonite Composite Sheet Waterproofing,"Flexible sheets combining bentonite clay with geotextiles or membranes for waterproofing. Self-sealing when exposed to water."
+22-07 18 00,Traffic Coatings,"Durable coatings applied to surfaces exposed to vehicle or pedestrian traffic to provide protection and waterproofing."
+22-07 18 13,Pedestrian Traffic Coatings,"Protective coatings designed for foot traffic areas like walkways and balconies. Provides slip resistance and waterproofing."
+22-07 18 16,Vehicular Traffic Coatings,"Heavy-duty coatings for surfaces exposed to vehicle traffic. Resists wear, chemicals and provides waterproofing protection."
+22-07 19 00,Water Repellents,"Materials that repel water from surfaces while allowing vapor transmission. Used to protect building materials from moisture damage."
+22-07 19 13,Acrylic Water Repellents,"Water repellent made with acrylic polymers. Creates invisible barrier that repels water while allowing surface to breathe."
+22-07 19 16,Silane Water Repellents,"Water repellent using silane compounds that penetrate and bond with surfaces. Creates long-lasting water repellent protection."
+22-07 19 19,Silicone Water Repellents,"Water repellent made with silicone compounds. Forms durable water-resistant barrier while maintaining breathability."
+22-07 19 23,Siloxane Water Repellents,"Water repellent using siloxane chemistry for deep penetration and durability. Protects against water damage while remaining breathable."
+22-07 19 26,Stearate Water Repellents,"Water repellent made with stearate compounds. Creates water-resistant surface that helps prevent moisture absorption."
+22-07 19 29,Penetrating Polyester Water Repellents,"Water repellent using polyester compounds that penetrate surfaces. Provides long-term protection against water damage."
+22-07 20 00,Thermal Protection,"Materials and systems used to control heat transfer in buildings. Includes insulation and barriers for temperature control."
+22-07 21 00,Thermal Insulation,"Materials that reduce heat transfer between spaces. Used in walls, roofs and other building assemblies for energy efficiency."
+22-07 21 13,Board Insulation,"Rigid insulation boards made of various materials. Used in walls, roofs and foundations for thermal resistance."
+22-07 21 13-1,Foam Board Insulation,"Rigid foam insulation boards. Provides high R-value insulation in compact thickness for building envelope applications."
+22-07 21 13-2,Fibrous Board Insulation,"Rigid insulation made from compressed fibers. Used for thermal and acoustic insulation in building assemblies."
+22-07 21 13-3,Mineral Board Insulation,"Rigid insulation made from mineral fibers. Provides fire resistance and thermal insulation for buildings."
+22-07 21 16,Blanket Insulation,"Flexible insulation in roll or batt form. Common in walls and ceilings for thermal and acoustic performance."
+22-07 21 19,Foamed-In-Place Insulation,"Liquid foam insulation sprayed into cavities. Expands to fill spaces and provide continuous insulation barrier."
+22-07 21 23,Loose-Fill Insulation,"Small particles of insulating material blown into building cavities. Used in attics and walls for thermal resistance."
+22-07 21 26,Blown Insulation,"Insulation materials applied using blowing equipment. Used to fill building cavities for thermal performance."
+22-07 21 29,Sprayed Insulation,"Insulation applied by spraying. Forms continuous layer for thermal protection and air sealing."
+22-07 21 53,Reflective Insulation,"Insulation that reflects radiant heat. Uses reflective surfaces to reduce heat transfer in buildings."
+22-07 21 63,Fluid-Applied Insulative Coating,"Liquid coating that provides insulation when cured. Applied to surfaces for thermal protection."
+22-07 22 00,Roof and Deck Insulation,"Insulation specifically for roofs and decks. Provides thermal resistance while supporting roofing assemblies."
+22-07 22 13,Asphaltic Perlite Concrete Deck,"Lightweight insulating concrete containing perlite aggregate. Used for roof decks and insulation."
+22-07 22 16,Roof Board Insulation,"Rigid insulation boards for roofing systems. Provides thermal resistance and support for roofing materials."
+22-07 24 00,Exterior Insulation and Finish Systems,"Complete exterior wall systems combining insulation and finish. Provides thermal protection and weather barrier."
+22-07 24 13,Polymer-Based Exterior Insulation and Finish System,"EIFS using polymer-based materials. Provides insulation and weather protection in decorative exterior finish."
+22-07 24 16,Polymer-Modified Exterior Insulation and Finish System,"EIFS with modified polymer materials. Enhanced durability and performance for exterior walls."
+22-07 24 19,Water-Drainage Exterior Insulation and Finish System,"EIFS with integrated drainage capability. Manages water infiltration while providing insulation and finish."
+22-07 24 23,Direct-Applied Finish Systems,"Exterior finish system applied directly to substrate. Provides weather protection and decorative finish."
+22-07 25 00,Weather Barriers,"Materials that protect buildings from weather. Includes water, air and vapor control layers."
+22-07 26 00,Vapor Retarders,"Materials that control vapor diffusion in buildings. Helps prevent moisture problems in building assemblies."
+22-07 26 13,Above-Grade Vapor Retarders,"Vapor control materials for walls above ground. Manages moisture movement in building envelope."
+22-07 26 16,Below-Grade Vapor Retarders,"Vapor control materials for below ground applications. Protects against ground moisture in foundations."
+22-07 26 23,Below-Grade Gas Retarders,"Materials that control gas movement below grade. Protects against radon and other soil gases."
+22-07 27 00,Air Barriers,"Materials that control air movement in buildings. Critical for energy efficiency and moisture control."
+22-07 27 13,Modified Bituminous Sheet Air Barriers,"Sheet air barriers made with modified bitumen. Self-adhering membranes for air leakage control."
+22-07 27 16,Sheet Metal Membrane Air Barriers,"Metal sheet materials used as air barriers. Provides durable air leakage control in buildings."
+22-07 27 19,Plastic Sheet Air Barriers,"Plastic sheet materials for air control. Flexible membranes that prevent air leakage in buildings."
+22-07 42 46,Cementitious Wall Panels,"Wall panels made with cement-based materials. Provides durable exterior cladding with various finishes."
+22-07 42 63,Fabricated Wall Panel Assemblies,"Pre-fabricated wall panel systems. Complete assemblies combining structure, insulation and finish."
+22-07 42 93,Soffit Panels,"Panels specifically for soffit applications. Provides finished ceiling surface for exterior overhangs."
 22-07 44 00,Faced Panels,"Panels with a facing material applied, such as aggregate, porcelain enamel, tile, or ceramic tile."
 22-07 44 13,Aggregate Coated Panels,Panels with an aggregate coating applied to the surface.
 22-07 44 16,Porcelain Enameled Faced Panels,Panels with a porcelain enamel facing material.
@@ -538,17 +538,17 @@ OmniClass_Code,OmniClass_Title,Description
 22-07 52 16-2,Hot-Mopped Styrene-Butadiene-Styrene Modified Bituminous Membrane Roofing,nan
 22-07 52 16-3,Torch-Applied Styrene-Butadiene-Styrene Modified Bituminous Membrane Roofing,nan
 22-07 52 16-4,Mechanically Fastened Styrene-Butadiene-Styrene Modified Bituminous Membrane Roofing,nan
-22-07 53 00,Elastomeric Membrane Roofing,nan
-22-07 53 13,Chlorinated-Polyethylene Roofing,nan
-22-07 53 16,Chlorosulfonate-Polyethylene Roofing,nan
-22-07 53 23,Ethylene-Propylene-Diene-Monomer Roofing,nan
-22-07 53 29,Polyisobutylene Roofing,nan
-22-07 54 00,Thermoplastic Membrane Roofing,nan
-22-07 54 13,Copolymer-Alloy Roofing,nan
-22-07 54 16,Ketone Ethylene Ester Roofing,nan
-22-07 54 19,Polyvinyl-Chloride Roofing,nan
-22-07 54 23,Thermoplastic-Polyolefin Roofing,nan
-22-07 72 33,Roof Hatches,nan
+22-07 53 00,Elastomeric Membrane Roofing,Flexible rubber-like membrane roofing system that can stretch and return to original shape providing waterproof protection
+22-07 53 13,Chlorinated-Polyethylene Roofing,Synthetic rubber roofing membrane made from chlorinated polyethylene offering good weather and chemical resistance
+22-07 53 16,Chlorosulfonate-Polyethylene Roofing,Durable synthetic rubber roofing membrane with excellent weathering and chemical resistance properties
+22-07 53 23,Ethylene-Propylene-Diene-Monomer Roofing,EPDM rubber roofing membrane with outstanding weather resistance and durability in extreme temperatures
+22-07 53 29,Polyisobutylene Roofing,Synthetic rubber roofing membrane with excellent resistance to weathering chemicals and UV exposure
+22-07 54 00,Thermoplastic Membrane Roofing,Heat-weldable roofing membrane that becomes soft when heated and hard when cooled for watertight seams
+22-07 54 13,Copolymer-Alloy Roofing,Blend of polymers forming a roofing membrane with enhanced physical properties and weather resistance
+22-07 54 16,Ketone Ethylene Ester Roofing,Thermoplastic roofing membrane made from ketone ethylene ester offering good weatherability and durability
+22-07 54 19,Polyvinyl-Chloride Roofing,PVC roofing membrane known for durability chemical resistance and heat-weldable seams for watertight installation 
+22-07 54 23,Thermoplastic-Polyolefin Roofing,TPO roofing membrane combining durability UV resistance and heat-weldable seams in a white reflective surface
+22-07 72 33,Roof Hatches,Hinged access doors installed in roofs to provide maintenance access to roof areas or equipment
 22-07 72 36,Smoke Vents,Smoke vents that allow smoke to escape in the event of a fire.
 22-07 72 39,Operable Roof Vents,Operable roof vents that can be opened and closed to control airflow.
 22-07 72 43,Roof Walk Boards,Boards installed on roofs to provide a safe walking surface.
@@ -644,61 +644,61 @@ OmniClass_Code,OmniClass_Title,Description
 22-08 87 23,Safety and Security Films,Films applied to glazing to deter bird strikes.
 22-08 87 23-1,Safety Films,Decorative films applied to glazing.
 22-08 87 23-2,Security Films,"Glazing with specialized functions, such as fire-resistance or hurricane-resistance."
-22-08 87 26,Bird Control Film,nan
-22-08 87 33,Decorative Films,nan
-22-08 88 00,Special Function Glazing,nan
-22-08 88 13,Fire-Rated Glazing,nan
-22-08 88 19,Hurricane-Resistant Glazing,nan
-22-08 88 23,Cable Suspended Glazing,nan
-22-09 22 36,Lath,nan
-22-09 22 36-1,Gypsum Lath,nan
-22-09 22 36-2,Metal Lath,nan
-22-09 22 39,Veneer Plaster Base,nan
-22-09 62 53,Synthetic Turf Flooring,nan
-22-09 62 63,Metal Flooring,nan
-22-09 62 63-1,Aluminum Flooring,nan
-22-09 62 63-2,Stainless Steel Flooring,nan
-22-09 62 83,Structural Glass Flooring,nan
-22-09 63 00,Masonry Flooring,nan
-22-09 63 13,Brick Flooring,nan
-22-09 63 13-1,Chemical-Resistant Brick Flooring,nan
-22-09 63 40,Stone Flooring,nan
-22-09 63 43,Composition Stone Flooring,nan
-22-09 64 00,Wood Flooring,nan
-22-09 64 16,Wood Block Flooring,nan
-22-09 64 19,Wood Composition Flooring,nan
-22-09 64 23,Wood Parquet Flooring,nan
-22-09 64 23-1,Acrylic-Impregnated Wood Parquet Flooring,nan
-22-09 64 29,Wood Strip and Plank Flooring,nan
-22-09 64 33,Laminated Wood Flooring,nan
-22-09 64 36,Bamboo Flooring,nan
-22-09 64 53,Resilient Wood Flooring Assemblies,nan
-22-09 64 66,Wood Athletic Flooring,nan
-22-09 65 00,Resilient Flooring,nan
-22-09 65 13,Resilient Base and Accessories,nan
-22-09 65 13-1,Resilient Base,nan
-22-09 65 13-2,Resilient Stair Treads and Risers,nan
-22-09 65 13-3,Resilient Stair Nosings,nan
-22-09 65 13-4,Resilient Accessories,nan
-22-09 69 19,Stringerless Access Flooring,nan
-22-10 41 00,Emergency Access and Information Cabinets,nan
-22-10 41 13,Fire Department Plan Cabinets,nan
-22-10 41 16,Emergency Key Cabinets,nan
-22-10 56 19-1,Recycled Plastic Storage Shelving,nan
-22-10 73 16-1,Metal Canopies,nan
-22-10 73 16-2,Fabric Canopies,nan
-22-10 73 16-3,Glazed Canopies,nan
-22-10 73 16-4,Point Supported Glass Canopies,nan
-22-11 01 50,Operation and Maintenance of Educational and Scientific Equipment,nan
-22-11 01 56,Operation and Maintenance of Observatory Equipment,nan
-22-11 13 19-2,Stationary Loading Dock Lifts,nan
-22-11 13 19-3,Loading Dock Truck Lifts,nan
-22-11 22 13-1,Safe Deposit Boxes,nan
-22-11 22 13-2,Safes,nan
-22-11 22 13-3,Vault Ventilators,nan
-22-11 22 13-4,Time Capsules,nan
-22-11 22 16,Teller and Service Equipment,nan
-22-11 22 16-1,Teller Equipment Systems,nan
+22-08 87 26,Bird Control Film,Film applied to glazing to prevent bird strikes and collisions by making glass more visible to birds flying nearby.
+22-08 87 33,Decorative Films,Films applied to glazing for aesthetic purposes that can provide privacy, color, patterns, or other decorative effects.
+22-08 88 00,Special Function Glazing,Glazing with specialized performance characteristics beyond standard glass such as fire-resistance or impact protection.
+22-08 88 13,Fire-Rated Glazing,Glazing designed and tested to provide fire protection by preventing or delaying the spread of fire between spaces.
+22-08 88 19,Hurricane-Resistant Glazing,Glazing designed to withstand high wind pressures and impact from windborne debris during hurricane conditions.
+22-08 88 23,Cable Suspended Glazing,Glazing system supported by tensioned cables rather than traditional frames for a minimalist architectural appearance.
+22-09 22 36,Lath,Base material used to support plaster or stucco finishes providing reinforcement and a surface for the material to adhere to.
+22-09 22 36-1,Gypsum Lath,Flat sheets of gypsum board used as a base for plaster finishes in interior applications.
+22-09 22 36-2,Metal Lath,Mesh-like sheet metal used as reinforcement for plaster and stucco providing strong mechanical bond.
+22-09 22 39,Veneer Plaster Base,Specially prepared surface designed to receive thin coat of veneer plaster for smooth interior finishes.
+22-09 62 53,Synthetic Turf Flooring,Artificial grass surface for indoor use providing appearance of natural grass with durability of synthetic materials.
+22-09 62 63,Metal Flooring,Flooring made from metal materials offering durability and unique aesthetic options for specialized applications.
+22-09 62 63-1,Aluminum Flooring,Lightweight flooring made from aluminum providing corrosion resistance and modern industrial appearance.
+22-09 62 63-2,Stainless Steel Flooring,Durable flooring made from stainless steel offering superior strength and corrosion resistance.
+22-09 62 83,Structural Glass Flooring,Transparent or translucent glass panels designed to support foot traffic while allowing light transmission between levels.
+22-09 63 00,Masonry Flooring,Flooring made from masonry materials like brick or stone providing durability and traditional appearance.
+22-09 63 13,Brick Flooring,Flooring made from clay bricks offering classic appearance and exceptional durability.
+22-09 63 13-1,Chemical-Resistant Brick Flooring,Specialized brick flooring designed to resist chemical exposure in industrial or laboratory settings.
+22-09 63 40,Stone Flooring,Natural stone flooring materials providing unique patterns and exceptional durability.
+22-09 63 43,Composition Stone Flooring,Manufactured stone flooring combining natural stone with binders for consistent appearance and performance.
+22-09 64 00,Wood Flooring,Flooring made from wood materials offering warmth and natural beauty.
+22-09 64 16,Wood Block Flooring,Flooring made from small wood blocks arranged in patterns for decorative effect.
+22-09 64 19,Wood Composition Flooring,Engineered wood flooring made from wood fibers and binders providing stability and consistency.
+22-09 64 23,Wood Parquet Flooring,Decorative wood flooring created by arranging small pieces in geometric patterns.
+22-09 64 23-1,Acrylic-Impregnated Wood Parquet Flooring,Parquet flooring treated with acrylic resin for enhanced durability and moisture resistance.
+22-09 64 29,Wood Strip and Plank Flooring,Traditional wood flooring using long pieces installed in parallel rows.
+22-09 64 33,Laminated Wood Flooring,Engineered wood flooring with multiple layers bonded together for stability.
+22-09 64 36,Bamboo Flooring,Sustainable flooring made from bamboo offering hardwood-like appearance and performance.
+22-09 64 53,Resilient Wood Flooring Assemblies,Wood flooring systems with underlying cushioning for improved comfort and acoustics.
+22-09 64 66,Wood Athletic Flooring,Specialized wood flooring designed for sports and athletic activities.
+22-09 65 00,Resilient Flooring,Flooring materials that provide cushioning and return to original shape after compression.
+22-09 65 13,Resilient Base and Accessories,Wall base and trim pieces made from resilient materials to complement flooring.
+22-09 65 13-1,Resilient Base,Flexible material applied at wall/floor junction for finished appearance and protection.
+22-09 65 13-2,Resilient Stair Treads and Risers,Safety-enhanced resilient materials for stair surfaces.
+22-09 65 13-3,Resilient Stair Nosings,Protective and decorative edges for stairs made from resilient materials.
+22-09 65 13-4,Resilient Accessories,Supplementary pieces made from resilient materials to complete flooring installations.
+22-09 69 19,Stringerless Access Flooring,Elevated flooring system without visible support stringers for clean appearance.
+22-10 41 00,Emergency Access and Information Cabinets,Storage units for emergency information and equipment access.
+22-10 41 13,Fire Department Plan Cabinets,Cabinets storing building plans and information for fire department use.
+22-10 41 16,Emergency Key Cabinets,Secure storage for emergency access keys and credentials.
+22-10 56 19-1,Recycled Plastic Storage Shelving,Storage shelving made from recycled plastic materials for sustainability.
+22-10 73 16-1,Metal Canopies,Overhead shelter structures made from metal materials.
+22-10 73 16-2,Fabric Canopies,Overhead shelter structures made from tensioned fabric materials.
+22-10 73 16-3,Glazed Canopies,Overhead shelter structures made with glass or transparent materials.
+22-10 73 16-4,Point Supported Glass Canopies,Glass canopies supported by minimal point connections for clean appearance.
+22-11 01 50,Operation and Maintenance of Educational and Scientific Equipment,Procedures for managing educational and scientific equipment.
+22-11 01 56,Operation and Maintenance of Observatory Equipment,Procedures for managing astronomical observation equipment.
+22-11 13 19-2,Stationary Loading Dock Lifts,Fixed lifting platforms for loading dock material handling.
+22-11 13 19-3,Loading Dock Truck Lifts,Lifting equipment for raising vehicles at loading docks.
+22-11 22 13-1,Safe Deposit Boxes,Secure storage units typically found in banks for customer valuables.
+22-11 22 13-2,Safes,Secure storage containers for protecting valuable items.
+22-11 22 13-3,Vault Ventilators,Equipment providing air circulation in secure vault spaces.
+22-11 22 13-4,Time Capsules,Sealed containers designed to preserve items for future discovery.
+22-11 22 16,Teller and Service Equipment,Equipment used in banking and customer service operations.
+22-11 22 16-1,Teller Equipment Systems,Integrated systems for bank teller operations and transactions.
 22-11 22 16-2,Automatic Banking Systems,"Automated systems for banking and financial transactions, such as ATMs and kiosks."
 22-11 61 33-3,Curtain Systems,"Systems for hanging and operating curtains, including tracks, rods, and controls."
 22-11 61 43,Stage Curtains,Curtains used on stages and in theaters for performance spaces.
@@ -746,10 +746,9 @@ OmniClass_Code,OmniClass_Title,Description
 22-12 35 30-1,Kitchen Casework,Cabinets and casework designed for use in utility rooms and laundry areas.
 22-12 35 30-2,Bathroom Casework,Cabinets and casework designed for use in mailrooms and postal facilities.
 22-12 35 30-3,Dormitory Casework,Cabinets and casework designed specifically for use in commercial kitchens.
-22-12 35 33,Utility Room Casework,nan
-22-12 35 36,Mailroom Casework,nan
-22-12 35 39,Commercial Kitchen Casework,nan
-22-12 35 50,Educational/Library Casework,Casework and built-in furnishings for educational and library spaces.
+22-12 35 33,Utility Room Casework,"Casework and storage solutions designed specifically for utility rooms, laundry areas, and mechanical spaces to organize supplies and equipment."
+22-12 35 36,Mailroom Casework,"Specialized casework and organizational units designed for mailrooms including sorting stations, mailboxes, and package handling storage systems."
+22-12 35 39,Commercial Kitchen Casework,Heavy-duty casework designed for commercial kitchens featuring durable materials and specialized storage for food service equipment and supplies.
 22-12 35 50-1,Educational Casework,Casework and built-in furnishings specifically designed for educational spaces.
 22-12 35 50-2,Library Casework,Casework and built-in furnishings specifically designed for library spaces.
 22-12 35 50-3,Built-In Study Carrels,Built-in study carrels and workstations for educational facilities.
@@ -948,57 +947,57 @@ OmniClass_Code,OmniClass_Title,Description
 22-23 35 16-1,Positive-Pressure Engine Exhaust Systems,Positive-pressure systems used to exhaust engine emissions.
 22-23 35 16-2,Mechanical Engine Exhaust Systems,Mechanical systems used to exhaust engine emissions.
 22-23 35 33,Listed Kitchen Ventilation Exhaust System,Exhaust systems designed for commercial kitchen ventilation.
-22-23 36 00,Air Terminal Units,nan
-22-23 36 13,Constant-Air-Volume Units,nan
-22-23 36 16,Variable-Air-Volume Units,nan
-22-23 37 00,Air Outlets and Inlets,nan
-22-23 37 13,"Diffusers, Registers, and Grilles",nan
-22-23 37 13-1,Security Registers and Grilles,nan
-22-23 37 16,Fabric Air Distribution Devices,nan
-22-23 37 23,HVAC Gravity Ventilators,nan
-22-23 37 23-1,HVAC Gravity Dome Ventilators,nan
-22-23 37 23-2,HVAC Gravity Louvered-Penthouse Ventilators,nan
-22-23 37 23-3,HVAC Gravity Upblast Ventilators,nan
-22-23 38 00,Ventilation Hoods,nan
-22-23 38 13,Commercial-Kitchen Hoods,nan
-22-23 38 13-1,Listed Commercial-Kitchen Hoods,nan
-22-23 38 13-2,Standard Commercial-Kitchen Hoods,nan
-22-23 38 16,Fume Hoods,nan
-22-23 40 00,HVAC Air Cleaning Devices,nan
-22-23 54 00,Furnaces,nan
-22-23 54 13,Electric-Resistance Furnaces,nan
-22-23 54 16,Fuel-Fired Furnaces,nan
-22-23 54 16-1,Gas-Fired Furnaces,nan
-22-23 54 16-2,Oil-Fired Furnaces,nan
-22-23 55 00,Fuel-Fired Heaters,nan
-22-23 55 13,Fuel-Fired Duct Heaters,nan
-22-23 55 13-1,Oil-Fired Duct Heaters,nan
-22-23 55 13-2,Gas-Fired Duct Heaters,nan
-22-23 55 23,Gas-Fired Radiant Heaters,nan
-22-23 55 23-1,Low-Intensity Gas-Fired Radiant Heaters,nan
-22-23 55 23-2,High-Intensity Gas-Fired Radiant Heaters,nan
-22-23 55 33,Fuel-Fired Unit Heaters,nan
-22-23 55 33-1,Oil-Fired Unit Heaters,nan
-22-23 55 33-2,Gas-Fired Unit Heaters,nan
-22-23 56 00,Solar Energy Heating Equipment,nan
-22-23 56 13,Heating Solar Collectors,nan
-22-23 56 13-1,Heating Solar Flat-Plate Collectors,nan
-22-23 56 13-2,Heating Solar Concentrating Collectors,nan
-22-23 56 13-3,Heating Solar Vacuum-Tube Collectors,nan
-22-23 56 16,Packaged Solar Heating Equipment,nan
-22-23 56 23,Solar Air-Heating Panels,nan
-22-23 57 00,Heat Exchangers for HVAC,nan
-22-23 57 13,Steam-to-Steam Heat Exchangers,nan
-22-23 57 16,Steam-to-Water Heat Exchangers,nan
-22-23 57 19,Liquid-to-Liquid Heat Exchangers,nan
-22-23 57 19-1,"Plate-Type, Liquid-to-Liquid Heat Exchangers",nan
-22-23 57 19-2,"Shell-Type, Liquid-to-Liquid Heat Exchangers",nan
-22-23 57 33,Direct Geoexchange Heat Exchangers,nan
-22-23 60 00,Central Cooling Equipment,nan
-22-23 61 00,Refrigerant Compressors,nan
-22-23 61 13,Centrifugal Refrigerant Compressors,nan
-22-23 61 13-1,Non-Condensable Gas Purge Equipment,nan
-22-23 61 16,Reciprocating Refrigerant Compressors,nan
+22-23 36 00,Air Terminal Units,Devices installed at the end of ductwork to distribute conditioned air into spaces and control temperature and airflow in HVAC systems.
+22-23 36 13,Constant-Air-Volume Units,Units that deliver a constant volume of air regardless of heating/cooling needs, typically used in simple HVAC applications.
+22-23 36 16,Variable-Air-Volume Units,Units that vary air volume based on heating/cooling demands to improve energy efficiency and comfort in HVAC systems.
+22-23 37 00,Air Outlets and Inlets,Devices that distribute or collect air in HVAC systems including diffusers registers grilles and other air distribution components.
+22-23 37 13,"Diffusers, Registers, and Grilles",Air distribution devices that direct and control airflow from HVAC systems into occupied spaces for comfort and ventilation.
+22-23 37 13-1,Security Registers and Grilles,Reinforced air distribution devices designed to prevent tampering or unauthorized access while maintaining proper airflow.
+22-23 37 16,Fabric Air Distribution Devices,Lightweight fabric ducts that distribute air evenly through small perforations ideal for spaces requiring uniform air distribution.
+22-23 37 23,HVAC Gravity Ventilators,Passive ventilation devices that use natural convection to remove heat and stale air from buildings without mechanical assistance.
+22-23 37 23-1,HVAC Gravity Dome Ventilators,Dome-shaped ventilators that use natural convection to exhaust hot air and provide ventilation without mechanical assistance.
+22-23 37 23-2,HVAC Gravity Louvered-Penthouse Ventilators,Rooftop ventilators with louvers that use natural convection for ventilation typically installed on mechanical penthouses.
+22-23 37 23-3,HVAC Gravity Upblast Ventilators,Ventilators designed to direct exhaust air upward using natural convection reducing re-entry of exhaust into building intakes.
+22-23 38 00,Ventilation Hoods,Exhaust collection devices installed above heat cooking or contamination sources to remove air pollutants and maintain air quality.
+22-23 38 13,Commercial-Kitchen Hoods,Specialized exhaust hoods for commercial kitchens designed to remove heat smoke and grease from cooking operations.
+22-23 38 13-1,Listed Commercial-Kitchen Hoods,UL-listed kitchen exhaust hoods that meet safety standards for commercial cooking operations and fire prevention.
+22-23 38 13-2,Standard Commercial-Kitchen Hoods,Basic kitchen exhaust hoods for commercial applications without specialized certifications or features.
+22-23 38 16,Fume Hoods,Ventilated enclosures for handling hazardous materials providing operator protection through controlled airflow and exhaust.
+22-23 40 00,HVAC Air Cleaning Devices,Equipment that removes contaminants from air streams including filters electronic cleaners and other air purification systems.
+22-23 54 00,Furnaces,Heating appliances that warm air for distribution through ductwork typically using gas oil or electric heat sources.
+22-23 54 13,Electric-Resistance Furnaces,Furnaces that use electric heating elements to warm air for distribution efficient in areas without natural gas access.
+22-23 54 16,Fuel-Fired Furnaces,Furnaces that burn fuel (gas or oil) to generate heat offering high efficiency and effective heating in cold climates.
+22-23 54 16-1,Gas-Fired Furnaces,Furnaces that use natural gas or propane as fuel providing efficient and cost-effective heating for buildings.
+22-23 54 16-2,Oil-Fired Furnaces,Furnaces that burn heating oil to generate warmth commonly used in areas without natural gas service.
+22-23 55 00,Fuel-Fired Heaters,Heating devices that directly burn fuel to generate heat without using ductwork for distribution.
+22-23 55 13,Fuel-Fired Duct Heaters,Heaters installed in ductwork that burn fuel to warm air as it passes through HVAC distribution systems.
+22-23 55 13-1,Oil-Fired Duct Heaters,Duct heaters that burn heating oil to warm air passing through HVAC systems typically for supplemental heat.
+22-23 55 13-2,Gas-Fired Duct Heaters,Duct heaters that use natural gas or propane to warm air streams in HVAC distribution systems.
+22-23 55 23,Gas-Fired Radiant Heaters,Heaters that use gas combustion to generate infrared radiation for direct heating of objects and people.
+22-23 55 23-1,Low-Intensity Gas-Fired Radiant Heaters,Gas radiant heaters operating at lower temperatures for comfortable space heating in large areas.
+22-23 55 23-2,High-Intensity Gas-Fired Radiant Heaters,Gas radiant heaters operating at high temperatures for spot heating or industrial applications.
+22-23 55 33,Fuel-Fired Unit Heaters,Standalone heating units that burn fuel and use fans to distribute heated air in spaces.
+22-23 55 33-1,Oil-Fired Unit Heaters,Standalone heaters burning oil with integrated fans for space heating in areas without natural gas.
+22-23 55 33-2,Gas-Fired Unit Heaters,Standalone heaters using natural gas or propane with fans for efficient space heating.
+22-23 56 00,Solar Energy Heating Equipment,Systems and components that capture solar energy for heating applications in buildings.
+22-23 56 13,Heating Solar Collectors,Devices that capture solar energy and convert it to heat for building heating systems.
+22-23 56 13-1,Heating Solar Flat-Plate Collectors,Simple solar collectors using flat plates to absorb solar energy for heating applications.
+22-23 56 13-2,Heating Solar Concentrating Collectors,Solar collectors that focus sunlight to achieve higher temperatures for heating systems.
+22-23 56 13-3,Heating Solar Vacuum-Tube Collectors,High-efficiency solar collectors using vacuum tubes to minimize heat loss in heating applications.
+22-23 56 16,Packaged Solar Heating Equipment,Complete solar heating systems including collectors storage and controls packaged for installation.
+22-23 56 23,Solar Air-Heating Panels,Panels that use solar energy to directly heat air for building ventilation and space heating.
+22-23 57 00,Heat Exchangers for HVAC,Devices that transfer heat between two fluids without mixing them used in various HVAC applications.
+22-23 57 13,Steam-to-Steam Heat Exchangers,Heat exchangers that transfer heat between two steam systems maintaining separation between the streams.
+22-23 57 16,Steam-to-Water Heat Exchangers,Heat exchangers that transfer heat from steam to water commonly used in building heating systems.
+22-23 57 19,Liquid-to-Liquid Heat Exchangers,Heat exchangers that transfer heat between two liquid streams while keeping them separate.
+22-23 57 19-1,"Plate-Type, Liquid-to-Liquid Heat Exchangers",Heat exchangers using plates to transfer heat between liquid streams efficiently in a compact design.
+22-23 57 19-2,"Shell-Type, Liquid-to-Liquid Heat Exchangers",Heat exchangers using a shell and tube design to transfer heat between liquid streams.
+22-23 57 33,Direct Geoexchange Heat Exchangers,Heat exchangers that transfer heat directly with the ground for geothermal heating and cooling.
+22-23 60 00,Central Cooling Equipment,Equipment that provides cooling for building HVAC systems typically including chillers and cooling towers.
+22-23 61 00,Refrigerant Compressors,Devices that compress refrigerant vapor to enable the refrigeration cycle in cooling systems.
+22-23 61 13,Centrifugal Refrigerant Compressors,High-capacity compressors using centrifugal force to compress refrigerant in large cooling systems.
+22-23 61 13-1,Non-Condensable Gas Purge Equipment,Equipment that removes non-condensable gases from refrigeration systems to maintain efficiency.
+22-23 61 16,Reciprocating Refrigerant Compressors,Compressors using pistons to compress refrigerant common in smaller cooling applications.
 22-23 61 19,Scroll Refrigerant Compressors,Scroll compressors that use refrigerant to cool and compress air or other gases.
 22-23 61 23,Rotary-Screw Refrigerant Compressors,Rotary-screw compressors that use refrigerant to cool and compress air or other gases.
 22-23 62 00,Packaged Compressor and Condenser Units,Packaged units that combine a compressor and condenser for refrigeration or air conditioning.
@@ -1548,57 +1547,57 @@ OmniClass_Code,OmniClass_Title,Description
 22-43 23 72-4,Air-Operated Bellows Duplex Double-Acting Reciprocating Pumps,Air-operated piston reciprocating pumps used to move fluids in industrial processes.
 22-43 23 73,Air-Operated Piston Reciprocating Pumps,Air-operated piston simplex single-acting reciprocating pumps used to move fluids in industrial processes.
 22-43 23 73-1,Air-Operated Piston Simplex Single-Acting Reciprocating Pumps,Air-operated piston simplex double-acting reciprocating pumps used to move fluids in industrial processes.
-22-43 23 73-2,Air-Operated Piston Simplex Double-Acting Reciprocating Pumps,nan
-22-43 23 73-3,Air-Operated Piston Duplex Single-Acting Reciprocating Pumps,nan
-22-43 23 73-4,Air-Operated Piston Duplex Double-Acting Reciprocating Pumps,nan
-22-43 23 74,Steam Horizontal Reciprocating Pumps,nan
-22-43 23 74-1,Steam Horizontal Double-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 74-2,Steam Horizontal Double-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 74-3,Steam Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 74-4,Steam Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 75,Steam Vertical Reciprocating Pumps,nan
-22-43 23 75-1,Steam Vertical Double-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 75-2,Steam Vertical Double-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 75-3,Steam Vertical Double-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 75-4,Steam Vertical Double-acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 76,Power Horizontal Reciprocating Pumps,nan
-22-43 23 76-1,Power Horizontal Single-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 76-2,Power Horizontal Single-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 76-3,Power Horizontal Single-Acting Piston Multiplex Reciprocating Pumps,nan
-22-43 23 76-4,Power Horizontal Single-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 76-5,Power Horizontal Single-Acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 76-6,Power Horizontal Single-Acting Plunger Multiplex Reciprocating Pumps,nan
-22-43 23 76-7,Power Horizontal Double-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 76-8,Power Horizontal Double-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 76-9,Power Horizontal Double-Acting Piston Multiplex Reciprocating Pumps,nan
-22-43 23 76-10,Power Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 76-11,Power Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 76-12,Power Horizontal Double-Acting Plunger Multiplex Reciprocating Pumps,nan
-22-43 23 77,Power Vertical Reciprocating Pumps,nan
-22-43 23 77-1,Power Vertical Single-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 77-2,Power Vertical Single-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 77-3,Power Vertical Single-Acting Piston Multiplex Reciprocating Pumps,nan
-22-43 23 77-4,Power Vertical Single-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 77-5,Power Vertical Single-Acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 77-6,Power Vertical Single-Acting Plunger Multiplex Reciprocating Pumps,nan
-22-43 23 77-7,Power Vertical Double-Acting Piston Simplex Reciprocating Pumps,nan
-22-43 23 77-8,Power Vertical Double-Acting Piston Duplex Reciprocating Pumps,nan
-22-43 23 77-9,Power Vertical Double-Acting Piston Multiplex Reciprocating Pumps,nan
-22-43 23 77-10,Power Vertical Double-Acting Plunger Simplex Reciprocating Pumps,nan
-22-43 23 77-11,Power Vertical Double-Acting Plunger Duplex Reciprocating Pumps,nan
-22-43 23 77-12,Power Vertical Double-Acting Plunger Multiplex Reciprocating Pumps,nan
-22-43 23 78,Controlled Volume Horizontal Reciprocating Pumps,nan
-22-43 23 78-1,Controlled Volume Horizontal Packed Plunger Simplex Reciprocating Pumps,nan
-22-43 23 78-2,Controlled Volume Horizontal Packed Plunger Duplex Reciprocating Pumps,nan
-22-43 23 78-3,Controlled Volume Horizontal Packed Plunger Multiplex Reciprocating Pumps,nan
-22-43 23 78-4,Controlled Volume Horizontal Packed Piston Simplex Reciprocating Pumps,nan
-22-43 23 78-5,Controlled Volume Horizontal Packed Piston Duplex Reciprocating Pumps,nan
-22-43 23 78-6,Controlled Volume Horizontal Packed Piston Multiplex Reciprocating Pumps,nan
-22-43 23 78-7,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Simplex Reciprocating Pumps,nan
-22-43 23 78-8,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Duplex Reciprocating Pumps,nan
-22-43 23 78-9,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Multiplex Reciprocating Pumps,nan
-22-43 23 78-10,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Simplex Reciprocating Pumps,nan
-22-43 23 78-11,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Duplex Reciprocating Pumps,nan
+22-43 23 73-2,Air-Operated Piston Simplex Double-Acting Reciprocating Pumps,"Air-powered pump with single cylinder and double-acting piston that reciprocates to move fluid in both directions, providing continuous flow for industrial applications."
+22-43 23 73-3,Air-Operated Piston Duplex Single-Acting Reciprocating Pumps,"Air-powered pump with dual cylinders and single-acting pistons that work alternately to move fluid in one direction, suitable for high-pressure applications."
+22-43 23 73-4,Air-Operated Piston Duplex Double-Acting Reciprocating Pumps,"Air-powered pump with dual cylinders and double-acting pistons that provide continuous fluid flow in both directions, maximizing efficiency and output."
+22-43 23 74,Steam Horizontal Reciprocating Pumps,"Industrial pump powered by steam that operates horizontally, using reciprocating motion to move fluids efficiently in process applications."
+22-43 23 74-1,Steam Horizontal Double-Acting Piston Simplex Reciprocating Pumps,"Steam-powered horizontal pump with single cylinder and double-acting piston that moves fluid in both directions during each cycle for continuous operation."
+22-43 23 74-2,Steam Horizontal Double-Acting Piston Duplex Reciprocating Pumps,"Steam-powered horizontal pump with dual cylinders and double-acting pistons working alternately for smooth, continuous fluid flow in industrial processes."
+22-43 23 74-3,Steam Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,"Steam-powered horizontal pump using single plunger with double-acting motion for high-pressure fluid transfer in heavy-duty industrial applications."
+22-43 23 74-4,Steam Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,"Steam-powered horizontal pump with dual plungers operating in double-acting motion for maximum pressure and flow capacity in demanding processes."
+22-43 23 75,Steam Vertical Reciprocating Pumps,"Industrial pump powered by steam that operates vertically, using reciprocating motion for efficient fluid transfer in limited floor space applications."
+22-43 23 75-1,Steam Vertical Double-Acting Piston Simplex Reciprocating Pumps,"Vertical steam-powered pump with single cylinder and double-acting piston for continuous fluid flow in space-constrained industrial environments."
+22-43 23 75-2,Steam Vertical Double-Acting Piston Duplex Reciprocating Pumps,"Vertical steam-powered pump with dual cylinders and double-acting pistons for enhanced flow capacity and efficiency in compact industrial spaces."
+22-43 23 75-3,Steam Vertical Double-Acting Plunger Simplex Reciprocating Pumps,"Vertical steam-powered pump using single plunger with double-acting motion for high-pressure applications in confined industrial spaces."
+22-43 23 75-4,Steam Vertical Double-acting Plunger Duplex Reciprocating Pumps,"Vertical steam-powered pump with dual plungers operating in double-acting motion for maximum pressure and efficiency in compact installations."
+22-43 23 76,Power Horizontal Reciprocating Pumps,"Electrically or mechanically powered horizontal pump using reciprocating motion for reliable fluid transfer in industrial process applications."
+22-43 23 76-1,Power Horizontal Single-Acting Piston Simplex Reciprocating Pumps,"Power-driven horizontal pump with single cylinder and single-acting piston for basic fluid transfer needs in industrial processes."
+22-43 23 76-2,Power Horizontal Single-Acting Piston Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual cylinders and single-acting pistons for improved flow capacity in industrial applications."
+22-43 23 76-3,Power Horizontal Single-Acting Piston Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple cylinders and single-acting pistons for high-volume fluid transfer in large industrial processes."
+22-43 23 76-4,Power Horizontal Single-Acting Plunger Simplex Reciprocating Pumps,"Power-driven horizontal pump with single plunger operating in single-acting motion for high-pressure fluid transfer applications."
+22-43 23 76-5,Power Horizontal Single-Acting Plunger Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual plungers operating in single-acting motion for enhanced pressure capability in industrial processes."
+22-43 23 76-6,Power Horizontal Single-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple plungers operating in single-acting motion for maximum pressure and flow in large installations."
+22-43 23 76-7,Power Horizontal Double-Acting Piston Simplex Reciprocating Pumps,"Power-driven horizontal pump with single cylinder and double-acting piston for continuous fluid flow in industrial applications."
+22-43 23 76-8,Power Horizontal Double-Acting Piston Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual cylinders and double-acting pistons for smooth, efficient fluid transfer in industrial processes."
+22-43 23 76-9,Power Horizontal Double-Acting Piston Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple cylinders and double-acting pistons for maximum flow capacity in large industrial applications."
+22-43 23 76-10,Power Horizontal Double-Acting Plunger Simplex Reciprocating Pumps,"Power-driven horizontal pump with single plunger operating in double-acting motion for high-pressure continuous flow applications."
+22-43 23 76-11,Power Horizontal Double-Acting Plunger Duplex Reciprocating Pumps,"Power-driven horizontal pump with dual plungers operating in double-acting motion for enhanced pressure and flow in industrial processes."
+22-43 23 76-12,Power Horizontal Double-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven horizontal pump with multiple plungers in double-acting motion for maximum pressure and flow in demanding industrial applications."
+22-43 23 77,Power Vertical Reciprocating Pumps,"Power-driven vertical pump using reciprocating motion for efficient fluid transfer in space-constrained industrial environments."
+22-43 23 77-1,Power Vertical Single-Acting Piston Simplex Reciprocating Pumps,"Power-driven vertical pump with single cylinder and single-acting piston for basic fluid transfer in compact installations."
+22-43 23 77-2,Power Vertical Single-Acting Piston Duplex Reciprocating Pumps,"Power-driven vertical pump with dual cylinders and single-acting pistons for improved flow in limited floor space applications."
+22-43 23 77-3,Power Vertical Single-Acting Piston Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple cylinders and single-acting pistons for high-volume transfer in compact industrial spaces."
+22-43 23 77-4,Power Vertical Single-Acting Plunger Simplex Reciprocating Pumps,"Power-driven vertical pump with single plunger in single-acting motion for high-pressure applications in confined spaces."
+22-43 23 77-5,Power Vertical Single-Acting Plunger Duplex Reciprocating Pumps,"Power-driven vertical pump with dual plungers in single-acting motion for enhanced pressure capability in compact installations."
+22-43 23 77-6,Power Vertical Single-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple plungers in single-acting motion for maximum pressure in space-constrained environments."
+22-43 23 77-7,Power Vertical Double-Acting Piston Simplex Reciprocating Pumps,"Power-driven vertical pump with single cylinder and double-acting piston for continuous flow in compact industrial applications."
+22-43 23 77-8,Power Vertical Double-Acting Piston Duplex Reciprocating Pumps,"Power-driven vertical pump with dual cylinders and double-acting pistons for smooth operation in limited floor space environments."
+22-43 23 77-9,Power Vertical Double-Acting Piston Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple cylinders and double-acting pistons for maximum flow in compact industrial spaces."
+22-43 23 77-10,Power Vertical Double-Acting Plunger Simplex Reciprocating Pumps,"Power-driven vertical pump with single plunger in double-acting motion for high-pressure continuous flow in confined spaces."
+22-43 23 77-11,Power Vertical Double-Acting Plunger Duplex Reciprocating Pumps,"Power-driven vertical pump with dual plungers in double-acting motion for enhanced pressure and flow in compact installations."
+22-43 23 77-12,Power Vertical Double-Acting Plunger Multiplex Reciprocating Pumps,"Power-driven vertical pump with multiple plungers in double-acting motion for maximum performance in confined industrial spaces."
+22-43 23 78,Controlled Volume Horizontal Reciprocating Pumps,"Precision horizontal pump providing controlled fluid volume through reciprocating motion for accurate dosing and transfer applications."
+22-43 23 78-1,Controlled Volume Horizontal Packed Plunger Simplex Reciprocating Pumps,"Precision horizontal pump with single packed plunger for accurate fluid volume control in industrial dosing applications."
+22-43 23 78-2,Controlled Volume Horizontal Packed Plunger Duplex Reciprocating Pumps,"Precision horizontal pump with dual packed plungers for enhanced accuracy in fluid volume control and transfer processes."
+22-43 23 78-3,Controlled Volume Horizontal Packed Plunger Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple packed plungers for maximum accuracy in high-volume fluid control applications."
+22-43 23 78-4,Controlled Volume Horizontal Packed Piston Simplex Reciprocating Pumps,"Precision horizontal pump with single packed piston for accurate fluid volume control in industrial processes."
+22-43 23 78-5,Controlled Volume Horizontal Packed Piston Duplex Reciprocating Pumps,"Precision horizontal pump with dual packed pistons for enhanced accuracy in fluid metering and transfer applications."
+22-43 23 78-6,Controlled Volume Horizontal Packed Piston Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple packed pistons for maximum accuracy in high-volume fluid control processes."
+22-43 23 78-7,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Simplex Reciprocating Pumps,"Precision horizontal pump with single mechanically-coupled diaphragm for accurate fluid control in sensitive applications."
+22-43 23 78-8,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Duplex Reciprocating Pumps,"Precision horizontal pump with dual mechanically-coupled diaphragms for enhanced accuracy in sensitive fluid processes."
+22-43 23 78-9,Controlled Volume Horizontal Mechanically-Coupled Diaphragm Multiplex Reciprocating Pumps,"Precision horizontal pump with multiple mechanically-coupled diaphragms for maximum accuracy in complex fluid control systems."
+22-43 23 78-10,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Simplex Reciprocating Pumps,"Precision horizontal pump with single hydraulically-coupled diaphragm for accurate fluid control in demanding applications."
+22-43 23 78-11,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Duplex Reciprocating Pumps,"Precision horizontal pump with dual hydraulically-coupled diaphragms for enhanced accuracy in critical fluid processes."
 22-43 23 78-12,Controlled Volume Horizontal Hydraulically-Coupled Diaphragm Multiplex Reciprocating Pumps,Controlled volume horizontal hydraulically-coupled diaphragm multiplex reciprocating pumps
 22-43 23 79,Controlled Volume Vertical Reciprocating Pumps,Controlled volume vertical reciprocating pumps
 22-43 23 79-1,Controlled Volume Vertical Packed Plunger Simplex Reciprocating Pumps,Controlled volume vertical packed plunger simplex reciprocating pumps
@@ -1847,108 +1846,108 @@ OmniClass_Code,OmniClass_Title,Description
 23-13 13 11-2,Standard Cement,Cement with high resistance to sulfate exposure
 23-13 13 11-3,Specialized Cement,Cement with low alkali content
 23-13 13 11-4,High Sulfate Resistant Cement,Non-metallic grouts used in concrete construction
-23-13 13 11-5,Low Alkali Cement,nan
-23-13 15 15-5,Nonmetallic Concrete Grouts,nan
-23-13 15 15-6,Masonry Grouts,nan
-23-13 15 15-7,Chemical Resistant Masonry Grouts,nan
-23-13 23 13,Welded Joint Products,nan
-23-13 25 13-9,Firestopping Thermal Barriers for Plastics,nan
-23-13 25 21-3,Blanket Sound Isolation Insulation,nan
-23-13 25 21-4,Fiberglass Blanket Sound Isolation Insulation,nan
-23-13 31 21-21,Tendon Sheathing,nan
-23-13 31 21-22,Tendon Sheathing Ducts,nan
-23-13 35 23-1,Structural Floor Decks,nan
-23-13 35 23-2,Concrete Structural Floor Decks,nan
-23-13 35 23-3,Metal Structural Floor Decks,nan
-23-13 35 23-4,Raceway Deck Systems,nan
-23-13 35 23-5,Acoustical Metal Floor Decks,nan
-23-13 35 23-6,Wood Structural Floor Decks,nan
-23-13 35 23-7,Structural Roof Decks,nan
-23-13 35 23-8,Concrete Structural Roof Decks,nan
-23-13 35 23-9,Metal Structural Roof Decks,nan
-23-13 35 23-10,Acoustical Metal Roof Deck,nan
-23-13 35 23-11,Wood Structural Roof Decks,nan
-23-13 35 23-12,Structural Grating Floors,nan
-23-13 35 23-13,Balconies and Overhang Units,nan
-23-13 35 23-14,Balcony Components,nan
-23-13 35 23-15,Balcony Holders and Mechanical Fasteners,nan
-23-13 35 23-16,Concrete Balconies and Overhang Units,nan
-23-13 35 23-17,Metal Balconies and Overhang Units,nan
-23-13 35 23-18,Wood Balconies and Overhang Units,nan
-23-13 35 25,Structural Profiled Roofs,nan
-23-13 35 25-1,Prefabricated Shell Roofs,nan
-23-13 35 25-2,Simulated Stones,nan
-23-13 37 00,"Multi-Function Exterior Coverings, Claddings, Linings",nan
-23-13 37 11,Multi-Function Exterior Claddings,nan
-23-13 37 13,Exterior Wall Cladding,nan
-23-13 37 15,Exterior Siding,nan
-23-13 37 15-1,Metal Exterior Siding,nan
-23-13 37 15-2,Composition Exterior Siding,nan
-23-13 37 15-3,Mineral Fiber Cement Exterior Siding,nan
-23-13 37 15-4,Plastic Exterior Siding,nan
-23-13 37 15-5,Wood Exterior Siding,nan
-23-13 37 17,Multi Function Exterior Linings,nan
-23-13 37 17-1,Sheathing Products,nan
-23-13 37 19,Exterior Plasters,nan
-23-13 37 21,Preformed Exterior Casings,nan
-23-13 37 23,Ancillary Products for Coverings and Claddings,nan
-23-13 37 23-1,Supports for Coverings and Claddings,nan
-23-13 37 23-2,Mechanical Fasteners for Coverings and Claddings,nan
-23-13 37 23-3,Movement and Dividing Joints for Coverings and Claddings,nan
-23-13 37 23-4,"Joint Coverings, Flashings, Tapes",nan
-23-13 37 23-5,Reinforcements for Coverings and Claddings,nan
-23-13 37 23-6,"Trims, Edgings, Capping",nan
-23-13 37 23-7,Spacers,nan
-23-13 37 23-8,Profile Fillers,nan
-23-13 37 23-9,"Underlays, Linings, Separations",nan
-23-13 37 23-10,"Beddings, Adhesives for Coverings and Claddings",nan
-23-13 37 23-11,Sealants for Coverings and Claddings,nan
-23-13 39 00,"Roof Coverings, Claddings, Linings",nan
-23-13 39 11,Exterior Roof Panels,nan
-23-13 39 11-1,Exterior Metal Roof Panels,nan
-23-13 39 11-2,Exterior Plastic Roof Panels,nan
-23-13 39 11-3,Exterior Wood Roof Panels,nan
-23-13 41 13,Roof Flashings,nan
-23-13 41 13-1,Laminated Sheet Flexible Roof Flashings,nan
-23-13 41 13-2,Modified Bituminous Sheet Flexible Roof Flashings,nan
-23-15 13 19-2,Plastic Wall Panels,nan
-23-15 13 19-3,Wood Wall Panels,nan
-23-15 13 19-4,Composite Wall Panels,nan
-23-15 13 19-5,Faced Wall Panels,nan
-23-15 13 19-6,Aggregate Coated Wall Panels,nan
-23-15 13 19-7,Porcelain Enameled Faced Wall Panels,nan
-23-15 13 19-8,Tile Faced Wall Panels,nan
-23-15 13 19-9,Fiber Reinforced Cementitious Wall Panels,nan
-23-15 13 19-10,Glass Fiber Reinforced Cementitious Wall Panels,nan
-23-15 13 19-11,Miner Fiber Reinforced Cementitious Wall Panels,nan
-23-15 13 19-12,Flexible Wood Wall Sheets,nan
-23-15 13 19-13,Acoustical Wall Treatment,nan
-23-15 13 21,Ceiling Panels,nan
-23-15 13 21-1,Metal Ceiling Panels,nan
-23-15 13 21-2,Plastic Ceiling Panels,nan
-23-15 13 21-3,Wood Ceiling Panels,nan
-23-15 13 21-4,Composite Ceiling Panels,nan
-23-15 13 21-5,Faced Ceiling Panels,nan
-23-15 13 21-6,Aggregate Coated Ceiling Panels,nan
-23-15 13 21-7,Porcelain Enameled Faced Ceiling Panels,nan
-23-15 13 21-8,Tile Faced Ceiling Panels,nan
-23-15 13 21-9,Fiber Reinforced Cementitious Ceiling Panels,nan
-23-15 13 21-10,Glass Fiber Reinforced Cementitious Ceiling Panels,nan
-23-15 13 21-11,Miner Fiber Reinforced Cementitious Ceiling Panels,nan
-23-15 13 21-12,Flexible Wood Ceiling Sheets,nan
-23-15 13 21-13,Acoustical Ceiling Treatment,nan
-23-15 13 23,Interior Plasters,nan
-23-15 13 25,Preformed Interior Casings,nan
-23-15 15 00,"Wall Coverings, Claddings, Linings",nan
-23-15 15 11,Wall Cladding Sections,nan
-23-15 15 11-1,Metal Wall Cladding Sections,nan
-23-15 15 11-2,Wood Wall Cladding Sections,nan
-23-15 15 11-3,Plastics Wall Cladding Sections,nan
-23-15 15 11-4,Other Wall Cladding Sections,nan
-23-15 15 13,Wall Tiles,nan
-23-15 15 13-1,Natural Stone Wall Tiles,nan
-23-15 15 13-2,Reconstituted Stone Wall Tiles,nan
-23-15 15 13-3,Cementitious Wall Tiles,nan
+23-13 13 11-5,Low Alkali Cement,Specialized cement with reduced alkali content to prevent chemical reactions in concrete
+23-13 15 15-5,Nonmetallic Concrete Grouts,Grouts made from non-metallic materials used to fill voids in concrete structures
+23-13 15 15-6,Masonry Grouts,Grouts specifically formulated for use in masonry construction and reinforcement
+23-13 15 15-7,Chemical Resistant Masonry Grouts,Masonry grouts designed to resist chemical exposure and deterioration
+23-13 23 13,Welded Joint Products,Products used in welded joints including fillers and reinforcements
+23-13 25 13-9,Firestopping Thermal Barriers for Plastics,Thermal barriers designed to prevent fire spread through plastic materials
+23-13 25 21-3,Blanket Sound Isolation Insulation,Blanket-style insulation materials designed for sound dampening
+23-13 25 21-4,Fiberglass Blanket Sound Isolation Insulation,Fiberglass-based blanket insulation for sound dampening applications
+23-13 31 21-21,Tendon Sheathing,Protective covering for concrete reinforcing tendons
+23-13 31 21-22,Tendon Sheathing Ducts,Ducts that house and protect concrete reinforcing tendons
+23-13 35 23-1,Structural Floor Decks,Load-bearing floor deck systems for building construction
+23-13 35 23-2,Concrete Structural Floor Decks,Concrete floor deck systems designed for structural support
+23-13 35 23-3,Metal Structural Floor Decks,Metal floor deck systems designed for structural support
+23-13 35 23-4,Raceway Deck Systems,Floor deck systems with integrated raceways for utilities
+23-13 35 23-5,Acoustical Metal Floor Decks,Metal floor decks with sound dampening properties
+23-13 35 23-6,Wood Structural Floor Decks,Wood floor deck systems designed for structural support
+23-13 35 23-7,Structural Roof Decks,Load-bearing roof deck systems for building construction
+23-13 35 23-8,Concrete Structural Roof Decks,Concrete roof deck systems designed for structural support
+23-13 35 23-9,Metal Structural Roof Decks,Metal roof deck systems designed for structural support
+23-13 35 23-10,Acoustical Metal Roof Deck,Metal roof decks with sound dampening properties
+23-13 35 23-11,Wood Structural Roof Decks,Wood roof deck systems designed for structural support
+23-13 35 23-12,Structural Grating Floors,Open grating floor systems for structural support
+23-13 35 23-13,Balconies and Overhang Units,Projecting platforms and overhangs for buildings
+23-13 35 23-14,Balcony Components,Individual components used in balcony construction
+23-13 35 23-15,Balcony Holders and Mechanical Fasteners,Hardware for securing and supporting balconies
+23-13 35 23-16,Concrete Balconies and Overhang Units,Balconies and overhangs made from concrete
+23-13 35 23-17,Metal Balconies and Overhang Units,Balconies and overhangs made from metal
+23-13 35 23-18,Wood Balconies and Overhang Units,Balconies and overhangs made from wood
+23-13 35 25,Structural Profiled Roofs,Roofing systems with structural profiles for support
+23-13 35 25-1,Prefabricated Shell Roofs,Pre-made curved or shell-shaped roof structures
+23-13 35 25-2,Simulated Stones,Artificial stone products for construction
+23-13 37 00,"Multi-Function Exterior Coverings, Claddings, Linings",Exterior finishing materials serving multiple purposes
+23-13 37 11,Multi-Function Exterior Claddings,Exterior cladding systems with multiple functions
+23-13 37 13,Exterior Wall Cladding,Materials used to cover and protect exterior walls
+23-13 37 15,Exterior Siding,Materials used as exterior wall covering
+23-13 37 15-1,Metal Exterior Siding,Metal panels used for exterior wall covering
+23-13 37 15-2,Composition Exterior Siding,Composite materials used for exterior wall covering
+23-13 37 15-3,Mineral Fiber Cement Exterior Siding,Fiber cement boards used for exterior wall covering
+23-13 37 15-4,Plastic Exterior Siding,Plastic panels used for exterior wall covering
+23-13 37 15-5,Wood Exterior Siding,Wood materials used for exterior wall covering
+23-13 37 17,Multi Function Exterior Linings,Exterior lining materials serving multiple purposes
+23-13 37 17-1,Sheathing Products,Materials used to cover and strengthen wall frames
+23-13 37 19,Exterior Plasters,Plaster materials for exterior wall finishing
+23-13 37 21,Preformed Exterior Casings,Pre-made frames for exterior openings
+23-13 37 23,Ancillary Products for Coverings and Claddings,Supporting products for exterior finishes
+23-13 37 23-1,Supports for Coverings and Claddings,Structural supports for exterior finishes
+23-13 37 23-2,Mechanical Fasteners for Coverings and Claddings,Hardware for securing exterior finishes
+23-13 37 23-3,Movement and Dividing Joints for Coverings and Claddings,Joints allowing movement in exterior finishes
+23-13 37 23-4,"Joint Coverings, Flashings, Tapes",Materials for covering joints and transitions
+23-13 37 23-5,Reinforcements for Coverings and Claddings,Materials that strengthen exterior finishes
+23-13 37 23-6,"Trims, Edgings, Capping",Finishing materials
+23-13 37 23-7,Spacers,Elements used to maintain consistent spacing between components in exterior finishes
+23-13 37 23-8,Profile Fillers,Materials used to fill gaps and maintain profiles in exterior cladding systems
+23-13 37 23-9,"Underlays, Linings, Separations",Materials used beneath or between exterior finish layers for protection and separation
+23-13 37 23-10,"Beddings, Adhesives for Coverings and Claddings",Materials used to bed and adhere exterior coverings and claddings to surfaces
+23-13 37 23-11,Sealants for Coverings and Claddings,Sealant materials used to waterproof and protect exterior covering and cladding joints
+23-13 39 00,"Roof Coverings, Claddings, Linings",Materials used to cover and protect roof structures
+23-13 39 11,Exterior Roof Panels,Panels designed specifically for exterior roof applications
+23-13 39 11-1,Exterior Metal Roof Panels,Metal panels designed for exterior roof applications
+23-13 39 11-2,Exterior Plastic Roof Panels,Plastic panels designed for exterior roof applications
+23-13 39 11-3,Exterior Wood Roof Panels,Wood panels designed for exterior roof applications
+23-13 41 13,Roof Flashings,Materials used to waterproof joints and transitions in roof systems
+23-13 41 13-1,Laminated Sheet Flexible Roof Flashings,Flexible laminated sheet materials used for roof flashing applications
+23-13 41 13-2,Modified Bituminous Sheet Flexible Roof Flashings,Modified bituminous sheet materials used for flexible roof flashing
+23-15 13 19-2,Plastic Wall Panels,Wall panels made from plastic materials for interior applications
+23-15 13 19-3,Wood Wall Panels,Wall panels made from wood materials for interior applications
+23-15 13 19-4,Composite Wall Panels,Wall panels made from composite materials for interior applications
+23-15 13 19-5,Faced Wall Panels,Wall panels with decorative facing materials
+23-15 13 19-6,Aggregate Coated Wall Panels,Wall panels with aggregate coating for decorative finish
+23-15 13 19-7,Porcelain Enameled Faced Wall Panels,Wall panels with porcelain enamel facing
+23-15 13 19-8,Tile Faced Wall Panels,Wall panels
+23-15 13 19-9,Fiber Reinforced Cementitious Wall Panels,Wall panels made with fiber-reinforced cement materials for increased strength and durability. Common in commercial and industrial applications.
+23-15 13 19-10,Glass Fiber Reinforced Cementitious Wall Panels,Wall panels reinforced with glass fibers in cement matrix for superior strength and crack resistance. Used in demanding architectural applications.
+23-15 13 19-11,Miner Fiber Reinforced Cementitious Wall Panels,Wall panels incorporating mineral fibers in cement composition for enhanced fire resistance and thermal properties. Suitable for specialized installations.
+23-15 13 19-12,Flexible Wood Wall Sheets,Thin wood sheets designed to be flexible for curved wall applications. Made from specially processed wood materials for bendability.
+23-15 13 19-13,Acoustical Wall Treatment,Specialized wall treatments designed to control sound reflection and absorption. Used in theaters, studios and other spaces requiring acoustic control.
+23-15 13 21,Ceiling Panels,Modular panels installed in ceiling systems to provide finished ceiling surfaces. Available in various materials and performance characteristics.
+23-15 13 21-1,Metal Ceiling Panels,Ceiling panels made from metal materials like aluminum or steel. Durable and easy to maintain with clean modern appearance.
+23-15 13 21-2,Plastic Ceiling Panels,Ceiling panels manufactured from plastic materials. Lightweight and moisture resistant for specialized applications like clean rooms.
+23-15 13 21-3,Wood Ceiling Panels,Ceiling panels made from natural or engineered wood products. Provide warm aesthetic and can include acoustic properties.
+23-15 13 21-4,Composite Ceiling Panels,Ceiling panels combining multiple materials for enhanced performance. May include combinations of metal, mineral fiber, and other materials.
+23-15 13 21-5,Faced Ceiling Panels,Ceiling panels with decorative facing materials. Allow design flexibility while maintaining core panel performance.
+23-15 13 21-6,Aggregate Coated Ceiling Panels,Ceiling panels with exposed aggregate coating for decorative texture. Often used in architectural applications requiring visual interest.
+23-15 13 21-7,Porcelain Enameled Faced Ceiling Panels,Ceiling panels with durable porcelain enamel facing. Resistant to staining and appropriate for demanding environments.
+23-15 13 21-8,Tile Faced Ceiling Panels,Ceiling panels incorporating decorative tile facing materials. Combine appearance of tile with panel installation efficiency.
+23-15 13 21-9,Fiber Reinforced Cementitious Ceiling Panels,Ceiling panels made with fiber-reinforced cement materials for strength and fire resistance. Appropriate for exterior applications.
+23-15 13 21-10,Glass Fiber Reinforced Cementitious Ceiling Panels,Ceiling panels incorporating glass fiber reinforcement in cement matrix. Provide superior strength and impact resistance.
+23-15 13 21-11,Miner Fiber Reinforced Cementitious Ceiling Panels,Ceiling panels using mineral fiber reinforcement in cement composition. Enhanced fire resistance and thermal properties.
+23-15 13 21-12,Flexible Wood Ceiling Sheets,Thin bendable wood sheets for curved ceiling applications. Allow creation of dramatic curved ceiling designs.
+23-15 13 21-13,Acoustical Ceiling Treatment,Specialized ceiling treatments designed to control sound. Include sound absorption and reflection control properties.
+23-15 13 23,Interior Plasters,Traditional and modern plaster materials for interior wall and ceiling finishes. Available in various textures and compositions.
+23-15 13 25,Preformed Interior Casings,Factory-formed trim and molding components for interior use. Provide consistent profiles for door and window openings.
+23-15 15 00,"Wall Coverings, Claddings, Linings",General category for materials used to cover and finish interior wall surfaces. Includes various material types and applications.
+23-15 15 11,Wall Cladding Sections,Modular wall covering components that attach to wall structure. Provide finished appearance and additional wall performance.
+23-15 15 11-1,Metal Wall Cladding Sections,Wall cladding sections made from metal materials. Durable and low maintenance with modern aesthetic.
+23-15 15 11-2,Wood Wall Cladding Sections,Wall cladding sections made from wood products. Provide warm natural appearance and design flexibility.
+23-15 15 11-3,Plastics Wall Cladding Sections,Wall cladding sections made from plastic materials. Moisture resistant and easy to clean for specialized applications.
+23-15 15 11-4,Other Wall Cladding Sections,Wall cladding sections made from materials other than metal wood or plastic. May include composite or specialty materials.
+23-15 15 13,Wall Tiles,Modular tile units for wall surfacing and decoration. Available in wide range of materials sizes and designs.
+23-15 15 13-1,Natural Stone Wall Tiles,Wall tiles made from cut natural stone. Provide unique natural patterns and upscale appearance.
+23-15 15 13-2,Reconstituted Stone Wall Tiles,Wall tiles made from processed and reformed stone materials. Combine natural stone appearance with manufacturing consistency.
+23-15 15 13-3,Cementitious Wall Tiles,Wall tiles made with cement-based materials. Durable and appropriate for wet areas and exterior applications.
 23-15 15 13-4,Clay Based Wall Tiles,Clay-based wall tiles for interior or exterior use.
 23-15 15 13-5,Metal Wall Tiles,Metal wall tiles for interior or exterior use.
 23-15 15 13-6,Vegetable Based Wall Tiles,Vegetable-based wall tiles for interior or exterior use.
@@ -2349,106 +2348,106 @@ OmniClass_Code,OmniClass_Title,Description
 23-33 15 29,HVAC Steam Hot Water Converters,Devices that convert steam or hot water to heat HVAC systems.
 23-33 17 00,Heat Pumps,Devices that use a refrigeration cycle to both heat and cool buildings.
 23-33 17 11,Packaged Heat Pumps,Self-contained heat pump units that provide both heating and cooling.
-23-33 17 11-1,Air Source Packaged Heat Pumps,nan
-23-33 17 11-2,Water Source Packaged Heat Pumps,nan
-23-33 17 13,Split System Heat Pumps,nan
-23-33 17 13-1,Air Source Split System Heat Pumps,nan
-23-33 17 13-2,Water Source Split System Heat Pumps,nan
-23-33 19 00,Cooling and Freeze Components,nan
-23-33 19 11,Cooling Freeze Plant Accessories,nan
-23-33 19 11-1,Refrigerant Liquid,nan
-23-33 21 00,Chillers,nan
-23-33 21 11,Absorption Chillers,nan
-23-33 21 11-1,Direct Fired Absorption Chillers,nan
-23-33 21 11-2,Steam Absorption Chillers,nan
-23-33 21 13,Chillers,nan
-23-33 21 13-1,Central Package Unit Chillers,nan
-23-33 21 13-2,Centrifugal Chillers,nan
-23-33 21 13-3,Packaged Centrifugal Chillers,nan
-23-33 21 13-4,Split System Centrifugal Chillers,nan
-23-33 21 13-5,Reciprocating Chillers,nan
-23-33 21 13-6,Packaged Reciprocating Chillers,nan
-23-33 21 13-7,Split System Reciprocating Chillers,nan
-23-33 21 13-8,Rotary Chillers,nan
-23-33 21 13-9,Packaged Rotary Chillers,nan
-23-33 21 13-10,Split System Rotary Chillers,nan
-23-33 21 13-11,Rotary Screw Chillers,nan
-23-33 21 13-12,Packaged Rotary Screw Chillers,nan
-23-33 21 13-13,Split System Rotary Screw Chillers,nan
-23-33 21 13-14,Screw Chillers,nan
-23-33 21 13-15,Packaged Screw Chillers,nan
-23-33 21 13-16,Split System Screw Chillers,nan
-23-33 29 23-2,Automatic Fire Dampers,nan
-23-35 25 11,Electrical Meters,nan
-23-35 29 25,Network Protectors,nan
-23-35 37 49,Push Button Switches,nan
-23-35 47 11-20,Explosion Proof Lighting Fixtures,nan
-23-37 25 23-1,Television Broadcasting Equipment,nan
-23-39 13 11-1,Tunnel Shafts,nan
-23-39 15 21-3,Railway Baggage Cars,nan
-23-39 15 21-4,Railway Diner Cars,nan
-23-39 15 21-5,Railway Freight Cars,nan
-23-39 21 11-21,Jetties,nan
-23-39 21 13,Waterflow Controls,nan
-23-39 21 13-1,Reservoirs,nan
-23-39 21 13-2,"Dams, Dikes",nan
-23-39 21 13-3,Weirs,nan
-23-39 21 13-4,Barrages,nan
-23-39 21 13-5,Bifurcation Panels,nan
-23-39 21 13-6,Manifolds,nan
-23-39 21 13-7,Penstocks and Sluice Gate,nan
-23-39 21 13-8,Trash Rakes,nan
-23-39 21 15,Breakwater Products,nan
-23-39 21 15-1,Bulkheads,nan
-23-39 21 15-2,Seawalls,nan
-23-39 21 15-3,Moles and Breakwater,nan
-23-39 21 15-4,Groins,nan
-23-39 21 17,Marine Monitoring and Control,nan
-23-39 21 17-1,Navigation Signs,nan
-23-39 21 17-2,Navigation Lights,nan
-23-39 21 17-3,Navigation Monitoring Equipment,nan
-23-39 23 00,Electrical Utility Equipment,nan
-23-39 23 11,Electrical Transmission Equipment,nan
-23-39 23 11-1,Electrical Utility Poles,nan
-23-39 23 11-2,Electrical Utility Towers,nan
-23-39 25 00,Natural Gas Utility Equipment,nan
-23-39 25 11,Natural Gas Utility Pipeline Equipment,nan
-23-39 27 00,Water Utility Equipment,nan
-23-39 27 11,Water Utility Pipeline Equipment,nan
-23-39 29 00,Waste Water Collection and Removal,nan
-23-39 29 11,Waste Water Drains,nan
-23-39 29 11-1,Waste Water French Drains,nan
-23-39 29 11-2,Waste Water Storm Drain,nan
-23-39 29 11-3,Manhole (Goes in Prefab Concrete),nan
-23-39 29 11-4,Manhole Cover,nan
-23-39 29 11-5,Manhole Ladder,nan
-23-39 29 11-6,Manhole Rung,nan
-23-39 29 11-7,"Waste Water Drainage Pipes, Couplings, Collectors",nan
-23-39 29 11-8,Wastewater Pipework Access Fittings,nan
-23-39 29 13,Waste Water Subdrainage,nan
-23-39 29 13-1,Geocomposite Drains,nan
-23-39 29 13-2,Geotextile Subsurface Drainage Filtration,nan
-23-39 29 13-3,Pipe Underdrain and Pavement Base Drain,nan
-23-39 29 13-4,Subgrade Drains,nan
-23-39 29 13-5,Surface Water Drainage Systems,nan
-23-39 29 13-6,"Surface Water Catch Basins, Grates, and Frames",nan
-23-39 29 13-7,Combination Storm Drain and Underdrain Inlets,nan
-23-39 29 13-8,"Storm Drainage Manholes, Frames, and Covers",nan
-23-39 29 13-9,Surface Water Retention Chambers,nan
-23-39 29 13-10,Storm Water Ponds and Reservoirs,nan
-23-39 29 13-11,Surface Water Retention Basins,nan
-23-39 29 13-12,Storm Water Pond Covers,nan
-23-39 29 13-13,Storm Water Pond Liners,nan
-23-39 29 15,"Waste Water Channels, Gullies, Gratings, Covers",nan
-23-39 31 00,Packaged Waste Water Treatment,nan
-23-39 33 17-8,Floating Scum Skimming and Removal Equipment,nan
-23-39 35 00,Water and Wastewater Chemical Feed Equipment,nan
-23-39 35 11,Gas Chemical Feed Equipment,nan
-23-39 35 11-1,Chlorine Gas Feed Equipment,nan
-23-39 35 11-2,Sulfur Dioxide Gas Feed Equipment,nan
-23-39 35 11-3,Ammonia Gas Feed Equipment,nan
-23-39 35 11-4,"Gas Storage, Weighing, and Leak Detection Equipment",nan
-23-39 35 11-5,Chlorine Dioxide Reactors,nan
+23-33 17 11-1,Air Source Packaged Heat Pumps,Self-contained heat pump units that extract heat from outdoor air
+23-33 17 11-2,Water Source Packaged Heat Pumps,Self-contained heat pump units that extract heat from water source
+23-33 17 13,Split System Heat Pumps,Heat pump systems with separate indoor and outdoor units
+23-33 17 13-1,Air Source Split System Heat Pumps,Split system heat pumps that extract heat from outdoor air
+23-33 17 13-2,Water Source Split System Heat Pumps,Split system heat pumps that extract heat from water source  
+23-33 19 00,Cooling and Freeze Components,Components used in cooling and freezing systems
+23-33 19 11,Cooling Freeze Plant Accessories,Accessories and parts for cooling/freezing equipment
+23-33 19 11-1,Refrigerant Liquid,Liquid chemicals used as refrigerants in cooling systems
+23-33 21 00,Chillers,Equipment that removes heat from a liquid for cooling
+23-33 21 11,Absorption Chillers,Chillers that use heat instead of mechanical compression
+23-33 21 11-1,Direct Fired Absorption Chillers,Absorption chillers heated directly by combustion
+23-33 21 11-2,Steam Absorption Chillers,Absorption chillers powered by steam
+23-33 21 13,Chillers,General purpose liquid cooling equipment
+23-33 21 13-1,Central Package Unit Chillers,Complete packaged chiller units for central cooling
+23-33 21 13-2,Centrifugal Chillers,Chillers using centrifugal compressors
+23-33 21 13-3,Packaged Centrifugal Chillers,Self-contained chillers with centrifugal compressors
+23-33 21 13-4,Split System Centrifugal Chillers,Split-configuration chillers with centrifugal compressors
+23-33 21 13-5,Reciprocating Chillers,Chillers using reciprocating compressors
+23-33 21 13-6,Packaged Reciprocating Chillers,Self-contained chillers with reciprocating compressors
+23-33 21 13-7,Split System Reciprocating Chillers,Split-configuration chillers with reciprocating compressors
+23-33 21 13-8,Rotary Chillers,Chillers using rotary compressors
+23-33 21 13-9,Packaged Rotary Chillers,Self-contained chillers with rotary compressors
+23-33 21 13-10,Split System Rotary Chillers,Split-configuration chillers with rotary compressors
+23-33 21 13-11,Rotary Screw Chillers,Chillers using rotary screw compressors
+23-33 21 13-12,Packaged Rotary Screw Chillers,Self-contained chillers with rotary screw compressors
+23-33 21 13-13,Split System Rotary Screw Chillers,Split-configuration chillers with rotary screw compressors
+23-33 21 13-14,Screw Chillers,Chillers using screw-type compressors
+23-33 21 13-15,Packaged Screw Chillers,Self-contained chillers with screw compressors
+23-33 21 13-16,Split System Screw Chillers,Split-configuration chillers with screw compressors
+23-33 29 23-2,Automatic Fire Dampers,Self-closing dampers that prevent fire spread in ducts
+23-35 25 11,Electrical Meters,Devices for measuring electrical consumption
+23-35 29 25,Network Protectors,Devices that protect electrical distribution networks
+23-35 37 49,Push Button Switches,Manual switches activated by pushing a button
+23-35 47 11-20,Explosion Proof Lighting Fixtures,Light fixtures rated for hazardous locations
+23-37 25 23-1,Television Broadcasting Equipment,Equipment for transmitting television signals
+23-39 13 11-1,Tunnel Shafts,Vertical access shafts for tunnels
+23-39 15 21-3,Railway Baggage Cars,Rail cars designed for baggage transport
+23-39 15 21-4,Railway Diner Cars,Rail cars equipped as dining facilities
+23-39 15 21-5,Railway Freight Cars,Rail cars designed for freight transport
+23-39 21 11-21,Jetties,Structures extending into water to protect harbors
+23-39 21 13,Waterflow Controls,Devices that control water flow in systems
+23-39 21 13-1,Reservoirs,Structures for storing water
+23-39 21 13-2,"Dams, Dikes",Structures that control water flow in rivers/waterways
+23-39 21 13-3,Weirs,Structures that alter water flow and level
+23-39 21 13-4,Barrages,Barriers built across waterways
+23-39 21 13-5,Bifurcation Panels,Panels that split water flow into multiple paths
+23-39 21 13-6,Manifolds,Components that distribute water flow
+23-39 21 13-7,Penstocks and Sluice Gate,Gates that control water flow in hydropower
+23-39 21 13-8,Trash Rakes,Equipment that removes debris from water intakes
+23-39 21 15,Breakwater Products,Structures that protect against wave action
+23-39 21 15-1,Bulkheads,Retaining walls along waterfront
+23-39 21 15-2,Seawalls,Walls that protect coast from waves
+23-39 21 15-3,Moles and Breakwater,Structures that protect harbors from waves
+23-39 21 15-4,Groins,Structures extending from shore to prevent erosion
+23-39 21 17,Marine Monitoring and Control,Systems for monitoring marine operations
+23-39 21 17-1,Navigation Signs,Signs that guide marine navigation
+23-39 21 17-2,Navigation Lights,Lights that guide marine navigation
+23-39 21 17-3,Navigation Monitoring Equipment,Equipment that monitors marine navigation
+23-39 23 00,Electrical Utility Equipment,Equipment for electrical power distribution
+23-39 23 11,Electrical Transmission Equipment,Equipment for transmitting electrical power
+23-39 23 11-1,Electrical Utility Poles,Poles that support power lines
+23-39 23 11-2,Electrical Utility Towers,Towers that support high voltage power lines
+23-39 25 00,Natural Gas Utility Equipment,Equipment for natural gas distribution
+23-39 25 11,Natural Gas Utility Pipeline Equipment,Equipment for natural gas pipelines
+23-39 27 00,Water Utility Equipment,Equipment for water distribution
+23-39 27 11,Water Utility Pipeline Equipment,Equipment for water pipelines
+23-39 29 00,Waste Water Collection and Removal,Systems for collecting and removing wastewater
+23-39 29 11,Waste Water Drains,Drains for collecting wastewater
+23-39 29 11-1,Waste Water French Drains,Gravel-filled trenches for wastewater drainage
+23-39 29 11-2,Waste Water Storm Drain,Drains for collecting storm water
+23-39 29 11-3,Manhole (Goes in Prefab Concrete),Concrete access points to underground utilities
+23-39 29 11-4,Manhole Cover,Covers for manhole access points
+23-39 29 11-5,Manhole Ladder,Ladders for accessing manholes
+23-39 29 11-6,Manhole Rung,Individual steps in manhole access
+23-39 29 11-7,"Waste Water Drainage Pipes, Couplings, Collectors",Components for wastewater drainage systems
+23-39 29 11-8,Wastewater Pipework Access Fittings,Fittings for accessing wastewater pipes
+23-39 29 13,Waste Water Subdrainage,Underground drainage systems for wastewater
+23-39 29 13-1,Geocomposite Drains,Synthetic drainage materials
+23-39 29 13-2,Geotextile Subsurface Drainage Filtration,Filter fabrics for underground drainage
+23-39 29 13-3,Pipe Underdrain and Pavement Base Drain,Drainage systems under pavement
+23-39 29 13-4,Subgrade Drains,Drains below ground level
+23-39 29 13-5,Surface Water Drainage Systems,Systems for draining surface water
+23-39 29 13-6,"Surface Water Catch Basins, Grates, and Frames",Components for surface water collection
+23-39 29 13-7,Combination Storm Drain and Underdrain Inlets,Combined drainage inlet systems
+23-39 29 13-8,"Storm Drainage Manholes, Frames, and Covers",Access points for storm drainage
+23-39 29 13-9,Surface Water Retention Chambers,Chambers for storing surface water
+23-39 29 13-10,Storm Water Ponds and Reservoirs,Facilities for collecting storm water
+23-39 29 13-11,Surface Water Retention Basins,Basins for storing surface water
+23-39 29 13-12,Storm Water Pond Covers,Covers for storm water ponds
+23-39 29 13-13,Storm Water Pond Liners,Liners for storm water ponds
+23-39 29 15,"Waste Water Channels, Gullies, Gratings, Covers",Components for wastewater collection
+23-39 31 00,Packaged Waste Water Treatment,Self-contained wastewater treatment systems
+23-39 33 17-8,Floating Scum Skimming and Removal Equipment,Equipment for removing surface waste
+23-39 35 00,Water and Wastewater Chemical Feed Equipment,Equipment for adding chemicals to water
+23-39 35 11,Gas Chemical Feed Equipment,Equipment for adding gas chemicals
+23-39 35 11-1,Chlorine Gas Feed Equipment,Equipment for adding chlorine gas
+23-39 35 11-2,Sulfur Dioxide Gas Feed Equipment,Equipment for adding sulfur dioxide gas
+23-39 35 11-3,Ammonia Gas Feed Equipment,Equipment for adding ammonia gas
+23-39 35 11-4,"Gas Storage, Weighing, and Leak Detection Equipment",Equipment for handling gas chemicals
+23-39 35 11-5,Chlorine Dioxide Reactors,Equipment for generating chlorine dioxide
 23-39 35 11-6,Carbon Dioxide Gas Feed Equipment,Equipment that feeds and distributes carbon dioxide gas
 23-39 35 11-7,Ozone Generating and Feed Equipment,Equipment that generates and feeds ozone gas
 23-39 35 11-8,Liquid Oxygen Storage and Feed Equipment,Equipment that stores and feeds liquid oxygen
@@ -2548,7 +2547,7 @@ OmniClass_Code,OmniClass_Title,Description
 33-21 31 99-6,Audiovisual Engineering,Engineering for military facilities and infrastructure.
 33-21 31 99-7,Military Engineering,Support services and tools used in the design process.
 33-21 51 00,Design Support,Drafting and technical drawing services.
-33-21 51 11,Drafting,nan
+33-21 51 11,Drafting,Model making services for design and construction.
 33-21 51 13,Model Making,The creation of physical models and prototypes for design and construction purposes.
 33-21 51 16,Printing,"The process of producing printed materials such as publications, advertisements, and other documents."
 33-21 51 19,Photography/Videography,"The capture of still and moving images for various purposes, including documentation, marketing, and artistic expression."
@@ -2599,106 +2598,106 @@ OmniClass_Code,OmniClass_Title,Description
 34-11 20 11,Executive,A senior-level executive responsible for the overall management and direction of an organization.
 34-11 20 14,Officer,A senior-level officer or manager responsible for a specific function or department within an organization.
 34-11 20 17,Director,A member of the board of directors or other governing body of an organization.
-34-11 20 21,Manager,nan
-35-11 11 21-8,Routers,nan
-35-11 11 31,Business Machines,nan
-35-51 11 11-4,Site Toilets,nan
-35-51 11 21-24,Pipe Wrenches,nan
-35-51 11 21-25,Allen Wrenches,nan
-35-51 11 21-26,Finishing Hand Tools,nan
-35-51 11 21-27,Trowels,nan
-35-51 11 21-28,Floats,nan
-35-51 11 21-29,Paint Brushes,nan
-35-51 11 21-30,Paint Rollers,nan
-35-51 11 21-31,Paint Kettles,nan
-35-51 11 21-32,Moving Hand Tools,nan
-35-51 11 21-33,Wheelbarrows,nan
-35-51 11 21-34,Levering Bars,nan
-35-51 11 31,Power Tools,nan
-35-51 11 31-1,Cutting Power Tools,nan
-35-51 11 31-2,Power Saws,nan
-35-51 11 31-3,Hand-Held Power Drills,nan
-35-51 11 31-4,Breakers,nan
-35-51 11 31-5,Jackhammers,nan
-35-51 11 31-6,Forming Power Tools,nan
-35-51 11 31-7,Power Hammers,nan
-35-51 11 31-8,Power Grinders,nan
-35-51 11 31-9,Power Routers,nan
-35-51 11 31-10,Power Planers,nan
-35-51 11 31-11,Fastening Power Tools,nan
-35-51 11 31-12,Welding Equipment,nan
-35-51 11 31-13,Plumber’s Furnace,nan
-35-51 11 31-14,Finishing Power Tools,nan
-35-51 11 31-15,Power Sanders,nan
-35-51 11 31-16,Power Polishers,nan
-35-51 11 31-17,Scabblers,nan
-35-51 11 31-18,Spraying Equipment For Paints And Insulation,nan
-35-51 11 31-19,Insulation Injection Equipment,nan
-35-51 11 31-20,Coating Sprayers,nan
-35-51 11 31-21,Paint Metering Systems,nan
-35-51 11 31-22,Moving Power Tools,nan
-35-51 11 31-23,Compressors,nan
-35-51 11 31-24,Compressed Air Tools,nan
-35-51 11 31-25,Pressure Cleaners,nan
-35-51 11 31-26,Pipe Defrosting Equipment,nan
-35-51 14 00,Formwork,nan
-35-51 14 11,Wall Formwork Systems,nan
-35-51 14 14,Floor Formwork Systems,nan
-35-51 17 00,"Scaffolding, Shoring, and Fencing",nan
-35-51 17 11,Prefabricated Scaffolds,nan
-35-51 17 14,Mobile Working Towers,nan
-35-51 17 17,Access Towers,nan
-35-51 17 17-1,Stair Towers,nan
-35-51 17 17-2,Ladder Towers,nan
-35-51 17 21,Suspended Work Platforms,nan
-35-51 17 24,Mobile Elevating Work Platforms,nan
-35-51 17 24-1,Guardrails,nan
-35-51 31 31-22,Concrete Transport Equipment,nan
-35-51 31 31-23,Mobile Mixers,nan
-35-51 31 31-73,Concrete Pipe Machines,nan
-35-51 51 19,Vehicle Superstructures and Trailers,nan
-35-51 51 19-1,Tanker Trailers,nan
-35-51 51 19-2,Silo Trailers,nan
-35-51 51 19-3,Low-Loader Trailers,nan
-35-51 51 19-4,Cargo Semi-Trailers,nan
-35-51 51 19-5,Container Semi-Trailers,nan
-35-51 51 19-6,Flatbed Trailers,nan
-35-51 51 19-7,Tipping Trailers,nan
-35-51 51 41,Special Vehicles,nan
-35-51 51 41-1,Road Sweepers/Cleaners,nan
-35-51 51 61,"Excavators, Loaders, Dredgers, and Tractors",nan
-35-51 51 61-1,Excavators,nan
-35-51 51 61-2,Tracked Excavators,nan
-35-51 51 61-3,Mobile Excavators,nan
-35-51 51 61-4,Telescopic Excavators,nan
-35-51 51 61-5,Trenchers,nan
-35-51 51 61-6,Bucket Wheel Excavators,nan
-35-51 51 61-7,Full Circle Slew Excavators,nan
-35-51 51 61-8,Mini Excavators,nan
-35-51 51 61-9,Rope-Operated Excavators,nan
-35-51 51 61-10,Loaders,nan
-35-51 51 61-11,Track-Laying Loaders,nan
-35-51 51 61-12,Wheel-Loaders,nan
-35-51 51 61-13,Skid Steer Loaders,nan
-35-51 51 61-14,Crawler Loaders,nan
-35-51 51 61-15,Digging Arm Loaders,nan
-35-51 51 61-16,Combined Excavator Loaders,nan
-35-51 51 61-17,Dredging Boats and Equipment,nan
-35-51 51 61-18,Scrapers,nan
-35-51 51 61-19,Elevating Scrapers,nan
-35-51 51 61-20,Track-Laying Scrapers,nan
-35-51 51 61-21,Four-Wheeled Scrapers,nan
-35-51 51 61-22,"Scraper Systems, Gravel Extraction",nan
-35-51 51 61-23,Bulldozers and Graders,nan
-35-51 51 61-24,Bulldozers,nan
-35-51 51 61-25,Wheeled Bulldozers,nan
-35-51 51 61-26,Crawler Bulldozers,nan
-35-51 51 61-27,Tracked Bulldozers,nan
-35-51 51 61-28,Angling Bulldozers,nan
-35-51 51 61-29,Straight Bulldozers,nan
-35-51 51 61-30,Road Graders,nan
-35-51 51 61-31,Tractors,nan
-35-51 51 61-32,Agricultural Tractor,nan
+34-11 20 21,Manager,A person responsible for managing projects, teams, or operations
+35-11 11 21-8,Routers,Networking devices that forward data packets between computer networks
+35-11 11 31,Business Machines,Equipment used in business operations like computers, printers, and copiers
+35-51 11 11-4,Site Toilets,Portable restroom facilities for construction sites and outdoor events
+35-51 11 21-24,Pipe Wrenches,Adjustable wrenches designed for gripping and turning pipes or round objects
+35-51 11 21-25,Allen Wrenches,Hexagonal L-shaped wrenches used for fastening hex socket screws
+35-51 11 21-26,Finishing Hand Tools,Hand tools used for completing and refining surfaces and materials
+35-51 11 21-27,Trowels,Hand tools used for spreading and smoothing materials like mortar or plaster
+35-51 11 21-28,Floats,Tools used for smoothing and leveling concrete or plaster surfaces
+35-51 11 21-29,Paint Brushes,Brushes designed for applying paint and other finishes
+35-51 11 21-30,Paint Rollers,Cylindrical tools for applying paint over large surface areas
+35-51 11 21-31,Paint Kettles,Containers used for holding and transporting paint
+35-51 11 21-32,Moving Hand Tools,Manual tools used for moving and transporting materials
+35-51 11 21-33,Wheelbarrows,Single-wheeled carriers for transporting materials on construction sites
+35-51 11 21-34,Levering Bars,Metal bars used for lifting and moving heavy objects
+35-51 11 31,Power Tools,Portable tools powered by electricity or batteries
+35-51 11 31-1,Cutting Power Tools,Power tools designed for cutting materials
+35-51 11 31-2,Power Saws,Electric or battery-powered saws for cutting various materials
+35-51 11 31-3,Hand-Held Power Drills,Portable drills for making holes in various materials
+35-51 11 31-4,Breakers,Power tools for breaking up concrete or rock
+35-51 11 31-5,Jackhammers,Pneumatic hammers for breaking up hard materials
+35-51 11 31-6,Forming Power Tools,Power tools used for shaping and forming materials
+35-51 11 31-7,Power Hammers,Electric or pneumatic hammers for driving nails or breaking materials
+35-51 11 31-8,Power Grinders,Tools for grinding, cutting, or polishing materials
+35-51 11 31-9,Power Routers,Tools for cutting grooves and patterns in wood or other materials
+35-51 11 31-10,Power Planers,Tools for smoothing and leveling wood surfaces
+35-51 11 31-11,Fastening Power Tools,Power tools used for securing materials together
+35-51 11 31-12,Welding Equipment,Tools and equipment for joining metals through welding
+35-51 11 31-13,Plumber's Furnace,Portable heating device used in plumbing work
+35-51 11 31-14,Finishing Power Tools,Power tools used for completing and refining surfaces
+35-51 11 31-15,Power Sanders,Electric tools for smoothing surfaces through sanding
+35-51 11 31-16,Power Polishers,Tools for polishing and buffing surfaces
+35-51 11 31-17,Scabblers,Tools for roughening concrete surfaces
+35-51 11 31-18,Spraying Equipment For Paints And Insulation,Equipment for applying paint or insulation through spraying
+35-51 11 31-19,Insulation Injection Equipment,Tools for injecting insulation materials
+35-51 11 31-20,Coating Sprayers,Equipment for spraying protective or decorative coatings
+35-51 11 31-21,Paint Metering Systems,Systems for measuring and controlling paint application
+35-51 11 31-22,Moving Power Tools,Powered tools for moving and transporting materials
+35-51 11 31-23,Compressors,Machines that compress air for powering pneumatic tools
+35-51 11 31-24,Compressed Air Tools,Tools powered by compressed air
+35-51 11 31-25,Pressure Cleaners,High-pressure water cleaning equipment
+35-51 11 31-26,Pipe Defrosting Equipment,Equipment for thawing frozen pipes
+35-51 14 00,Formwork,Temporary structures used to shape concrete during curing
+35-51 14 11,Wall Formwork Systems,Systems for forming vertical concrete walls
+35-51 14 14,Floor Formwork Systems,Systems for forming horizontal concrete floors
+35-51 17 00,"Scaffolding, Shoring, and Fencing",Temporary structures for construction access and site security
+35-51 17 11,Prefabricated Scaffolds,Pre-made scaffolding components for quick assembly
+35-51 17 14,Mobile Working Towers,Movable elevated platforms for construction work
+35-51 17 17,Access Towers,Vertical towers providing access to elevated work areas
+35-51 17 17-1,Stair Towers,Access towers with stairs for vertical movement
+35-51 17 17-2,Ladder Towers,Access towers with ladders for vertical movement
+35-51 17 21,Suspended Work Platforms,Platforms hung from above for exterior work
+35-51 17 24,Mobile Elevating Work Platforms,Self-propelled lifts for accessing high work areas
+35-51 17 24-1,Guardrails,Safety barriers for preventing falls from elevated platforms
+35-51 31 31-22,Concrete Transport Equipment,Equipment for moving concrete from mixer to placement
+35-51 31 31-23,Mobile Mixers,Portable concrete mixing trucks
+35-51 31 31-73,Concrete Pipe Machines,Equipment for manufacturing concrete pipes
+35-51 51 19,Vehicle Superstructures and Trailers,Equipment mounted on or towed by vehicles
+35-51 51 19-1,Tanker Trailers,Trailers designed for transporting liquids
+35-51 51 19-2,Silo Trailers,Trailers with storage silos for bulk materials
+35-51 51 19-3,Low-Loader Trailers,Trailers with low deck height for heavy equipment
+35-51 51 19-4,Cargo Semi-Trailers,Enclosed trailers for general cargo
+35-51 51 19-5,Container Semi-Trailers,Trailers designed for shipping containers
+35-51 51 19-6,Flatbed Trailers,Open trailers with flat cargo deck
+35-51 51 19-7,Tipping Trailers,Trailers that can tilt to dump loads
+35-51 51 41,Special Vehicles,Vehicles designed for specific construction tasks
+35-51 51 41-1,Road Sweepers/Cleaners,Vehicles for cleaning roads and construction sites
+35-51 51 61,"Excavators, Loaders, Dredgers, and Tractors",Heavy equipment for earth moving and material handling
+35-51 51 61-1,Excavators,Machines for digging and moving earth
+35-51 51 61-2,Tracked Excavators,Excavators that move on continuous tracks
+35-51 51 61-3,Mobile Excavators,Wheeled excavators for greater mobility
+35-51 51 61-4,Telescopic Excavators,Excavators with extending boom for greater reach
+35-51 51 61-5,Trenchers,Machines specialized for digging trenches
+35-51 51 61-6,Bucket Wheel Excavators,Large excavators with rotating wheel of buckets
+35-51 51 61-7,Full Circle Slew Excavators,Excavators that can rotate 360 degrees
+35-51 51 61-8,Mini Excavators,Compact excavators for small spaces
+35-51 51 61-9,Rope-Operated Excavators,Excavators controlled by cable systems
+35-51 51 61-10,Loaders,Machines for loading loose materials
+35-51 51 61-11,Track-Laying Loaders,Loaders that move on continuous tracks
+35-51 51 61-12,Wheel-Loaders,Loaders with wheels for mobility
+35-51 51 61-13,Skid Steer Loaders,Compact loaders with skid steering
+35-51 51 61-14,Crawler Loaders,Loaders that move on tracked undercarriage
+35-51 51 61-15,Digging Arm Loaders,Loaders with articulated digging arms
+35-51 51 61-16,Combined Excavator Loaders,Machines combining loader and excavator functions
+35-51 51 61-17,Dredging Boats and Equipment,Equipment for underwater excavation
+35-51 51 61-18,Scrapers,Machines for collecting and moving earth
+35-51 51 61-19,Elevating Scrapers,Scrapers with elevating mechanism
+35-51 51 61-20,Track-Laying Scrapers,Scrapers that move on continuous tracks
+35-51 51 61-21,Four-Wheeled Scrapers,Wheeled scrapers for earth moving
+35-51 51 61-22,"Scraper Systems, Gravel Extraction",Equipment systems for extracting gravel
+35-51 51 61-23,Bulldozers and Graders,Earth-moving equipment for leveling and grading
+35-51 51 61-24,Bulldozers,Heavy equipment for pushing earth
+35-51 51 61-25,Wheeled Bulldozers,Bulldozers mounted on wheels
+35-51 51 61-26,Crawler Bulldozers,Bulldozers that move on tracked undercarriage
+35-51 51 61-27,Tracked Bulldozers,Bulldozers that operate on continuous tracks
+35-51 51 61-28,Angling Bulldozers,Bulldozers with angling blade capability
+35-51 51 61-29,Straight Bulldozers,Bulldozers with fixed straight blade
+35-51 51 61-30,Road Graders,Machines for leveling and grading roads
+35-51 51 61-31,Tractors,Powered vehicles for pulling equipment
+35-51 51 61-32,Agricultural Tractor,Tractors designed for farming operations
 35-51 51 61-33,Tractor Shovel,"A type of construction equipment used for digging, loading, and moving materials."
 35-51 51 61-34,"Attachments for Excavators, Loaders, Dredgers, and Tractors","Attachments that can be used with excavators, loaders, dredgers, and tractors to perform various tasks."
 35-51 51 61-35,Draglines,A type of construction equipment used for digging and moving large amounts of material.
@@ -2749,56 +2748,56 @@ OmniClass_Code,OmniClass_Title,Description
 41-10 20 17,Arsenic,A metalloid element used in various applications.
 41-10 20 19,Antimony,A metalloid element used in various applications.
 41-10 20 21,Tellurium,A metalloid element used in various applications.
-41-10 20 23,Polonium,nan
-41-10 30 00,Non-Metals,nan
-41-10 30 10,Halogens,nan
-41-10 30 10-1,Fluorine,nan
-41-10 30 10-2,Chlorine,nan
-41-10 30 10-3,Bromine,nan
-41-10 30 10-4,Iodine,nan
-41-10 30 30,Noble Gases,nan
-41-10 30 30-1,Helium,nan
-41-10 30 30-2,Neon,nan
-41-10 30 30-3,Argon,nan
-41-10 30 30-4,Krypton,nan
-41-10 30 30-5,Xenon,nan
-41-10 30 50,Other Non-Metals,nan
-41-10 30 50-1,Hydrogen,nan
-41-10 30 50-2,Carbon,nan
-41-10 30 50-3,Nitrogen,nan
-41-10 30 50-4,Oxygen,nan
-41-10 30 50-5,Phosphorus,nan
-41-10 30 50-6,Sulfur,nan
-41-10 30 50-7,Selenium,nan
-41-30 00 00,Solid Compounds,nan
-41-30 10 00,Mineral Compounds,nan
-41-30 10 11,Igneous Rocks,nan
-41-30 10 11-1,Granite,nan
-41-30 10 11-2,Quartz,nan
-41-30 10 11-3,Onyx,nan
-41-30 10 13,Sedimentary Rocks,nan
-41-30 10 13-1,Limestone,nan
-41-30 10 13-2,Chalk,nan
-41-30 10 13-3,Lime,nan
-41-30 10 13-4,Hydrated Lime,nan
-41-30 10 13-5,Quicklime,nan
-41-30 10 13-6,Slaked Lime,nan
-41-30 10 13-7,Travertine,nan
-41-30 10 13-8,Tufa,nan
-41-30 10 13-9,Barite,nan
-41-30 10 13-10,Sandstone,nan
-41-30 10 13-11,Shale,nan
-41-30 10 13-12,Expanded Shale,nan
-41-30 10 15,Metamorphic Rocks,nan
-41-30 10 15-1,Graphite,nan
-41-30 10 15-2,Marble,nan
-41-30 10 15-3,Marble Stone,nan
-41-30 10 15-4,Limestone Marble,nan
-41-30 10 15-5,Periclase (Magnesia),nan
-41-30 10 15-6,Quartzite,nan
-41-30 10 15-7,Slate,nan
-41-30 10 25,Binding Compounds,nan
-41-30 10 25-1,Clay,nan
+41-10 20 23,Polonium,A highly radioactive metallic element used in nuclear applications
+41-10 30 00,Non-Metals,Elements that are poor conductors of heat and electricity
+41-10 30 10,Halogens,Group of reactive non-metallic elements that form salts
+41-10 30 10-1,Fluorine,Highly reactive halogen gas used in industrial processes
+41-10 30 10-2,Chlorine,Toxic green gas used for water treatment and manufacturing
+41-10 30 10-3,Bromine,Red-brown liquid halogen used in flame retardants and medicines
+41-10 30 10-4,Iodine,Purple crystalline halogen used in medicine and photography
+41-10 30 30,Noble Gases,Inert gaseous elements that rarely form compounds
+41-10 30 30-1,Helium,Lightweight inert gas used in balloons and cryogenics
+41-10 30 30-2,Neon,Inert gas used in lighting and signs
+41-10 30 30-3,Argon,Inert gas used in lighting and welding
+41-10 30 30-4,Krypton,Heavy inert gas used in lighting and insulated windows
+41-10 30 30-5,Xenon,Heavy inert gas used in lighting and medical imaging
+41-10 30 50,Other Non-Metals,Non-metallic elements not in halogens or noble gases
+41-10 30 50-1,Hydrogen,Lightest element used in fuel and industrial processes
+41-10 30 50-2,Carbon,Basic element of organic compounds and life
+41-10 30 50-3,Nitrogen,Gas that makes up most of Earth's atmosphere
+41-10 30 50-4,Oxygen,Gas essential for respiration and combustion
+41-10 30 50-5,Phosphorus,Element essential for life and used in fertilizers
+41-10 30 50-6,Sulfur,Yellow element used in industrial chemicals and rubber
+41-10 30 50-7,Selenium,Element used in electronics and solar cells
+41-30 00 00,Solid Compounds,Materials composed of multiple elements in solid form
+41-30 10 00,Mineral Compounds,Naturally occurring inorganic solid materials
+41-30 10 11,Igneous Rocks,Rocks formed through cooling and solidification of magma
+41-30 10 11-1,Granite,Hard igneous rock used in construction and monuments
+41-30 10 11-2,Quartz,Common mineral composed of crystalline silica
+41-30 10 11-3,Onyx,Banded variety of chalcedony used in decorative stone
+41-30 10 13,Sedimentary Rocks,Rocks formed by accumulation of sediments
+41-30 10 13-1,Limestone,Sedimentary rock composed mainly of calcium carbonate
+41-30 10 13-2,Chalk,Soft white limestone composed of marine organisms
+41-30 10 13-3,Lime,Calcium oxide used in construction and agriculture
+41-30 10 13-4,Hydrated Lime,Calcium hydroxide used in construction and water treatment
+41-30 10 13-5,Quicklime,Calcium oxide produced by heating limestone
+41-30 10 13-6,Slaked Lime,Hydrated lime produced by adding water to quicklime
+41-30 10 13-7,Travertine,Limestone formed by mineral spring deposits
+41-30 10 13-8,Tufa,Porous limestone formed by springs or waterfalls
+41-30 10 13-9,Barite,Heavy mineral used in drilling fluids
+41-30 10 13-10,Sandstone,Sedimentary rock composed of sand particles
+41-30 10 13-11,Shale,Fine-grained sedimentary rock formed from clay
+41-30 10 13-12,Expanded Shale,Heat-treated shale used as lightweight aggregate
+41-30 10 15,Metamorphic Rocks,Rocks transformed by heat and pressure
+41-30 10 15-1,Graphite,Crystalline form of carbon used in pencils and lubricants
+41-30 10 15-2,Marble,Metamorphosed limestone used in construction and art
+41-30 10 15-3,Marble Stone,High-quality marble used for decorative purposes
+41-30 10 15-4,Limestone Marble,Marble formed from limestone under pressure
+41-30 10 15-5,Periclase (Magnesia),Magnesium oxide used in refractory materials
+41-30 10 15-6,Quartzite,Metamorphic rock formed from sandstone
+41-30 10 15-7,Slate,Fine-grained metamorphic rock used for roofing
+41-30 10 25,Binding Compounds,Materials that hold or cement other materials together
+41-30 10 25-1,Clay,Natural earth material that becomes plastic when wet
 41-30 10 25-2,Fire Clay,A type of refractory clay used in high-temperature applications.
 41-30 10 25-3,Bentonite,A type of clay mineral with high absorbency and swelling properties.
 41-30 10 25-4,Expanded Clay,"A lightweight, porous ceramic material made by expanding clay."
