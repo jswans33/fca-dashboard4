@@ -1,4 +1,4 @@
-# Work Chunk 7: Pipeline Factory Implementation
+# Work Chunk 7: Pipeline Factory Implementation - DONE
 
 ## Prompt
 
