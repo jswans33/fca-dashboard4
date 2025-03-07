@@ -6,10 +6,12 @@ This example demonstrates how to use the updated prediction pipeline entry point
 with both the legacy implementation and the new orchestrator-based implementation.
 """
 
+import argparse
 import logging
 import os
 import sys
 from pathlib import Path
+from typing import Dict, List, Optional, Union
 
 import pandas as pd
 
@@ -77,6 +79,19 @@ def create_sample_data():
     return sample_path
 
 
+def create_args_namespace(**kwargs) -> argparse.Namespace:
+    """
+    Create an argparse.Namespace object with the given keyword arguments.
+
+    Args:
+        **kwargs: Keyword arguments to set as attributes on the Namespace.
+
+    Returns:
+        An argparse.Namespace object with the given attributes.
+    """
+    return argparse.Namespace(**kwargs)
+
+
 def legacy_prediction_example(logger):
     """
     Example of using the legacy prediction implementation.
@@ -93,22 +108,18 @@ def legacy_prediction_example(logger):
     output_dir = Path("examples/output")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Set up arguments
-    args = type(
-        "Args",
-        (),
-        {
-            "model_path": "outputs/models/equipment_classifier_latest.pkl",
-            "input_file": str(sample_path),
-            "output_file": str(output_dir / "legacy_prediction_results.csv"),
-            "log_level": "INFO",
-            "description_column": "description",
-            "service_life_column": "service_life",
-            "asset_tag_column": "equipment_tag",
-            "feature_config_path": None,
-            "use_orchestrator": False,
-        },
-    )()
+    # Set up arguments using argparse.Namespace for proper type checking
+    args = create_args_namespace(
+        model_path="outputs/models/equipment_classifier_latest.pkl",
+        input_file=str(sample_path),
+        output_file=str(output_dir / "legacy_prediction_results.csv"),
+        log_level="INFO",
+        description_column="description",
+        service_life_column="service_life",
+        asset_tag_column="equipment_tag",
+        feature_config_path=None,
+        use_orchestrator=False,
+    )
 
     # Check if model exists, if not, skip this example
     if not Path(args.model_path).exists():
@@ -128,11 +139,11 @@ def legacy_prediction_example(logger):
             # Load and display results
             results = pd.read_csv(args.output_file)
             logger.info(f"Legacy prediction results ({len(results)} rows):")
-            for i, row in results.head(3).iterrows():
-                logger.info(f"  Item {i+1}:")
-                logger.info(f"    Description: {row.get('original_description', 'N/A')}")
-                logger.info(f"    Equipment Category: {row.get('category_name', 'N/A')}")
-                logger.info(f"    System Type: {row.get('mcaa_system_category', 'N/A')}")
+            for idx, row in enumerate(results.head(3).iterrows()):
+                logger.info(f"  Item {idx+1}:")
+                logger.info(f"    Description: {row[1].get('original_description', 'N/A')}")
+                logger.info(f"    Equipment Category: {row[1].get('category_name', 'N/A')}")
+                logger.info(f"    System Type: {row[1].get('mcaa_system_category', 'N/A')}")
         else:
             logger.warning(f"Output file not created: {args.output_file}")
 
@@ -156,22 +167,18 @@ def orchestrator_prediction_example(logger):
     output_dir = Path("examples/output")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Set up arguments
-    args = type(
-        "Args",
-        (),
-        {
-            "model_path": "outputs/models/equipment_classifier_latest.pkl",
-            "input_file": str(sample_path),
-            "output_file": str(output_dir / "orchestrator_prediction_results.csv"),
-            "log_level": "INFO",
-            "description_column": "description",
-            "service_life_column": "service_life",
-            "asset_tag_column": "equipment_tag",
-            "feature_config_path": "nexusml/config/feature_config.yml",
-            "use_orchestrator": True,
-        },
-    )()
+    # Set up arguments using argparse.Namespace for proper type checking
+    args = create_args_namespace(
+        model_path="outputs/models/equipment_classifier_latest.pkl",
+        input_file=str(sample_path),
+        output_file=str(output_dir / "orchestrator_prediction_results.csv"),
+        log_level="INFO",
+        description_column="description",
+        service_life_column="service_life",
+        asset_tag_column="equipment_tag",
+        feature_config_path="nexusml/config/feature_config.yml",
+        use_orchestrator=True,
+    )
 
     # Check if model exists, if not, skip this example
     if not Path(args.model_path).exists():
@@ -197,14 +204,14 @@ def orchestrator_prediction_example(logger):
             # Load and display results
             results = pd.read_csv(args.output_file)
             logger.info(f"Orchestrator prediction results ({len(results)} rows):")
-            for i, row in results.head(3).iterrows():
-                logger.info(f"  Item {i+1}:")
-                if "original_description" in row:
-                    logger.info(f"    Description: {row.get('original_description', 'N/A')}")
-                elif "combined_text" in row:
-                    logger.info(f"    Description: {row.get('combined_text', 'N/A')}")
-                logger.info(f"    Equipment Category: {row.get('category_name', 'N/A')}")
-                logger.info(f"    System Type: {row.get('mcaa_system_category', 'N/A')}")
+            for idx, row in enumerate(results.head(3).iterrows()):
+                logger.info(f"  Item {idx+1}:")
+                if "original_description" in row[1]:
+                    logger.info(f"    Description: {row[1].get('original_description', 'N/A')}")
+                elif "combined_text" in row[1]:
+                    logger.info(f"    Description: {row[1].get('combined_text', 'N/A')}")
+                logger.info(f"    Equipment Category: {row[1].get('category_name', 'N/A')}")
+                logger.info(f"    System Type: {row[1].get('mcaa_system_category', 'N/A')}")
         else:
             logger.warning(f"Output file not created: {args.output_file}")
 
@@ -263,22 +270,18 @@ def error_handling_example(logger):
     """
     logger.info("Error Handling Example")
 
-    # Set up arguments with nonexistent files
-    args = type(
-        "Args",
-        (),
-        {
-            "model_path": "nonexistent_model.pkl",
-            "input_file": "nonexistent_input.csv",
-            "output_file": "nonexistent_output.csv",
-            "log_level": "INFO",
-            "description_column": "description",
-            "service_life_column": "service_life",
-            "asset_tag_column": "equipment_tag",
-            "feature_config_path": None,
-            "use_orchestrator": False,
-        },
-    )()
+    # Set up arguments using argparse.Namespace for proper type checking
+    args = create_args_namespace(
+        model_path="nonexistent_model.pkl",
+        input_file="nonexistent_input.csv",
+        output_file="nonexistent_output.csv",
+        log_level="INFO",
+        description_column="description",
+        service_life_column="service_life",
+        asset_tag_column="equipment_tag",
+        feature_config_path=None,
+        use_orchestrator=False,
+    )
 
     try:
         # Try to validate arguments (should fail)

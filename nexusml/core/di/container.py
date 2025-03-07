@@ -5,7 +5,19 @@ This module provides the DIContainer class, which is responsible for
 registering and resolving dependencies in the NexusML suite.
 """
 
-from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast, get_type_hints
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    cast,
+    get_args,
+    get_origin,
+    get_type_hints,
+)
 
 T = TypeVar("T")
 TFactory = Callable[["DIContainer"], T]
@@ -72,7 +84,27 @@ class DIContainer:
             kwargs = {}
             for param_name, param_type in init_params.items():
                 if param_name != "self":
-                    kwargs[param_name] = container.resolve(param_type)
+                    # Handle Optional types
+                    origin = get_origin(param_type)
+                    if origin is Union:
+                        args = get_args(param_type)
+                        # Check if this is Optional[Type] (Union[Type, None])
+                        if len(args) == 2 and args[1] is type(None):
+                            # This is Optional[Type], try to resolve the inner type
+                            try:
+                                kwargs[param_name] = container.resolve(args[0])
+                            except DependencyNotRegisteredError:
+                                # If the inner type is not registered, use None
+                                kwargs[param_name] = None
+                            continue
+
+                    # Regular type resolution
+                    try:
+                        kwargs[param_name] = container.resolve(param_type)
+                    except DependencyNotRegisteredError:
+                        # If the type is not registered and the parameter has a default value,
+                        # we'll let the constructor use the default value
+                        pass
 
             # Create instance
             return implementation_type(**kwargs)  # type: ignore
@@ -117,6 +149,19 @@ class DIContainer:
         Raises:
             DependencyNotRegisteredError: If the type is not registered
         """
+        # Handle Optional types
+        origin = get_origin(interface_type)
+        if origin is Union:
+            args = get_args(interface_type)
+            # Check if this is Optional[Type] (Union[Type, None])
+            if len(args) == 2 and args[1] is type(None):
+                # This is Optional[Type], try to resolve the inner type
+                try:
+                    return self.resolve(args[0])
+                except DependencyNotRegisteredError:
+                    # If the inner type is not registered, return None
+                    return cast(T, None)
+
         # Check if we have a pre-registered instance
         if interface_type in self._instances:
             return cast(T, self._instances[interface_type])
@@ -124,7 +169,7 @@ class DIContainer:
         # Check if we have a factory for this type
         if interface_type not in self._factories:
             raise DependencyNotRegisteredError(
-                f"Type {interface_type.__name__} is not registered in the container"
+                f"Type {getattr(interface_type, '__name__', str(interface_type))} is not registered in the container"
             )
 
         # Get the factory

@@ -13,7 +13,10 @@ from typing import (
     Callable,
     Type,
     TypeVar,
+    Union,
     cast,
+    get_args,
+    get_origin,
     get_type_hints,
     overload,
 )
@@ -70,6 +73,22 @@ def inject(func: F) -> F:
             # Try to resolve the parameter from the container
             if param_name in hints:
                 param_type = hints[param_name]
+
+                # Handle Optional types
+                origin = get_origin(param_type)
+                if origin is Union:
+                    args = get_args(param_type)
+                    # Check if this is Optional[Type] (Union[Type, None])
+                    if len(args) == 2 and args[1] is type(None):
+                        # This is Optional[Type], try to resolve the inner type
+                        try:
+                            kwargs[param_name] = container.resolve(args[0])
+                        except Exception:
+                            # If resolution fails, let the function handle the missing parameter
+                            pass
+                        continue
+
+                # Regular type resolution
                 with contextlib.suppress(Exception):
                     kwargs[param_name] = container.resolve(param_type)
                     # If resolution fails, let the function handle the missing parameter

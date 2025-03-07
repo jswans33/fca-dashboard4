@@ -28,7 +28,7 @@ and numeric features, with integrated EAV (Entity-Attribute-Value) structure. Ke
 
 # Standard library imports
 import os
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, cast
 
 # Third-party imports
 import matplotlib.pyplot as plt
@@ -44,6 +44,7 @@ from nexusml.core.data_mapper import (
 
 # Local imports
 from nexusml.core.data_preprocessing import load_and_preprocess_data
+from nexusml.core.di.decorators import inject, injectable
 from nexusml.core.dynamic_mapper import DynamicFieldMapper
 from nexusml.core.eav_manager import EAVManager, EAVTransformer
 from nexusml.core.evaluation import (
@@ -60,28 +61,34 @@ from nexusml.core.feature_engineering import (
 from nexusml.core.model_building import build_enhanced_model
 
 
+@injectable
 class EquipmentClassifier:
     """
     Comprehensive equipment classifier with EAV integration.
+
+    This class uses dependency injection to receive its dependencies,
+    making it more testable and configurable.
     """
 
+    @inject
     def __init__(
         self,
         model=None,
-        feature_engineer=None,
-        eav_manager=None,
-        sampling_strategy="direct",
+        feature_engineer: Optional[GenericFeatureEngineer] = None,
+        eav_manager: Optional[EAVManager] = None,
+        sampling_strategy: str = "direct",
     ):
         """
         Initialize the equipment classifier.
 
         Args:
             model: Trained ML model (if None, needs to be trained)
-            feature_engineer: Feature engineering transformer
-            eav_manager: EAV manager for attribute templates
+            feature_engineer: Feature engineering transformer (injected)
+            eav_manager: EAV manager for attribute templates (injected)
             sampling_strategy: Strategy for handling class imbalance
         """
         self.model = model
+        # Ensure we have a feature engineer and EAV manager
         self.feature_engineer = feature_engineer or GenericFeatureEngineer()
         self.eav_manager = eav_manager or EAVManager()
         self.sampling_strategy = sampling_strategy
@@ -361,6 +368,7 @@ def train_enhanced_model(
     sampling_strategy: str = "direct",
     feature_config_path: Optional[str] = None,
     eav_manager: Optional[EAVManager] = None,
+    feature_engineer: Optional[GenericFeatureEngineer] = None,
     **kwargs,
 ) -> Tuple[Any, pd.DataFrame]:
     """
@@ -370,12 +378,28 @@ def train_enhanced_model(
         data_path: Path to the CSV file. Defaults to None, which uses the standard location.
         sampling_strategy: Strategy for handling class imbalance ("direct" is the only supported option for now)
         feature_config_path: Path to the feature configuration file. Defaults to None, which uses the standard location.
-        eav_manager: EAVManager instance. If None, creates a new one.
+        eav_manager: EAVManager instance. If None, uses the one from the DI container.
+        feature_engineer: GenericFeatureEngineer instance. If None, uses the one from the DI container.
         **kwargs: Additional parameters for the model
 
     Returns:
         tuple: (trained model, preprocessed dataframe)
     """
+    # Get dependencies from DI container if not provided
+    if eav_manager is None or feature_engineer is None:
+        from nexusml.core.di.provider import ContainerProvider
+
+        container = ContainerProvider().container
+
+        if eav_manager is None:
+            eav_manager = container.resolve(EAVManager)
+
+        if feature_engineer is None:
+            # Create a new feature engineer with the provided config path and EAV manager
+            feature_engineer = GenericFeatureEngineer(
+                config_path=feature_config_path, eav_manager=eav_manager
+            )
+
     # 1. Load and preprocess data
     print("Loading and preprocessing data...")
     df = load_and_preprocess_data(data_path)
@@ -386,10 +410,6 @@ def train_enhanced_model(
 
     # 2. Apply Generic Feature Engineering with EAV integration
     print("Applying Generic Feature Engineering with EAV integration...")
-    eav_manager = eav_manager or EAVManager()
-    feature_engineer = GenericFeatureEngineer(
-        config_path=feature_config_path, eav_manager=eav_manager
-    )
     df = feature_engineer.transform(df)
 
     # 3. Prepare training data - now including both text and numeric features
@@ -447,7 +467,11 @@ def train_enhanced_model(
 
 
 def predict_with_enhanced_model(
-    model: Any, description: str, service_life: float = 0.0, asset_tag: str = ""
+    model: Any,
+    description: str,
+    service_life: float = 0.0,
+    asset_tag: str = "",
+    eav_manager: Optional[EAVManager] = None,
 ) -> dict:
     """
     Make predictions with enhanced detail for "Other" categories
@@ -460,10 +484,18 @@ def predict_with_enhanced_model(
         description (str): Text description to classify
         service_life (float, optional): Service life value. Defaults to 0.0.
         asset_tag (str, optional): Asset tag for equipment. Defaults to "".
+        eav_manager (Optional[EAVManager], optional): EAV manager instance. If None, uses the one from the DI container.
 
     Returns:
         dict: Prediction results with classifications and master DB mappings
     """
+    # Get EAV manager from DI container if not provided
+    if eav_manager is None:
+        from nexusml.core.di.provider import ContainerProvider
+
+        container = ContainerProvider().container
+        eav_manager = container.resolve(EAVManager)
+
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(
         {"combined_features": [description], "service_life": [service_life]}
@@ -501,7 +533,6 @@ def predict_with_enhanced_model(
 
     # Add EAV template information
     try:
-        eav_manager = EAVManager()
         equipment_type = result[
             "category_name"
         ]  # Use category_name instead of Equipment_Category
