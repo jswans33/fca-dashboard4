@@ -140,6 +140,56 @@ class CustomDataLoader(BaseDataLoader):
         return processed_data
 ```
 
+### Pipeline Factory
+
+NexusML provides a centralized factory for creating pipeline components with
+proper dependencies. The factory uses a component registry to look up
+implementations and a dependency injection container to resolve dependencies.
+
+```python
+from nexusml.core.di.container import DIContainer
+from nexusml.core.pipeline.factory import PipelineFactory
+from nexusml.core.pipeline.registry import ComponentRegistry
+
+# Create a registry and container
+registry = ComponentRegistry()
+container = DIContainer()
+
+# Register components
+registry.register(DataLoader, "csv", CSVDataLoader)
+registry.register(DataPreprocessor, "standard", StandardPreprocessor)
+registry.register(FeatureEngineer, "text", TextFeatureEngineer)
+registry.register(ModelBuilder, "random_forest", RandomForestModelBuilder)
+
+# Set default implementations
+registry.set_default_implementation(DataLoader, "csv")
+registry.set_default_implementation(DataPreprocessor, "standard")
+registry.set_default_implementation(FeatureEngineer, "text")
+registry.set_default_implementation(ModelBuilder, "random_forest")
+
+# Create a factory
+factory = PipelineFactory(registry, container)
+
+# Create components
+data_loader = factory.create_data_loader()
+preprocessor = factory.create_data_preprocessor()
+feature_engineer = factory.create_feature_engineer()
+model_builder = factory.create_model_builder()
+```
+
+The factory provides several advantages:
+
+- **Centralized Component Creation**: All components are created through a
+  single factory, making it easy to manage and configure.
+- **Dependency Injection**: Components with dependencies are automatically wired
+  together.
+- **Customization**: You can select specific implementations or provide custom
+  configuration.
+- **Testability**: Components can be easily mocked or replaced for testing.
+
+For more details, see the
+[Pipeline Components README](nexusml/core/pipeline/README.md).
+
 ## Configuration
 
 NexusML uses a unified configuration system that centralizes all settings in a
