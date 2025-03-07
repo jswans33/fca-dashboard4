@@ -354,7 +354,8 @@ class TestModelTrainer:
         x, y = sample_data
         for trainer in trainer_implementations:
             try:
-                trained_model = trainer.train(sample_model, x, y)
+                # Convert y to 1D array to avoid DataConversionWarning
+                trained_model = trainer.train(sample_model, x, y.values.ravel())
                 assert isinstance(trained_model, Pipeline)
             except Exception as e:
                 # Some implementations might require specific data formats

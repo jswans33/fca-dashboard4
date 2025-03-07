@@ -154,8 +154,12 @@ class TestStandardFeatureEngineer(unittest.TestCase):
         self.assertGreater(len(pipeline.steps), 0)
 
         # Check that the pipeline can be fitted and used to transform
-        pipeline.fit(self.sample_data)
-        result = pipeline.transform(self.sample_data)
+        # Create a copy of the data to avoid modifying the original
+        data_copy = self.sample_data.copy()
+        # Fit the pipeline first
+        pipeline.fit(data_copy)
+        # Then transform (this avoids the FutureWarning)
+        result = pipeline.transform(data_copy)
 
         # Check that the result is a DataFrame
         self.assertIsInstance(result, pd.DataFrame)
