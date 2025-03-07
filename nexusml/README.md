@@ -67,6 +67,62 @@ features = feature_engineer.engineer_features(data)
 model = model_builder.build_model()
 ```
 
+### Standard Data Components
+
+NexusML provides standard implementations of the data components that use the
+unified configuration system:
+
+```python
+from nexusml.core.pipeline.components.data_loader import StandardDataLoader
+from nexusml.core.pipeline.components.data_preprocessor import StandardDataPreprocessor
+
+# Create standard components
+data_loader = StandardDataLoader()
+data_preprocessor = StandardDataPreprocessor()
+
+# Load data using the standard loader
+data = data_loader.load_data("path/to/data.csv")
+
+# Preprocess data using the standard preprocessor
+preprocessed_data = data_preprocessor.preprocess(data, drop_duplicates=True)
+```
+
+The standard components provide several advantages:
+
+- Centralized configuration through the unified configuration system
+- Robust error handling and detailed logging
+- Consistent interfaces for all data operations
+- Improved testability and maintainability
+
+For backward compatibility, adapter classes are provided that implement the new
+interfaces while maintaining the legacy behavior:
+
+```python
+from nexusml.core.pipeline.adapters.data_adapter import (
+    LegacyDataLoaderAdapter,
+    LegacyDataPreprocessorAdapter
+)
+
+# Create adapter instances
+legacy_loader = LegacyDataLoaderAdapter()
+legacy_preprocessor = LegacyDataPreprocessorAdapter()
+
+# Use with the same interface as the standard components
+data = legacy_loader.load_data("path/to/legacy_data.csv")
+preprocessed_data = legacy_preprocessor.preprocess(data)
+```
+
+You can also use the `DataComponentFactory` to create the appropriate component
+based on configuration:
+
+```python
+from nexusml.core.pipeline.adapters.data_adapter import DataComponentFactory
+
+# Create a data loader (standard or legacy based on the use_legacy flag)
+data_loader = DataComponentFactory.create_data_loader(use_legacy=False)
+data_preprocessor = DataComponentFactory.create_data_preprocessor(use_legacy=False)
+```
+
 ### Creating Custom Components
 
 You can create custom components by implementing the interfaces:
