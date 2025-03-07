@@ -1,3 +1,0 @@
-"""
-NexusML tests package.
-"""
