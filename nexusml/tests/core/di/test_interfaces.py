@@ -354,8 +354,9 @@ class TestModelTrainer:
         x, y = sample_data
         for trainer in trainer_implementations:
             try:
-                # Convert y to 1D array to avoid DataConversionWarning
-                trained_model = trainer.train(sample_model, x, y.values.ravel())
+                # Note: This will generate a DataConversionWarning from scikit-learn
+                # but we can't change the interface which expects a DataFrame
+                trained_model = trainer.train(sample_model, x, y)
                 assert isinstance(trained_model, Pipeline)
             except Exception as e:
                 # Some implementations might require specific data formats
@@ -439,9 +440,13 @@ class TestModelEvaluator:
         for evaluator in evaluator_implementations:
             try:
                 # First train the model
+                # Note: This will generate a DataConversionWarning from scikit-learn
+                # but we can't change the interface which expects a DataFrame
                 sample_model.fit(x, y)
 
                 # Then evaluate
+                # Note: This may generate UndefinedMetricWarning if precision is calculated
+                # for classes with no predicted samples. This is expected in test data.
                 metrics = evaluator.evaluate(sample_model, x, y)
                 assert isinstance(metrics, dict)
             except Exception as e:
@@ -461,9 +466,13 @@ class TestModelEvaluator:
         for evaluator in evaluator_implementations:
             try:
                 # First train the model
+                # Note: This will generate a DataConversionWarning from scikit-learn
+                # but we can't change the interface which expects a DataFrame
                 sample_model.fit(x, y)
 
                 # Then analyze predictions
+                # Note: This may generate UndefinedMetricWarning if precision is calculated
+                # for classes with no predicted samples. This is expected in test data.
                 analysis = evaluator.analyze_predictions(sample_model, x, y, y_pred)
                 assert isinstance(analysis, dict)
             except Exception as e:
@@ -593,6 +602,8 @@ class TestPredictor:
         for predictor in predictor_implementations:
             try:
                 # First train the model
+                # Note: This will generate a DataConversionWarning from scikit-learn
+                # but we can't change the interface which expects a DataFrame
                 sample_model.fit(x, y)
 
                 # Then predict
@@ -616,6 +627,8 @@ class TestPredictor:
         for predictor in predictor_implementations:
             try:
                 # First train the model
+                # Note: This will generate a DataConversionWarning from scikit-learn
+                # but we can't change the interface which expects a DataFrame
                 sample_model.fit(x, y)
 
                 # Then predict probabilities
