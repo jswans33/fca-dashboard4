@@ -1,0 +1,626 @@
+# NexusML Configuration File
+# This file centralizes all configuration settings for the NexusML suite.
+#
+# Note: The legacy configuration files (feature_config.yml, classification_config.yml,
+# data_config.yml, reference_config.yml, etc.) are maintained for backward compatibility
+# and are planned for removal in future work chunks. Once all code is updated to
+# use the new unified configuration system, these files will be removed.
+
+# Feature Engineering Configuration
+# Controls how features are extracted and processed from raw data
+feature_engineering:
+  # Text field combinations for creating composite text features
+  text_combinations:
+    - name: 'combined_text'
+      columns:
+        - 'equipment_tag'
+        - 'manufacturer'
+        - 'model'
+        - 'category_name'
+        - 'mcaa_system_category'
+        - 'building_name'
+      separator: ' ' # Separator between combined fields
+
+  # Numeric column processing configuration
+  numeric_columns:
+    - name: 'initial_cost'
+      new_name: 'initial_cost' # Optional rename
+      fill_value: 0 # Value to use for missing data
+      dtype: 'float' # Data type for the column
+
+    - name: 'condition_score'
+      new_name: 'service_life' # Map condition_score to service_life
+      fill_value: 3.0
+      dtype: 'float'
+
+  # Hierarchical field creation
+  hierarchies:
+    - new_col: 'Equipment_Type'
+      parents: ['mcaa_system_category', 'category_name']
+      separator: '-'
+
+    - new_col: 'System_Subtype'
+      parents: ['mcaa_system_category', 'category_name']
+      separator: '-'
+
+  # Column mapping configurations
+  column_mappings:
+    - source: 'category_name'
+      target: 'Equipment_Category'
+
+    - source: 'uniformat_code'
+      target: 'Uniformat_Class'
+
+    - source: 'mcaa_system_category'
+      target: 'System_Type'
+
+  # Classification system configurations
+  classification_systems:
+    - name: 'OmniClass'
+      source_column: 'omniclass_code'
+      target_column: 'OmniClass_ID'
+      mapping_type: 'direct' # Use direct mapping instead of eav
+
+    - name: 'MasterFormat'
+      source_column: 'masterformat_code'
+      target_column: 'MasterFormat_ID'
+      mapping_type: 'direct' # Use direct mapping instead of function
+
+    - name: 'Uniformat'
+      source_column: 'uniformat_code'
+      target_column: 'Uniformat_ID'
+      mapping_type: 'direct' # Use direct mapping instead of eav
+
+  # Direct column mapping configurations
+  direct_mappings:
+    - source: 'CategoryID'
+      target: 'Equipment_Subcategory'
+
+    - source: 'OmniClassID'
+      target: 'OmniClass_ID'
+
+    - source: 'UniFormatID'
+      target: 'Uniformat_ID'
+
+    - source: 'MasterFormatID'
+      target: 'MasterFormat_ID'
+
+    - source: 'MCAAID'
+      target: 'MCAA_ID'
+
+    - source: 'LocationID'
+      target: 'Location_ID'
+
+  # Entity-Attribute-Value integration configuration
+  eav_integration:
+    enabled: false # Disable EAV integration since we're using direct mappings
+
+# Classification Configuration
+# Controls how equipment is classified into standardized systems
+classification:
+  # Classification targets to predict
+  classification_targets:
+    - name: 'Equipment_Category'
+      description: 'Primary equipment type (e.g., Chiller, Pump, Air Handler)'
+      required: true
+      master_db:
+        table: 'Equipment_Categories'
+        field: 'CategoryName'
+        id_field: 'CategoryID'
+
+    - name: 'Uniformat_Class'
+      description: 'Uniformat classification code (e.g., D3040, D2010)'
+      required: true
+      master_db:
+        table: 'UniFormat'
+        field: 'UniFormatCode'
+        id_field: 'UniFormatID'
+
+    - name: 'System_Type'
+      description: 'System type (e.g., HVAC, Plumbing)'
+      required: true
+      master_db:
+        table: 'Equipment'
+        field: 'System_Type'
+
+    - name: 'MasterFormat_Class'
+      description: 'MasterFormat classification code'
+      required: false
+      master_db:
+        table: 'MasterFormat'
+        field: 'MasterFormatCode'
+        id_field: 'MasterFormatID'
+
+  # Input field mapping strategies - flexible matching for incoming data
+  input_field_mappings:
+    - target: 'Asset Category'
+      patterns:
+        - 'Asset Name'
+        - 'Asset Type'
+        - 'Equipment Type'
+        - 'Equipment Name'
+        - 'Equip Name'
+        - 'Equip Type'
+
+    - target: 'System Type ID'
+      patterns:
+        - 'Trade'
+        - 'System ID'
+        - 'Discipline'
+
+    - target: 'Precon System'
+      patterns:
+        - 'System Category'
+        - 'System Type'
+        - 'System'
+
+    - target: 'Equip Name ID'
+      patterns:
+        - 'Sub System Type'
+        - 'Asset Subtype'
+        - 'Asset Sub Type'
+        - 'Equipment Subtype'
+
+# Data Preprocessing Configuration
+# Controls how data is loaded, validated, and preprocessed
+data:
+  # Required columns for the model
+  # If these columns are missing, they will be created with default values
+  required_columns:
+    # Source columns (from raw data)
+    - name: 'equipment_tag'
+      default_value: ''
+      data_type: 'str'
+    - name: 'manufacturer'
+      default_value: ''
+      data_type: 'str'
+    - name: 'model'
+      default_value: ''
+      data_type: 'str'
+    - name: 'category_name'
+      default_value: ''
+      data_type: 'str'
+    - name: 'omniclass_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'uniformat_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'masterformat_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'mcaa_system_category'
+      default_value: ''
+      data_type: 'str'
+    - name: 'building_name'
+      default_value: ''
+      data_type: 'str'
+    - name: 'initial_cost'
+      default_value: 0
+      data_type: 'float'
+    - name: 'condition_score'
+      default_value: 0
+      data_type: 'float'
+    - name: 'CategoryID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'OmniClassID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'UniFormatID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'MasterFormatID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'MCAAID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'LocationID'
+      default_value: 0
+      data_type: 'int'
+
+    # Target columns (created during feature engineering)
+    - name: 'Equipment_Category'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Uniformat_Class'
+      default_value: ''
+      data_type: 'str'
+    - name: 'System_Type'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Equipment_Subcategory'
+      default_value: ''
+      data_type: 'str'
+    - name: 'combined_text'
+      default_value: ''
+      data_type: 'str'
+    - name: 'service_life'
+      default_value: 0
+      data_type: 'float'
+    - name: 'Equipment_Type'
+      default_value: ''
+      data_type: 'str'
+    - name: 'System_Subtype'
+      default_value: ''
+      data_type: 'str'
+    - name: 'OmniClass_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Uniformat_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'MasterFormat_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'MCAA_ID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'Location_ID'
+      default_value: 0
+      data_type: 'int'
+
+  # Training data configuration
+  training_data:
+    default_path: 'nexusml/data/training_data/fake_training_data.csv'
+    encoding: 'utf-8'
+    fallback_encoding: 'latin1'
+
+# Reference Data Configuration
+# Controls how reference data is loaded and used
+reference:
+  # Base paths for reference data sources
+  paths:
+    omniclass: 'nexusml/ingest/reference/omniclass'
+    uniformat: 'nexusml/ingest/reference/uniformat'
+    masterformat: 'nexusml/ingest/reference/masterformat'
+    mcaa_glossary: 'nexusml/ingest/reference/mcaa-glossary'
+    mcaa_abbreviations: 'nexusml/ingest/reference/mcaa-glossary'
+    smacna: 'nexusml/ingest/reference/smacna-manufacturers'
+    ashrae: 'nexusml/ingest/reference/service-life/ashrae'
+    energize_denver: 'nexusml/ingest/reference/service-life/energize-denver'
+    equipment_taxonomy: 'nexusml/ingest/reference/equipment-taxonomy'
+
+  # File patterns for finding reference data files
+  file_patterns:
+    omniclass: '*.csv'
+    uniformat: '*.csv'
+    masterformat: '*.csv'
+    mcaa_glossary: 'Glossary.csv'
+    mcaa_abbreviations: 'Abbreviations.csv'
+    smacna: '*.json'
+    ashrae: '*.csv'
+    energize_denver: '*.csv'
+    equipment_taxonomy: '*.csv'
+
+  # Column mappings for standardizing reference data
+  column_mappings:
+    omniclass:
+      code: 'OmniClass_Code'
+      name: 'OmniClass_Title'
+      description: 'Description'
+    uniformat:
+      code: 'UniFormat Code'
+      name: 'UniFormat Title'
+      description: 'Description'
+    masterformat:
+      code: 'MasterFormat Code'
+      name: 'MasterFormat Title'
+      description: 'Description'
+    service_life:
+      equipment_type: 'Equipment Type'
+      median_years: 'Median Years'
+      min_years: 'Min Years'
+      max_years: 'Max Years'
+      source: 'Source'
+    equipment_taxonomy:
+      # Map internal names (keys) to CSV column names (values)
+      asset_category: 'Asset Category'
+      equipment_id: 'Equip Name ID'
+      trade: 'Trade'
+      title: 'Title'
+      drawing_abbreviation: 'Drawing Abbreviation'
+      precon_tag: 'Precon Tag'
+      system_type_id: 'System Type ID'
+      sub_system_type: 'Sub System Type'
+      sub_system_id: 'Sub System ID'
+      sub_system_class: 'Sub System Class'
+      class_id: 'Class ID'
+      equipment_size: 'Equipment Size'
+      unit: 'Unit'
+      service_maintenance_hrs: 'Service Maintenance Hrs'
+      service_life: 'Service Life'
+
+  # Hierarchical relationships
+  hierarchies:
+    omniclass:
+      separator: '-'
+      levels: 3
+    uniformat:
+      separator: ''
+      levels: 4
+    masterformat:
+      separator: ' '
+      levels: 3
+
+  # Default values when data is missing
+  defaults:
+    service_life: 15.0
+    confidence: 0.5
+
+# Equipment Attributes Configuration
+# Defines attributes and metadata for different equipment types
+equipment_attributes:
+  Chiller:
+    omniclass_id: '23-33 11 11 11'
+    masterformat_id: '23 64 00'
+    uniformat_id: 'D3020'
+    required_attributes:
+      - 'cooling_capacity_tons'
+      - 'efficiency_kw_per_ton'
+      - 'refrigerant_type'
+      - 'chiller_type'
+    optional_attributes:
+      - 'condenser_type'
+      - 'compressor_type'
+      - 'min_part_load_ratio'
+      - 'evaporator_flow_rate_gpm'
+      - 'condenser_flow_rate_gpm'
+    units:
+      cooling_capacity_tons: 'tons'
+      efficiency_kw_per_ton: 'kW/ton'
+      evaporator_flow_rate_gpm: 'GPM'
+      condenser_flow_rate_gpm: 'GPM'
+    performance_fields:
+      service_life:
+        default: 20
+        unit: 'years'
+      maintenance_interval:
+        default: 3
+        unit: 'months'
+
+  'Air Handler':
+    omniclass_id: '23-33 11 13 11'
+    masterformat_id: '23 73 00'
+    uniformat_id: 'D3040'
+    required_attributes:
+      - 'airflow_cfm'
+      - 'static_pressure_in_wg'
+      - 'cooling_capacity_mbh'
+      - 'fan_type'
+    optional_attributes:
+      - 'heating_capacity_mbh'
+      - 'filter_type'
+      - 'filter_efficiency'
+      - 'motor_hp'
+      - 'motor_voltage'
+    units:
+      airflow_cfm: 'CFM'
+      static_pressure_in_wg: 'in WG'
+      cooling_capacity_mbh: 'MBH'
+      heating_capacity_mbh: 'MBH'
+      motor_hp: 'HP'
+      motor_voltage: 'V'
+    performance_fields:
+      service_life:
+        default: 15
+        unit: 'years'
+      maintenance_interval:
+        default: 1
+        unit: 'months'
+
+  Boiler:
+    omniclass_id: '23-33 11 21 11'
+    masterformat_id: '23 52 00'
+    uniformat_id: 'D3020'
+    required_attributes:
+      - 'heating_capacity_mbh'
+      - 'efficiency_percent'
+      - 'fuel_type'
+      - 'boiler_type'
+    optional_attributes:
+      - 'pressure_rating_psig'
+      - 'flow_rate_gpm'
+      - 'temperature_rise_f'
+      - 'burner_type'
+      - 'nox_emissions'
+    units:
+      heating_capacity_mbh: 'MBH'
+      efficiency_percent: '%'
+      pressure_rating_psig: 'PSIG'
+      flow_rate_gpm: 'GPM'
+      temperature_rise_f: '°F'
+    performance_fields:
+      service_life:
+        default: 25
+        unit: 'years'
+      maintenance_interval:
+        default: 6
+        unit: 'months'
+
+  Pump:
+    omniclass_id: '23-27 11 11 11'
+    masterformat_id: '22 11 23'
+    uniformat_id: 'D2010'
+    required_attributes:
+      - 'flow_rate_gpm'
+      - 'head_pressure_ft'
+      - 'pump_type'
+      - 'motor_hp'
+    optional_attributes:
+      - 'impeller_diameter'
+      - 'efficiency_percent'
+      - 'motor_speed_rpm'
+      - 'motor_voltage'
+      - 'motor_phase'
+    units:
+      flow_rate_gpm: 'GPM'
+      head_pressure_ft: 'ft'
+      impeller_diameter: 'in'
+      efficiency_percent: '%'
+      motor_speed_rpm: 'RPM'
+      motor_hp: 'HP'
+      motor_voltage: 'V'
+    performance_fields:
+      service_life:
+        default: 15
+        unit: 'years'
+      maintenance_interval:
+        default: 6
+        unit: 'months'
+
+  'Heat Exchanger':
+    omniclass_id: '23-33 11 31 11'
+    masterformat_id: '23 57 00'
+    uniformat_id: 'D3020'
+    required_attributes:
+      - 'heat_transfer_capacity_mbh'
+      - 'primary_fluid'
+      - 'secondary_fluid'
+      - 'exchanger_type'
+    optional_attributes:
+      - 'primary_flow_rate_gpm'
+      - 'secondary_flow_rate_gpm'
+      - 'primary_pressure_drop_ft'
+      - 'secondary_pressure_drop_ft'
+      - 'material'
+    units:
+      heat_transfer_capacity_mbh: 'MBH'
+      primary_flow_rate_gpm: 'GPM'
+      secondary_flow_rate_gpm: 'GPM'
+      primary_pressure_drop_ft: 'ft'
+      secondary_pressure_drop_ft: 'ft'
+    performance_fields:
+      service_life:
+        default: 20
+        unit: 'years'
+      maintenance_interval:
+        default: 12
+        unit: 'months'
+
+  'Cooling Tower':
+    omniclass_id: '23-33 11 14 11'
+    masterformat_id: '23 65 00'
+    uniformat_id: 'D3030'
+    required_attributes:
+      - 'cooling_capacity_tons'
+      - 'flow_rate_gpm'
+      - 'tower_type'
+      - 'fan_type'
+    optional_attributes:
+      - 'fan_hp'
+      - 'design_wet_bulb'
+      - 'design_range'
+      - 'design_approach'
+      - 'basin_capacity_gal'
+    units:
+      cooling_capacity_tons: 'tons'
+      flow_rate_gpm: 'GPM'
+      fan_hp: 'HP'
+      design_wet_bulb: '°F'
+      design_range: '°F'
+      design_approach: '°F'
+      basin_capacity_gal: 'gal'
+    performance_fields:
+      service_life:
+        default: 15
+        unit: 'years'
+      maintenance_interval:
+        default: 1
+        unit: 'months'
+
+  Fan:
+    omniclass_id: '23-33 11 13 17'
+    masterformat_id: '23 34 00'
+    uniformat_id: 'D3040'
+    required_attributes:
+      - 'airflow_cfm'
+      - 'static_pressure_in_wg'
+      - 'fan_type'
+      - 'motor_hp'
+    optional_attributes:
+      - 'motor_voltage'
+      - 'motor_phase'
+      - 'motor_speed_rpm'
+      - 'drive_type'
+      - 'wheel_diameter'
+    units:
+      airflow_cfm: 'CFM'
+      static_pressure_in_wg: 'in WG'
+      motor_hp: 'HP'
+      motor_voltage: 'V'
+      motor_speed_rpm: 'RPM'
+      wheel_diameter: 'in'
+    performance_fields:
+      service_life:
+        default: 15
+        unit: 'years'
+      maintenance_interval:
+        default: 3
+        unit: 'months'
+
+  'VAV Box':
+    omniclass_id: '23-33 11 13 23'
+    masterformat_id: '23 36 00'
+    uniformat_id: 'D3040'
+    required_attributes:
+      - 'airflow_cfm'
+      - 'heating_capacity_mbh'
+      - 'box_type'
+      - 'inlet_size'
+    optional_attributes:
+      - 'pressure_drop_in_wg'
+      - 'control_type'
+      - 'sound_rating'
+      - 'reheat_coil_type'
+      - 'damper_type'
+    units:
+      airflow_cfm: 'CFM'
+      heating_capacity_mbh: 'MBH'
+      inlet_size: 'in'
+      pressure_drop_in_wg: 'in WG'
+    performance_fields:
+      service_life:
+        default: 15
+        unit: 'years'
+      maintenance_interval:
+        default: 6
+        unit: 'months'
+
+# MasterFormat Primary Mappings
+# Maps system types to MasterFormat codes
+masterformat_primary:
+  H:
+    'Chiller Plant': '23 64 00'
+    'Cooling Tower Plant': '23 65 00'
+    'Heating Water Boiler Plant': '23 52 00'
+    'Steam Boiler Plant': '23 52 33'
+    'Air Handling Units': '23 73 00'
+  P:
+    'Domestic Water Plant': '22 11 00'
+    'Medical/Lab Gas Plant': '22 63 00'
+    'Sanitary Equipment': '22 13 00'
+  SM:
+    'Air Handling Units': '23 74 00'
+    'SM Accessories': '23 33 00'
+    'SM Equipment': '23 30 00'
+
+# MasterFormat Equipment Mappings
+# Maps specific equipment types to MasterFormat codes
+masterformat_equipment:
+  'Heat Exchanger': '23 57 00'
+  'Water Softener': '22 31 00'
+  'Humidifier': '23 84 13'
+  'Radiant Panel': '23 83 16'
+  'Make-up Air Unit': '23 74 23'
+  'Energy Recovery Ventilator': '23 72 00'
+  'DI/RO Equipment': '22 31 16'
+  'Bypass Filter Feeder': '23 25 00'
+  'Grease Interceptor': '22 13 23'
+  'Heat Trace': '23 05 33'
+  'Dust Collector': '23 35 16'
+  'Venturi VAV Box': '23 36 00'
+  'Water Treatment Controller': '23 25 13'
+  'Polishing System': '23 25 00'
+  'Ozone Generator': '22 67 00'

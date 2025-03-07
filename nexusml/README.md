@@ -18,6 +18,70 @@ development and reuse.
 - Visualization of results
 - Easy-to-use API for predictions
 - OmniClass data extraction and description generation
+- Unified configuration system with validation
+
+## Configuration
+
+NexusML uses a unified configuration system that centralizes all settings in a
+single file. The configuration system provides:
+
+- Validation of configuration values using Pydantic
+- Default values for all settings
+- Loading from YAML files or environment variables
+- Consistent access through a singleton provider
+
+### Basic Configuration Usage
+
+```python
+from nexusml.core.config.provider import ConfigurationProvider
+
+# Get the configuration
+config_provider = ConfigurationProvider()
+config = config_provider.config
+
+# Access configuration values
+feature_config = config.feature_engineering
+data_config = config.data
+```
+
+### Custom Configuration
+
+You can specify a custom configuration file using the `NEXUSML_CONFIG`
+environment variable:
+
+```bash
+export NEXUSML_CONFIG=/path/to/your/config.yml
+```
+
+### Migration from Legacy Configuration
+
+To migrate from legacy configuration files to the new unified format:
+
+```python
+from nexusml.core.config.migration import migrate_from_default_paths
+
+# Migrate configurations and save to the default path
+config = migrate_from_default_paths()
+```
+
+### Future Configuration Cleanup
+
+The following legacy configuration files are maintained for backward
+compatibility and are planned for removal in future work chunks:
+
+- `classification_config.yml` - Will be replaced by the unified configuration
+- `data_config.yml` - Will be replaced by the unified configuration
+- `feature_config.yml` - Will be replaced by the unified configuration
+- `reference_config.yml` - Will be replaced by the unified configuration
+- `eav/equipment_attributes.json` - Will be replaced by the unified
+  configuration
+- `mappings/masterformat_primary.json` - Will be replaced by the unified
+  configuration
+- `mappings/masterformat_equipment.json` - Will be replaced by the unified
+  configuration
+
+Once all code is updated to use the new unified configuration system, these
+files will be removed.
 
 ## Installation
 
