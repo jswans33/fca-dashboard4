@@ -105,6 +105,19 @@ class MockModelTrainer:
 
     def train(self, model, x_train, y_train, **kwargs):
         """Mock implementation of train."""
+        # Actually fit the model to avoid NotFittedError
+        if hasattr(model, "fit"):
+            # Use only numerical features (service_life) for training
+            # to avoid ValueError with text data
+            if "service_life" in x_train.columns:
+                numerical_features = x_train[["service_life"]]
+                model.fit(numerical_features, y_train)
+            else:
+                # If no numerical features, create a dummy feature
+                import numpy as np
+
+                dummy_features = np.ones((len(x_train), 1))
+                model.fit(dummy_features, y_train)
         return model
 
     def cross_validate(self, model, x, y, **kwargs):
@@ -477,21 +490,37 @@ class TestPipelineOrchestrator:
         # Create a model for testing
         model = Pipeline([("classifier", RandomForestClassifier())])
 
+        # Create test data
+        test_data = pd.DataFrame(
+            {
+                "equipment_tag": ["tag1", "tag2", "tag3"],
+                "manufacturer": ["mfg1", "mfg2", "mfg3"],
+                "model": ["model1", "model2", "model3"],
+                "category_name": ["cat1", "cat2", "cat3"],
+                "uniformat_code": ["code1", "code2", "code3"],
+                "mcaa_system_category": ["sys1", "sys2", "sys3"],
+                "Equipment_Type": ["type1", "type2", "type3"],
+                "System_Subtype": ["subtype1", "subtype2", "subtype3"],
+            }
+        )
+
+        # Fit the model before evaluating
+        # Create features and targets
+        test_data["combined_text"] = (
+            test_data["equipment_tag"] + " " + test_data["manufacturer"] + " " + test_data["model"]
+        )
+        test_data["service_life"] = 20.0
+
+        X = test_data[["service_life"]]
+        y = test_data[["category_name"]]  # Just use one target column for fitting
+
+        # Fit the model
+        model.fit(X, y)
+
         # Test the evaluate method
         results = orchestrator.evaluate(
             model=model,
-            data=pd.DataFrame(
-                {
-                    "equipment_tag": ["tag1", "tag2", "tag3"],
-                    "manufacturer": ["mfg1", "mfg2", "mfg3"],
-                    "model": ["model1", "model2", "model3"],
-                    "category_name": ["cat1", "cat2", "cat3"],
-                    "uniformat_code": ["code1", "code2", "code3"],
-                    "mcaa_system_category": ["sys1", "sys2", "sys3"],
-                    "Equipment_Type": ["type1", "type2", "type3"],
-                    "System_Subtype": ["subtype1", "subtype2", "subtype3"],
-                }
-            ),
+            data=test_data,
         )
 
         # Check that results are returned
@@ -520,22 +549,38 @@ class TestPipelineOrchestrator:
         # Create a model for testing
         model = Pipeline([("classifier", RandomForestClassifier())])
 
+        # Create test data
+        test_data = pd.DataFrame(
+            {
+                "equipment_tag": ["tag1", "tag2", "tag3"],
+                "manufacturer": ["mfg1", "mfg2", "mfg3"],
+                "model": ["model1", "model2", "model3"],
+                "category_name": ["cat1", "cat2", "cat3"],
+                "uniformat_code": ["code1", "code2", "code3"],
+                "mcaa_system_category": ["sys1", "sys2", "sys3"],
+                "Equipment_Type": ["type1", "type2", "type3"],
+                "System_Subtype": ["subtype1", "subtype2", "subtype3"],
+            }
+        )
+
+        # Fit the model before evaluating
+        # Create features and targets
+        test_data["combined_text"] = (
+            test_data["equipment_tag"] + " " + test_data["manufacturer"] + " " + test_data["model"]
+        )
+        test_data["service_life"] = 20.0
+
+        X = test_data[["service_life"]]
+        y = test_data[["category_name"]]  # Just use one target column for fitting
+
+        # Fit the model
+        model.fit(X, y)
+
         # Test the evaluate method
         output_path = tmp_path / "evaluation.json"
         results = orchestrator.evaluate(
             model=model,
-            data=pd.DataFrame(
-                {
-                    "equipment_tag": ["tag1", "tag2", "tag3"],
-                    "manufacturer": ["mfg1", "mfg2", "mfg3"],
-                    "model": ["model1", "model2", "model3"],
-                    "category_name": ["cat1", "cat2", "cat3"],
-                    "uniformat_code": ["code1", "code2", "code3"],
-                    "mcaa_system_category": ["sys1", "sys2", "sys3"],
-                    "Equipment_Type": ["type1", "type2", "type3"],
-                    "System_Subtype": ["subtype1", "subtype2", "subtype3"],
-                }
-            ),
+            data=test_data,
             output_path=str(output_path),
         )
 

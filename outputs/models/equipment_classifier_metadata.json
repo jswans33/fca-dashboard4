@@ -1,0 +1,27 @@
+{
+  "metrics": {
+    "accuracy": 0.92,
+    "f1": 0.88
+  },
+  "analysis": {
+    "confusion_matrix": [
+      [
+        10,
+        1
+      ],
+      [
+        2,
+        8
+      ]
+    ]
+  },
+  "component_execution_times": {
+    "data_loading": 0.2528657913208008,
+    "data_preprocessing": 0.0020017623901367188,
+    "feature_engineering": 0.004998207092285156,
+    "data_splitting": 0.0030007362365722656,
+    "model_building": 0.001997232437133789,
+    "model_training": 0.09793758392333984,
+    "model_evaluation": 0.024170875549316406
+  }
+}

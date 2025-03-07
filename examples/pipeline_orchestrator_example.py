@@ -228,9 +228,20 @@ def create_orchestrator():
             logger = logging.getLogger("pipeline_orchestrator_example")
             logger.info("Training model")
 
-            # In a real implementation, this would fit the model
-            # For this example, we'll just return the model as is
-            # since we can't actually fit it without proper data
+            # Actually fit the model to avoid NotFittedError
+            if hasattr(model, "fit"):
+                # Use only numerical features (service_life) for training
+                # to avoid ValueError with text data
+                if "service_life" in x_train.columns:
+                    numerical_features = x_train[["service_life"]]
+                    model.fit(numerical_features, y_train)
+                else:
+                    # If no numerical features, create a dummy feature
+                    import numpy as np
+
+                    dummy_features = np.ones((len(x_train), 1))
+                    model.fit(dummy_features, y_train)
+
             return model
 
         def cross_validate(self, model, x, y, **kwargs):

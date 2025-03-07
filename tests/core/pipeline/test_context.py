@@ -155,6 +155,8 @@ class TestPipelineContext:
         context = PipelineContext()
         context.start()
         context.set("key", "value")
+        # Access the key to add it to accessed_keys
+        context.get("key")
         context.add_metric("metric_key", "metric_value")
         context.start_component("test_component")
         context.end_component()
