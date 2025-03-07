@@ -1,0 +1,13 @@
+
+# Minimal feature configuration for testing
+column_mappings:
+  - source: "Asset Category"
+    target: "Equipment_Category"
+hierarchies:
+  - new_col: "Equipment_Type"
+    parents: ["Asset Category", "Equip Name ID"]
+    separator: "-"
+  - new_col: "System_Subtype"
+    parents: ["Precon System", "Operations System"]
+    separator: "-"
+            

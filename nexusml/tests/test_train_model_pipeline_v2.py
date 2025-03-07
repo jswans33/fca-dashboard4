@@ -10,8 +10,10 @@ import tempfile
 from pathlib import Path
 from unittest import mock
 
+import numpy as np
 import pandas as pd
 import pytest
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 
 from nexusml.core.cli.training_args import TrainingArguments
@@ -60,6 +62,35 @@ class TestTrainWithOrchestrator:
         mock_metrics = {"accuracy": 0.9, "f1": 0.85}
         mock_orchestrator.train_model.return_value = (mock_model, mock_metrics)
 
+        # Set up the mock model with steps attribute
+        mock_model.steps = [("classifier", mock.MagicMock(spec=RandomForestClassifier))]
+        classifier = mock_model.steps[0][1]
+        classifier.classes_ = np.array(["HVAC", "Plumbing"])
+        classifier.n_classes_ = 2
+        classifier.n_features_in_ = 1
+        classifier.n_outputs_ = 1
+
+        # Add predict method to the mock model that returns the correct shape
+        def mock_predict(X):
+            # Return a 2D array with the correct number of columns
+            return np.array(
+                [["HVAC", "D3010", "Mechanical", "AHU", "Cooling"]] * len(X)
+            )
+
+        mock_model.predict = mock_predict
+        classifier.predict = mock_predict
+
+        # Create dummy estimators for RandomForestClassifier
+        from sklearn.tree import DecisionTreeClassifier
+
+        dummy_estimator = mock.MagicMock(spec=DecisionTreeClassifier)
+        dummy_estimator.tree_ = mock.MagicMock()
+        dummy_estimator.classes_ = classifier.classes_
+        dummy_estimator.n_outputs_ = 1
+        dummy_estimator.n_classes_ = 2
+        dummy_estimator.n_features_in_ = 1
+        classifier.estimators_ = [dummy_estimator]
+
         # Create a mock execution summary
         mock_summary = {
             "status": "success",
@@ -81,6 +112,10 @@ class TestTrainWithOrchestrator:
                 "combined_text": ["text1", "text2"],
                 "service_life": [10, 20],
                 "category_name": ["HVAC", "Plumbing"],
+                "mcaa_system_category": ["Mechanical", "Plumbing"],
+                "Equipment_Type": ["AHU", "Pump"],
+                "System_Subtype": ["Cooling", "Water"],
+                "uniformat_code": ["D3010", "D2010"],
             }
         )
 
@@ -149,7 +184,9 @@ class TestMakeSamplePredictionWithOrchestrator:
         mock_orchestrator.predict.return_value = mock_predictions
 
         # Call make_sample_prediction_with_orchestrator
-        result = make_sample_prediction_with_orchestrator(mock_orchestrator, mock_model, logger)
+        result = make_sample_prediction_with_orchestrator(
+            mock_orchestrator, mock_model, logger
+        )
 
         # Check that orchestrator.predict was called with the correct arguments
         mock_orchestrator.predict.assert_called_once()
@@ -229,7 +266,9 @@ class TestMain:
         mock_setup_logging.assert_called_once_with(mock_args.log_level)
 
         # Check that load_reference_data was called with the correct arguments
-        mock_load_reference_data.assert_called_once_with(mock_args.reference_config_path, mock_logger)
+        mock_load_reference_data.assert_called_once_with(
+            mock_args.reference_config_path, mock_logger
+        )
 
         # Check that validate_data was called with the correct arguments
         mock_validate_data.assert_called_once_with(mock_args.data_path, mock_logger)
@@ -317,7 +356,9 @@ class TestMain:
         mock_setup_logging.assert_called_once_with(mock_args.log_level)
 
         # Check that load_reference_data was called with the correct arguments
-        mock_load_reference_data.assert_called_once_with(mock_args.reference_config_path, mock_logger)
+        mock_load_reference_data.assert_called_once_with(
+            mock_args.reference_config_path, mock_logger
+        )
 
         # Check that validate_data was called with the correct arguments
         mock_validate_data.assert_called_once_with(mock_args.data_path, mock_logger)
@@ -354,4 +395,6 @@ class TestMain:
         )
 
         # Check that make_sample_prediction was called with the correct arguments
-        mock_make_sample_prediction.assert_called_once_with(mock_classifier, logger=mock_logger)
+        mock_make_sample_prediction.assert_called_once_with(
+            mock_classifier, logger=mock_logger
+        )

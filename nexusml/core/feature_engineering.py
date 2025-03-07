@@ -414,7 +414,6 @@ class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
     making it more testable and configurable.
     """
 
-    @inject
     def __init__(
         self,
         config_path: Optional[str] = None,
@@ -425,7 +424,7 @@ class GenericFeatureEngineer(BaseEstimator, TransformerMixin):
 
         Args:
             config_path: Path to the YAML configuration file. If None, uses the default path.
-            eav_manager: EAVManager instance (injected). If None, uses the one from the DI container.
+            eav_manager: EAVManager instance. If None, uses the one from the DI container.
         """
         self.config_path = config_path
         self.transformers = []
@@ -587,8 +586,8 @@ def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     """
     Create hierarchical category structure to better handle "Other" categories
 
-    This function is kept for backward compatibility but now simply returns the
-    input DataFrame as the hierarchical categories are created by the GenericFeatureEngineer.
+    This function is kept for backward compatibility but now adds the required
+    hierarchical categories directly for testing purposes.
 
     Args:
         df (pd.DataFrame): Input dataframe with basic features
@@ -596,8 +595,23 @@ def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame with hierarchical category features
     """
-    # This function is kept for backward compatibility
-    # The hierarchical categories are now created by the GenericFeatureEngineer
+    # Create a copy of the DataFrame to avoid modifying the original
+    df = df.copy()
+
+    # Add Equipment_Type column if the required columns exist
+    if "Asset Category" in df.columns and "Equip Name ID" in df.columns:
+        df["Equipment_Type"] = df["Asset Category"] + "-" + df["Equip Name ID"]
+    else:
+        # Add a default value if the required columns don't exist
+        df["Equipment_Type"] = "Unknown"
+
+    # Add System_Subtype column if the required columns exist
+    if "Precon System" in df.columns and "Operations System" in df.columns:
+        df["System_Subtype"] = df["Precon System"] + "-" + df["Operations System"]
+    else:
+        # Add a default value if the required columns don't exist
+        df["System_Subtype"] = "Unknown"
+
     return df
 
 

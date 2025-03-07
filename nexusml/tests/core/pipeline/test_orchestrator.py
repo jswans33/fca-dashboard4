@@ -123,14 +123,37 @@ class MockModelTrainer:
             classifier.n_outputs_ = 1
 
             # For RandomForestClassifier
-            if hasattr(classifier, "estimators_"):
+            if isinstance(classifier, RandomForestClassifier):
                 from sklearn.tree import DecisionTreeClassifier
 
                 # Create a dummy estimator
                 dummy_estimator = DecisionTreeClassifier()
                 dummy_estimator.tree_ = mock.MagicMock()
                 dummy_estimator.classes_ = classifier.classes_
+                dummy_estimator.n_outputs_ = 1
+                dummy_estimator.n_classes_ = len(classifier.classes_)
+                dummy_estimator.n_features_in_ = 1
+
+                # Set estimators for RandomForestClassifier
                 classifier.estimators_ = [dummy_estimator]
+
+                # Add predict method to the classifier
+                def mock_predict(X):
+                    return np.array(["cat1"] * len(X))
+
+                classifier.predict = mock_predict
+
+                # Add predict_proba method to the classifier
+                def mock_predict_proba(X):
+                    return np.array([[0.8, 0.1, 0.1]] * len(X))
+
+                classifier.predict_proba = mock_predict_proba
+
+            # Add predict method to the model
+            def mock_model_predict(X):
+                return np.array(["cat1"] * len(X))
+
+            model.predict = mock_model_predict
 
         return model
 
@@ -166,8 +189,10 @@ class MockModelSerializer:
         """Mock implementation of save_model."""
         # Just create an empty file for testing
         Path(path).parent.mkdir(parents=True, exist_ok=True)
+        # Don't actually try to pickle the model, just create an empty file
         with open(path, "wb") as f:
-            pickle.dump(model, f)
+            # Write a simple placeholder instead of trying to pickle the model
+            f.write(b"mock_model_data")
 
     def load_model(self, path, **kwargs):
         """Mock implementation of load_model."""
@@ -504,6 +529,32 @@ class TestPipelineOrchestrator:
         # Create a model for testing
         model = Pipeline([("classifier", RandomForestClassifier())])
 
+        # Mock the model to appear fitted
+        classifier = model.steps[0][1]
+        classifier.n_features_in_ = 1
+        classifier.classes_ = np.array(["cat1", "cat2", "cat3"])
+        classifier.n_classes_ = 3
+        classifier.n_outputs_ = 1
+
+        # Add predict method to the model
+        def mock_predict(X, **kwargs):
+            # Return a 2D array with the correct number of columns
+            return np.array([["cat1", "code1", "sys1", "type1", "subtype1"]] * len(X))
+
+        model.predict = mock_predict
+        classifier.predict = mock_predict
+
+        # Create dummy estimators for RandomForestClassifier
+        from sklearn.tree import DecisionTreeClassifier
+
+        dummy_estimator = DecisionTreeClassifier()
+        dummy_estimator.tree_ = mock.MagicMock()
+        dummy_estimator.classes_ = classifier.classes_
+        dummy_estimator.n_outputs_ = 1
+        dummy_estimator.n_classes_ = len(classifier.classes_)
+        dummy_estimator.n_features_in_ = 1
+        classifier.estimators_ = [dummy_estimator]
+
         # Test the evaluate method
         results = orchestrator.evaluate(
             model=model,
@@ -546,6 +597,32 @@ class TestPipelineOrchestrator:
         """Test that the evaluate method saves results to a file."""
         # Create a model for testing
         model = Pipeline([("classifier", RandomForestClassifier())])
+
+        # Mock the model to appear fitted
+        classifier = model.steps[0][1]
+        classifier.n_features_in_ = 1
+        classifier.classes_ = np.array(["cat1", "cat2", "cat3"])
+        classifier.n_classes_ = 3
+        classifier.n_outputs_ = 1
+
+        # Add predict method to the model
+        def mock_predict(X, **kwargs):
+            # Return a 2D array with the correct number of columns
+            return np.array([["cat1", "code1", "sys1", "type1", "subtype1"]] * len(X))
+
+        model.predict = mock_predict
+        classifier.predict = mock_predict
+
+        # Create dummy estimators for RandomForestClassifier
+        from sklearn.tree import DecisionTreeClassifier
+
+        dummy_estimator = DecisionTreeClassifier()
+        dummy_estimator.tree_ = mock.MagicMock()
+        dummy_estimator.classes_ = classifier.classes_
+        dummy_estimator.n_outputs_ = 1
+        dummy_estimator.n_classes_ = len(classifier.classes_)
+        dummy_estimator.n_features_in_ = 1
+        classifier.estimators_ = [dummy_estimator]
 
         # Test the evaluate method
         output_path = tmp_path / "evaluation.json"
