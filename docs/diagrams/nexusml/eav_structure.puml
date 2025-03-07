@@ -1,0 +1,116 @@
+@startuml "NexusML EAV Structure"
+
+' Style definitions
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #EEEEEE
+
+' Title
+title NexusML Entity-Attribute-Value (EAV) Structure
+
+' Classes
+class Equipment {
+  +equipment_id: int
+  +equipment_tag: string
+  +category_id: int (FK)
+  +location_id: int (FK)
+  +manufacturer: string
+  +model: string
+  +installation_date: date
+  +initial_cost: float
+}
+
+class EquipmentCategory {
+  +category_id: int
+  +category_name: string
+  +omniclass_id: string (FK)
+  +uniformat_id: string (FK)
+  +masterformat_id: string (FK)
+  +mcaa_system_category: string
+}
+
+class EquipmentAttribute {
+  +attribute_id: int
+  +equipment_id: int (FK)
+  +attribute_name: string
+  +attribute_value: string
+  +attribute_unit: string
+  +attribute_type: string
+}
+
+class AttributeTemplate {
+  +template_id: int
+  +equipment_category_id: int (FK)
+  +attribute_name: string
+  +is_required: boolean
+  +default_value: string
+  +default_unit: string
+  +attribute_type: string
+}
+
+class ClassificationSystem {
+  +classification_id: string
+  +classification_type: string
+  +parent_id: string
+  +name: string
+  +description: string
+  +level: int
+}
+
+' Relationships
+Equipment "1" -- "many" EquipmentAttribute : has
+EquipmentCategory "1" -- "many" Equipment : categorizes
+EquipmentCategory "1" -- "many" AttributeTemplate : defines
+ClassificationSystem "1" -- "many" EquipmentCategory : classifies
+
+' Notes
+note bottom of Equipment
+  The Equipment entity represents a physical piece of equipment
+  with basic identification and location information.
+end note
+
+note bottom of EquipmentCategory
+  The EquipmentCategory entity represents a type of equipment
+  and links to various classification systems.
+end note
+
+note bottom of EquipmentAttribute
+  The EquipmentAttribute entity stores attribute values
+  for specific equipment in a flexible EAV structure.
+end note
+
+note bottom of AttributeTemplate
+  The AttributeTemplate entity defines what attributes
+  are expected for each equipment category.
+end note
+
+note bottom of ClassificationSystem
+  The ClassificationSystem entity represents hierarchical
+  classification systems like OmniClass, Uniformat, and MasterFormat.
+end note
+
+' EAV Manager
+class EAVManager {
+  +get_equipment_template(equipment_type)
+  +get_required_attributes(equipment_type)
+  +get_optional_attributes(equipment_type)
+  +get_all_attributes(equipment_type)
+  +get_attribute_unit(equipment_type, attribute)
+  +get_classification_ids(equipment_type)
+  +get_performance_fields(equipment_type)
+  +validate_attributes(equipment_type, attributes)
+  +generate_attribute_template(equipment_type)
+  +fill_missing_attributes(equipment_type, attributes, description, model)
+}
+
+note right of EAVManager
+  The EAVManager class provides an interface to work with
+  the EAV structure in the NexusML system. It loads templates
+  from JSON configuration files and provides methods to
+  validate, generate, and fill attribute values.
+end note
+
+@enduml

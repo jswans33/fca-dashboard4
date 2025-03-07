@@ -64,16 +64,13 @@ class DataMapper:
         Returns:
             DataFrame with columns mapped to what the ML model expects
         """
-        # Create a new DataFrame for the model input
-        model_df = pd.DataFrame()
+        # Create a copy of the input DataFrame to preserve original columns
+        model_df = staging_df.copy()
 
-        # Map columns
+        # Map columns according to the mapping
         for target_col, source_col in self.column_mapping.items():
-            if source_col in staging_df.columns:
+            if source_col in staging_df.columns and target_col != source_col:
                 model_df[target_col] = staging_df[source_col]
-            else:
-                # Use empty values for missing columns
-                model_df[target_col] = ""
 
         # Fill required fields with defaults if missing
         for field, default in self.required_fields.items():

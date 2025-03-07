@@ -1,0 +1,356 @@
+@startuml "NexusML Configuration System"
+
+' Style definitions
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #EEEEEE
+skinparam PackageBackgroundColor #FEFEFE
+skinparam PackageBorderColor #CCCCCC
+
+' Title
+title NexusML Configuration System Class Diagram
+
+' Packages
+package "Configuration Files" as ConfigFiles {
+  class "feature_config.yml" as FeatureConfig << (F,#ADD1B2) File >> {
+    text_combinations
+    numeric_columns
+    hierarchies
+    column_mappings
+    classification_systems
+    direct_mappings
+    eav_integration
+  }
+
+  class "classification_config.yml" as ClassificationConfig << (F,#ADD1B2) File >> {
+    classification_targets
+    input_field_mappings
+  }
+
+  class "data_config.yml" as DataConfig << (F,#ADD1B2) File >> {
+    required_columns
+    training_data
+  }
+
+  class "reference_config.yml" as ReferenceConfig << (F,#ADD1B2) File >> {
+    paths
+    file_patterns
+    column_mappings
+    hierarchies
+    defaults
+  }
+
+  class "equipment_attributes.json" as EquipmentAttributes << (F,#ADD1B2) File >> {
+    equipment_type
+    omniclass_id
+    masterformat_id
+    uniformat_id
+    required_attributes
+    optional_attributes
+    units
+    performance_fields
+  }
+
+  class "masterformat_primary.json" as MasterformatPrimary << (F,#ADD1B2) File >> {
+    uniformat_class
+    system_type
+    masterformat_code
+  }
+
+  class "masterformat_equipment.json" as MasterformatEquipment << (F,#ADD1B2) File >> {
+    equipment_subcategory
+    masterformat_code
+  }
+}
+
+package "Core Classes" as CoreClasses {
+  class GenericFeatureEngineer {
+    -config_path: str
+    -transformers: list
+    -config: dict
+    -eav_manager: EAVManager
+    +__init__(config_path, eav_manager)
+    -_load_config()
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class DynamicFieldMapper {
+    -config_path: str
+    -field_mappings: list
+    -classification_targets: list
+    +__init__(config_path)
+    +load_config()
+    +get_best_match(available_columns, target_field)
+    +map_dataframe(df)
+    +get_classification_targets()
+    +get_required_db_fields()
+  }
+
+  class EAVManager {
+    -templates_path: str
+    -templates: dict
+    +__init__(templates_path)
+    +load_templates()
+    +get_equipment_template(equipment_type)
+    +get_required_attributes(equipment_type)
+    +get_optional_attributes(equipment_type)
+    +get_all_attributes(equipment_type)
+    +get_attribute_unit(equipment_type, attribute)
+    +get_classification_ids(equipment_type)
+    +get_performance_fields(equipment_type)
+    +validate_attributes(equipment_type, attributes)
+    +generate_attribute_template(equipment_type)
+    +fill_missing_attributes(equipment_type, attributes, description, model)
+  }
+
+  class ReferenceManager {
+    -config_path: str
+    -config: dict
+    -data_sources: dict
+    +__init__(config_path)
+    +load_config()
+    +load_all()
+    +validate_data()
+    +find_uniformat_codes_by_keyword(text, max_results)
+  }
+
+  class DataMapper {
+    -column_mapping: dict
+    -required_fields: dict
+    -numeric_fields: dict
+    +__init__(column_mapping)
+    +map_staging_to_model_input(staging_df)
+    +map_predictions_to_master_db(predictions)
+    -_map_to_category_id(equipment_category)
+  }
+}
+
+package "Feature Engineering Components" as FeatureEngineering {
+  class TextCombiner {
+    -columns: list
+    -separator: str
+    -new_column: str
+    +__init__(columns, separator, new_column)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class NumericCleaner {
+    -column: str
+    -new_name: str
+    -fill_value: float
+    -dtype: str
+    +__init__(column, new_name, fill_value, dtype)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class HierarchyBuilder {
+    -new_column: str
+    -parent_columns: list
+    -separator: str
+    +__init__(new_column, parent_columns, separator)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class ColumnMapper {
+    -mappings: list
+    +__init__(mappings)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class KeywordClassificationMapper {
+    -name: str
+    -source_column: str
+    -target_column: str
+    -reference_manager: str
+    -max_results: int
+    -confidence_threshold: float
+    -ref_manager: ReferenceManager
+    +__init__(name, source_column, target_column, reference_manager, max_results, confidence_threshold)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class ClassificationSystemMapper {
+    -name: str
+    -source_column: str
+    -target_column: str
+    -mapping_type: str
+    -mapping_function: str
+    -eav_manager: EAVManager
+    +__init__(name, source_column, target_column, mapping_type, mapping_function, eav_manager)
+    +fit(X, y)
+    +transform(X)
+  }
+
+  class EAVTransformer {
+    -eav_manager: EAVManager
+    +__init__(eav_manager)
+    +fit(X, y)
+    +transform(X)
+  }
+}
+
+package "Model Building" as ModelBuilding {
+  class "build_enhanced_model()" as BuildEnhancedModel << function >> {
+    +sampling_strategy: str
+    +feature_config_path: str
+    +**kwargs
+    +return: Pipeline
+  }
+
+  class "optimize_hyperparameters()" as OptimizeHyperparameters << function >> {
+    +pipeline: Pipeline
+    +x_train
+    +y_train
+    +return: Pipeline
+  }
+}
+
+package "Data Preprocessing" as DataPreprocessing {
+  class "load_and_preprocess_data()" as LoadAndPreprocessData << function >> {
+    +data_path: str
+    +return: DataFrame
+  }
+
+  class "verify_required_columns()" as VerifyRequiredColumns << function >> {
+    +df: DataFrame
+    +config: Dict
+    +return: DataFrame
+  }
+
+  class "load_data_config()" as LoadDataConfig << function >> {
+    +return: Dict
+  }
+}
+
+package "Entry Points" as EntryPoints {
+  class EquipmentClassifier {
+    -model
+    -feature_engineer
+    -eav_manager
+    -sampling_strategy
+    +__init__(model, feature_engineer, eav_manager, sampling_strategy)
+    +train(data_path, feature_config_path, **kwargs)
+    +load_model(model_path)
+    +predict(description, service_life, asset_tag)
+    +predict_from_row(row)
+    +predict_attributes(equipment_type, description)
+    +fill_missing_attributes(equipment_type, attributes, description)
+    +validate_attributes(equipment_type, attributes)
+  }
+
+  class "train_enhanced_model()" as TrainEnhancedModel << function >> {
+    +data_path: str
+    +sampling_strategy: str
+    +feature_config_path: str
+    +eav_manager: EAVManager
+    +**kwargs
+    +return: Tuple[Any, DataFrame]
+  }
+
+  class "predict_with_enhanced_model()" as PredictWithEnhancedModel << function >> {
+    +model: Any
+    +description: str
+    +service_life: float
+    +asset_tag: str
+    +return: Dict
+  }
+}
+
+' Relationships - Configuration Files to Classes
+GenericFeatureEngineer ..> FeatureConfig : loads
+DynamicFieldMapper ..> ClassificationConfig : loads
+EAVManager ..> EquipmentAttributes : loads
+ReferenceManager ..> ReferenceConfig : loads
+LoadDataConfig ..> DataConfig : loads
+ClassificationSystemMapper ..> MasterformatPrimary : uses
+ClassificationSystemMapper ..> MasterformatEquipment : uses
+
+' Relationships - Core Classes
+GenericFeatureEngineer --> EAVManager : uses
+GenericFeatureEngineer --> TextCombiner : creates
+GenericFeatureEngineer --> NumericCleaner : creates
+GenericFeatureEngineer --> HierarchyBuilder : creates
+GenericFeatureEngineer --> ColumnMapper : creates
+GenericFeatureEngineer --> KeywordClassificationMapper : creates
+GenericFeatureEngineer --> ClassificationSystemMapper : creates
+GenericFeatureEngineer --> EAVTransformer : creates
+
+KeywordClassificationMapper --> ReferenceManager : uses
+ClassificationSystemMapper --> EAVManager : uses
+
+' Relationships - Data Preprocessing
+LoadAndPreprocessData ..> LoadDataConfig : calls
+LoadAndPreprocessData ..> VerifyRequiredColumns : calls
+
+' Relationships - Model Building
+BuildEnhancedModel ..> GenericFeatureEngineer : creates
+
+' Relationships - Entry Points
+EquipmentClassifier --> GenericFeatureEngineer : uses
+EquipmentClassifier --> EAVManager : uses
+EquipmentClassifier ..> TrainEnhancedModel : calls
+EquipmentClassifier ..> PredictWithEnhancedModel : calls
+
+TrainEnhancedModel ..> LoadAndPreprocessData : calls
+TrainEnhancedModel ..> BuildEnhancedModel : calls
+PredictWithEnhancedModel ..> EAVManager : uses
+
+' Notes
+note bottom of FeatureConfig
+  Configures feature engineering transformations:
+  - Text combinations
+  - Numeric column cleaning
+  - Hierarchical categories
+  - Column mappings
+  - Classification system mappings
+end note
+
+note bottom of ClassificationConfig
+  Defines classification targets and
+  input field mapping patterns for
+  flexible data ingestion
+end note
+
+note bottom of DataConfig
+  Configures data preprocessing:
+  - Required columns with default values
+  - Training data paths and encoding
+end note
+
+note bottom of ReferenceConfig
+  Configures reference data sources:
+  - Paths to reference data files
+  - File patterns for finding data
+  - Column mappings for standardization
+  - Hierarchical relationships
+end note
+
+note bottom of EquipmentAttributes
+  Defines EAV structure for equipment:
+  - Required and optional attributes
+  - Units for attributes
+  - Performance fields
+  - Classification IDs
+end note
+
+note bottom of MasterformatPrimary
+  Maps Uniformat classes and system types
+  to MasterFormat codes
+end note
+
+note bottom of MasterformatEquipment
+  Maps equipment subcategories
+  to MasterFormat codes
+end note
+
+@enduml

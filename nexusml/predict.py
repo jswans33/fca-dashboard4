@@ -106,6 +106,7 @@ def main():
         logger.info(f"Loading input data from {args.input_file}")
         input_data = pd.read_csv(args.input_file)
         logger.info(f"Loaded {len(input_data)} items")
+        logger.info(f"Input data columns: {input_data.columns.tolist()}")
 
         # Check if we have the fake data columns or the description column
         has_fake_data_columns = all(
@@ -122,38 +123,56 @@ def main():
             )
             sys.exit(1)
 
+        # Apply feature engineering to input data
+        logger.info("Applying feature engineering to input data...")
+        from nexusml.core.data_mapper import map_staging_to_model_input
+        from nexusml.core.feature_engineering import GenericFeatureEngineer
+
+        # First map staging data columns to model input format
+        input_data = map_staging_to_model_input(input_data)
+        logger.info(f"Columns after mapping: {input_data.columns.tolist()}")
+
+        # Then apply feature engineering
+        feature_engineer = GenericFeatureEngineer()
+        processed_data = feature_engineer.transform(input_data)
+        logger.info(
+            f"Columns after feature engineering: {processed_data.columns.tolist()}"
+        )
+
         # Make predictions
         logger.info("Making predictions...")
         results = []
-        for i, row in input_data.iterrows():
-            # For fake data, use the combined columns for description
-            if (
-                "equipment_tag" in input_data.columns
-                and "manufacturer" in input_data.columns
-                and "model" in input_data.columns
-            ):
-                # Create a combined description from multiple columns
-                description = f"{row.get('equipment_tag', '')} {row.get('manufacturer', '')} {row.get('model', '')} {row.get('category_name', '')} {row.get('mcaa_system_category', '')}"
+        for i, row in processed_data.iterrows():
+            # Get combined text from feature engineering
+            if "combined_text" in processed_data.columns:
+                description = row["combined_text"]
             else:
-                # Use the specified description column
-                description = str(row[args.description_column])
+                # Fallback to creating a combined description
+                description = f"{row.get('equipment_tag', '')} {row.get('manufacturer', '')} {row.get('model', '')} {row.get('category_name', '')} {row.get('mcaa_system_category', '')}"
 
-            # Get service life if column exists, otherwise use default
+            # Get service life from feature engineering
             service_life = 20.0
-            if "condition_score" in input_data.columns:
+            if "service_life" in processed_data.columns:
+                service_life = float(row.get("service_life", 20.0))
+            elif "condition_score" in processed_data.columns:
                 service_life = float(row.get("condition_score", 20.0))
-            elif args.service_life_column in input_data.columns:
+            elif args.service_life_column in processed_data.columns:
                 service_life = float(row.get(args.service_life_column, 20.0))
 
-            # Get asset tag if column exists, otherwise use empty string
+            # Get asset tag
             asset_tag = ""
-            if "equipment_tag" in input_data.columns:
+            if "equipment_tag" in processed_data.columns:
                 asset_tag = str(row.get("equipment_tag", ""))
-            elif args.asset_tag_column in input_data.columns:
+            elif args.asset_tag_column in processed_data.columns:
                 asset_tag = str(row.get(args.asset_tag_column, ""))
 
-            # Make prediction
-            prediction = classifier.predict(description, service_life, asset_tag)
+            # Debug the row data
+            logger.info(f"Row data for prediction: {row.to_dict()}")
+
+            # Make prediction with properly processed data
+            # Instead of just passing the description, service_life, and asset_tag,
+            # we need to pass the entire row to the model
+            prediction = classifier.predict_from_row(row)
 
             # Add original description and service life to results
             prediction["original_description"] = description

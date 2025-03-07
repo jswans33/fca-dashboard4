@@ -1,0 +1,94 @@
+@startuml "NexusML Prediction Sequence"
+
+' Style definitions
+skinparam backgroundColor white
+skinparam SequenceArrowColor #666666
+skinparam SequenceLifeLineBorderColor #999999
+skinparam ParticipantBorderColor #999999
+skinparam ParticipantBackgroundColor #EEEEEE
+
+' Title
+title NexusML Model Prediction Sequence
+
+' Participants
+actor "User" as User
+participant "predict.py" as PredictScript
+participant "EquipmentClassifier" as Classifier
+participant "predict_with_enhanced_model()" as PredictFunc
+participant "map_staging_to_model_input()" as DataMapper
+participant "GenericFeatureEngineer" as FeatureEngineer
+participant "EAVManager" as EAVManager
+participant "map_predictions_to_master_db()" as DBMapper
+
+' Sequence
+User -> PredictScript: Execute with input_file
+activate PredictScript
+
+PredictScript -> PredictScript: Parse arguments
+PredictScript -> Classifier: load_model(model_path)
+activate Classifier
+Classifier --> PredictScript: loaded_classifier
+deactivate Classifier
+
+PredictScript -> PredictScript: Read input_file
+PredictScript -> DataMapper: map_staging_to_model_input(input_data)
+activate DataMapper
+DataMapper --> PredictScript: mapped_data
+deactivate DataMapper
+
+PredictScript -> FeatureEngineer: transform(mapped_data)
+activate FeatureEngineer
+FeatureEngineer --> PredictScript: processed_data
+deactivate FeatureEngineer
+
+loop For each row in processed_data
+    PredictScript -> Classifier: predict_from_row(row)
+    activate Classifier
+    
+    Classifier -> PredictFunc: predict_with_enhanced_model(model, description, service_life, asset_tag)
+    activate PredictFunc
+    PredictFunc -> PredictFunc: Create input DataFrame
+    PredictFunc -> PredictFunc: model.predict(input_data)
+    PredictFunc -> PredictFunc: Extract predictions
+    
+    PredictFunc -> EAVManager: get_classification_ids(equipment_type)
+    activate EAVManager
+    EAVManager --> PredictFunc: classification_ids
+    deactivate EAVManager
+    
+    PredictFunc -> EAVManager: get_performance_fields(equipment_type)
+    activate EAVManager
+    EAVManager --> PredictFunc: performance_fields
+    deactivate EAVManager
+    
+    PredictFunc -> EAVManager: get_required_attributes(equipment_type)
+    activate EAVManager
+    EAVManager --> PredictFunc: required_attributes
+    deactivate EAVManager
+    
+    PredictFunc -> DBMapper: map_predictions_to_master_db(result)
+    activate DBMapper
+    DBMapper --> PredictFunc: db_mappings
+    deactivate DBMapper
+    
+    PredictFunc --> Classifier: prediction_result
+    deactivate PredictFunc
+    
+    Classifier -> EAVManager: generate_attribute_template(equipment_type)
+    activate EAVManager
+    EAVManager --> Classifier: attribute_template
+    deactivate EAVManager
+    
+    Classifier --> PredictScript: complete_prediction
+    deactivate Classifier
+    
+    PredictScript -> PredictScript: Store prediction in results
+end
+
+PredictScript -> PredictScript: Convert results to DataFrame
+PredictScript -> PredictScript: Save results to output_file
+
+PredictScript --> User: Prediction results
+deactivate PredictScript
+
+@enduml

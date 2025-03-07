@@ -469,7 +469,7 @@ make -f fca_dashboard/utils/puml/Makefile view-diagrams
       async function scanFolders() {
         // In a real implementation, this would make an AJAX request to the server
         // to get the list of folders. For now, we'll return a hardcoded list.
-        return ['classifier', 'medtronics'];
+        return ['classifier', 'medtronics', 'nexusml'];
       }
 
       // Function to load diagrams for a folder
@@ -655,6 +655,16 @@ make -f fca_dashboard/utils/puml/Makefile view-diagrams
             'medtronics/medtronics_class_diagram.svg',
             'medtronics/medtronics_di_data_flow_diagram.svg',
             'medtronics/medtronics_staging_schema_diagram.svg',
+          ],
+          nexusml: [
+            'nexusml/model_pipeline.svg',
+            'nexusml/class_diagram.svg',
+            'nexusml/training_sequence.svg',
+            'nexusml/prediction_sequence.svg',
+            'nexusml/data_flow.svg',
+            'nexusml/eav_structure.svg',
+            'nexusml/config_class_diagram.svg',
+            'nexusml/reference_integration.svg',
           ],
         };
 

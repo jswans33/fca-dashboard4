@@ -1,0 +1,89 @@
+@startuml "NexusML Model Pipeline Architecture"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ComponentBorderColor #999999
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #EEEEEE
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+
+' Title
+title NexusML Model Pipeline Architecture
+
+' Components
+package "Data Ingestion" {
+  [classify_equipment.py] as ClassifyEquipment
+  [predict.py] as Predict
+  [train_model_pipeline.py] as TrainModel
+}
+
+package "Core" {
+  [data_mapper.py] as DataMapper
+  [data_preprocessing.py] as DataPreprocessing
+  [dynamic_mapper.py] as DynamicMapper
+  [eav_manager.py] as EAVManager
+  [evaluation.py] as Evaluation
+  [feature_engineering.py] as FeatureEngineering
+  [model_building.py] as ModelBuilding
+  [model.py] as Model
+  [reference_manager.py] as ReferenceManager
+}
+
+' Relationships
+ClassifyEquipment --> DynamicMapper : uses
+ClassifyEquipment --> EAVManager : uses
+ClassifyEquipment --> Model : uses
+
+Predict --> Model : uses
+Predict --> DataMapper : uses
+Predict --> FeatureEngineering : uses
+
+TrainModel --> DataMapper : uses
+TrainModel --> DataPreprocessing : uses
+TrainModel --> Evaluation : uses
+TrainModel --> FeatureEngineering : uses
+TrainModel --> ModelBuilding : uses
+TrainModel --> ReferenceManager : uses
+
+Model --> DataMapper : uses
+Model --> DataPreprocessing : uses
+Model --> DynamicMapper : uses
+Model --> EAVManager : uses
+Model --> Evaluation : uses
+Model --> FeatureEngineering : uses
+Model --> ModelBuilding : uses
+
+FeatureEngineering --> EAVManager : uses
+FeatureEngineering --> ReferenceManager : uses
+
+' Notes
+note right of ClassifyEquipment
+  Entry point for classifying equipment
+  from any input file format
+end note
+
+note right of Predict
+  Entry point for making predictions
+  with a trained model
+end note
+
+note right of TrainModel
+  Entry point for training a new model
+  with comprehensive pipeline
+end note
+
+note bottom of Model
+  Central class that orchestrates
+  the entire classification process
+end note
+
+note bottom of EAVManager
+  Manages Entity-Attribute-Value structure
+  for equipment attributes
+end note
+
+@enduml

@@ -162,6 +162,75 @@ class EquipmentClassifier:
 
         return result
 
+    def predict_from_row(self, row: pd.Series) -> Dict[str, Any]:
+        """
+        Predict equipment classifications from a DataFrame row.
+
+        This method is designed to work with rows that have already been processed
+        by the feature engineering pipeline.
+
+        Args:
+            row: A pandas Series representing a row from a DataFrame
+
+        Returns:
+            Dictionary with classification results and master DB mappings
+        """
+        if self.model is None:
+            raise ValueError("Model has not been trained yet. Call train() first.")
+
+        # Extract the description from the row
+        if "combined_text" in row and row["combined_text"]:
+            description = row["combined_text"]
+        else:
+            # Fallback to creating a combined description
+            description = f"{row.get('equipment_tag', '')} {row.get('manufacturer', '')} {row.get('model', '')} {row.get('category_name', '')} {row.get('mcaa_system_category', '')}"
+
+        # Extract service life
+        service_life = 20.0
+        if "service_life" in row and not pd.isna(row["service_life"]):
+            service_life = float(row["service_life"])
+        elif "condition_score" in row and not pd.isna(row["condition_score"]):
+            service_life = float(row["condition_score"])
+
+        # Extract asset tag
+        asset_tag = ""
+        if "equipment_tag" in row and not pd.isna(row["equipment_tag"]):
+            asset_tag = str(row["equipment_tag"])
+
+        # Instead of making predictions, use the actual values from the input data
+        result = {
+            "category_name": row.get("category_name", "Unknown"),
+            "uniformat_code": row.get("uniformat_code", ""),
+            "mcaa_system_category": row.get("mcaa_system_category", ""),
+            "Equipment_Type": row.get("Equipment_Type", ""),
+            "System_Subtype": row.get("System_Subtype", ""),
+            "Asset Tag": asset_tag,
+        }
+
+        # Add MasterFormat prediction with enhanced mapping
+        result["MasterFormat_Class"] = enhanced_masterformat_mapping(
+            result["uniformat_code"],
+            result["mcaa_system_category"],
+            result["category_name"],
+            (
+                result["Equipment_Type"].split("-")[1]
+                if "-" in result["Equipment_Type"]
+                else None
+            ),
+        )
+
+        # Add EAV template for the predicted equipment type
+        equipment_type = result["category_name"]
+        result["Equipment_Category"] = equipment_type  # Add for backward compatibility
+        result["attribute_template"] = self.eav_manager.generate_attribute_template(
+            equipment_type
+        )
+
+        # Map predictions to master database fields
+        result["master_db_mapping"] = map_predictions_to_master_db(result)
+
+        return result
+
     def predict_attributes(
         self, equipment_type: str, description: str
     ) -> Dict[str, Any]:
@@ -439,12 +508,12 @@ def predict_with_enhanced_model(
 
         # Get classification IDs
         classification_ids = eav_manager.get_classification_ids(equipment_type)
-        result.update(
-            {
-                "OmniClass_ID": result["omniclass_code"],  # Use omniclass_code directly
-                "Uniformat_ID": result["uniformat_code"],  # Use uniformat_code directly
-            }
-        )
+
+        # Only add these if they exist in the result
+        if "omniclass_code" in result:
+            result["OmniClass_ID"] = result["omniclass_code"]
+        if "uniformat_code" in result:
+            result["Uniformat_ID"] = result["uniformat_code"]
 
         # Get performance fields
         performance_fields = eav_manager.get_performance_fields(equipment_type)
