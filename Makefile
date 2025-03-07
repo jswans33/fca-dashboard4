@@ -1,4 +1,4 @@
-.PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration nexusml-test nexusml-coverage nexusml-install nexusml-run-simple nexusml-run-advanced
+.PHONY: lint test format format-md lint-md install run clean init-db coverage test-unit test-integration nexusml-test nexusml-coverage nexusml-install nexusml-run-simple nexusml-run-advanced nexusml-example-basic nexusml-example-custom nexusml-example-config nexusml-example-di nexusml-examples nexusml-notebooks nexusml-notebooks-venv nexusml-verify-deps
 
 lint:
 	python -m black --check .
@@ -23,11 +23,6 @@ test:
 
 coverage:
 	python -m pytest --cov=fca_dashboard --cov-report=html --cov-report=term fca_dashboard/tests/
-	@echo "HTML coverage report generated in htmlcov/"
-	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
-
-coverage-nexusml:
-	python -m pytest --cov=nexusml --cov-report=html --cov-report=term nexusml/tests/
 	@echo "HTML coverage report generated in htmlcov/"
 	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
 
@@ -117,6 +112,16 @@ install-uv:
 nexusml-install-uv: install-uv
 	uv pip install -e nexusml/
 
+# Verify UV dependencies are up to date
+nexusml-verify-deps: install-uv
+	@echo "Verifying UV dependencies..."
+	uv pip freeze > requirements-current.txt
+	@echo "Comparing with requirements.txt..."
+	python -c "import sys; sys.exit(0 if open('requirements.txt').read() == open('requirements-current.txt').read() else 1)" && \
+	echo "Dependencies are up to date!" || \
+	echo "Dependencies differ from requirements.txt. Please update. You can run 'uv pip install -r requirements.txt' to update."
+	@del requirements-current.txt 2>nul || rm requirements-current.txt 2>/dev/null || echo "Cleanup completed"
+
 # Run NexusML simple example
 nexusml-run-simple:
 	python -m nexusml.examples.simple_example
@@ -124,6 +129,37 @@ nexusml-run-simple:
 # Run NexusML advanced example
 nexusml-run-advanced:
 	python -m nexusml.examples.advanced_example
+
+# Run NexusML documentation examples
+nexusml-example-basic:
+	@echo "Running NexusML basic usage example..."
+	python nexusml/docs/examples/basic_usage.py
+
+nexusml-example-custom:
+	@echo "Running NexusML custom components example..."
+	python nexusml/docs/examples/custom_components.py
+
+nexusml-example-config:
+	@echo "Running NexusML configuration example..."
+	python nexusml/docs/examples/configuration.py
+
+nexusml-example-di:
+	@echo "Running NexusML dependency injection example..."
+	python nexusml/docs/examples/dependency_injection.py
+
+# Run all NexusML documentation examples
+nexusml-examples: nexusml-example-basic nexusml-example-custom nexusml-example-config nexusml-example-di
+	@echo "All NexusML documentation examples completed"
+
+# Launch Jupyter notebooks for NexusML
+nexusml-notebooks:
+	python -m pip install jupyter || echo "Jupyter already installed"
+	python -m jupyter notebook nexusml/notebooks/
+
+# Alternative target for launching Jupyter notebooks using the virtual environment
+nexusml-notebooks-venv:
+	.\.venv\Scripts\python -m pip install jupyter || echo "Jupyter already installed in venv"
+	.\.venv\Scripts\python -m jupyter notebook nexusml/notebooks/
 
 # PlantUML Utilities
 

@@ -1,268 +1,183 @@
 # NexusML
 
-A Python machine learning package for equipment classification.
-
-## Overview
-
-NexusML is a Python package designed for classifying mechanical equipment based
-on textual descriptions and metadata. It uses machine learning techniques to
-categorize equipment into standardized classification systems like MasterFormat
-and OmniClass.
+NexusML is a Python machine learning package for equipment classification. It
+uses machine learning techniques to categorize equipment into standardized
+classification systems like MasterFormat and OmniClass based on textual
+descriptions and metadata.
 
 ## Features
 
-- Data loading and preprocessing
-- Feature engineering from textual descriptions
-- Model training using random forest classifiers
-- Model evaluation and validation
-- Prediction on new equipment data
-- Visualization of model performance
+- **Data Loading and Preprocessing**: Load data from various sources and
+  preprocess it for machine learning
+- **Feature Engineering**: Transform raw data into features suitable for machine
+  learning
+- **Model Training**: Train machine learning models for equipment classification
+- **Model Evaluation**: Evaluate model performance with various metrics
+- **Prediction**: Make predictions on new equipment data
+- **Configuration**: Centralized configuration system for all settings
+- **Extensibility**: Easy to extend with custom components
 
 ## Installation
 
 ```bash
-pip install -e .
+pip install nexusml
 ```
 
-## Usage
+## Quick Start
 
 ### Training a Model
 
-NexusML provides two ways to train a model:
+```python
+from nexusml.core.pipeline.orchestrator import PipelineOrchestrator
+from nexusml.core.pipeline.factory import PipelineFactory
+from nexusml.core.pipeline.registry import ComponentRegistry
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.di.container import DIContainer
 
-#### 1. Using the Orchestrator-Based Pipeline (Recommended)
+# Create the pipeline components
+registry = ComponentRegistry()
+container = DIContainer()
+factory = PipelineFactory(registry, container)
+context = PipelineContext()
+orchestrator = PipelineOrchestrator(factory, context)
 
-```bash
-python nexusml/train_model_pipeline_v2.py --data-path PATH [options]
-```
+# Train a model
+model, metrics = orchestrator.train_model(
+    data_path="path/to/training_data.csv",
+    test_size=0.3,
+    random_state=42,
+    optimize_hyperparameters=True,
+    output_dir="outputs/models",
+    model_name="equipment_classifier",
+)
 
-Example:
-
-```bash
-python nexusml/train_model_pipeline_v2.py \
-    --data-path files/training-data/equipment_data.csv \
-    --feature-config configs/features.yml \
-    --reference-config configs/references.yml \
-    --test-size 0.2 \
-    --random-state 123 \
-    --optimize \
-    --output-dir outputs/models/experiment1 \
-    --model-name custom_model \
-    --log-level DEBUG \
-    --visualize
-```
-
-#### 2. Using the Legacy Pipeline
-
-```bash
-python nexusml/train_model_pipeline_v2.py --data-path PATH --legacy [options]
-```
-
-or
-
-```bash
-python nexusml/train_model_pipeline.py --data-path PATH [options]
+# Print metrics
+print("Model training completed successfully")
+print("Metrics:")
+for key, value in metrics.items():
+    print(f"  {key}: {value}")
 ```
 
 ### Making Predictions
 
-```bash
-python nexusml/predict.py --model-path PATH --data-path PATH [options]
+```python
+from nexusml.core.pipeline.orchestrator import PipelineOrchestrator
+from nexusml.core.pipeline.factory import PipelineFactory
+from nexusml.core.pipeline.registry import ComponentRegistry
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.di.container import DIContainer
+
+# Create the pipeline components
+registry = ComponentRegistry()
+container = DIContainer()
+factory = PipelineFactory(registry, container)
+context = PipelineContext()
+orchestrator = PipelineOrchestrator(factory, context)
+
+# Load a trained model
+model = orchestrator.load_model("outputs/models/equipment_classifier.pkl")
+
+# Make predictions
+predictions = orchestrator.predict(
+    model=model,
+    data_path="path/to/prediction_data.csv",
+    output_path="outputs/predictions.csv",
+)
+
+# Print predictions
+print("Predictions completed successfully")
+print("Sample predictions:")
+print(predictions.head())
 ```
-
-Example:
-
-```bash
-python nexusml/predict.py \
-    --model-path outputs/models/equipment_classifier_latest.pkl \
-    --data-path files/test-data/equipment_data.csv \
-    --output-path outputs/predictions.csv
-```
-
-## Command-Line Arguments
-
-### Training Arguments
-
-| Argument              | Type   | Default                | Description                                           |
-| --------------------- | ------ | ---------------------- | ----------------------------------------------------- |
-| `--data-path`         | string | (required)             | Path to the training data CSV file                    |
-| `--feature-config`    | string | None                   | Path to the feature configuration YAML file           |
-| `--reference-config`  | string | None                   | Path to the reference configuration YAML file         |
-| `--test-size`         | float  | 0.3                    | Proportion of data to use for testing (0.0 to 1.0)    |
-| `--random-state`      | int    | 42                     | Random state for reproducibility                      |
-| `--sampling-strategy` | string | "direct"               | Sampling strategy for handling class imbalance        |
-| `--optimize`          | flag   | False                  | Perform hyperparameter optimization                   |
-| `--output-dir`        | string | "outputs/models"       | Directory to save the trained model and results       |
-| `--model-name`        | string | "equipment_classifier" | Base name for the saved model                         |
-| `--log-level`         | string | "INFO"                 | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
-| `--visualize`         | flag   | False                  | Generate visualizations of model performance          |
-| `--legacy`            | flag   | False                  | Use legacy implementation instead of orchestrator     |
-
-### Prediction Arguments
-
-| Argument        | Type   | Default                   | Description                                           |
-| --------------- | ------ | ------------------------- | ----------------------------------------------------- |
-| `--model-path`  | string | (required)                | Path to the trained model file                        |
-| `--data-path`   | string | (required)                | Path to the data file for prediction                  |
-| `--output-path` | string | "outputs/predictions.csv" | Path to save the predictions                          |
-| `--log-level`   | string | "INFO"                    | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
 
 ## Architecture
 
-NexusML follows a modular architecture:
+NexusML follows a modular architecture with clear interfaces, dependency
+injection, and a factory pattern. The key components are:
 
-```
-nexusml/
-├── core/             # Core functionality and interfaces
-│   ├── cli/          # Command-line interfaces
-│   ├── di/           # Dependency injection
-│   ├── pipeline/     # Pipeline components
-│   └── reference/    # Reference data management
-├── data/             # Data handling
-├── examples/         # Example scripts
-├── tests/            # Test suite
-└── utils/            # Utility functions
-```
+### Configuration System
 
-## Development
+The configuration system centralizes all settings in a single file, provides
+validation through Pydantic models, supports loading from YAML files or
+environment variables, and ensures consistent access through a singleton
+provider.
 
-### Testing
+### Pipeline Components
 
-Run all tests:
+The pipeline components are responsible for the various stages of the machine
+learning pipeline, from data loading to prediction. Each component has a clear
+interface and is responsible for a specific part of the pipeline.
 
-```bash
-pytest
-```
+- **Data Loader**: Loads data from various sources
+- **Data Preprocessor**: Cleans and prepares data
+- **Feature Engineer**: Transforms raw data into features
+- **Model Builder**: Creates and configures models
+- **Model Trainer**: Trains models
+- **Model Evaluator**: Evaluates models
+- **Model Serializer**: Saves and loads models
+- **Predictor**: Makes predictions
 
-Run tests with coverage:
+### Pipeline Management
 
-```bash
-pytest --cov=nexusml
-```
+The pipeline management components are responsible for creating, configuring,
+and orchestrating the pipeline components.
 
-### Code Quality
+- **Component Registry**: Registers component implementations and their default
+  implementations
+- **Pipeline Factory**: Creates pipeline components with proper dependencies
+- **Pipeline Orchestrator**: Coordinates the execution of the pipeline
+- **Pipeline Context**: Stores state and data during pipeline execution
 
-Format code:
+### Dependency Injection
 
-```bash
-black nexusml tests
-```
+The dependency injection system provides a way to manage component dependencies,
+making the system more testable and maintainable. It follows the Dependency
+Inversion Principle from SOLID, allowing high-level modules to depend on
+abstractions rather than concrete implementations.
 
-Check types:
+## Documentation
 
-```bash
-mypy nexusml
-```
+For more detailed documentation, see the following:
 
-## Pipeline Factory
+- [Architecture Overview](docs/architecture/overview.md)
+- [Configuration System](docs/architecture/configuration.md)
+- [Pipeline Architecture](docs/architecture/pipeline.md)
+- [Dependency Injection](docs/architecture/dependency_injection.md)
+- [Migration Guide](docs/migration/overview.md)
+- [Examples](docs/examples/)
 
-NexusML uses a factory pattern to create pipeline components with their proper
-dependencies. The factory uses a component registry to look up implementations
-and a dependency injection container to resolve dependencies.
+## Examples
 
-```python
-from nexusml.core.di.container import DIContainer
-from nexusml.core.pipeline.factory import PipelineFactory
-from nexusml.core.pipeline.registry import ComponentRegistry
+The `docs/examples/` directory contains example scripts demonstrating various
+aspects of NexusML:
 
-# Create a registry and container
-registry = ComponentRegistry()
-container = DIContainer()
+- [Basic Usage](docs/examples/basic_usage.py): Basic usage of NexusML for
+  training and prediction
+- [Custom Components](docs/examples/custom_components.py): Creating custom
+  components for NexusML
+- [Configuration](docs/examples/configuration.py): Using the configuration
+  system
+- [Dependency Injection](docs/examples/dependency_injection.py): Using the
+  dependency injection system
 
-# Register components
-registry.register(DataLoader, "csv", CSVDataLoader)
-registry.register(DataPreprocessor, "standard", StandardPreprocessor)
-registry.register(FeatureEngineer, "text", TextFeatureEngineer)
-registry.register(ModelBuilder, "random_forest", RandomForestModelBuilder)
-
-# Set default implementations
-registry.set_default_implementation(DataLoader, "csv")
-registry.set_default_implementation(DataPreprocessor, "standard")
-registry.set_default_implementation(FeatureEngineer, "text")
-registry.set_default_implementation(ModelBuilder, "random_forest")
-
-# Create a factory
-factory = PipelineFactory(registry, container)
-
-# Create components
-data_loader = factory.create_data_loader()
-preprocessor = factory.create_data_preprocessor()
-feature_engineer = factory.create_feature_engineer()
-model_builder = factory.create_model_builder()
-```
-
-The factory provides several advantages:
-
-- **Centralized Component Creation**: All components are created through a
-  single factory, making it easy to manage and configure.
-- **Dependency Injection**: Components with dependencies are automatically wired
-  together.
-- **Customization**: You can select specific implementations or provide custom
-  configuration.
-- **Testability**: Components can be easily mocked or replaced for testing.
-
-For more details, see the
-[Pipeline Components README](nexusml/core/pipeline/README.md).
-
-## Configuration
-
-NexusML uses a unified configuration system that centralizes all settings in a
-single file. The configuration system provides:
-
-- Validation of configuration values using Pydantic
-- Default values for all settings
-- Loading from YAML files or environment variables
-- Consistent access through a singleton provider
-
-### Basic Configuration Usage
-
-```python
-from nexusml.core.config.provider import ConfigurationProvider
-
-# Get the configuration
-config_provider = ConfigurationProvider()
-config = config_provider.config
-
-# Access configuration values
-feature_config = config.feature_engineering
-data_config = config.data
-```
-
-### Custom Configuration
-
-You can specify a custom configuration file using the `NEXUSML_CONFIG`
-environment variable:
+You can run these examples using the following Makefile targets:
 
 ```bash
-export NEXUSML_CONFIG=/path/to/your/config.yml
+# Run all examples
+make nexusml-examples
+
+# Run individual examples
+make nexusml-example-basic     # Basic usage example
+make nexusml-example-custom    # Custom components example
+make nexusml-example-config    # Configuration example
+make nexusml-example-di        # Dependency injection example
 ```
 
-### Migration from Legacy Configuration
+## Contributing
 
-To migrate from legacy configuration files to the new unified format:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-```python
-from nexusml.core.config.migration import migrate_from_default_paths
+## License
 
-# Migrate configurations and save to the default path
-config = migrate_from_default_paths()
-```
-
-### Future Configuration Cleanup
-
-The following legacy configuration files are maintained for backward
-compatibility and are planned for removal in future work chunks:
-
-- `classification_config.yml` - Will be replaced by the unified configuration
-- `data_config.yml` - Will be replaced by the unified configuration
-- `feature_config.yml` - Will be replaced by the unified configuration
-- `reference_config.yml` - Will be replaced by the unified configuration
-- `eav/equipment_attributes.json` - Will be replaced by the unified
-  configuration
-- `mappings/masterformat_primary.json` - Will be replaced by the unified
-  configuration
-- `mappings/masterformat_equipment.json` - Will be replaced by the unified
-  configuration
-
-Once all code is updated to use the new unified configuration system, these
-files will be removed.
+This project is licensed under the MIT License - see the LICENSE file for
+details.
