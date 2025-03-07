@@ -1,3 +1,5 @@
 """
-Test suite for NexusML.
+Tests Package
+
+This package contains tests for the NexusML package.
 """

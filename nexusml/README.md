@@ -19,6 +19,70 @@ development and reuse.
 - Easy-to-use API for predictions
 - OmniClass data extraction and description generation
 - Unified configuration system with validation
+- Interface-based pipeline architecture for extensibility
+
+## Pipeline Architecture
+
+NexusML uses a modular, interface-based pipeline architecture that follows the
+Interface Segregation Principle from SOLID. This architecture provides:
+
+- Clear separation of concerns with focused interfaces
+- Improved testability through well-defined contracts
+- Enhanced extensibility by allowing custom implementations
+- Backward compatibility through adapter pattern
+
+The pipeline consists of the following components:
+
+- **DataLoader**: Loads data from various sources
+- **DataPreprocessor**: Cleans and prepares data
+- **FeatureEngineer**: Transforms raw data into features
+- **ModelBuilder**: Creates and configures ML models
+- **ModelTrainer**: Trains models on prepared data
+- **ModelEvaluator**: Evaluates model performance
+- **ModelSerializer**: Saves and loads models
+- **Predictor**: Makes predictions with trained models
+
+### Using Pipeline Components
+
+```python
+from nexusml.core.pipeline.interfaces import DataLoader, FeatureEngineer, ModelBuilder
+from nexusml.core.pipeline.adapters import (
+    LegacyDataLoaderAdapter,
+    LegacyFeatureEngineerAdapter,
+    LegacyModelBuilderAdapter
+)
+
+# Use the legacy adapters for backward compatibility
+data_loader = LegacyDataLoaderAdapter()
+feature_engineer = LegacyFeatureEngineerAdapter()
+model_builder = LegacyModelBuilderAdapter()
+
+# Load and preprocess data
+data = data_loader.load_data("path/to/data.csv")
+
+# Engineer features
+features = feature_engineer.engineer_features(data)
+
+# Build a model
+model = model_builder.build_model()
+```
+
+### Creating Custom Components
+
+You can create custom components by implementing the interfaces:
+
+```python
+from nexusml.core.pipeline.interfaces import DataLoader
+from nexusml.core.pipeline.base import BaseDataLoader
+
+class CustomDataLoader(BaseDataLoader):
+    """Custom data loader for specialized data sources."""
+
+    def load_data(self, data_path=None, **kwargs):
+        # Custom implementation
+        # ...
+        return processed_data
+```
 
 ## Configuration
 
