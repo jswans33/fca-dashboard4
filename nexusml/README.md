@@ -1,150 +1,164 @@
 # NexusML
 
-A modern machine learning classification engine for equipment classification.
+A Python machine learning package for equipment classification.
 
 ## Overview
 
-NexusML is a standalone Python package that provides machine learning
-capabilities for classifying equipment based on descriptions and other features.
-It was extracted from the FCA Dashboard project to enable independent
-development and reuse.
+NexusML is a Python package designed for classifying mechanical equipment based
+on textual descriptions and metadata. It uses machine learning techniques to
+categorize equipment into standardized classification systems like MasterFormat
+and OmniClass.
 
 ## Features
 
-- Data preprocessing and cleaning
-- Feature engineering for text data
-- Hierarchical classification models
+- Data loading and preprocessing
+- Feature engineering from textual descriptions
+- Model training using random forest classifiers
 - Model evaluation and validation
-- Visualization of results
-- Easy-to-use API for predictions
-- OmniClass data extraction and description generation
-- Unified configuration system with validation
-- Interface-based pipeline architecture for extensibility
+- Prediction on new equipment data
+- Visualization of model performance
 
-## Pipeline Architecture
+## Installation
 
-NexusML uses a modular, interface-based pipeline architecture that follows the
-Interface Segregation Principle from SOLID. This architecture provides:
-
-- Clear separation of concerns with focused interfaces
-- Improved testability through well-defined contracts
-- Enhanced extensibility by allowing custom implementations
-- Backward compatibility through adapter pattern
-
-The pipeline consists of the following components:
-
-- **DataLoader**: Loads data from various sources
-- **DataPreprocessor**: Cleans and prepares data
-- **FeatureEngineer**: Transforms raw data into features
-- **ModelBuilder**: Creates and configures ML models
-- **ModelTrainer**: Trains models on prepared data
-- **ModelEvaluator**: Evaluates model performance
-- **ModelSerializer**: Saves and loads models
-- **Predictor**: Makes predictions with trained models
-
-### Using Pipeline Components
-
-```python
-from nexusml.core.pipeline.interfaces import DataLoader, FeatureEngineer, ModelBuilder
-from nexusml.core.pipeline.adapters import (
-    LegacyDataLoaderAdapter,
-    LegacyFeatureEngineerAdapter,
-    LegacyModelBuilderAdapter
-)
-
-# Use the legacy adapters for backward compatibility
-data_loader = LegacyDataLoaderAdapter()
-feature_engineer = LegacyFeatureEngineerAdapter()
-model_builder = LegacyModelBuilderAdapter()
-
-# Load and preprocess data
-data = data_loader.load_data("path/to/data.csv")
-
-# Engineer features
-features = feature_engineer.engineer_features(data)
-
-# Build a model
-model = model_builder.build_model()
+```bash
+pip install -e .
 ```
 
-### Standard Data Components
+## Usage
 
-NexusML provides standard implementations of the data components that use the
-unified configuration system:
+### Training a Model
 
-```python
-from nexusml.core.pipeline.components.data_loader import StandardDataLoader
-from nexusml.core.pipeline.components.data_preprocessor import StandardDataPreprocessor
+NexusML provides two ways to train a model:
 
-# Create standard components
-data_loader = StandardDataLoader()
-data_preprocessor = StandardDataPreprocessor()
+#### 1. Using the Orchestrator-Based Pipeline (Recommended)
 
-# Load data using the standard loader
-data = data_loader.load_data("path/to/data.csv")
-
-# Preprocess data using the standard preprocessor
-preprocessed_data = data_preprocessor.preprocess(data, drop_duplicates=True)
+```bash
+python nexusml/train_model_pipeline_v2.py --data-path PATH [options]
 ```
 
-The standard components provide several advantages:
+Example:
 
-- Centralized configuration through the unified configuration system
-- Robust error handling and detailed logging
-- Consistent interfaces for all data operations
-- Improved testability and maintainability
-
-For backward compatibility, adapter classes are provided that implement the new
-interfaces while maintaining the legacy behavior:
-
-```python
-from nexusml.core.pipeline.adapters.data_adapter import (
-    LegacyDataLoaderAdapter,
-    LegacyDataPreprocessorAdapter
-)
-
-# Create adapter instances
-legacy_loader = LegacyDataLoaderAdapter()
-legacy_preprocessor = LegacyDataPreprocessorAdapter()
-
-# Use with the same interface as the standard components
-data = legacy_loader.load_data("path/to/legacy_data.csv")
-preprocessed_data = legacy_preprocessor.preprocess(data)
+```bash
+python nexusml/train_model_pipeline_v2.py \
+    --data-path files/training-data/equipment_data.csv \
+    --feature-config configs/features.yml \
+    --reference-config configs/references.yml \
+    --test-size 0.2 \
+    --random-state 123 \
+    --optimize \
+    --output-dir outputs/models/experiment1 \
+    --model-name custom_model \
+    --log-level DEBUG \
+    --visualize
 ```
 
-You can also use the `DataComponentFactory` to create the appropriate component
-based on configuration:
+#### 2. Using the Legacy Pipeline
 
-```python
-from nexusml.core.pipeline.adapters.data_adapter import DataComponentFactory
-
-# Create a data loader (standard or legacy based on the use_legacy flag)
-data_loader = DataComponentFactory.create_data_loader(use_legacy=False)
-data_preprocessor = DataComponentFactory.create_data_preprocessor(use_legacy=False)
+```bash
+python nexusml/train_model_pipeline_v2.py --data-path PATH --legacy [options]
 ```
 
-### Creating Custom Components
+or
 
-You can create custom components by implementing the interfaces:
-
-```python
-from nexusml.core.pipeline.interfaces import DataLoader
-from nexusml.core.pipeline.base import BaseDataLoader
-
-class CustomDataLoader(BaseDataLoader):
-    """Custom data loader for specialized data sources."""
-
-    def load_data(self, data_path=None, **kwargs):
-        # Custom implementation
-        # ...
-        return processed_data
+```bash
+python nexusml/train_model_pipeline.py --data-path PATH [options]
 ```
 
-### Pipeline Factory
+### Making Predictions
 
-NexusML provides a centralized factory for creating pipeline components with
-proper dependencies. The factory uses a component registry to look up
-implementations and a dependency injection container to resolve dependencies.
+```bash
+python nexusml/predict.py --model-path PATH --data-path PATH [options]
+```
+
+Example:
+
+```bash
+python nexusml/predict.py \
+    --model-path outputs/models/equipment_classifier_latest.pkl \
+    --data-path files/test-data/equipment_data.csv \
+    --output-path outputs/predictions.csv
+```
+
+## Command-Line Arguments
+
+### Training Arguments
+
+| Argument              | Type   | Default                | Description                                           |
+| --------------------- | ------ | ---------------------- | ----------------------------------------------------- |
+| `--data-path`         | string | (required)             | Path to the training data CSV file                    |
+| `--feature-config`    | string | None                   | Path to the feature configuration YAML file           |
+| `--reference-config`  | string | None                   | Path to the reference configuration YAML file         |
+| `--test-size`         | float  | 0.3                    | Proportion of data to use for testing (0.0 to 1.0)    |
+| `--random-state`      | int    | 42                     | Random state for reproducibility                      |
+| `--sampling-strategy` | string | "direct"               | Sampling strategy for handling class imbalance        |
+| `--optimize`          | flag   | False                  | Perform hyperparameter optimization                   |
+| `--output-dir`        | string | "outputs/models"       | Directory to save the trained model and results       |
+| `--model-name`        | string | "equipment_classifier" | Base name for the saved model                         |
+| `--log-level`         | string | "INFO"                 | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
+| `--visualize`         | flag   | False                  | Generate visualizations of model performance          |
+| `--legacy`            | flag   | False                  | Use legacy implementation instead of orchestrator     |
+
+### Prediction Arguments
+
+| Argument        | Type   | Default                   | Description                                           |
+| --------------- | ------ | ------------------------- | ----------------------------------------------------- |
+| `--model-path`  | string | (required)                | Path to the trained model file                        |
+| `--data-path`   | string | (required)                | Path to the data file for prediction                  |
+| `--output-path` | string | "outputs/predictions.csv" | Path to save the predictions                          |
+| `--log-level`   | string | "INFO"                    | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
+
+## Architecture
+
+NexusML follows a modular architecture:
+
+```
+nexusml/
+├── core/             # Core functionality and interfaces
+│   ├── cli/          # Command-line interfaces
+│   ├── di/           # Dependency injection
+│   ├── pipeline/     # Pipeline components
+│   └── reference/    # Reference data management
+├── data/             # Data handling
+├── examples/         # Example scripts
+├── tests/            # Test suite
+└── utils/            # Utility functions
+```
+
+## Development
+
+### Testing
+
+Run all tests:
+
+```bash
+pytest
+```
+
+Run tests with coverage:
+
+```bash
+pytest --cov=nexusml
+```
+
+### Code Quality
+
+Format code:
+
+```bash
+black nexusml tests
+```
+
+Check types:
+
+```bash
+mypy nexusml
+```
+
+## Pipeline Factory
+
+NexusML uses a factory pattern to create pipeline components with their proper
+dependencies. The factory uses a component registry to look up implementations
+and a dependency injection container to resolve dependencies.
 
 ```python
 from nexusml.core.di.container import DIContainer
@@ -252,106 +266,3 @@ compatibility and are planned for removal in future work chunks:
 
 Once all code is updated to use the new unified configuration system, these
 files will be removed.
-
-## Installation
-
-### From Source
-
-```bash
-# Install with pip
-pip install -e .
-
-# Or install with uv (recommended)
-uv pip install -e .
-
-# Install with development dependencies
-pip install -e ".[dev]"
-```
-
-Note: The package is named 'core' in the current monorepo structure, so imports
-should use:
-
-```python
-from core.model import ...
-```
-
-rather than:
-
-```python
-from nexusml.core.model import ...
-```
-
-## Usage
-
-### Basic Example
-
-```python
-from core.model import train_enhanced_model, predict_with_enhanced_model
-
-# Train a model
-model, df = train_enhanced_model("path/to/training_data.csv")
-
-# Make a prediction
-description = "Heat Exchanger for Chilled Water system with Plate and Frame design"
-service_life = 20.0  # Example service life in years
-
-prediction = predict_with_enhanced_model(model, description, service_life)
-print(prediction)
-```
-
-### OmniClass Generator Usage
-
-```python
-from nexusml import extract_omniclass_data, generate_descriptions
-
-# Extract OmniClass data from Excel files
-df = extract_omniclass_data(
-    input_dir="files/omniclass_tables",
-    output_file="nexusml/ingest/generator/data/omniclass.csv",
-    file_pattern="*.xlsx"
-)
-
-# Generate descriptions for OmniClass codes
-result_df = generate_descriptions(
-    input_file="nexusml/ingest/generator/data/omniclass.csv",
-    output_file="nexusml/ingest/generator/data/omniclass_with_descriptions.csv",
-    batch_size=50,
-    description_column="Description"
-)
-```
-
-### Advanced Usage
-
-See the examples directory for more detailed usage examples:
-
-- `simple_example.py`: Basic usage without visualizations
-- `advanced_example.py`: Complete workflow with visualizations
-- `omniclass_generator_example.py`: Example of using the OmniClass generator
-- `advanced_example.py`: Complete workflow with visualizations
-
-## Development
-
-### Setup Development Environment
-
-```bash
-# Create a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install development dependencies
-pip install -e ".[dev]"
-```
-
-### Running Tests
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=nexusml
-```
-
-## License
-
-MIT

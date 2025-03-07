@@ -16,12 +16,12 @@
     ]
   },
   "component_execution_times": {
-    "data_loading": 0.2528657913208008,
-    "data_preprocessing": 0.0020017623901367188,
-    "feature_engineering": 0.004998207092285156,
-    "data_splitting": 0.0030007362365722656,
-    "model_building": 0.001997232437133789,
-    "model_training": 0.09793758392333984,
-    "model_evaluation": 0.024170875549316406
+    "data_loading": 0.2120344638824463,
+    "data_preprocessing": 0.0,
+    "feature_engineering": 0.0021097660064697266,
+    "data_splitting": 0.001997232437133789,
+    "model_building": 0.0007796287536621094,
+    "model_training": 0.09107542037963867,
+    "model_evaluation": 0.008891105651855469
   }
 }

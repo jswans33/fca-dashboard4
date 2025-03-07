@@ -16,16 +16,16 @@
     ]
   },
   "component_execution_times": {
-    "data_loading": 0.03752565383911133,
-    "data_preprocessing": 0.0020041465759277344,
-    "feature_engineering": 0.014539003372192383,
-    "data_splitting": 0.0030007362365722656,
-    "model_building": 0.001997232437133789,
-    "model_training": 0.09793758392333984,
-    "model_evaluation": 0.0485529899597168,
-    "model_saving": 0.0027387142181396484,
-    "prediction": 0.002000093460083008,
-    "saving_predictions": 0.005994081497192383,
-    "data_preparation": 0.003000020980834961
+    "data_loading": 0.008012056350708008,
+    "data_preprocessing": 0.004998683929443359,
+    "feature_engineering": 0.00499272346496582,
+    "data_splitting": 0.001997232437133789,
+    "model_building": 0.0007796287536621094,
+    "model_training": 0.09107542037963867,
+    "model_evaluation": 0.015162467956542969,
+    "model_saving": 0.002644777297973633,
+    "prediction": 0.0019991397857666016,
+    "saving_predictions": 0.002998828887939453,
+    "data_preparation": 0.0020003318786621094
   }
 }
