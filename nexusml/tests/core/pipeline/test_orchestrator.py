@@ -3,7 +3,6 @@ Unit tests for the PipelineOrchestrator class.
 """
 
 import json
-import logging
 import pickle
 from pathlib import Path
 from unittest import mock
@@ -14,24 +13,12 @@ import pytest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 
-from nexusml.core.di.container import DIContainer
 from nexusml.core.pipeline.context import PipelineContext
-from nexusml.core.pipeline.factory import PipelineFactory, PipelineFactoryError
-from nexusml.core.pipeline.interfaces import (
-    DataLoader,
-    DataPreprocessor,
-    FeatureEngineer,
-    ModelBuilder,
-    ModelEvaluator,
-    ModelSerializer,
-    ModelTrainer,
-    Predictor,
-)
+from nexusml.core.pipeline.factory import PipelineFactory
 from nexusml.core.pipeline.orchestrator import (
     PipelineOrchestrator,
     PipelineOrchestratorError,
 )
-from nexusml.core.pipeline.registry import ComponentRegistry
 
 
 class MockDataLoader:

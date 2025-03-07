@@ -4,7 +4,6 @@ Unit tests for the PipelineContext class.
 
 import logging
 import time
-from pathlib import Path
 from unittest import mock
 
 import pandas as pd

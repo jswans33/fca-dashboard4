@@ -6,7 +6,7 @@ for creating pipeline components with proper dependencies.
 """
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest

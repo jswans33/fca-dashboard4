@@ -27,7 +27,7 @@ coverage:
 	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
 
 coverage-nexusml:
-	python -m pytest --cov=nexusml/tests/ --cov-report=html --cov-report=term nexusml/tests/
+	python -m pytest --cov=nexusml --cov-report=html --cov-report=term nexusml/tests/
 	@echo "HTML coverage report generated in htmlcov/"
 	python -c "import os, webbrowser; webbrowser.open('file://' + os.path.realpath('htmlcov/index.html'))"
 

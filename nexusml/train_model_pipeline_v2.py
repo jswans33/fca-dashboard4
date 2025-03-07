@@ -355,31 +355,13 @@ def create_orchestrator(logger) -> PipelineOrchestrator:
 
     # Register the components
     registry.register(DataLoader, "standard", StandardDataLoader)
-    registry.register(
-        DataPreprocessor := type("DataPreprocessor", (), {}),
-        "standard",
-        SimplePreprocessor,
-    )
-    registry.register(
-        FeatureEngineer := type("FeatureEngineer", (), {}),
-        "simple",
-        SimpleFeatureEngineer,
-    )
-    registry.register(
-        ModelBuilder := type("ModelBuilder", (), {}), "simple", SimpleModelBuilder
-    )
-    registry.register(
-        ModelTrainer := type("ModelTrainer", (), {}), "simple", SimpleModelTrainer
-    )
-    registry.register(
-        ModelEvaluator := type("ModelEvaluator", (), {}), "simple", SimpleModelEvaluator
-    )
-    registry.register(
-        ModelSerializer := type("ModelSerializer", (), {}),
-        "simple",
-        SimpleModelSerializer,
-    )
-    registry.register(Predictor := type("Predictor", (), {}), "simple", SimplePredictor)
+    registry.register(DataPreprocessor, "standard", SimplePreprocessor)
+    registry.register(FeatureEngineer, "simple", SimpleFeatureEngineer)
+    registry.register(ModelBuilder, "simple", SimpleModelBuilder)
+    registry.register(ModelTrainer, "simple", SimpleModelTrainer)
+    registry.register(ModelEvaluator, "simple", SimpleModelEvaluator)
+    registry.register(ModelSerializer, "simple", SimpleModelSerializer)
+    registry.register(Predictor, "simple", SimplePredictor)
 
     # Set default implementations
     registry.set_default_implementation(DataLoader, "standard")
