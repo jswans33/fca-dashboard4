@@ -153,13 +153,30 @@ nexusml-examples: nexusml-example-basic nexusml-example-custom nexusml-example-c
 
 # Launch Jupyter notebooks for NexusML
 nexusml-notebooks:
-	python -m pip install jupyter || echo "Jupyter already installed"
-	python -m jupyter notebook nexusml/notebooks/
+	mkdir -p nexusml/notebooks
+	@echo ""
+	@echo "=== NexusML Jupyter Notebooks ==="
+	@echo ""
+	@echo "The experiment notebook template is available in the nexusml/notebooks directory:"
+	@echo "- experiment_template.ipynb: Template for running experiments with the NexusML architecture"
+	@echo ""
+	@echo "To use this notebook in VSCode:"
+	@echo "1. Open VSCode and navigate to the nexusml/notebooks directory"
+	@echo "2. Click on the experiment_template.ipynb file to open it"
+	@echo "3. Select the Python kernel from your virtual environment (.venv)"
+	@echo "4. Run the notebook cells using the VSCode Jupyter interface"
+	@echo ""
+	@echo "NOTE: The notebook has been updated to automatically set the NEXUSML_CONFIG"
+	@echo "environment variable to point to the correct configuration file."
+	@echo ""
+	@echo "This approach avoids permission issues that can occur when launching"
+	@echo "Jupyter from the command line on Windows systems."
+	@echo ""
+	@echo "=================================="
 
 # Alternative target for launching Jupyter notebooks using the virtual environment
-nexusml-notebooks-venv:
-	.\.venv\Scripts\python -m pip install jupyter || echo "Jupyter already installed in venv"
-	.\.venv\Scripts\python -m jupyter notebook nexusml/notebooks/
+# This is now identical to nexusml-notebooks since VSCode can use the virtual environment
+nexusml-notebooks-venv: nexusml-notebooks
 
 # PlantUML Utilities
 
