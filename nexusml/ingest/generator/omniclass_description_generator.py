@@ -13,14 +13,40 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-import anthropic
+# Make anthropic import optional
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
+    # Create a dummy class for type hints
+    class DummyAnthropic:
+        class Anthropic:
+            def __init__(self, api_key: str = None):
+                self.api_key = api_key
+    
+    if not 'anthropic' in globals():
+        anthropic = DummyAnthropic()
+
 import pandas as pd
 import yaml
-from dotenv import load_dotenv
-from tqdm import tqdm
 
-# Load environment variables from .env file
-load_dotenv()
+# Make dotenv import optional
+try:
+    from dotenv import load_dotenv
+    # Load environment variables from .env file
+    load_dotenv()
+except ImportError:
+    # Define a dummy load_dotenv function
+    def load_dotenv():
+        pass
+
+try:
+    from tqdm import tqdm
+except ImportError:
+    # Define a dummy tqdm function
+    def tqdm(iterable, *args, **kwargs):
+        return iterable
 
 
 # Define custom error classes
@@ -159,7 +185,13 @@ class AnthropicClient(ApiClient):
 
         Raises:
             ApiClientError: If the API key is not provided and not found in environment variables
+            ApiClientError: If the anthropic package is not installed
         """
+        if not ANTHROPIC_AVAILABLE:
+            raise ApiClientError(
+                "The anthropic package is not installed. Install it with 'pip install anthropic'"
+            )
+            
         # Get API key from environment variables if not provided
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -188,6 +220,11 @@ class AnthropicClient(ApiClient):
         Raises:
             ApiClientError: If the API call fails after all retries
         """
+        if not ANTHROPIC_AVAILABLE:
+            raise ApiClientError(
+                "The anthropic package is not installed. Install it with 'pip install anthropic'"
+            )
+            
         for attempt in range(MAX_RETRIES):
             try:
                 logger.debug(f"Making API call to Anthropic (attempt {attempt + 1}/{MAX_RETRIES})")
@@ -242,8 +279,19 @@ class OmniClassDescriptionGenerator(DescriptionGenerator):
         Args:
             api_client: The API client to use. If None, creates a new AnthropicClient.
             system_prompt: The system prompt to use. If None, uses the default SYSTEM_PROMPT.
+            
+        Raises:
+            ApiClientError: If anthropic is not available and no api_client is provided
         """
-        self.api_client = api_client or AnthropicClient()
+        if api_client is None:
+            if not ANTHROPIC_AVAILABLE:
+                raise ApiClientError(
+                    "The anthropic package is not installed. Install it with 'pip install anthropic'"
+                )
+            self.api_client = AnthropicClient()
+        else:
+            self.api_client = api_client
+            
         self.system_prompt = system_prompt or SYSTEM_PROMPT
         logger.debug("OmniClass description generator initialized")
 
@@ -438,8 +486,20 @@ class BatchProcessor:
 # Convenience functions for backward compatibility and ease of use
 
 
-def create_client() -> anthropic.Anthropic:
-    """Create and return an Anthropic client."""
+def create_client() -> Any:
+    """
+    Create and return an Anthropic client.
+    
+    Returns:
+        Anthropic client or None if anthropic is not available
+        
+    Raises:
+        ApiClientError: If anthropic is not available or API key is not set
+    """
+    if not ANTHROPIC_AVAILABLE:
+        raise ApiClientError(
+            "The anthropic package is not installed. Install it with 'pip install anthropic'"
+        )
     return AnthropicClient().client
 
 
@@ -456,7 +516,7 @@ def generate_prompt(batch_data: pd.DataFrame) -> str:
     return OmniClassDescriptionGenerator().generate_prompt(batch_data)
 
 
-def call_claude_api(client: anthropic.Anthropic, prompt: str) -> Optional[str]:
+def call_claude_api(client: Any, prompt: str) -> Optional[str]:
     """
     Call the Claude API with retry logic.
 
@@ -466,7 +526,14 @@ def call_claude_api(client: anthropic.Anthropic, prompt: str) -> Optional[str]:
 
     Returns:
         str: Response from the Claude API
+        
+    Raises:
+        ApiClientError: If anthropic is not available or API key is not set
     """
+    if not ANTHROPIC_AVAILABLE:
+        raise ApiClientError(
+            "The anthropic package is not installed. Install it with 'pip install anthropic'"
+        )
     api_client = AnthropicClient(api_key=client.api_key)
     return api_client.call(prompt=prompt, system_prompt=SYSTEM_PROMPT)
 
@@ -491,6 +558,7 @@ def generate_descriptions(
     end_index: Optional[int] = None,
     batch_size: int = BATCH_SIZE,
     description_column: str = DEFAULT_DESCRIPTION_COLUMN,
+    api_client: Optional[ApiClient] = None,
 ) -> pd.DataFrame:
     """
     Generate descriptions for OmniClass codes.
@@ -502,14 +570,22 @@ def generate_descriptions(
         end_index: Index to end processing at (default: None, process all rows)
         batch_size: Size of batches to process (default from config)
         description_column: Column to store descriptions in (default from config)
+        api_client: Optional API client to use. If None, creates a new AnthropicClient.
 
     Returns:
         DataFrame: DataFrame with generated descriptions
 
     Raises:
         DescriptionGeneratorError: If description generation fails
+        ApiClientError: If anthropic is not available and no api_client is provided
     """
     try:
+        # Check if anthropic is available if no api_client is provided
+        if api_client is None and not ANTHROPIC_AVAILABLE:
+            raise ApiClientError(
+                "The anthropic package is not installed. Install it with 'pip install anthropic'"
+            )
+            
         # Resolve paths
         input_path = resolve_path(input_file)
 
@@ -536,7 +612,7 @@ def generate_descriptions(
         logger.info(f"Loaded {total_rows} rows")
 
         # Create generator and processor
-        generator = OmniClassDescriptionGenerator()
+        generator = OmniClassDescriptionGenerator(api_client=api_client)
         processor = BatchProcessor(generator, batch_size=batch_size)
 
         # Define save callback

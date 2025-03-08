@@ -151,26 +151,28 @@ nexusml-example-di:
 nexusml-examples: nexusml-example-basic nexusml-example-custom nexusml-example-config nexusml-example-di
 	@echo "All NexusML documentation examples completed"
 
-# Launch Jupyter notebooks for NexusML
-nexusml-notebooks:
+# Information about NexusML Jupyter Notebooks
+nexusml-notebooks-info:
 	mkdir -p nexusml/notebooks
 	@echo ""
 	@echo "=== NexusML Jupyter Notebooks ==="
 	@echo ""
-	@echo "The experiment notebook template is available in the nexusml/notebooks directory:"
-	@echo "- experiment_template.ipynb: Template for running experiments with the NexusML architecture"
+	@echo "The following notebook templates are available in the nexusml/notebooks directory:"
+	@echo "- modular_template.ipynb: Original template for running experiments with NexusML"
+	@echo "- enhanced_modular_template.ipynb: Enhanced template with improved error handling and features"
 	@echo ""
-	@echo "To use this notebook in VSCode:"
+	@echo "To use these notebooks in VSCode:"
 	@echo "1. Open VSCode and navigate to the nexusml/notebooks directory"
-	@echo "2. Click on the experiment_template.ipynb file to open it"
+	@echo "2. Click on the desired notebook file to open it"
 	@echo "3. Select the Python kernel from your virtual environment (.venv)"
 	@echo "4. Run the notebook cells using the VSCode Jupyter interface"
 	@echo ""
-	@echo "NOTE: The notebook has been updated to automatically set the NEXUSML_CONFIG"
+	@echo "NOTE: The notebooks have been updated to automatically set the NEXUSML_CONFIG"
 	@echo "environment variable to point to the correct configuration file."
 	@echo ""
-	@echo "This approach avoids permission issues that can occur when launching"
-	@echo "Jupyter from the command line on Windows systems."
+	@echo "To launch Jupyter Notebook server from the command line:"
+	@echo "- Use 'make nexusml-notebook' for the standard launcher"
+	@echo "- Use 'make nexusml-notebook-enhanced' for the enhanced launcher with better error handling"
 	@echo ""
 	@echo "=================================="
 
@@ -220,3 +222,42 @@ compile-core:
 
 compile-tests:
 	cd fca_dashboard && npx repomix --include "tests/"
+
+# Launch Jupyter notebook for NexusML
+nexusml-notebook:
+	@echo ""
+	@echo "=== Starting Jupyter Notebook for NexusML ==="
+	@echo ""
+	@echo "Once the server starts, copy and paste the URL with token into your browser."
+	@echo "The URL will look like: http://localhost:8888/tree?token=<token>"
+	@echo ""
+	@echo "==============================================	@echo ""
+	cd /c/Repos/fca-dashboard4/nexusml/notebooks && bash launch_jupyter.sh
+
+# Launch enhanced Jupyter notebook for NexusML
+nexusml-notebook-enhanced:
+	@echo ""
+	@echo "=== Starting Enhanced Jupyter Notebook for NexusML ==="
+	@echo ""
+	@echo "This uses the enhanced launcher with better error handling and dependency management."
+	@echo "Once the server starts, copy and paste the URL with token into your browser."
+	@echo "The URL will look like: http://localhost:8888/tree?token=<token>"
+	@echo ""
+	@echo "=============================================="
+	@echo ""
+	cd /c/Repos/fca-dashboard4/nexusml/notebooks && bash enhanced_launch_jupyter.sh
+
+# Alternative target for launching Jupyter notebooks (same as nexusml-notebook)
+nexusml-notebooks:
+	@echo "Using the nexusml-notebook target instead..."
+	$(MAKE) nexusml-notebook
+
+# Alternative target for launching Jupyter notebooks using the virtual environment
+nexusml-notebooks-venv:
+	@echo "Using the nexusml-notebook target instead..."
+	$(MAKE) nexusml-notebook
+
+# Alternative target for launching enhanced Jupyter notebooks
+nexusml-notebooks-enhanced:
+	@echo "Using the nexusml-notebook-enhanced target instead..."
+	$(MAKE) nexusml-notebook-enhanced

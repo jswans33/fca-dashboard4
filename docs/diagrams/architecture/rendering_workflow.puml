@@ -1,0 +1,75 @@
+@startuml "Diagram Rendering Workflow"
+
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam dpi 300
+
+title Diagram Rendering Workflow
+
+actor "Developer" as dev
+participant "PlantUML Files\n(.puml)" as puml
+participant "PlantUML CLI\nUtility" as cli
+participant "PlantUML Server" as server
+participant "Rendered Output\n(SVG/PNG)" as output
+participant "HTML Viewer" as viewer
+
+note over dev, viewer: SOP-004: PlantUML Utilities Workflow
+
+group 1. Create or Modify Diagrams
+    dev -> puml : Create/Edit .puml files
+    note right: Located in docs/diagrams/{category}
+end
+
+group 2. Render Diagrams
+    note over dev, cli
+        <b>Efficiency Best Practices:</b>
+        - Only render new or modified diagrams when possible
+        - Use the --file parameter to render specific diagrams
+        - Only parse all diagrams in the repo when necessary
+    end note
+    
+    dev -> cli : Execute render command for specific file
+    note right: python -m fca_dashboard.utils.puml.cli render --file=category/diagram.puml
+    cli -> puml : Process specific .puml file
+    cli -> server : Send to PlantUML server
+    server -> cli : Return rendered content
+    cli -> output : Save as SVG (default)
+    note right: Saved to docs/diagrams/output/{category}
+    
+    dev -> cli : Execute render command with PNG format
+    note right: python -m fca_dashboard.utils.puml.cli render --file=category/diagram.puml --format=png
+    cli -> puml : Process specific .puml file
+    cli -> server : Send to PlantUML server
+    server -> cli : Return rendered content
+    cli -> output : Save as PNG
+    note right: Saved to docs/diagrams/output/{category}
+    
+    note over dev, cli
+        <b>Full Repository Rendering:</b>
+        Only when necessary (e.g., initial setup, major updates)
+        - python -m fca_dashboard.utils.puml.cli render
+        - python -m fca_dashboard.utils.puml.cli render --format=png
+    end note
+end
+
+group 3. View Diagrams
+    dev -> viewer : Open HTML viewer
+    note right: Open docs/diagrams/output/index.html
+    viewer -> output : Load rendered diagrams
+    viewer -> dev : Display diagrams with navigation
+    note right: Categories as tabs, SVG/PNG toggle
+end
+
+group 4. Add New Diagram Categories
+    dev -> puml : Create new directory
+    note right: docs/diagrams/{new-category}
+    dev -> puml : Add .puml files
+    dev -> cli : Render diagrams
+    dev -> viewer : View in HTML viewer
+    note right: New category appears automatically
+end
+
+@enduml

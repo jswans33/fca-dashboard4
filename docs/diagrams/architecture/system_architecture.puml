@@ -1,0 +1,75 @@
+@startuml "NexusML System Architecture"
+
+' Define styles
+skinparam backgroundColor white
+skinparam componentStyle uml2
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam componentBorderColor #666666
+
+' Define components
+package "Configuration" {
+  [Configuration System] as Config
+}
+
+package "Pipeline Components" {
+  [Data Loader] as DataLoader
+  [Data Preprocessor] as DataPreprocessor
+  [Feature Engineer] as FeatureEngineer
+  [Model Builder] as ModelBuilder
+  [Model Trainer] as ModelTrainer
+  [Model Evaluator] as ModelEvaluator
+  [Model Serializer] as ModelSerializer
+  [Predictor] as Predictor
+}
+
+package "Pipeline Management" {
+  [Pipeline Factory] as Factory
+  [Component Registry] as Registry
+  [Pipeline Orchestrator] as Orchestrator
+  [Pipeline Context] as Context
+}
+
+package "Dependency Injection" {
+  [DI Container] as DIContainer
+}
+
+package "Entry Points" {
+  [Training Entry Point] as TrainingEntry
+  [Prediction Entry Point] as PredictionEntry
+}
+
+' Define relationships
+Config --> Factory
+Config --> DataLoader
+Config --> FeatureEngineer
+Config --> ModelBuilder
+
+DIContainer --> Factory
+Registry --> Factory
+
+Factory --> DataLoader
+Factory --> DataPreprocessor
+Factory --> FeatureEngineer
+Factory --> ModelBuilder
+Factory --> ModelTrainer
+Factory --> ModelEvaluator
+Factory --> ModelSerializer
+Factory --> Predictor
+
+Orchestrator --> Factory
+Orchestrator --> Context
+
+TrainingEntry --> Orchestrator
+PredictionEntry --> Orchestrator
+
+DataLoader --> DataPreprocessor
+DataPreprocessor --> FeatureEngineer
+FeatureEngineer --> ModelBuilder
+ModelBuilder --> ModelTrainer
+ModelTrainer --> ModelEvaluator
+ModelEvaluator --> ModelSerializer
+ModelSerializer --> Predictor
+
+@enduml

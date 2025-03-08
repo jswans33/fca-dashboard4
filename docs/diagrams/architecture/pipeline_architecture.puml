@@ -1,0 +1,113 @@
+@startuml "NexusML Pipeline Architecture"
+
+' Define styles
+skinparam backgroundColor white
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam roundCorner 8
+skinparam classBorderColor #666666
+
+' Define interfaces
+interface DataLoader {
+  +load_data(data_path: str) : DataFrame
+  +get_config() : Dict
+}
+
+interface DataPreprocessor {
+  +preprocess(data: DataFrame) : DataFrame
+  +verify_required_columns(data: DataFrame) : DataFrame
+}
+
+interface FeatureEngineer {
+  +engineer_features(data: DataFrame) : DataFrame
+  +fit(data: DataFrame) : FeatureEngineer
+  +transform(data: DataFrame) : DataFrame
+}
+
+interface ModelBuilder {
+  +build_model() : Pipeline
+  +optimize_hyperparameters(model, x_train, y_train) : Pipeline
+}
+
+interface ModelTrainer {
+  +train(model, x_train, y_train) : Pipeline
+  +cross_validate(model, x, y) : Dict
+}
+
+interface ModelEvaluator {
+  +evaluate(model, x_test, y_test) : Dict
+  +analyze_predictions(model, x_test, y_test, y_pred) : Dict
+}
+
+interface ModelSerializer {
+  +save_model(model, path) : None
+  +load_model(path) : Pipeline
+}
+
+interface Predictor {
+  +predict(model, data) : DataFrame
+  +predict_proba(model, data) : Dict
+}
+
+' Define factory and registry
+class ComponentRegistry {
+  -_implementations: Dict
+  -_default_implementations: Dict
+  +register(interface_type, name, implementation_type)
+  +get_implementation(interface_type, name=None)
+  +set_default_implementation(interface_type, name)
+  +get_default_implementation(interface_type)
+}
+
+class PipelineFactory {
+  -_registry: ComponentRegistry
+  -_container: DIContainer
+  +create_data_loader(**kwargs) : DataLoader
+  +create_data_preprocessor(**kwargs) : DataPreprocessor
+  +create_feature_engineer(**kwargs) : FeatureEngineer
+  +create_model_builder(**kwargs) : ModelBuilder
+  +create_model_trainer(**kwargs) : ModelTrainer
+  +create_model_evaluator(**kwargs) : ModelEvaluator
+  +create_model_serializer(**kwargs) : ModelSerializer
+  +create_predictor(**kwargs) : Predictor
+  +create(component_type, **kwargs) : Any
+}
+
+' Define orchestrator and context
+class PipelineContext {
+  -_data: Dict
+  -_status: str
+  +set(key, value)
+  +get(key)
+  +get_all()
+  +clear()
+}
+
+class PipelineOrchestrator {
+  -_factory: PipelineFactory
+  -_context: PipelineContext
+  -_execution_times: Dict
+  +train_model(data_path, **kwargs) : Tuple[Pipeline, Dict]
+  +predict(model, data, **kwargs) : DataFrame
+  +evaluate(model, data_path, **kwargs) : Dict
+  +save_model(model, path, **kwargs) : str
+  +load_model(path, **kwargs) : Pipeline
+  +get_execution_summary() : Dict
+}
+
+' Define relationships
+ComponentRegistry <-- PipelineFactory
+PipelineFactory <-- PipelineOrchestrator
+PipelineContext <-- PipelineOrchestrator
+
+PipelineFactory --> DataLoader
+PipelineFactory --> DataPreprocessor
+PipelineFactory --> FeatureEngineer
+PipelineFactory --> ModelBuilder
+PipelineFactory --> ModelTrainer
+PipelineFactory --> ModelEvaluator
+PipelineFactory --> ModelSerializer
+PipelineFactory --> Predictor
+
+@enduml
