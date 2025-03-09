@@ -44,15 +44,31 @@ nexusml/classify_equipment.py
 nexusml/config/__init__.py
 nexusml/config/.repomixignore
 nexusml/config/classification_config.yml
+nexusml/config/compatibility.py
 nexusml/config/data_config.yml
 nexusml/config/eav/equipment_attributes.json
 nexusml/config/fake_data_feature_config.yml
 nexusml/config/feature_config.yml
+nexusml/config/implementations/__init__.py
+nexusml/config/implementations/yaml_configs.py
+nexusml/config/interfaces.py
+nexusml/config/manager.py
 nexusml/config/mappings/masterformat_equipment.json
 nexusml/config/mappings/masterformat_primary.json
+nexusml/config/model_card_config.yml
+nexusml/config/model_card.py
 nexusml/config/nexusml_config.yml
+nexusml/config/paths.py
+nexusml/config/production_data_config.yml
+nexusml/config/production_nexusml_config.yml
 nexusml/config/reference_config.yml
 nexusml/config/repomix.config.json
+nexusml/config/schemas/__init__.py
+nexusml/config/schemas/data_config_schema.json
+nexusml/config/schemas/feature_config_schema.json
+nexusml/config/schemas/model_card_schema.json
+nexusml/config/sections.py
+nexusml/config/validation.py
 nexusml/core/__init__.py
 nexusml/core/cli/__init__.py
 nexusml/core/cli/prediction_args.py
@@ -72,7 +88,29 @@ nexusml/core/dynamic_mapper.py
 nexusml/core/eav_manager.py
 nexusml/core/evaluation.py
 nexusml/core/feature_engineering.py
+nexusml/core/feature_engineering/__init__.py
+nexusml/core/feature_engineering/base.py
+nexusml/core/feature_engineering/compatibility.py
+nexusml/core/feature_engineering/config_driven.py
+nexusml/core/feature_engineering/interfaces.py
+nexusml/core/feature_engineering/registry.py
+nexusml/core/feature_engineering/transformers/categorical.py
+nexusml/core/feature_engineering/transformers/hierarchical.py
+nexusml/core/feature_engineering/transformers/mapping.py
+nexusml/core/feature_engineering/transformers/numeric.py
+nexusml/core/feature_engineering/transformers/text.py
 nexusml/core/model_building.py
+nexusml/core/model_building/__init__.py
+nexusml/core/model_building/base.py
+nexusml/core/model_building/builders/ensemble.py
+nexusml/core/model_building/builders/gradient_boosting.py
+nexusml/core/model_building/builders/random_forest.py
+nexusml/core/model_building/compatibility.py
+nexusml/core/model_building/interfaces.py
+nexusml/core/model_training/__init__.py
+nexusml/core/model_training/trainers/cross_validation.py
+nexusml/core/model_training/trainers/hyperparameter_optimizer.py
+nexusml/core/model_training/trainers/standard.py
 nexusml/core/model.py
 nexusml/core/pipeline/__init__.py
 nexusml/core/pipeline/adapters.py
@@ -102,6 +140,19 @@ nexusml/core/pipeline/interfaces.py
 nexusml/core/pipeline/orchestrator.py
 nexusml/core/pipeline/README.md
 nexusml/core/pipeline/registry.py
+nexusml/core/pipeline/stages/__init__.py
+nexusml/core/pipeline/stages/base.py
+nexusml/core/pipeline/stages/data_loading.py
+nexusml/core/pipeline/stages/data_splitting.py
+nexusml/core/pipeline/stages/feature_engineering.py
+nexusml/core/pipeline/stages/interfaces.py
+nexusml/core/pipeline/stages/model_building.py
+nexusml/core/pipeline/stages/model_evaluation.py
+nexusml/core/pipeline/stages/model_saving.py
+nexusml/core/pipeline/stages/model_training.py
+nexusml/core/pipeline/stages/prediction.py
+nexusml/core/pipeline/stages/README.md
+nexusml/core/pipeline/stages/validation.py
 nexusml/core/reference_manager.py
 nexusml/core/reference/__init__.py
 nexusml/core/reference/base.py
@@ -112,12 +163,24 @@ nexusml/core/reference/manager.py
 nexusml/core/reference/manufacturer.py
 nexusml/core/reference/service_life.py
 nexusml/core/reference/validation.py
+nexusml/core/validation/__init__.py
+nexusml/core/validation/adapters.py
+nexusml/core/validation/interfaces.py
+nexusml/core/validation/rules.py
+nexusml/core/validation/validators.py
 nexusml/data/training_data/fake_training_data.csv
+nexusml/data/training_data/production_training_data.csv
+nexusml/mypy.ini
 nexusml/predict_v2.py
+nexusml/predict.py
 nexusml/README.md
 nexusml/scripts/train_model.sh
 nexusml/test_reference_validation.py
 nexusml/train_model_pipeline_v2.py
+nexusml/train_model_pipeline.py
+nexusml/types/feature_engineering/interfaces.py
+nexusml/types/model_building/interfaces.py
+nexusml/types/validation.py
 nexusml/utils/__init__.py
 nexusml/utils/csv_utils.py
 nexusml/utils/data_selection.py
@@ -247,111 +310,60 @@ This module provides a unified approach to configuration management,
 handling both standalone usage and integration with fca_dashboard.
 """
 ⋮----
+import yaml  # type: ignore
+⋮----
 # Default paths
 DEFAULT_PATHS = {
+⋮----
+# Configuration file paths
+CONFIG_FILES = {
 ⋮----
 # Try to load from fca_dashboard if available (only once at import time)
 ⋮----
 FCA_DASHBOARD_AVAILABLE = True
 # Store the imported functions to avoid "possibly unbound" errors
-FCA_GET_CONFIG_PATH = get_config_path
-FCA_RESOLVE_PATH = resolve_path
+FCA_GET_CONFIG_PATH = get_config_path  # type: ignore
+FCA_RESOLVE_PATH = resolve_path  # type: ignore
 ⋮----
 FCA_DASHBOARD_AVAILABLE = False
 # Define dummy functions that will never be called
-FCA_GET_CONFIG_PATH = None
-FCA_RESOLVE_PATH = None
+FCA_GET_CONFIG_PATH = None  # type: ignore
+FCA_RESOLVE_PATH = None  # type: ignore
 ⋮----
 def get_project_root() -> Path
 ⋮----
 """Get the project root directory."""
 ⋮----
-def get_data_path(path_key: str = "training_data") -> Union[str, Path]
+# Import new functionality
+⋮----
+# For backward compatibility, import the compatibility functions
+⋮----
+# Create a singleton instance of ConfigurationManager
+_config_manager = None
+⋮----
+def get_configuration_manager() -> ConfigurationManager
 ⋮----
 """
-    Get a data path from config or defaults.
-
-    Args:
-        path_key: Key for the path in the configuration
-
+    Get the singleton instance of ConfigurationManager.
+    
     Returns:
-        Resolved path as string or Path object
-    """
-root = get_project_root()
-⋮----
-# Try to load settings
-settings = load_settings()
-⋮----
-# Check in nexusml section first, then classifier section for backward compatibility
-nexusml_settings = settings.get("nexusml", {})
-classifier_settings = settings.get("classifier", {})
-⋮----
-# Merge settings, preferring nexusml if available
-merged_settings = {**classifier_settings, **nexusml_settings}
-⋮----
-# Get path from settings
-path = merged_settings.get("data_paths", {}).get(path_key)
-⋮----
-# Use default path
-path = os.path.join(str(root), DEFAULT_PATHS.get(path_key, ""))
-⋮----
-# If running in fca_dashboard context and path is not absolute, resolve it
-⋮----
-# Fall back to local resolution
-⋮----
-# If path is not absolute, make it relative to project root
-⋮----
-def get_output_dir() -> Union[str, Path]
-⋮----
-"""
-    Get the output directory path.
-
-    Returns:
-        Path to the output directory as string or Path object
+        ConfigurationManager instance
     """
 ⋮----
-def load_settings() -> Dict[str, Any]
+_config_manager = ConfigurationManager()
 ⋮----
-"""
-    Load settings from the configuration file.
-
-    Returns:
-        Configuration settings as a dictionary
-    """
-# Try to find a settings file
+# Export public API
+__all__ = [
 ⋮----
-settings_path = cast(Union[str, Path], FCA_GET_CONFIG_PATH("settings.yml"))
+# Core functionality
 ⋮----
-settings_path = None
+# New configuration management
 ⋮----
-settings_path = get_project_root() / DEFAULT_PATHS["config_file"]
+# Path management
 ⋮----
-# Check environment variable as fallback
+# Configuration validation
 ⋮----
-settings_path_str = os.environ.get("NEXUSML_CONFIG", "")
-settings_path = Path(settings_path_str) if settings_path_str else None
-⋮----
-# Return default settings
-⋮----
-def get_config_value(key_path: str, default: Any = None) -> Any
-⋮----
-"""
-    Get a configuration value using a dot-separated path.
-
-    Args:
-        key_path: Dot-separated path to the config value (e.g., 'nexusml.data_paths.training_data')
-        default: Default value to return if the key is not found
-
-    Returns:
-        The configuration value or the default
-    """
-⋮----
-keys = key_path.split(".")
-⋮----
-# Navigate through the nested dictionary
-current = settings
-⋮----
-current = current[key]
+# Backward compatibility
 ````
 
 ## File: nexusml/config/.repomixignore
@@ -429,6 +441,152 @@ input_field_mappings:
       - 'Asset Subtype'
       - 'Asset Sub Type'
       - 'Equipment Subtype'
+````
+
+## File: nexusml/config/compatibility.py
+````python
+"""
+Configuration Compatibility Module for NexusML
+
+This module provides backward compatibility with existing code that uses
+the old configuration access patterns.
+"""
+⋮----
+# Singleton instance of ConfigurationManager
+_config_manager = None
+⋮----
+def get_config_manager() -> ConfigurationManager
+⋮----
+"""
+    Get the singleton instance of ConfigurationManager.
+    
+    Returns:
+        ConfigurationManager instance
+    """
+⋮----
+_config_manager = ConfigurationManager()
+⋮----
+def load_settings() -> Dict[str, Any]
+⋮----
+"""
+    Load settings from the configuration file.
+    
+    This function provides backward compatibility with the old load_settings function.
+    
+    Returns:
+        Configuration settings as a dictionary
+    """
+# Try to find a settings file
+⋮----
+FCA_DASHBOARD_AVAILABLE = True
+⋮----
+settings_path = cast(Union[str, Path], get_config_path("settings.yml"))
+⋮----
+settings_path = None
+⋮----
+FCA_DASHBOARD_AVAILABLE = False
+settings_path = get_project_root() / DEFAULT_PATHS["config_file"]
+⋮----
+# Check environment variable as fallback
+⋮----
+settings_path_str = os.environ.get("NEXUSML_CONFIG", "")
+settings_path = Path(settings_path_str) if settings_path_str else None
+⋮----
+# Try to load settings
+⋮----
+# Return default settings
+⋮----
+def get_data_path(path_key: str = "training_data") -> Union[str, Path]
+⋮----
+"""
+    Get a data path from config or defaults.
+    
+    This function provides backward compatibility with the old get_data_path function.
+    
+    Args:
+        path_key: Key for the path in the configuration
+        
+    Returns:
+        Resolved path as string or Path object
+    """
+root = get_project_root()
+⋮----
+settings = load_settings()
+⋮----
+# Check in nexusml section first, then classifier section for backward compatibility
+nexusml_settings = settings.get("nexusml", {})
+classifier_settings = settings.get("classifier", {})
+⋮----
+# Merge settings, preferring nexusml if available
+merged_settings = {**classifier_settings, **nexusml_settings}
+⋮----
+# Get path from settings
+path = merged_settings.get("data_paths", {}).get(path_key)
+⋮----
+# Use default path
+path = os.path.join(str(root), DEFAULT_PATHS.get(path_key, ""))
+⋮----
+# If running in fca_dashboard context and path is not absolute, resolve it
+⋮----
+# Fall back to local resolution
+⋮----
+# If path is not absolute, make it relative to project root
+⋮----
+def get_output_dir() -> Union[str, Path]
+⋮----
+"""
+    Get the output directory path.
+    
+    This function provides backward compatibility with the old get_output_dir function.
+    
+    Returns:
+        Path to the output directory as string or Path object
+    """
+⋮----
+def get_config_value(key_path: str, default: Any = None) -> Any
+⋮----
+"""
+    Get a configuration value using a dot-separated path.
+    
+    This function provides backward compatibility with the old get_config_value function.
+    
+    Args:
+        key_path: Dot-separated path to the config value
+        default: Default value to return if the key is not found
+        
+    Returns:
+        The configuration value or the default
+    """
+⋮----
+keys = key_path.split(".")
+⋮----
+# Navigate through the nested dictionary
+current = settings
+⋮----
+current = current[key]
+⋮----
+def get_config_file_path(config_name: str) -> Path
+⋮----
+"""
+    Get the path to a specific configuration file.
+    
+    This function provides backward compatibility with the old get_config_file_path function.
+    
+    Args:
+        config_name: Name of the configuration file (e.g., 'production_data_config')
+        
+    Returns:
+        Path to the configuration file
+    """
+⋮----
+# Get the relative path from CONFIG_FILES
+⋮----
+relative_path = CONFIG_FILES[config_name]
+⋮----
+# Default to the config directory
+relative_path = f"config/{config_name}.yml"
+⋮----
+# Return the absolute path
 ````
 
 ## File: nexusml/config/data_config.yml
@@ -989,6 +1147,874 @@ eav_integration:
   enabled: false # Disable EAV integration since we're using direct mappings
 ````
 
+## File: nexusml/config/implementations/__init__.py
+````python
+"""
+Configuration Implementations Package for NexusML
+
+This package provides concrete implementations of configuration interfaces.
+"""
+⋮----
+__all__ = [
+````
+
+## File: nexusml/config/implementations/yaml_configs.py
+````python
+"""
+YAML Configuration Implementations Module for NexusML
+
+This module provides concrete implementations of configuration interfaces
+using YAML files as the underlying storage mechanism.
+"""
+⋮----
+class YamlConfigBase(ConfigInterface)
+⋮----
+"""Base class for YAML-based configurations."""
+⋮----
+def __init__(self, data: Dict[str, Any])
+⋮----
+"""
+        Initialize with configuration data.
+        
+        Args:
+            data: Configuration data dictionary
+        """
+⋮----
+def get(self, key: str, default: Any = None) -> Any
+⋮----
+"""
+        Get a configuration value.
+        
+        Args:
+            key: Configuration key
+            default: Default value if key is not found
+            
+        Returns:
+            Configuration value or default
+        """
+⋮----
+def get_nested(self, key_path: str, default: Any = None) -> Any
+⋮----
+"""
+        Get a nested configuration value using dot notation.
+        
+        Args:
+            key_path: Dot-separated path to the config value
+            default: Default value if path is not found
+            
+        Returns:
+            Configuration value or default
+        """
+keys = key_path.split(".")
+⋮----
+# Navigate through the nested dictionary
+current = self.data
+⋮----
+current = current[key]
+⋮----
+@classmethod
+    def from_file(cls, file_path: Union[str, Path]) -> 'YamlConfigBase'
+⋮----
+"""
+        Create a configuration instance from a YAML file.
+        
+        Args:
+            file_path: Path to the YAML file
+            
+        Returns:
+            Configuration instance
+            
+        Raises:
+            FileNotFoundError: If the file doesn't exist
+            yaml.YAMLError: If the file contains invalid YAML
+        """
+path = Path(file_path)
+⋮----
+data = yaml.safe_load(f) or {}
+⋮----
+@classmethod
+    def from_config_name(cls, config_name: str) -> 'YamlConfigBase'
+⋮----
+"""
+        Create a configuration instance from a configuration name.
+        
+        Args:
+            config_name: Name of the configuration file (without extension)
+            
+        Returns:
+            Configuration instance
+        """
+root = get_project_root()
+config_path = root / "config" / f"{config_name}.yml"
+⋮----
+class YamlDataConfig(YamlConfigBase, DataConfigInterface)
+⋮----
+"""YAML-based implementation of DataConfigInterface."""
+⋮----
+def get_required_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of required columns.
+        
+        Returns:
+            List of required column names
+        """
+⋮----
+def get_source_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of source columns (not derived during feature engineering).
+        
+        Returns:
+            List of source column names
+        """
+⋮----
+def get_target_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of target columns (derived during feature engineering).
+        
+        Returns:
+            List of target column names
+        """
+⋮----
+def get_critical_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of critical columns that must not have missing values.
+        
+        Returns:
+            List of critical column names
+        """
+⋮----
+def get_column_default(self, column_name: str) -> Any
+⋮----
+"""
+        Get the default value for a column.
+        
+        Args:
+            column_name: Name of the column
+            
+        Returns:
+            Default value for the column
+        """
+⋮----
+def get_column_data_type(self, column_name: str) -> str
+⋮----
+"""
+        Get the data type for a column.
+        
+        Args:
+            column_name: Name of the column
+            
+        Returns:
+            Data type of the column
+        """
+⋮----
+class YamlFeatureConfig(YamlConfigBase, FeatureConfigInterface)
+⋮----
+"""YAML-based implementation of FeatureConfigInterface."""
+⋮----
+def get_text_combinations(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get text combination configurations.
+        
+        Returns:
+            List of text combination configurations
+        """
+⋮----
+def get_numeric_columns(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get numeric column configurations.
+        
+        Returns:
+            List of numeric column configurations
+        """
+⋮----
+def get_hierarchies(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get hierarchy configurations.
+        
+        Returns:
+            List of hierarchy configurations
+        """
+⋮----
+def get_column_mappings(self) -> List[Dict[str, str]]
+⋮----
+"""
+        Get column mapping configurations.
+        
+        Returns:
+            List of column mapping configurations
+        """
+⋮----
+def get_classification_systems(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get classification system configurations.
+        
+        Returns:
+            List of classification system configurations
+        """
+⋮----
+def is_eav_integration_enabled(self) -> bool
+⋮----
+"""
+        Check if EAV integration is enabled.
+        
+        Returns:
+            True if EAV integration is enabled, False otherwise
+        """
+eav_config = self.data.get('eav_integration', {})
+⋮----
+class YamlModelConfig(YamlConfigBase, ModelConfigInterface)
+⋮----
+"""YAML-based implementation of ModelConfigInterface."""
+⋮----
+def get_model_type(self) -> str
+⋮----
+"""
+        Get the model type.
+        
+        Returns:
+            Model type
+        """
+⋮----
+def get_hyperparameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the model hyperparameters.
+        
+        Returns:
+            Dictionary of hyperparameters
+        """
+⋮----
+def get_evaluation_metrics(self) -> List[str]
+⋮----
+"""
+        Get the evaluation metrics.
+        
+        Returns:
+            List of evaluation metrics
+        """
+⋮----
+def get_cross_validation_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get cross-validation configuration.
+        
+        Returns:
+            Cross-validation configuration
+        """
+⋮----
+class YamlPipelineConfig(YamlConfigBase, PipelineConfigInterface)
+⋮----
+"""YAML-based implementation of PipelineConfigInterface."""
+⋮----
+def get_stages(self) -> List[str]
+⋮----
+"""
+        Get the pipeline stages.
+        
+        Returns:
+            List of pipeline stage names
+        """
+⋮----
+def get_components(self) -> Dict[str, str]
+⋮----
+"""
+        Get the component implementations to use.
+        
+        Returns:
+            Dictionary mapping component types to implementation names
+        """
+⋮----
+def get_output_dir(self) -> str
+⋮----
+"""
+        Get the output directory.
+        
+        Returns:
+            Output directory path
+        """
+⋮----
+def is_visualizations_enabled(self) -> bool
+⋮----
+"""
+        Check if visualizations are enabled.
+        
+        Returns:
+            True if visualizations are enabled, False otherwise
+        """
+````
+
+## File: nexusml/config/interfaces.py
+````python
+"""
+Configuration Interfaces Module for NexusML
+
+This module defines interfaces for different configuration types,
+following the Interface Segregation Principle to provide focused interfaces
+for each configuration concern.
+"""
+⋮----
+class ConfigInterface(ABC)
+⋮----
+"""Base interface for all configuration types."""
+⋮----
+@abstractmethod
+    def get(self, key: str, default: Any = None) -> Any
+⋮----
+"""
+        Get a configuration value.
+        
+        Args:
+            key: Configuration key
+            default: Default value if key is not found
+            
+        Returns:
+            Configuration value or default
+        """
+⋮----
+@abstractmethod
+    def get_nested(self, key_path: str, default: Any = None) -> Any
+⋮----
+"""
+        Get a nested configuration value using dot notation.
+        
+        Args:
+            key_path: Dot-separated path to the config value
+            default: Default value if path is not found
+            
+        Returns:
+            Configuration value or default
+        """
+⋮----
+class DataConfigInterface(ConfigInterface)
+⋮----
+"""Interface for data configuration."""
+⋮----
+@abstractmethod
+    def get_required_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of required columns.
+        
+        Returns:
+            List of required column names
+        """
+⋮----
+@abstractmethod
+    def get_source_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of source columns (not derived during feature engineering).
+        
+        Returns:
+            List of source column names
+        """
+⋮----
+@abstractmethod
+    def get_target_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of target columns (derived during feature engineering).
+        
+        Returns:
+            List of target column names
+        """
+⋮----
+@abstractmethod
+    def get_critical_columns(self) -> List[str]
+⋮----
+"""
+        Get the list of critical columns that must not have missing values.
+        
+        Returns:
+            List of critical column names
+        """
+⋮----
+@abstractmethod
+    def get_column_default(self, column_name: str) -> Any
+⋮----
+"""
+        Get the default value for a column.
+        
+        Args:
+            column_name: Name of the column
+            
+        Returns:
+            Default value for the column
+        """
+⋮----
+@abstractmethod
+    def get_column_data_type(self, column_name: str) -> str
+⋮----
+"""
+        Get the data type for a column.
+        
+        Args:
+            column_name: Name of the column
+            
+        Returns:
+            Data type of the column
+        """
+⋮----
+class FeatureConfigInterface(ConfigInterface)
+⋮----
+"""Interface for feature engineering configuration."""
+⋮----
+@abstractmethod
+    def get_text_combinations(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get text combination configurations.
+        
+        Returns:
+            List of text combination configurations
+        """
+⋮----
+@abstractmethod
+    def get_numeric_columns(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get numeric column configurations.
+        
+        Returns:
+            List of numeric column configurations
+        """
+⋮----
+@abstractmethod
+    def get_hierarchies(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get hierarchy configurations.
+        
+        Returns:
+            List of hierarchy configurations
+        """
+⋮----
+@abstractmethod
+    def get_column_mappings(self) -> List[Dict[str, str]]
+⋮----
+"""
+        Get column mapping configurations.
+        
+        Returns:
+            List of column mapping configurations
+        """
+⋮----
+@abstractmethod
+    def get_classification_systems(self) -> List[Dict[str, Any]]
+⋮----
+"""
+        Get classification system configurations.
+        
+        Returns:
+            List of classification system configurations
+        """
+⋮----
+@abstractmethod
+    def is_eav_integration_enabled(self) -> bool
+⋮----
+"""
+        Check if EAV integration is enabled.
+        
+        Returns:
+            True if EAV integration is enabled, False otherwise
+        """
+⋮----
+class ModelConfigInterface(ConfigInterface)
+⋮----
+"""Interface for model building and training configuration."""
+⋮----
+@abstractmethod
+    def get_model_type(self) -> str
+⋮----
+"""
+        Get the model type.
+        
+        Returns:
+            Model type
+        """
+⋮----
+@abstractmethod
+    def get_hyperparameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the model hyperparameters.
+        
+        Returns:
+            Dictionary of hyperparameters
+        """
+⋮----
+@abstractmethod
+    def get_evaluation_metrics(self) -> List[str]
+⋮----
+"""
+        Get the evaluation metrics.
+        
+        Returns:
+            List of evaluation metrics
+        """
+⋮----
+@abstractmethod
+    def get_cross_validation_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get cross-validation configuration.
+        
+        Returns:
+            Cross-validation configuration
+        """
+⋮----
+class PipelineConfigInterface(ConfigInterface)
+⋮----
+"""Interface for pipeline orchestration configuration."""
+⋮----
+@abstractmethod
+    def get_stages(self) -> List[str]
+⋮----
+"""
+        Get the pipeline stages.
+        
+        Returns:
+            List of pipeline stage names
+        """
+⋮----
+@abstractmethod
+    def get_components(self) -> Dict[str, str]
+⋮----
+"""
+        Get the component implementations to use.
+        
+        Returns:
+            Dictionary mapping component types to implementation names
+        """
+⋮----
+@abstractmethod
+    def get_output_dir(self) -> str
+⋮----
+"""
+        Get the output directory.
+        
+        Returns:
+            Output directory path
+        """
+⋮----
+@abstractmethod
+    def is_visualizations_enabled(self) -> bool
+⋮----
+"""
+        Check if visualizations are enabled.
+        
+        Returns:
+            True if visualizations are enabled, False otherwise
+        """
+````
+
+## File: nexusml/config/manager.py
+````python
+"""
+Configuration Manager Module for NexusML
+
+This module provides a centralized approach to configuration management,
+implementing the ConfigurationManager class that loads and manages all configuration
+files with type-safe access and validation.
+"""
+⋮----
+T = TypeVar('T')
+⋮----
+class DataConfig(ConfigSection)
+⋮----
+"""Configuration for data handling."""
+⋮----
+@property
+    def required_columns(self) -> list
+⋮----
+"""Get the required columns."""
+⋮----
+@property
+    def source_columns(self) -> list
+⋮----
+"""Get only the source columns (not derived during feature engineering)."""
+⋮----
+@property
+    def target_columns(self) -> list
+⋮----
+"""Get only the target columns (derived during feature engineering)."""
+⋮----
+@property
+    def critical_columns(self) -> list
+⋮----
+"""Get the critical columns that must not have missing values."""
+⋮----
+def get_column_default(self, column_name: str) -> Any
+⋮----
+"""Get the default value for a column."""
+⋮----
+def get_column_data_type(self, column_name: str) -> str
+⋮----
+"""Get the data type for a column."""
+⋮----
+class FeatureConfig(ConfigSection)
+⋮----
+"""Configuration for feature engineering."""
+⋮----
+@property
+    def text_combinations(self) -> list
+⋮----
+"""Get text combination configurations."""
+⋮----
+@property
+    def numeric_columns(self) -> list
+⋮----
+"""Get numeric column configurations."""
+⋮----
+@property
+    def hierarchies(self) -> list
+⋮----
+"""Get hierarchy configurations."""
+⋮----
+@property
+    def column_mappings(self) -> list
+⋮----
+"""Get column mapping configurations."""
+⋮----
+@property
+    def classification_systems(self) -> list
+⋮----
+"""Get classification system configurations."""
+⋮----
+@property
+    def eav_integration_enabled(self) -> bool
+⋮----
+"""Check if EAV integration is enabled."""
+eav_config = self.data.get('eav_integration', {})
+⋮----
+class ModelConfig(ConfigSection)
+⋮----
+"""Configuration for model building and training."""
+⋮----
+@property
+    def model_type(self) -> str
+⋮----
+"""Get the model type."""
+⋮----
+@property
+    def hyperparameters(self) -> Dict[str, Any]
+⋮----
+"""Get the model hyperparameters."""
+⋮----
+@property
+    def evaluation_metrics(self) -> list
+⋮----
+"""Get the evaluation metrics."""
+⋮----
+@property
+    def cross_validation(self) -> Dict[str, Any]
+⋮----
+"""Get cross-validation configuration."""
+⋮----
+class PipelineConfig(ConfigSection)
+⋮----
+"""Configuration for pipeline orchestration."""
+⋮----
+@property
+    def stages(self) -> list
+⋮----
+"""Get the pipeline stages."""
+⋮----
+@property
+    def components(self) -> Dict[str, str]
+⋮----
+"""Get the component implementations to use."""
+⋮----
+@property
+    def output_dir(self) -> str
+⋮----
+"""Get the output directory."""
+⋮----
+@property
+    def visualizations_enabled(self) -> bool
+⋮----
+"""Check if visualizations are enabled."""
+⋮----
+class ConfigurationManager
+⋮----
+"""Manager for all configuration files."""
+⋮----
+def __init__(self)
+⋮----
+# Environment-specific configuration
+⋮----
+def load_config(self, name: str) -> Dict[str, Any]
+⋮----
+"""
+        Load a configuration file.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            Configuration as a dictionary
+        
+        Raises:
+            FileNotFoundError: If the configuration file doesn't exist
+        """
+# Check if config is already loaded
+⋮----
+# Try environment-specific config first
+⋮----
+env_path = self.config_dir / f"{name}.{self.environment}.yml"
+⋮----
+config = yaml.safe_load(f) or {}
+⋮----
+# Try standard config
+path = self.config_dir / f"{name}.yml"
+⋮----
+def get_config_section(self, name: str, section_class: Type[T]) -> T
+⋮----
+"""
+        Get a typed configuration section.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            section_class: Class to instantiate with the configuration
+            
+        Returns:
+            Instance of section_class initialized with the configuration
+        """
+config = self.load_config(name)
+⋮----
+def get_data_config(self, name: str = "production_data_config") -> DataConfig
+⋮----
+"""
+        Get the data configuration.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            DataConfig instance
+        """
+⋮----
+def get_feature_config(self, name: str = "feature_config") -> FeatureConfig
+⋮----
+"""
+        Get the feature configuration.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            FeatureConfig instance
+        """
+⋮----
+def get_model_config(self, name: str = "classification_config") -> ModelConfig
+⋮----
+"""
+        Get the model configuration.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            ModelConfig instance
+        """
+⋮----
+def get_pipeline_config(self, name: str = "nexusml_config") -> PipelineConfig
+⋮----
+"""
+        Get the pipeline configuration.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            PipelineConfig instance
+        """
+⋮----
+def get_model_card_config(self, name: str = "model_card_config") -> Any
+⋮----
+"""
+        Get the model card configuration.
+        
+        Args:
+            name: Name of the configuration file (without extension)
+            
+        Returns:
+            ModelCardConfig instance
+        """
+# Import here to avoid circular import
+⋮----
+def merge_configs(self, base_name: str, override_name: str) -> Dict[str, Any]
+⋮----
+"""
+        Merge two configurations, with the override taking precedence.
+        
+        Args:
+            base_name: Name of the base configuration file
+            override_name: Name of the configuration file with overrides
+            
+        Returns:
+            Merged configuration dictionary
+        """
+base_config = self.load_config(base_name)
+⋮----
+override_config = self.load_config(override_name)
+⋮----
+# If override doesn't exist, just return the base config
+⋮----
+# Deep merge the dictionaries
+⋮----
+def _deep_merge(self, base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]
+⋮----
+"""
+        Deep merge two dictionaries.
+        
+        Args:
+            base: Base dictionary
+            override: Dictionary with overrides
+            
+        Returns:
+            Merged dictionary
+        """
+result = base.copy()
+⋮----
+# Recursively merge nested dictionaries
+⋮----
+# Override or add the value
+⋮----
+def validate_config(self, name: str, schema_name: str = None) -> bool
+⋮----
+"""
+        Validate a configuration against a JSON Schema.
+        
+        Args:
+            name: Name of the configuration file
+            schema_name: Name of the schema file (defaults to {name}_schema)
+            
+        Returns:
+            True if valid, False otherwise
+        """
+⋮----
+# Load the configuration
+⋮----
+# Determine schema name if not provided
+⋮----
+# Map configuration names to schema names
+schema_mapping = {
+schema_name = schema_mapping.get(name, f"{name}_schema")
+⋮----
+# Use the schema validation functionality from the schemas package
+⋮----
+# Validation failed
+````
+
 ## File: nexusml/config/mappings/masterformat_equipment.json
 ````json
 {
@@ -1033,6 +2059,505 @@ eav_integration:
 }
 ````
 
+## File: nexusml/config/model_card_config.yml
+````yaml
+# Model Card Configuration for Equipment Classification Production Model
+# This file provides a machine-readable version of the model card information
+
+model_details:
+  name: "Equipment Classification Production Model"
+  version: "1.0.0"
+  date_created: "2025-03-08"
+  type: "Multi-output classification model"
+  framework: "Scikit-learn"
+  architecture: "RandomForestClassifier with TF-IDF and numeric features"
+  license: "Proprietary"
+
+inputs:
+  - name: "text_descriptions"
+    description: "Equipment tags, manufacturer names, model numbers, etc."
+    type: "text"
+  - name: "service_life"
+    description: "Expected service life of the equipment"
+    type: "numeric"
+
+outputs:
+  - name: "category_name"
+    description: "Equipment category (e.g., 'HVAC', 'Plumbing')"
+    type: "categorical"
+  - name: "uniformat_code"
+    description: "Uniformat classification code (e.g., 'D3050', 'D2020')"
+    type: "categorical"
+  - name: "mcaa_system_category"
+    description: "MCAA system category (e.g., 'Mechanical', 'Plumbing Equipment')"
+    type: "categorical"
+  - name: "Equipment_Type"
+    description: "Hierarchical equipment type (e.g., 'HVAC-Air Handling')"
+    type: "categorical"
+  - name: "System_Subtype"
+    description: "System subtype (e.g., 'Mechanical-Cooling')"
+    type: "categorical"
+  - name: "MasterFormat_Class"
+    description: "MasterFormat classification (derived from other classifications)"
+    type: "categorical"
+
+data_format:
+  fields:
+    - name: "equipment_tag"
+      data_type: "string"
+      description: "Equipment identifier or tag number"
+      example: "AHU-01"
+      is_required: true
+      is_target: false
+    - name: "manufacturer"
+      data_type: "string"
+      description: "Equipment manufacturer name"
+      example: "Trane"
+      is_required: true
+      is_target: false
+    - name: "model"
+      data_type: "string"
+      description: "Equipment model number or identifier"
+      example: "CSAA012"
+      is_required: true
+      is_target: false
+    - name: "category_name"
+      data_type: "string"
+      description: "Primary equipment category"
+      example: "Air Handler"
+      is_required: true
+      is_target: true
+    - name: "omniclass_code"
+      data_type: "string"
+      description: "OmniClass classification code"
+      example: "23-33 13 13"
+      is_required: true
+      is_target: false
+    - name: "uniformat_code"
+      data_type: "string"
+      description: "Uniformat classification code"
+      example: "D3040"
+      is_required: true
+      is_target: true
+    - name: "masterformat_code"
+      data_type: "string"
+      description: "MasterFormat classification code"
+      example: "23 74 13"
+      is_required: true
+      is_target: false
+    - name: "mcaa_system_category"
+      data_type: "string"
+      description: "MCAA system category"
+      example: "HVAC Equipment"
+      is_required: true
+      is_target: true
+    - name: "CategoryID"
+      data_type: "integer"
+      description: "Category ID from reference database"
+      example: "101"
+      is_required: true
+      is_target: false
+    - name: "OmniClassID"
+      data_type: "integer"
+      description: "OmniClass ID from reference database"
+      example: "2333"
+      is_required: true
+      is_target: false
+    - name: "UniFormatID"
+      data_type: "integer"
+      description: "Uniformat ID from reference database"
+      example: "3040"
+      is_required: true
+      is_target: false
+    - name: "MasterFormatID"
+      data_type: "integer"
+      description: "MasterFormat ID from reference database"
+      example: "2374"
+      is_required: true
+      is_target: false
+    - name: "MCAAID"
+      data_type: "string"
+      description: "MCAA abbreviation"
+      example: "H"
+      is_required: true
+      is_target: false
+    - name: "LocationID"
+      data_type: "integer"
+      description: "Location ID from reference database"
+      example: "1001"
+      is_required: true
+      is_target: false
+    - name: "Precon_System"
+      data_type: "string"
+      description: "Preconstruction system category"
+      example: "Air Handling Units"
+      is_required: false
+      is_target: false
+    - name: "Drawing_Abbreviation"
+      data_type: "string"
+      description: "Standard drawing abbreviation"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "Precon_Tag"
+      data_type: "string"
+      description: "Preconstruction tag identifier"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "System_Type_ID"
+      data_type: "string"
+      description: "System type identifier (H, P, R)"
+      example: "H"
+      is_required: false
+      is_target: false
+    - name: "Equip_Name_ID"
+      data_type: "string"
+      description: "Equipment name identifier"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "Sub_System_ID"
+      data_type: "string"
+      description: "Subsystem identifier"
+      example: "PKG"
+      is_required: false
+      is_target: false
+    - name: "Sub_System_Class"
+      data_type: "string"
+      description: "Subsystem classification"
+      example: "Floor Mounted"
+      is_required: false
+      is_target: false
+    - name: "Class_ID"
+      data_type: "string"
+      description: "Class identifier"
+      example: "FLR"
+      is_required: false
+      is_target: false
+    - name: "Unit"
+      data_type: "string"
+      description: "Unit of measurement"
+      example: "CFM"
+      is_required: false
+      is_target: false
+
+# MCAA ID mapping
+mcaaid_mapping:
+  "HVAC Equipment": "H"
+  "Plumbing Equipment": "P"
+  "Mechanical/Sheetmetal": "SM"
+  "Process Cooling Water": "R"
+  "Hot Water Systems": "H"
+  "Refrigeration": "R"
+  "Electrical": "E"
+  "Fire Protection": "F"
+  "Controls": "C"
+
+# Standard equipment categories
+standard_categories:
+  - "Accessory"
+  - "Air Compressor"
+  - "Air Curtain"
+  - "Air Dryer"
+  - "Air Handler"
+  - "Air Receiver"
+  - "Air Rotator"
+  - "Air Scoop"
+  - "Air Separator"
+  - "Baseboard"
+  - "Boiler"
+  - "Bypass Filter"
+  - "Cabinet Unit"
+  - "Chiller"
+  - "Compressor"
+  - "Computer"
+  - "Condenser"
+  - "Connector"
+  - "Cooling Tower"
+  - "Coupon Rack"
+  - "DI/RO Equipment"
+  - "Direct Outdoor Air System"
+  - "Domestic"
+  - "Dual Duct"
+  - "Ductless Split"
+  - "Energy Recovery"
+  - "Evaporator"
+  - "Expansion"
+  - "Fan"
+  - "Fan Coil"
+  - "Fan Coil Unit"
+  - "Fan Power"
+  - "Fixture"
+  - "Furnace"
+  - "Glycol Feeder"
+  - "Grease Interceptor"
+  - "Grease Trap"
+  - "Heat Exchanger"
+  - "Heat Pump"
+  - "Heat Trace"
+  - "Humidifier"
+  - "Infrared"
+  - "Make-up Air"
+  - "Nitrogen"
+  - "Pot Feeder"
+  - "PRV"
+  - "Pump"
+  - "Radiant Panel"
+  - "Rear Door"
+  - "Return Air"
+  - "Roof Top Unit"
+  - "Sand/Oil Interceptor"
+  - "Tank"
+  - "Unit Heater"
+  - "Unit Ventilator"
+  - "Vacuum"
+  - "VAV Box"
+  - "Venturi"
+  - "Water Softener"
+
+# Technical specifications
+technical_specifications:
+  hyperparameters:
+    n_estimators: 100
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+    class_weight: "balanced"
+  
+  feature_engineering:
+    text_combinations:
+      - name: "combined_text"
+        columns:
+          - "equipment_tag"
+          - "manufacturer"
+          - "model"
+          - "category_name"
+          - "mcaa_system_category"
+          - "building_name"
+        separator: " "
+    
+    hierarchical_categories:
+      - name: "Equipment_Type"
+        parent_columns:
+          - "mcaa_system_category"
+          - "category_name"
+        separator: "-"
+      
+      - name: "System_Subtype"
+        parent_columns:
+          - "mcaa_system_category"
+          - "category_name"
+        separator: "-"
+
+# Reference data paths
+reference_data:
+  enumerations_file: "files/training-data/enumeratins for training data.csv"
+  omniclass_file: "files/omniclass_tables/omniclass_23.csv"
+  uniformat_file: "files/uniformat/uniformat_ii.csv"
+  masterformat_file: "files/masterformat/masterformat_2018.csv"
+  mcaa_file: "files/mcaa-glossary/mcaa_glossary.csv"
+````
+
+## File: nexusml/config/model_card.py
+````python
+"""
+Model Card Configuration Module for NexusML
+
+This module provides access to the model card configuration, which contains
+information about the model, its inputs and outputs, data format, and technical
+specifications.
+"""
+⋮----
+class ModelCardConfig(ConfigSection)
+⋮----
+"""Configuration for model card information."""
+⋮----
+@property
+    def model_details(self) -> Dict[str, Any]
+⋮----
+"""Get the model details."""
+⋮----
+@property
+    def model_name(self) -> str
+⋮----
+"""Get the model name."""
+⋮----
+@property
+    def model_version(self) -> str
+⋮----
+"""Get the model version."""
+⋮----
+@property
+    def inputs(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the model inputs."""
+⋮----
+@property
+    def outputs(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the model outputs."""
+⋮----
+@property
+    def data_format(self) -> Dict[str, Any]
+⋮----
+"""Get the data format information."""
+⋮----
+@property
+    def fields(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the field definitions."""
+⋮----
+@property
+    def required_fields(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the required field definitions."""
+⋮----
+@property
+    def target_fields(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the target field definitions."""
+⋮----
+@property
+    def mcaaid_mapping(self) -> Dict[str, str]
+⋮----
+"""Get the MCAA ID mapping."""
+⋮----
+@property
+    def standard_categories(self) -> List[str]
+⋮----
+"""Get the standard equipment categories."""
+⋮----
+@property
+    def technical_specifications(self) -> Dict[str, Any]
+⋮----
+"""Get the technical specifications."""
+⋮----
+@property
+    def hyperparameters(self) -> Dict[str, Any]
+⋮----
+"""Get the model hyperparameters."""
+⋮----
+@property
+    def feature_engineering(self) -> Dict[str, Any]
+⋮----
+"""Get the feature engineering specifications."""
+⋮----
+@property
+    def text_combinations(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the text combination configurations."""
+⋮----
+@property
+    def hierarchical_categories(self) -> List[Dict[str, Any]]
+⋮----
+"""Get the hierarchical category configurations."""
+⋮----
+@property
+    def reference_data(self) -> Dict[str, str]
+⋮----
+"""Get the reference data paths."""
+# Ensure all values are strings
+result = {}
+⋮----
+def get_field_by_name(self, name: str) -> Optional[Dict[str, Any]]
+⋮----
+"""
+        Get a field definition by name.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            Field definition or None if not found
+        """
+⋮----
+def get_field_description(self, name: str) -> str
+⋮----
+"""
+        Get the description of a field.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            Description of the field or empty string if not found
+        """
+field = self.get_field_by_name(name)
+⋮----
+def get_field_example(self, name: str) -> str
+⋮----
+"""
+        Get an example value for a field.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            Example value for the field or empty string if not found
+        """
+⋮----
+def get_field_data_type(self, name: str) -> str
+⋮----
+"""
+        Get the data type of a field.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            Data type of the field or 'string' if not found
+        """
+⋮----
+def is_field_required(self, name: str) -> bool
+⋮----
+"""
+        Check if a field is required.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            True if the field is required, False otherwise
+        """
+⋮----
+def is_field_target(self, name: str) -> bool
+⋮----
+"""
+        Check if a field is a target for prediction.
+        
+        Args:
+            name: Name of the field
+            
+        Returns:
+            True if the field is a target, False otherwise
+        """
+⋮----
+def get_mcaaid_for_system_category(self, system_category: str) -> str
+⋮----
+"""
+        Get the MCAA ID for a system category.
+        
+        Args:
+            system_category: System category
+            
+        Returns:
+            MCAA ID for the system category or empty string if not found
+        """
+⋮----
+def get_reference_data_path(self, reference_type: str) -> str
+⋮----
+"""
+        Get the path to a reference data file.
+        
+        Args:
+            reference_type: Type of reference data
+            
+        Returns:
+            Path to the reference data file or empty string if not found
+        """
+````
+
 ## File: nexusml/config/nexusml_config.yml
 ````yaml
 # NexusML Configuration File
@@ -1072,6 +2597,805 @@ data:
     default_path: 'nexusml/data/training_data/fake_training_data.csv'
     encoding: 'utf-8'
     fallback_encoding: 'latin1'
+````
+
+## File: nexusml/config/paths.py
+````python
+"""
+Path Management Module for NexusML
+
+This module provides utilities for path resolution across different environments,
+handling both absolute and relative paths, and providing a consistent API for
+accessing paths in the project.
+"""
+⋮----
+# Try to load from fca_dashboard if available
+⋮----
+FCA_DASHBOARD_AVAILABLE = True
+⋮----
+FCA_DASHBOARD_AVAILABLE = False
+fca_resolve_path = None
+⋮----
+class PathResolver
+⋮----
+"""
+    Resolves paths across different environments.
+    
+    This class provides a unified API for resolving paths, handling both
+    absolute and relative paths, and providing context-specific path resolution.
+    """
+⋮----
+def __init__(self, root_dir: Optional[Union[str, Path]] = None)
+⋮----
+"""
+        Initialize the path resolver.
+        
+        Args:
+            root_dir: Root directory for path resolution. If None, uses the project root.
+        """
+⋮----
+# Environment-specific configuration
+⋮----
+def resolve_path(self, path: Union[str, Path], base_dir: Optional[Union[str, Path]] = None) -> Path
+⋮----
+"""
+        Resolve a path relative to the root directory or a specified base directory.
+        
+        Args:
+            path: Path to resolve
+            base_dir: Base directory for relative paths. If None, uses the root directory.
+            
+        Returns:
+            Resolved path
+        """
+# If path is already absolute, return it
+⋮----
+# If base_dir is provided, use it as the base
+⋮----
+base = Path(base_dir)
+⋮----
+base = self.root_dir / base
+⋮----
+# Try to use fca_dashboard's resolve_path if available
+⋮----
+# Fall back to local resolution
+⋮----
+# Resolve relative to root directory
+⋮----
+def get_data_path(self, path_key: str = "training_data") -> Path
+⋮----
+"""
+        Get a data path from the configuration.
+        
+        Args:
+            path_key: Key for the path in the configuration
+            
+        Returns:
+            Resolved path
+        """
+# Check if path is already cached
+cache_key = f"data_{path_key}"
+⋮----
+# Get path from configuration
+⋮----
+path = get_data_path(path_key)
+⋮----
+# Resolve and cache the path
+resolved_path = self.resolve_path(path)
+⋮----
+def get_config_path(self, config_name: str) -> Path
+⋮----
+"""
+        Get the path to a configuration file.
+        
+        Args:
+            config_name: Name of the configuration file (without extension)
+            
+        Returns:
+            Resolved path to the configuration file
+        """
+⋮----
+cache_key = f"config_{config_name}"
+⋮----
+# Try environment-specific config first
+⋮----
+env_path = self.root_dir / "config" / f"{config_name}.{self.environment}.yml"
+⋮----
+# Use standard config path
+path = self.root_dir / "config" / f"{config_name}.yml"
+⋮----
+def get_output_path(self, output_type: str = "models") -> Path
+⋮----
+"""
+        Get the path to an output directory.
+        
+        Args:
+            output_type: Type of output (e.g., "models", "visualizations")
+            
+        Returns:
+            Resolved path to the output directory
+        """
+⋮----
+cache_key = f"output_{output_type}"
+⋮----
+# Get base output directory
+output_dir = self.get_data_path("output_dir")
+⋮----
+# Create type-specific output directory
+type_dir = output_dir / output_type
+⋮----
+# Create directory if it doesn't exist
+⋮----
+# Cache and return the path
+⋮----
+def get_reference_path(self, reference_type: str) -> Path
+⋮----
+"""
+        Get the path to a reference data file.
+        
+        Args:
+            reference_type: Type of reference data (e.g., "omniclass", "uniformat")
+            
+        Returns:
+            Resolved path to the reference data file
+        """
+⋮----
+cache_key = f"reference_{reference_type}"
+⋮----
+# Define reference data paths
+reference_paths = {
+⋮----
+# Get path for the specified reference type
+⋮----
+path = self.resolve_path(reference_paths[reference_type])
+⋮----
+# Default to a subdirectory in the reference directory
+path = self.resolve_path(f"files/{reference_type}/{reference_type}.csv")
+⋮----
+# Check if the path exists
+⋮----
+# Try alternative locations
+alt_paths = [
+⋮----
+path = alt_path
+⋮----
+# Cache and return the path
+⋮----
+# Return a default path
+default_path = self.root_dir / "files" / reference_type / f"{reference_type}.csv"
+⋮----
+def clear_cache(self) -> None
+⋮----
+"""Clear the path cache."""
+⋮----
+# Create a singleton instance of PathResolver
+_path_resolver = None
+⋮----
+def get_path_resolver() -> PathResolver
+⋮----
+"""
+    Get the singleton instance of PathResolver.
+    
+    Returns:
+        PathResolver instance
+    """
+⋮----
+_path_resolver = PathResolver()
+⋮----
+def resolve_path(path: Union[str, Path], base_dir: Optional[Union[str, Path]] = None) -> Path
+⋮----
+"""
+    Resolve a path relative to the root directory or a specified base directory.
+    
+    This function provides a convenient way to resolve paths without creating a PathResolver instance.
+    
+    Args:
+        path: Path to resolve
+        base_dir: Base directory for relative paths. If None, uses the root directory.
+        
+    Returns:
+        Resolved path
+    """
+⋮----
+def get_data_path(path_key: str = "training_data") -> Path
+⋮----
+"""
+    Get a data path from the configuration.
+    
+    This function provides a convenient way to get data paths without creating a PathResolver instance.
+    
+    Args:
+        path_key: Key for the path in the configuration
+        
+    Returns:
+        Resolved path
+    """
+⋮----
+def get_config_path(config_name: str) -> Path
+⋮----
+"""
+    Get the path to a configuration file.
+    
+    This function provides a convenient way to get configuration paths without creating a PathResolver instance.
+    
+    Args:
+        config_name: Name of the configuration file (without extension)
+        
+    Returns:
+        Resolved path to the configuration file
+    """
+⋮----
+def get_output_path(output_type: str = "models") -> Path
+⋮----
+"""
+    Get the path to an output directory.
+    
+    This function provides a convenient way to get output paths without creating a PathResolver instance.
+    
+    Args:
+        output_type: Type of output (e.g., "models", "visualizations")
+        
+    Returns:
+        Resolved path to the output directory
+    """
+⋮----
+def get_reference_path(reference_type: str) -> Path
+⋮----
+"""
+    Get the path to a reference data file.
+    
+    This function provides a convenient way to get reference paths without creating a PathResolver instance.
+    
+    Args:
+        reference_type: Type of reference data (e.g., "omniclass", "uniformat")
+        
+    Returns:
+        Resolved path to the reference data file
+    """
+````
+
+## File: nexusml/config/production_data_config.yml
+````yaml
+# Production Data Configuration for Equipment Classification Model
+# Based on the Equipment Classification Production Model (v1.0.0)
+
+# Required columns for the production model
+# If these columns are missing, they will be created with default values
+required_columns:
+  # Source columns (from raw data)
+  - name: 'equipment_tag'
+    default_value: ''
+    data_type: 'str'
+  - name: 'manufacturer'
+    default_value: ''
+    data_type: 'str'
+  - name: 'model'
+    default_value: ''
+    data_type: 'str'
+  - name: 'category_name'
+    default_value: ''
+    data_type: 'str'
+  - name: 'omniclass_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'uniformat_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'masterformat_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'mcaa_system_category'
+    default_value: ''
+    data_type: 'str'
+  # Removed building_name, initial_cost, and condition_score as they are not necessary
+  - name: 'CategoryID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'OmniClassID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'UniFormatID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'MasterFormatID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'MCAAID'
+    default_value: ''
+    data_type: 'str'  # Changed from 'int' to 'str' as per model card
+  - name: 'LocationID'
+    default_value: 0
+    data_type: 'int'
+
+  # Target columns (created during feature engineering)
+  - name: 'Equipment_Category'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Uniformat_Class'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Type'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Equipment_Subcategory'
+    default_value: ''
+    data_type: 'str'
+  - name: 'combined_text'
+    default_value: ''
+    data_type: 'str'
+  - name: 'service_life'
+    default_value: 0
+    data_type: 'float'
+  - name: 'Equipment_Type'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Subtype'
+    default_value: ''
+    data_type: 'str'
+  - name: 'OmniClass_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Uniformat_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'MasterFormat_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'MCAA_ID'
+    default_value: ''
+    data_type: 'str'  # Changed from 'int' to 'str' to match MCAAID format
+  - name: 'Location_ID'
+    default_value: 0
+    data_type: 'int'
+  
+  # Additional fields from pricing data system
+  - name: 'Precon_System'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Drawing_Abbreviation'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Precon_Tag'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Type_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Equip_Name_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Sub_System_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Sub_System_Class'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Class_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Unit'
+    default_value: ''
+    data_type: 'str'
+
+# MCAAID standard abbreviations mapping based on System Type ID
+mcaaid_mapping:
+  'HVAC Equipment': 'H'
+  'Plumbing Equipment': 'P'
+  'Mechanical/Sheetmetal': 'SM'
+  'Process Cooling Water': 'R'
+  'Hot Water Systems': 'H'
+  'Refrigeration': 'R'
+  'Electrical': 'E'
+  'Fire Protection': 'F'
+  'Controls': 'C'
+
+# Training data configuration
+training_data:
+  default_path: 'nexusml/data/training_data/production_training_data.csv'
+  encoding: 'utf-8'
+  fallback_encoding: 'latin1'
+````
+
+## File: nexusml/config/production_nexusml_config.yml
+````yaml
+# Production NexusML Configuration File
+# Based on the Equipment Classification Production Model (v1.0.0)
+
+feature_engineering:
+  # Text combinations from feature_config.yml
+  text_combinations:
+    - name: 'combined_text'
+      columns:
+        [
+          'equipment_tag',
+          'manufacturer',
+          'model',
+          'category_name',
+          'mcaa_system_category',
+        ]
+      separator: ' '
+  
+  # Numeric columns from feature_config.yml
+  numeric_columns:
+    # Removed initial_cost and condition_score as they are not necessary
+  
+  # Hierarchies from feature_config.yml
+  hierarchies:
+    - new_col: 'Equipment_Type'
+      parents: ['mcaa_system_category', 'category_name']
+      separator: '-'
+    
+    - new_col: 'System_Subtype'
+      parents: ['mcaa_system_category', 'category_name']
+      separator: '-'
+  
+  # Column mappings from feature_config.yml
+  column_mappings:
+    - source: 'category_name'
+      target: 'Equipment_Category'
+    
+    - source: 'uniformat_code'
+      target: 'Uniformat_Class'
+    
+    - source: 'mcaa_system_category'
+      target: 'System_Type'
+  
+  # Classification systems from feature_config.yml
+  classification_systems:
+    - name: 'OmniClass'
+      source_column: 'omniclass_code'
+      target_column: 'OmniClass_ID'
+      mapping_type: 'direct'
+    
+    - name: 'MasterFormat'
+      source_column: 'masterformat_code'
+      target_column: 'MasterFormat_ID'
+      mapping_type: 'direct'
+    
+    - name: 'Uniformat'
+      source_column: 'uniformat_code'
+      target_column: 'Uniformat_ID'
+      mapping_type: 'direct'
+  
+  # Direct mappings from feature_config.yml
+  direct_mappings:
+    - source: 'CategoryID'
+      target: 'Equipment_Subcategory'
+    
+    - source: 'OmniClassID'
+      target: 'OmniClass_ID'
+    
+    - source: 'UniFormatID'
+      target: 'Uniformat_ID'
+    
+    - source: 'MasterFormatID'
+      target: 'MasterFormat_ID'
+    
+    - source: 'MCAAID'
+      target: 'MCAA_ID'
+    
+    - source: 'LocationID'
+      target: 'Location_ID'
+  
+  # EAV integration from feature_config.yml
+  eav_integration:
+    enabled: false
+
+classification:
+  # Classification targets from classification_config.yml
+  classification_targets:
+    - name: 'Equipment_Category'
+      description: 'Primary equipment type (e.g., Chiller, Pump, Air Handler)'
+      required: true
+      master_db:
+        table: 'Equipment_Categories'
+        field: 'CategoryName'
+        id_field: 'CategoryID'
+    
+    - name: 'Uniformat_Class'
+      description: 'Uniformat classification code (e.g., D3040, D2010)'
+      required: true
+      master_db:
+        table: 'UniFormat'
+        field: 'UniFormatCode'
+        id_field: 'UniFormatID'
+    
+    - name: 'System_Type'
+      description: 'System type (e.g., HVAC, Plumbing)'
+      required: true
+      master_db:
+        table: 'Equipment'
+        field: 'System_Type'
+    
+    - name: 'MasterFormat_Class'
+      description: 'MasterFormat classification code'
+      required: false
+      master_db:
+        table: 'MasterFormat'
+        field: 'MasterFormatCode'
+        id_field: 'MasterFormatID'
+  
+  # Input field mappings from classification_config.yml
+  input_field_mappings:
+    - target: 'Asset Category'
+      patterns:
+        - 'Asset Name'
+        - 'Asset Type'
+        - 'Equipment Type'
+        - 'Equipment Name'
+        - 'Equip Name'
+        - 'Equip Type'
+    
+    - target: 'System Type ID'
+      patterns:
+        - 'Trade'
+        - 'System ID'
+        - 'Discipline'
+    
+    - target: 'Precon System'
+      patterns:
+        - 'System Category'
+        - 'System Type'
+        - 'System'
+    
+    - target: 'Equip Name ID'
+      patterns:
+        - 'Sub System Type'
+        - 'Asset Subtype'
+        - 'Asset Sub Type'
+        - 'Equipment Subtype'
+
+data:
+  # Required columns from production_data_config.yml
+  required_columns:
+    - name: 'equipment_tag'
+      default_value: ''
+      data_type: 'str'
+    - name: 'manufacturer'
+      default_value: ''
+      data_type: 'str'
+    - name: 'model'
+      default_value: ''
+      data_type: 'str'
+    - name: 'category_name'
+      default_value: ''
+      data_type: 'str'
+    - name: 'omniclass_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'uniformat_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'masterformat_code'
+      default_value: ''
+      data_type: 'str'
+    - name: 'mcaa_system_category'
+      default_value: ''
+      data_type: 'str'
+    # Removed building_name, initial_cost, and condition_score
+    - name: 'CategoryID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'OmniClassID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'UniFormatID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'MasterFormatID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'MCAAID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'LocationID'
+      default_value: 0
+      data_type: 'int'
+    - name: 'Equipment_Category'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Uniformat_Class'
+      default_value: ''
+      data_type: 'str'
+    - name: 'System_Type'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Equipment_Subcategory'
+      default_value: ''
+      data_type: 'str'
+    - name: 'combined_text'
+      default_value: ''
+      data_type: 'str'
+    - name: 'service_life'
+      default_value: 0
+      data_type: 'float'
+    - name: 'Equipment_Type'
+      default_value: ''
+      data_type: 'str'
+    - name: 'System_Subtype'
+      default_value: ''
+      data_type: 'str'
+    - name: 'OmniClass_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Uniformat_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'MasterFormat_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'MCAA_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Location_ID'
+      default_value: 0
+      data_type: 'int'
+    
+    # Additional fields from pricing data system
+    - name: 'Precon_System'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Drawing_Abbreviation'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Precon_Tag'
+      default_value: ''
+      data_type: 'str'
+    - name: 'System_Type_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Equip_Name_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Sub_System_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Sub_System_Class'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Class_ID'
+      default_value: ''
+      data_type: 'str'
+    - name: 'Unit'
+      default_value: ''
+      data_type: 'str'
+  
+  # MCAAID mapping from production_data_config.yml
+  mcaaid_mapping:
+    'HVAC Equipment': 'H'
+    'Plumbing Equipment': 'P'
+    'Mechanical/Sheetmetal': 'SM'
+    'Process Cooling Water': 'R'
+    'Hot Water Systems': 'H'
+    'Refrigeration': 'R'
+    'Electrical': 'E'
+    'Fire Protection': 'F'
+    'Controls': 'C'
+  
+  # Training data configuration from production_data_config.yml
+  training_data:
+    default_path: 'nexusml/data/training_data/production_training_data.csv'
+    encoding: 'utf-8'
+    fallback_encoding: 'latin1'
+
+# Reference data configuration from reference_config.yml
+reference_data:
+  # Base paths for reference data sources
+  paths:
+    omniclass: 'nexusml/ingest/reference/omniclass'
+    uniformat: 'nexusml/ingest/reference/uniformat'
+    masterformat: 'nexusml/ingest/reference/masterformat'
+    mcaa_glossary: 'nexusml/ingest/reference/mcaa-glossary'
+    mcaa_abbreviations: 'nexusml/ingest/reference/mcaa-glossary'
+    smacna: 'nexusml/ingest/reference/smacna-manufacturers'
+    ashrae: 'nexusml/ingest/reference/service-life/ashrae'
+    energize_denver: 'nexusml/ingest/reference/service-life/energize-denver'
+    equipment_taxonomy: 'nexusml/ingest/reference/equipment-taxonomy'
+  
+  # File patterns for finding reference data files
+  file_patterns:
+    omniclass: '*.csv'
+    uniformat: '*.csv'
+    masterformat: '*.csv'
+    mcaa_glossary: 'Glossary.csv'
+    mcaa_abbreviations: 'Abbreviations.csv'
+    smacna: '*.json'
+    ashrae: '*.csv'
+    energize_denver: '*.csv'
+    equipment_taxonomy: '*.csv'
+  
+  # Column mappings for standardizing reference data
+  column_mappings:
+    omniclass:
+      code: 'OmniClass_Code'
+      name: 'OmniClass_Title'
+      description: 'Description'
+    uniformat:
+      code: 'UniFormat Code'
+      name: 'UniFormat Title'
+      description: 'Description'
+    masterformat:
+      code: 'MasterFormat Code'
+      name: 'MasterFormat Title'
+      description: 'Description'
+    service_life:
+      equipment_type: 'Equipment Type'
+      median_years: 'Median Years'
+      min_years: 'Min Years'
+      max_years: 'Max Years'
+      source: 'Source'
+    equipment_taxonomy:
+      asset_category: 'Asset Category'
+      equipment_id: 'Equip Name ID'
+      trade: 'Trade'
+      title: 'Title'
+      drawing_abbreviation: 'Drawing Abbreviation'
+      precon_tag: 'Precon Tag'
+      system_type_id: 'System Type ID'
+      sub_system_type: 'Sub System Type'
+      sub_system_id: 'Sub System ID'
+      sub_system_class: 'Sub System Class'
+      class_id: 'Class ID'
+      equipment_size: 'Equipment Size'
+      unit: 'Unit'
+      service_maintenance_hrs: 'Service Maintenance Hrs'
+      service_life: 'Service Life'
+  
+  # Hierarchical relationships
+  hierarchies:
+    omniclass:
+      separator: '-'
+      levels: 3
+    uniformat:
+      separator: ''
+      levels: 4
+    masterformat:
+      separator: ' '
+      levels: 3
+  
+  # Default values when data is missing
+  defaults:
+    service_life: 15.0
+    confidence: 0.5
+
+# Model configuration
+model:
+  # Model architecture details from model card
+  architecture:
+    type: 'RandomForestClassifier'
+    text_vectorizer: 'TfidfVectorizer'
+    ngram_range: [1, 3]
+    hyperparameters:
+      n_estimators: 100
+      max_depth: 20
+      min_samples_split: 2
+      min_samples_leaf: 1
+      class_weight: 'balanced'
+  
+  # Output paths
+  output:
+    model_path: 'outputs/models/equipment_classifier_production.pkl'
+    predictions_path: 'outputs/predictions.csv'
+    evaluation_path: 'outputs/evaluation_results.json'
+  
+  # Feature engineering settings
+  features:
+    text_features:
+      - 'combined_text'
+    numeric_features:
+      - 'service_life'
+    categorical_features:
+      - 'Equipment_Category'
+      - 'System_Type'
+  
+  # Classification targets
+  targets:
+    - 'Equipment_Category'
+    - 'Uniformat_Class'
+    - 'System_Type'
+    - 'Equipment_Type'
+    - 'System_Subtype'
+    - 'MasterFormat_Class'
 ````
 
 ## File: nexusml/config/reference_config.yml
@@ -1208,6 +3532,819 @@ defaults:
     "encoding": "o200k_base"
   }
 }
+````
+
+## File: nexusml/config/schemas/__init__.py
+````python
+"""
+Configuration Schemas Package for NexusML
+
+This package provides JSON Schema definitions for validating configuration files.
+"""
+⋮----
+# Dictionary to cache loaded schemas
+_schemas: Dict[str, dict] = {}
+⋮----
+def get_schema_path(schema_name: str) -> Path
+⋮----
+"""
+    Get the path to a schema file.
+    
+    Args:
+        schema_name: Name of the schema file (without extension)
+        
+    Returns:
+        Path to the schema file
+    """
+schemas_dir = Path(__file__).resolve().parent
+⋮----
+def load_schema(schema_name: str) -> Optional[dict]
+⋮----
+"""
+    Load a JSON Schema from file.
+    
+    Args:
+        schema_name: Name of the schema file (without extension)
+        
+    Returns:
+        Schema as a dictionary, or None if the schema file doesn't exist
+    """
+# Check if schema is already loaded
+⋮----
+# Get the schema path
+schema_path = get_schema_path(schema_name)
+⋮----
+# Check if the schema file exists
+⋮----
+# Load the schema
+⋮----
+schema = json.load(f)
+⋮----
+# Cache the schema
+⋮----
+def validate_config(config: dict, schema_name: str) -> bool
+⋮----
+"""
+    Validate a configuration against a JSON Schema.
+    
+    Args:
+        config: Configuration to validate
+        schema_name: Name of the schema file (without extension)
+        
+    Returns:
+        True if valid, False otherwise
+    """
+⋮----
+# Load the schema
+schema = load_schema(schema_name)
+⋮----
+# Validate the configuration
+⋮----
+# jsonschema not installed, skip validation
+⋮----
+# Validation failed
+⋮----
+# Export available schemas
+available_schemas = [
+````
+
+## File: nexusml/config/schemas/data_config_schema.json
+````json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Data Configuration Schema",
+  "description": "Schema for validating data configuration files",
+  "type": "object",
+  "properties": {
+    "required_columns": {
+      "type": "array",
+      "description": "List of required columns for the data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the column"
+          },
+          "default_value": {
+            "description": "Default value for the column if missing",
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "boolean" },
+              { "type": "null" }
+            ]
+          },
+          "data_type": {
+            "type": "string",
+            "description": "Data type of the column",
+            "enum": ["str", "int", "float", "bool"]
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": true
+      }
+    },
+    "mcaaid_mapping": {
+      "type": "object",
+      "description": "Mapping of system types to MCAA ID abbreviations",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "training_data": {
+      "type": "object",
+      "description": "Configuration for training data",
+      "properties": {
+        "default_path": {
+          "type": "string",
+          "description": "Default path to the training data file"
+        },
+        "encoding": {
+          "type": "string",
+          "description": "Encoding of the training data file"
+        },
+        "fallback_encoding": {
+          "type": "string",
+          "description": "Fallback encoding if the primary encoding fails"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["required_columns"],
+  "additionalProperties": true
+}
+````
+
+## File: nexusml/config/schemas/feature_config_schema.json
+````json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Feature Configuration Schema",
+  "description": "Schema for validating feature engineering configuration files",
+  "type": "object",
+  "properties": {
+    "text_combinations": {
+      "type": "array",
+      "description": "Configuration for text column combinations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the combined column"
+          },
+          "columns": {
+            "type": "array",
+            "description": "List of columns to combine",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separator": {
+            "type": "string",
+            "description": "Separator to use between column values",
+            "default": " "
+          }
+        },
+        "required": ["name", "columns"],
+        "additionalProperties": true
+      }
+    },
+    "numeric_columns": {
+      "type": "array",
+      "description": "Configuration for numeric column transformations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the source column"
+          },
+          "new_name": {
+            "type": "string",
+            "description": "Name of the transformed column"
+          },
+          "fill_value": {
+            "type": "number",
+            "description": "Value to use for filling missing values"
+          },
+          "dtype": {
+            "type": "string",
+            "description": "Data type of the transformed column",
+            "enum": ["float", "int"]
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": true
+      }
+    },
+    "hierarchies": {
+      "type": "array",
+      "description": "Configuration for hierarchical column combinations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "new_col": {
+            "type": "string",
+            "description": "Name of the new hierarchical column"
+          },
+          "parents": {
+            "type": "array",
+            "description": "List of parent columns to combine",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separator": {
+            "type": "string",
+            "description": "Separator to use between parent values",
+            "default": "-"
+          }
+        },
+        "required": ["new_col", "parents"],
+        "additionalProperties": true
+      }
+    },
+    "column_mappings": {
+      "type": "array",
+      "description": "Configuration for direct column mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source column name"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target column name"
+          }
+        },
+        "required": ["source", "target"],
+        "additionalProperties": true
+      }
+    },
+    "classification_systems": {
+      "type": "array",
+      "description": "Configuration for classification system mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the classification system",
+            "enum": ["OmniClass", "MasterFormat", "Uniformat"]
+          },
+          "source_column": {
+            "type": "string",
+            "description": "Source column for the mapping"
+          },
+          "target_column": {
+            "type": "string",
+            "description": "Target column for the mapping"
+          },
+          "mapping_type": {
+            "type": "string",
+            "description": "Type of mapping to use",
+            "enum": ["direct", "eav", "function"]
+          },
+          "mapping_function": {
+            "type": "string",
+            "description": "Name of the function to use for mapping (if mapping_type is 'function')"
+          }
+        },
+        "required": ["name", "source_column", "target_column"],
+        "additionalProperties": true
+      }
+    },
+    "direct_mappings": {
+      "type": "array",
+      "description": "Configuration for direct ID mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source column name"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target column name"
+          }
+        },
+        "required": ["source", "target"],
+        "additionalProperties": true
+      }
+    },
+    "eav_integration": {
+      "type": "object",
+      "description": "Configuration for EAV integration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether EAV integration is enabled"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
+````
+
+## File: nexusml/config/schemas/model_card_schema.json
+````json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Model Card Configuration Schema",
+  "description": "Schema for validating model card configuration files",
+  "type": "object",
+  "properties": {
+    "model_details": {
+      "type": "object",
+      "description": "Basic information about the model",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the model"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the model"
+        },
+        "date_created": {
+          "type": "string",
+          "description": "Date the model was created"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of model"
+        },
+        "framework": {
+          "type": "string",
+          "description": "Framework used to build the model"
+        },
+        "architecture": {
+          "type": "string",
+          "description": "Architecture of the model"
+        }
+      },
+      "required": ["name", "version"]
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Input features for the model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the input feature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the input feature"
+          },
+          "type": {
+            "type": "string",
+            "description": "Data type of the input feature"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Output targets for the model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the output target"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the output target"
+          },
+          "type": {
+            "type": "string",
+            "description": "Data type of the output target"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "data_format": {
+      "type": "object",
+      "description": "Format of the training data",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "description": "Fields in the training data",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the field"
+              },
+              "data_type": {
+                "type": "string",
+                "description": "Data type of the field"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the field"
+              },
+              "example": {
+                "type": "string",
+                "description": "Example value for the field"
+              },
+              "is_required": {
+                "type": "boolean",
+                "description": "Whether the field is required"
+              },
+              "is_target": {
+                "type": "boolean",
+                "description": "Whether the field is a target for prediction"
+              }
+            },
+            "required": ["name", "data_type"]
+          }
+        },
+        "enumerations": {
+          "type": "object",
+          "description": "Enumeration values for categorical fields",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "standard_categories": {
+      "type": "array",
+      "description": "Standard equipment categories",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mcaaid_mapping": {
+      "type": "object",
+      "description": "Mapping of system categories to MCAA ID abbreviations",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "performance_metrics": {
+      "type": "object",
+      "description": "Performance metrics for the model",
+      "properties": {
+        "overall": {
+          "type": "object",
+          "description": "Overall performance metrics",
+          "properties": {
+            "accuracy": {
+              "type": "number",
+              "description": "Overall accuracy"
+            },
+            "f1_score": {
+              "type": "number",
+              "description": "Overall F1 score"
+            },
+            "precision": {
+              "type": "number",
+              "description": "Overall precision"
+            },
+            "recall": {
+              "type": "number",
+              "description": "Overall recall"
+            }
+          }
+        },
+        "per_target": {
+          "type": "object",
+          "description": "Performance metrics for each target",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "accuracy": {
+                "type": "number",
+                "description": "Accuracy for the target"
+              },
+              "f1_score": {
+                "type": "number",
+                "description": "F1 score for the target"
+              },
+              "precision": {
+                "type": "number",
+                "description": "Precision for the target"
+              },
+              "recall": {
+                "type": "number",
+                "description": "Recall for the target"
+              }
+            }
+          }
+        }
+      }
+    },
+    "technical_specifications": {
+      "type": "object",
+      "description": "Technical specifications for the model",
+      "properties": {
+        "hyperparameters": {
+          "type": "object",
+          "description": "Hyperparameters for the model",
+          "additionalProperties": {
+            "type": ["number", "string", "boolean", "null"]
+          }
+        },
+        "feature_engineering": {
+          "type": "object",
+          "description": "Feature engineering details",
+          "properties": {
+            "text_combinations": {
+              "type": "array",
+              "description": "Text combination configurations",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the combined column"
+                  },
+                  "columns": {
+                    "type": "array",
+                    "description": "Columns to combine",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "separator": {
+                    "type": "string",
+                    "description": "Separator to use between column values"
+                  }
+                }
+              }
+            },
+            "hierarchical_categories": {
+              "type": "array",
+              "description": "Hierarchical category configurations",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the hierarchical category"
+                  },
+                  "parent_columns": {
+                    "type": "array",
+                    "description": "Parent columns for the hierarchy",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "separator": {
+                    "type": "string",
+                    "description": "Separator to use between parent values"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+````
+
+## File: nexusml/config/sections.py
+````python
+"""
+Configuration Sections Module for NexusML
+
+This module provides base classes for configuration sections, which are used
+to provide type-safe access to configuration values.
+"""
+⋮----
+T = TypeVar('T')
+⋮----
+class ConfigSection(Generic[T])
+⋮----
+"""Base class for configuration sections."""
+⋮----
+def __init__(self, data: Dict[str, Any])
+⋮----
+def get(self, key: str, default: Any = None) -> Any
+⋮----
+"""Get a configuration value."""
+⋮----
+def get_nested(self, key_path: str, default: Any = None) -> Any
+⋮----
+"""
+        Get a nested configuration value using dot notation.
+        
+        Args:
+            key_path: Dot-separated path to the config value (e.g., 'training_data.default_path')
+            default: Default value to return if the key is not found
+            
+        Returns:
+            The configuration value or the default
+        """
+keys = key_path.split(".")
+⋮----
+# Navigate through the nested dictionary
+current = self.data
+⋮----
+current = current[key]
+````
+
+## File: nexusml/config/validation.py
+````python
+"""
+Configuration Validation Module for NexusML
+
+This module provides utilities for validating configurations against schemas
+and ensuring that they meet the requirements of the pipeline.
+"""
+⋮----
+class ConfigurationValidator
+⋮----
+"""
+    Validates configurations against schemas and pipeline requirements.
+    
+    This class provides methods for validating configurations against schemas
+    and ensuring that they meet the requirements of the pipeline.
+    """
+⋮----
+def __init__(self, config_manager: Optional[ConfigurationManager] = None)
+⋮----
+"""
+        Initialize the configuration validator.
+        
+        Args:
+            config_manager: Configuration manager to use. If None, a new one will be created.
+        """
+⋮----
+def validate_all_configs(self) -> Dict[str, bool]
+⋮----
+"""
+        Validate all known configurations against their schemas.
+        
+        Returns:
+            Dictionary mapping configuration names to validation results
+        """
+results = {}
+⋮----
+# Validate data configuration
+⋮----
+# Validate feature configuration
+⋮----
+# Validate model card configuration
+⋮----
+def validate_data_config(self) -> bool
+⋮----
+"""
+        Validate the data configuration against its schema.
+        
+        Returns:
+            True if valid, False otherwise
+        """
+⋮----
+# Load the configuration
+config = self.config_manager.load_config("production_data_config")
+⋮----
+# Validate against schema
+is_valid = validate_config(config, "data_config_schema")
+⋮----
+# Additional validation
+⋮----
+# Check that required columns are defined
+⋮----
+# Check that at least one column is defined
+⋮----
+# Check that each column has a name
+⋮----
+def validate_feature_config(self) -> bool
+⋮----
+"""
+        Validate the feature configuration against its schema.
+        
+        Returns:
+            True if valid, False otherwise
+        """
+⋮----
+config = self.config_manager.load_config("feature_config")
+⋮----
+is_valid = validate_config(config, "feature_config_schema")
+⋮----
+# Check that at least one feature engineering method is defined
+has_feature_method = False
+⋮----
+has_feature_method = True
+⋮----
+def validate_model_card_config(self) -> bool
+⋮----
+"""
+        Validate the model card configuration against its schema.
+        
+        Returns:
+            True if valid, False otherwise
+        """
+⋮----
+config = self.config_manager.load_config("model_card_config")
+⋮----
+is_valid = validate_config(config, "model_card_schema")
+⋮----
+# Check that model details are defined
+⋮----
+# Check that model name and version are defined
+model_details = config["model_details"]
+⋮----
+# Check that inputs and outputs are defined
+⋮----
+def validate_pipeline_config(self) -> bool
+⋮----
+"""
+        Validate the pipeline configuration.
+        
+        Returns:
+            True if valid, False otherwise
+        """
+# This will be implemented in Phase 3: Pipeline Orchestration
+⋮----
+def validate_config_compatibility(self) -> bool
+⋮----
+"""
+        Validate that configurations are compatible with each other.
+        
+        Returns:
+            True if compatible, False otherwise
+        """
+⋮----
+# Load configurations
+data_config = self.config_manager.get_data_config()
+feature_config = self.config_manager.get_feature_config()
+model_card_config = self.config_manager.get_model_card_config()
+⋮----
+# Check that required columns in data config match fields in model card config
+# Note: The model card doesn't need to define all the columns that the data config requires
+# It only needs to define the ones that are relevant for the model card
+data_required_columns = set(data_config.required_columns)
+model_card_fields = set(field["name"] for field in model_card_config.fields)
+⋮----
+# Instead of failing, just log a warning
+missing_fields = data_required_columns - model_card_fields
+⋮----
+# Don't return False here, as this is expected
+⋮----
+# Check that text combinations in feature config use columns defined in data config
+# Note: Some columns like 'building_name' might be optional and not defined in the data config
+# We'll just log a warning instead of failing
+⋮----
+# Don't return False here, as this is expected for optional columns
+⋮----
+# Check that hierarchies in feature config use columns defined in data config
+# Note: Some columns might be optional and not defined in the data config
+⋮----
+# Create a singleton instance of ConfigurationValidator
+_config_validator = None
+⋮----
+def get_config_validator() -> ConfigurationValidator
+⋮----
+"""
+    Get the singleton instance of ConfigurationValidator.
+    
+    Returns:
+        ConfigurationValidator instance
+    """
+⋮----
+_config_validator = ConfigurationValidator()
+⋮----
+def validate_all_configs() -> Dict[str, bool]
+⋮----
+"""
+    Validate all known configurations against their schemas.
+    
+    Returns:
+        Dictionary mapping configuration names to validation results
+    """
+⋮----
+def validate_config_compatibility() -> bool
+⋮----
+"""
+    Validate that configurations are compatible with each other.
+    
+    Returns:
+        True if compatible, False otherwise
+    """
 ````
 
 ## File: nexusml/core/__init__.py
@@ -3631,6 +6768,2399 @@ fallbacks = {
 return fallbacks.get(uniformat_class, "00 00 00")  # Return unknown if no match
 ````
 
+## File: nexusml/core/feature_engineering/__init__.py
+````python
+"""
+Feature Engineering Package
+
+This package provides feature engineering components for the NexusML suite.
+It includes interfaces, base classes, transformers, and utilities for feature engineering.
+"""
+⋮----
+# Import interfaces
+⋮----
+# Import compatibility classes
+⋮----
+# Import base classes
+⋮----
+# Import registry
+⋮----
+# Import config-driven feature engineer
+⋮----
+# Import transformers
+# Text transformers
+⋮----
+# Numeric transformers
+⋮----
+# Hierarchical transformers
+⋮----
+# Categorical transformers
+⋮----
+# Mapping functions
+⋮----
+# For backward compatibility
+⋮----
+# Legacy functions for backward compatibility
+⋮----
+def create_hierarchical_categories(df: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+    Create hierarchical category structure to better handle "Other" categories
+    
+    This function is kept for backward compatibility but now adds the required
+    hierarchical categories directly for testing purposes.
+    
+    Args:
+        df (pd.DataFrame): Input dataframe with basic features
+    
+    Returns:
+        pd.DataFrame: DataFrame with hierarchical category features
+    """
+# Create a copy of the DataFrame to avoid modifying the original
+df = df.copy()
+⋮----
+# Add Equipment_Type column if the required columns exist
+⋮----
+# Add a default value if the required columns don't exist
+⋮----
+# Add System_Subtype column if the required columns exist
+⋮----
+# Define the public API
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Base classes
+⋮----
+# Registry
+⋮----
+# Config-driven feature engineer
+⋮----
+"GenericFeatureEngineer",  # For backward compatibility
+⋮----
+# Text transformers
+⋮----
+# Numeric transformers
+⋮----
+# Hierarchical transformers
+⋮----
+# Categorical transformers
+⋮----
+# Mapping functions
+````
+
+## File: nexusml/core/feature_engineering/base.py
+````python
+"""
+Base Feature Engineering Module
+
+This module provides base implementations for feature engineering components in the NexusML suite.
+These base classes implement common functionality and provide default behavior
+where appropriate, following the Template Method pattern.
+"""
+⋮----
+class BaseFeatureTransformer(BaseEstimator, TransformerMixin, FeatureTransformer)
+⋮----
+"""
+    Base implementation of the FeatureTransformer interface.
+    
+    Provides common functionality for all feature transformers.
+    """
+⋮----
+def __init__(self, name: str = "BaseFeatureTransformer")
+⋮----
+"""
+        Initialize the feature transformer.
+        
+        Args:
+            name: Name of the transformer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'BaseFeatureTransformer'
+⋮----
+"""
+        Fit the transformer to the data.
+        
+        This base implementation simply marks the transformer as fitted.
+        Subclasses should override this method to provide specific fitting logic.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+        """
+⋮----
+def transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Transform the input data using the fitted transformer.
+        
+        This base implementation returns the input data unchanged.
+        Subclasses should override this method to provide specific transformation logic.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the transformer has not been fitted.
+        """
+⋮----
+def fit_transform(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> pd.DataFrame
+⋮----
+"""
+        Fit the transformer to the data and transform it.
+        
+        Args:
+            X: Input DataFrame to fit and transform.
+            y: Target values (optional).
+            
+        Returns:
+            Transformed DataFrame.
+        """
+⋮----
+def get_feature_names(self) -> List[str]
+⋮----
+"""
+        Get the names of the features produced by this transformer.
+        
+        This base implementation returns an empty list.
+        Subclasses should override this method to provide specific feature names.
+        
+        Returns:
+            List of feature names.
+        """
+⋮----
+class BaseColumnTransformer(BaseFeatureTransformer, ColumnTransformer)
+⋮----
+"""
+    Base implementation of the ColumnTransformer interface.
+    
+    Provides common functionality for column-specific transformers.
+    """
+⋮----
+"""
+        Initialize the column transformer.
+        
+        Args:
+            input_columns: Names of the input columns required by this transformer.
+            output_columns: Names of the output columns produced by this transformer.
+                If None, uses the input columns.
+            name: Name of the transformer.
+        """
+⋮----
+def get_input_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the input columns required by this transformer.
+        
+        Returns:
+            List of input column names.
+        """
+⋮----
+def get_output_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the output columns produced by this transformer.
+        
+        Returns:
+            List of output column names.
+        """
+⋮----
+"""
+        Get the names of the features produced by this transformer.
+        
+        Returns:
+            List of feature names.
+        """
+⋮----
+"""
+        Transform the input data using the fitted transformer.
+        
+        This implementation checks if the required input columns exist and
+        calls the _transform method to perform the actual transformation.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the transformer has not been fitted or required columns are missing.
+        """
+⋮----
+# Create a copy of the DataFrame to avoid modifying the original
+X = X.copy()
+⋮----
+# Check if all required input columns exist
+missing_columns = [col for col in self.input_columns if col not in X.columns]
+⋮----
+# Handle missing columns according to the transformer's behavior
+⋮----
+# Perform the transformation
+⋮----
+def _transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Perform the actual transformation on the input data.
+        
+        This method should be implemented by subclasses to provide specific transformation logic.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+⋮----
+def _handle_missing_columns(self, X: pd.DataFrame, missing_columns: List[str]) -> pd.DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        This method should be implemented by subclasses to provide specific handling
+        for missing input columns. The default implementation raises a ValueError.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If required columns are missing.
+        """
+⋮----
+class BaseConfigurableTransformer(BaseFeatureTransformer, ConfigurableTransformer)
+⋮----
+"""
+    Base implementation of the ConfigurableTransformer interface.
+    
+    Provides common functionality for configurable transformers.
+    """
+⋮----
+"""
+        Initialize the configurable transformer.
+        
+        Args:
+            config: Configuration dictionary. If None, uses an empty dictionary.
+            name: Name of the transformer.
+        """
+⋮----
+def get_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the configuration of this transformer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+def set_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Set the configuration of this transformer.
+        
+        Args:
+            config: Dictionary containing the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+# Validate the configuration
+⋮----
+# Set the configuration
+⋮----
+def _validate_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Validate the configuration.
+        
+        This method should be implemented by subclasses to provide specific validation
+        for the configuration. The default implementation does nothing.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+class BaseFeatureEngineer(FeatureEngineer)
+⋮----
+"""
+    Base implementation of the FeatureEngineer interface.
+    
+    Provides common functionality for feature engineers.
+    """
+⋮----
+"""
+        Initialize the feature engineer.
+        
+        Args:
+            transformers: List of transformers to use. If None, uses an empty list.
+            name: Name of the feature engineer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'BaseFeatureEngineer'
+⋮----
+"""
+        Fit the feature engineer to the data.
+        
+        This method fits each transformer in sequence.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+        """
+⋮----
+X_transformed = X.copy()
+⋮----
+# Fit each transformer in sequence
+⋮----
+X_transformed = transformer.fit_transform(X_transformed, y)
+⋮----
+"""
+        Transform the input data using the fitted feature engineer.
+        
+        This method applies each transformer in sequence.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the feature engineer has not been fitted.
+        """
+⋮----
+# Apply each transformer in sequence
+⋮----
+X_transformed = transformer.transform(X_transformed)
+⋮----
+def get_transformers(self) -> List[FeatureTransformer]
+⋮----
+"""
+        Get the transformers used by this feature engineer.
+        
+        Returns:
+            List of transformers.
+        """
+⋮----
+def add_transformer(self, transformer: FeatureTransformer) -> None
+⋮----
+"""
+        Add a transformer to this feature engineer.
+        
+        Args:
+            transformer: Transformer to add.
+        """
+⋮----
+"""
+        Get the names of the features produced by this feature engineer.
+        
+        Returns:
+            List of feature names.
+        """
+# Get the feature names from the last transformer
+⋮----
+class BaseConfigDrivenFeatureEngineer(BaseFeatureEngineer, ConfigurableTransformer)
+⋮----
+"""
+    Base implementation of the ConfigDrivenFeatureEngineer interface.
+    
+    Provides common functionality for configuration-driven feature engineers.
+    """
+⋮----
+"""
+        Initialize the configuration-driven feature engineer.
+        
+        Args:
+            config: Configuration dictionary. If None, uses an empty dictionary.
+            name: Name of the feature engineer.
+        """
+⋮----
+# Create transformers from the configuration
+⋮----
+"""
+        Get the configuration of this feature engineer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+"""
+        Set the configuration of this feature engineer.
+        
+        Args:
+            config: Dictionary containing the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+# Create transformers from the new configuration
+⋮----
+# Reset the fitted state
+⋮----
+def create_transformers_from_config(self) -> List[FeatureTransformer]
+⋮----
+"""
+        Create transformers from the configuration.
+        
+        This method should be implemented by subclasses to provide specific logic
+        for creating transformers from the configuration. The default implementation
+        returns an empty list.
+        
+        Returns:
+            List of transformers created from the configuration.
+        """
+````
+
+## File: nexusml/core/feature_engineering/compatibility.py
+````python
+"""
+Compatibility Module
+
+This module provides backward compatibility with the old feature engineering API.
+"""
+⋮----
+class GenericFeatureEngineer(BaseEstimator, TransformerMixin)
+⋮----
+"""
+    A generic feature engineering transformer that applies multiple transformations
+    based on a configuration file.
+    
+    This class is provided for backward compatibility with the old API.
+    New code should use ConfigDrivenFeatureEngineer instead.
+    """
+⋮----
+"""
+        Initialize the transformer with a configuration file path.
+        
+        Args:
+            config_path: Path to the YAML configuration file. If None, uses the default path.
+            eav_manager: EAVManager instance. If None, uses the one from the DI container.
+        """
+⋮----
+# Create a ConfigDrivenFeatureEngineer instance
+⋮----
+def fit(self, X, y=None)
+⋮----
+"""
+        Fit the transformer to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+        """
+⋮----
+def transform(self, X)
+⋮----
+"""
+        Transform the input data using the fitted transformer.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+````
+
+## File: nexusml/core/feature_engineering/config_driven.py
+````python
+"""
+Configuration-Driven Feature Engineering Module
+
+This module provides a configuration-driven approach to feature engineering in the NexusML suite.
+It allows for dynamic creation of transformers based on a configuration file or dictionary.
+"""
+⋮----
+class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer)
+⋮----
+"""
+    A feature engineer that creates and applies transformers based on a configuration.
+    
+    This class uses the transformer registry to create transformers from a configuration
+    file or dictionary, and applies them in sequence to transform the input data.
+    """
+⋮----
+"""
+        Initialize the configuration-driven feature engineer.
+        
+        Args:
+            config_path: Path to the YAML configuration file. If None, uses the default path.
+            config: Configuration dictionary. If provided, overrides config_path.
+            name: Name of the feature engineer.
+        """
+⋮----
+# Load the configuration from the file if provided
+⋮----
+config = self._load_config_from_file(config_path)
+⋮----
+# Use default path
+root = get_project_root()
+default_config_path = root / "config" / "feature_config.yml"
+config = self._load_config_from_file(default_config_path)
+⋮----
+# Initialize the base class
+⋮----
+def _load_config_from_file(self, config_path: Union[str, Path]) -> Dict[str, Any]
+⋮----
+"""
+        Load the configuration from a YAML file.
+        
+        Args:
+            config_path: Path to the YAML configuration file.
+            
+        Returns:
+            Configuration dictionary.
+            
+        Raises:
+            FileNotFoundError: If the configuration file does not exist.
+            yaml.YAMLError: If the configuration file is not valid YAML.
+        """
+⋮----
+def _validate_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Validate the configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+# Check if the configuration is a dictionary
+⋮----
+# Check if the configuration contains any of the expected sections
+expected_sections = [
+⋮----
+def create_transformers_from_config(self) -> List[FeatureTransformer]
+⋮----
+"""
+        Create transformers from the configuration.
+        
+        Returns:
+            List of transformers created from the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid or transformers cannot be created.
+        """
+transformers = []
+⋮----
+# Create transformers from the "transformers" section if it exists
+⋮----
+# Get the transformer type
+transformer_type = transformer_config.pop("type")
+⋮----
+# Create the transformer
+transformer = create_transformer(transformer_type, **transformer_config)
+⋮----
+# Add the transformer to the list
+⋮----
+# Create transformers from the legacy sections for backward compatibility
+⋮----
+# 1. Column mappings
+⋮----
+transformer = create_transformer("column_mapper", mappings=self.config["column_mappings"])
+⋮----
+# 2. Text combinations
+⋮----
+transformer = create_transformer(
+⋮----
+# 3. Numeric columns
+⋮----
+# 4. Hierarchies
+⋮----
+# 5. Keyword classifications
+⋮----
+# 6. Classification systems
+⋮----
+# 7. EAV integration
+⋮----
+transformer = EAVTransformer()
+⋮----
+"""
+    Enhanced feature engineering with hierarchical structure and more granular categories.
+    
+    This function uses the ConfigDrivenFeatureEngineer to apply transformations
+    based on the configuration file.
+    
+    Args:
+        df: Input dataframe with raw features.
+        feature_engineer: Feature engineer instance. If None, creates a new one.
+    
+    Returns:
+        DataFrame with enhanced features.
+    """
+# Create a feature engineer if not provided
+⋮----
+# Try to get the feature engineer from the DI container
+⋮----
+container = ContainerProvider().container
+feature_engineer = container.resolve(ConfigDrivenFeatureEngineer)
+⋮----
+# Create a new feature engineer if not available in the container
+feature_engineer = ConfigDrivenFeatureEngineer()
+⋮----
+# Apply transformations
+````
+
+## File: nexusml/core/feature_engineering/interfaces.py
+````python
+"""
+Feature Engineering Interfaces Module
+
+This module defines the interfaces for feature engineering components in the NexusML suite.
+Each interface follows the Interface Segregation Principle (ISP) from SOLID,
+defining a minimal set of methods that components must implement.
+"""
+⋮----
+class FeatureTransformer(abc.ABC)
+⋮----
+"""
+    Interface for feature transformers.
+    
+    A feature transformer is responsible for transforming raw data into features
+    suitable for model training. It follows the scikit-learn transformer interface
+    with fit, transform, and fit_transform methods.
+    """
+⋮----
+@abc.abstractmethod
+    def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'FeatureTransformer'
+⋮----
+"""
+        Fit the transformer to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the transformer cannot be fit to the data.
+        """
+⋮----
+@abc.abstractmethod
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Transform the input data using the fitted transformer.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the transformer has not been fitted or the data cannot be transformed.
+        """
+⋮----
+def fit_transform(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> pd.DataFrame
+⋮----
+"""
+        Fit the transformer to the data and transform it.
+        
+        This method is provided for convenience and follows the scikit-learn convention.
+        The default implementation calls fit and then transform, but subclasses can
+        override this method for efficiency.
+        
+        Args:
+            X: Input DataFrame to fit and transform.
+            y: Target values (optional).
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the transformer cannot be fit or the data cannot be transformed.
+        """
+⋮----
+@abc.abstractmethod
+    def get_feature_names(self) -> List[str]
+⋮----
+"""
+        Get the names of the features produced by this transformer.
+        
+        Returns:
+            List of feature names.
+        """
+⋮----
+class ColumnTransformer(FeatureTransformer, abc.ABC)
+⋮----
+"""
+    Interface for column-specific transformers.
+    
+    A column transformer is a feature transformer that operates on specific columns
+    in a DataFrame. It knows which columns it needs to transform and can handle
+    missing columns gracefully.
+    """
+⋮----
+@abc.abstractmethod
+    def get_input_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the input columns required by this transformer.
+        
+        Returns:
+            List of input column names.
+        """
+⋮----
+@abc.abstractmethod
+    def get_output_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the output columns produced by this transformer.
+        
+        Returns:
+            List of output column names.
+        """
+⋮----
+class ConfigurableTransformer(FeatureTransformer, abc.ABC)
+⋮----
+"""
+    Interface for configurable transformers.
+    
+    A configurable transformer is a feature transformer that can be configured
+    using a dictionary of parameters. This allows for dynamic configuration
+    without changing the code.
+    """
+⋮----
+@abc.abstractmethod
+    def get_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the configuration of this transformer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+@abc.abstractmethod
+    def set_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Set the configuration of this transformer.
+        
+        Args:
+            config: Dictionary containing the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+class TransformerRegistry(abc.ABC)
+⋮----
+"""
+    Interface for transformer registries.
+    
+    A transformer registry maintains a collection of transformers and provides
+    methods for registering, retrieving, and creating transformers.
+    """
+⋮----
+@abc.abstractmethod
+    def register_transformer(self, name: str, transformer_class: type) -> None
+⋮----
+"""
+        Register a transformer class with the registry.
+        
+        Args:
+            name: Name to register the transformer under.
+            transformer_class: Transformer class to register.
+            
+        Raises:
+            ValueError: If the name is already registered or the class is not a transformer.
+        """
+⋮----
+@abc.abstractmethod
+    def get_transformer_class(self, name: str) -> type
+⋮----
+"""
+        Get a transformer class from the registry.
+        
+        Args:
+            name: Name of the transformer class to get.
+            
+        Returns:
+            Transformer class.
+            
+        Raises:
+            KeyError: If the name is not registered.
+        """
+⋮----
+@abc.abstractmethod
+    def create_transformer(self, name: str, **kwargs) -> FeatureTransformer
+⋮----
+"""
+        Create a transformer instance from the registry.
+        
+        Args:
+            name: Name of the transformer class to create.
+            **kwargs: Arguments to pass to the transformer constructor.
+            
+        Returns:
+            Transformer instance.
+            
+        Raises:
+            KeyError: If the name is not registered.
+            ValueError: If the transformer cannot be created with the given arguments.
+        """
+⋮----
+@abc.abstractmethod
+    def get_registered_transformers(self) -> Dict[str, type]
+⋮----
+"""
+        Get all registered transformers.
+        
+        Returns:
+            Dictionary mapping transformer names to transformer classes.
+        """
+⋮----
+class FeatureEngineer(abc.ABC)
+⋮----
+"""
+    Interface for feature engineers.
+    
+    A feature engineer is responsible for coordinating the application of multiple
+    transformers to engineer features from raw data. It manages the transformer
+    pipeline and provides methods for fitting and transforming data.
+    """
+⋮----
+@abc.abstractmethod
+    def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'FeatureEngineer'
+⋮----
+"""
+        Fit the feature engineer to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the feature engineer cannot be fit to the data.
+        """
+⋮----
+"""
+        Transform the input data using the fitted feature engineer.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the feature engineer has not been fitted or the data cannot be transformed.
+        """
+⋮----
+"""
+        Fit the feature engineer to the data and transform it.
+        
+        This method is provided for convenience and follows the scikit-learn convention.
+        The default implementation calls fit and then transform, but subclasses can
+        override this method for efficiency.
+        
+        Args:
+            X: Input DataFrame to fit and transform.
+            y: Target values (optional).
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the feature engineer cannot be fit or the data cannot be transformed.
+        """
+⋮----
+@abc.abstractmethod
+    def get_transformers(self) -> List[FeatureTransformer]
+⋮----
+"""
+        Get the transformers used by this feature engineer.
+        
+        Returns:
+            List of transformers.
+        """
+⋮----
+@abc.abstractmethod
+    def add_transformer(self, transformer: FeatureTransformer) -> None
+⋮----
+"""
+        Add a transformer to this feature engineer.
+        
+        Args:
+            transformer: Transformer to add.
+            
+        Raises:
+            ValueError: If the transformer is not compatible with this feature engineer.
+        """
+⋮----
+"""
+        Get the names of the features produced by this feature engineer.
+        
+        Returns:
+            List of feature names.
+        """
+⋮----
+class ConfigDrivenFeatureEngineer(FeatureEngineer, abc.ABC)
+⋮----
+"""
+    Interface for configuration-driven feature engineers.
+    
+    A configuration-driven feature engineer is a feature engineer that can be configured
+    using a dictionary of parameters. This allows for dynamic configuration without
+    changing the code.
+    """
+⋮----
+"""
+        Get the configuration of this feature engineer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+"""
+        Set the configuration of this feature engineer.
+        
+        Args:
+            config: Dictionary containing the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+@abc.abstractmethod
+    def create_transformers_from_config(self) -> List[FeatureTransformer]
+⋮----
+"""
+        Create transformers from the configuration.
+        
+        Returns:
+            List of transformers created from the configuration.
+            
+        Raises:
+            ValueError: If the configuration is invalid or transformers cannot be created.
+        """
+````
+
+## File: nexusml/core/feature_engineering/registry.py
+````python
+"""
+Transformer Registry Module
+
+This module provides a registry for feature transformers in the NexusML suite.
+It follows the Registry pattern to allow for dynamic registration and creation of transformers.
+"""
+⋮----
+class DefaultTransformerRegistry(TransformerRegistry)
+⋮----
+"""
+    Default implementation of the TransformerRegistry interface.
+    
+    This registry maintains a dictionary of transformer classes and provides methods
+    for registering, retrieving, and creating transformers.
+    """
+⋮----
+def __init__(self, name: str = "DefaultTransformerRegistry")
+⋮----
+"""
+        Initialize the transformer registry.
+        
+        Args:
+            name: Name of the registry.
+        """
+⋮----
+def register_transformer(self, name: str, transformer_class: Type[FeatureTransformer]) -> None
+⋮----
+"""
+        Register a transformer class with the registry.
+        
+        Args:
+            name: Name to register the transformer under.
+            transformer_class: Transformer class to register.
+            
+        Raises:
+            ValueError: If the name is already registered or the class is not a transformer.
+        """
+# Check if the name is already registered
+⋮----
+# Check if the class is a transformer
+⋮----
+# Register the transformer
+⋮----
+def get_transformer_class(self, name: str) -> Type[FeatureTransformer]
+⋮----
+"""
+        Get a transformer class from the registry.
+        
+        Args:
+            name: Name of the transformer class to get.
+            
+        Returns:
+            Transformer class.
+            
+        Raises:
+            KeyError: If the name is not registered.
+        """
+⋮----
+def create_transformer(self, name: str, **kwargs: Any) -> FeatureTransformer
+⋮----
+"""
+        Create a transformer instance from the registry.
+        
+        Args:
+            name: Name of the transformer class to create.
+            **kwargs: Arguments to pass to the transformer constructor.
+            
+        Returns:
+            Transformer instance.
+            
+        Raises:
+            KeyError: If the name is not registered.
+            ValueError: If the transformer cannot be created with the given arguments.
+        """
+# Get the transformer class
+transformer_class = self.get_transformer_class(name)
+⋮----
+# Create and return the transformer instance
+⋮----
+def get_registered_transformers(self) -> Dict[str, Type[FeatureTransformer]]
+⋮----
+"""
+        Get all registered transformers.
+        
+        Returns:
+            Dictionary mapping transformer names to transformer classes.
+        """
+⋮----
+# Singleton instance of the transformer registry
+_default_registry = DefaultTransformerRegistry()
+⋮----
+def get_default_registry() -> DefaultTransformerRegistry
+⋮----
+"""
+    Get the default transformer registry.
+    
+    Returns:
+        Default transformer registry.
+    """
+⋮----
+def register_transformer(name: str, transformer_class: Type[FeatureTransformer]) -> None
+⋮----
+"""
+    Register a transformer class with the default registry.
+    
+    Args:
+        name: Name to register the transformer under.
+        transformer_class: Transformer class to register.
+        
+    Raises:
+        ValueError: If the name is already registered or the class is not a transformer.
+    """
+⋮----
+def get_transformer_class(name: str) -> Type[FeatureTransformer]
+⋮----
+"""
+    Get a transformer class from the default registry.
+    
+    Args:
+        name: Name of the transformer class to get.
+        
+    Returns:
+        Transformer class.
+        
+    Raises:
+        KeyError: If the name is not registered.
+    """
+⋮----
+def create_transformer(name: str, **kwargs: Any) -> FeatureTransformer
+⋮----
+"""
+    Create a transformer instance from the default registry.
+    
+    Args:
+        name: Name of the transformer class to create.
+        **kwargs: Arguments to pass to the transformer constructor.
+        
+    Returns:
+        Transformer instance.
+        
+    Raises:
+        KeyError: If the name is not registered.
+        ValueError: If the transformer cannot be created with the given arguments.
+    """
+⋮----
+def get_registered_transformers() -> Dict[str, Type[FeatureTransformer]]
+⋮----
+"""
+    Get all registered transformers from the default registry.
+    
+    Returns:
+        Dictionary mapping transformer names to transformer classes.
+    """
+````
+
+## File: nexusml/core/feature_engineering/transformers/categorical.py
+````python
+"""
+Categorical Transformers Module
+
+This module provides transformers for categorical features in the NexusML suite.
+Each transformer follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a specific categorical transformation.
+"""
+⋮----
+class ColumnMapper(BaseColumnTransformer)
+⋮----
+"""
+    Maps source columns to target columns.
+    
+    This transformer copies values from source columns to target columns,
+    allowing for column renaming and reorganization.
+    
+    Config example: {"mappings": [{"source": "Asset Category", "target": "Equipment_Category"}]}
+    """
+⋮----
+"""
+        Initialize the column mapper.
+        
+        Args:
+            mappings: List of mappings from source columns to target columns.
+                Each mapping should be a dictionary with "source" and "target" keys.
+            name: Name of the transformer.
+        """
+source_columns = [mapping["source"] for mapping in mappings]
+target_columns = [mapping["target"] for mapping in mappings]
+⋮----
+def _transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Map source columns to target columns.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with mapped columns.
+        """
+# Map source columns to target columns
+⋮----
+source = mapping["source"]
+target = mapping["target"]
+⋮----
+def _handle_missing_columns(self, X: pd.DataFrame, missing_columns: List[str]) -> pd.DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If some source columns are missing, skip the corresponding mappings.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Map only the available source columns
+⋮----
+class OneHotEncoder(BaseColumnTransformer)
+⋮----
+"""
+    Performs one-hot encoding on categorical columns.
+    
+    This transformer converts categorical columns into one-hot encoded columns,
+    creating a binary column for each category.
+    
+    Config example: {
+        "column": "color",
+        "prefix": "color_",
+        "drop_first": true,
+        "handle_unknown": "ignore"
+    }
+    """
+⋮----
+"""
+        Initialize the one-hot encoder.
+        
+        Args:
+            column: Name of the categorical column to encode.
+            prefix: Prefix to add to the encoded column names. If None, uses the column name.
+            drop_first: Whether to drop the first category to avoid multicollinearity.
+            handle_unknown: How to handle unknown categories. One of: "error", "ignore".
+            name: Name of the transformer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'OneHotEncoder'
+⋮----
+"""
+        Fit the one-hot encoder to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+# Check if the input column exists
+⋮----
+# Create the encoder
+⋮----
+# Fit the encoder
+⋮----
+# Get the categories
+⋮----
+# Generate output column names
+⋮----
+categories = self.categories[1:]
+⋮----
+categories = self.categories
+⋮----
+"""
+        Perform one-hot encoding on the categorical column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with one-hot encoded columns.
+        """
+# Encode the column
+encoded = self.encoder.transform(X[[self.column]])
+⋮----
+# Add the encoded columns to the DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, create empty encoded columns.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create empty encoded columns
+⋮----
+def get_output_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the output columns produced by this transformer.
+        
+        Returns:
+            List of output column names.
+        """
+⋮----
+class LabelEncoder(BaseColumnTransformer)
+⋮----
+"""
+    Performs label encoding on categorical columns.
+    
+    This transformer converts categorical values into numeric indices.
+    
+    Config example: {
+        "column": "color",
+        "new_column": "color_encoded",
+        "unknown_value": -1
+    }
+    """
+⋮----
+"""
+        Initialize the label encoder.
+        
+        Args:
+            column: Name of the categorical column to encode.
+            new_column: Name of the new column to create. If None, uses "{column}_encoded".
+            unknown_value: Value to use for unknown categories.
+            name: Name of the transformer.
+        """
+output_column = new_column or f"{column}_encoded"
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'LabelEncoder'
+⋮----
+"""
+        Fit the label encoder to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+⋮----
+# Get unique categories
+⋮----
+# Create a mapping from categories to indices
+⋮----
+"""
+        Perform label encoding on the categorical column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with label encoded column.
+        """
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, create an empty encoded column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create an empty encoded column
+⋮----
+class ClassificationSystemMapper(BaseColumnTransformer)
+⋮----
+"""
+    Maps equipment categories to classification system IDs.
+    
+    This transformer maps equipment categories to classification system IDs
+    (OmniClass, MasterFormat, Uniformat) using the EAV manager.
+    
+    Config example: {
+        "name": "OmniClass",
+        "source_column": "Equipment_Category",
+        "target_column": "OmniClass_ID",
+        "mapping_type": "eav"
+    }
+    """
+⋮----
+"""
+        Initialize the classification system mapper.
+        
+        Args:
+            name: Name of the classification system (OmniClass, MasterFormat, Uniformat).
+            source_column: Name of the source column or list of source columns.
+            target_column: Name of the target column to create.
+            mapping_type: Type of mapping to use. One of: "eav".
+            mapping_function: Name of the mapping function to use.
+            eav_manager: EAV manager instance. If None, creates a new one.
+            name_prefix: Prefix for the transformer name.
+        """
+input_columns = [source_column] if isinstance(source_column, str) else source_column
+⋮----
+# Initialize EAV manager if needed
+⋮----
+"""
+        Map equipment categories to classification system IDs.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with classification system IDs.
+        """
+# Handle different mapping types
+⋮----
+# Use EAV manager to get classification IDs
+⋮----
+# Single source column
+⋮----
+# Multiple source columns not supported for EAV mapping
+⋮----
+# Use the enhanced_masterformat_mapping function
+⋮----
+# Extract the required columns
+uniformat_col = self.source_column[0]
+system_type_col = self.source_column[1]
+equipment_category_col = self.source_column[2]
+equipment_subcategory_col = (
+⋮----
+# Import the mapping function
+⋮----
+# Apply the mapping function
+⋮----
+# Not enough source columns
+⋮----
+"""
+        Handle missing input columns.
+        
+        If some input columns are missing, create an empty target column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create an empty target column
+⋮----
+class KeywordClassificationMapper(BaseColumnTransformer)
+⋮----
+"""
+    Maps equipment descriptions to classification system IDs using keyword matching.
+    
+    This transformer maps equipment descriptions to classification system IDs
+    using keyword matching through the reference manager.
+    
+    Config example: {
+        "name": "Uniformat",
+        "source_column": "combined_text",
+        "target_column": "Uniformat_Class",
+        "reference_manager": "uniformat_keywords",
+        "max_results": 1,
+        "confidence_threshold": 0.0
+    }
+    """
+⋮----
+"""
+        Initialize the keyword classification mapper.
+        
+        Args:
+            name: Name of the classification system (Uniformat, MasterFormat, OmniClass).
+            source_column: Name of the source column containing text to search for keywords.
+            target_column: Name of the target column to create.
+            reference_manager: Reference manager to use for keyword matching.
+            max_results: Maximum number of results to consider.
+            confidence_threshold: Minimum confidence score to accept a match.
+            name_prefix: Prefix for the transformer name.
+        """
+⋮----
+# Initialize reference manager
+⋮----
+"""
+        Map equipment descriptions to classification system IDs using keyword matching.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with classification system IDs.
+        """
+# Apply keyword matching
+⋮----
+# Only process rows where the target column is empty or NaN
+⋮----
+mask = X[self.target_column].isna() | (X[self.target_column] == "")
+⋮----
+def find_uniformat_code(text)
+⋮----
+# Find Uniformat codes by keyword
+results = self.ref_manager.find_uniformat_codes_by_keyword(
+⋮----
+# Apply the function to find codes
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the source column is missing, create an empty target column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+⋮----
+# Register transformers with the registry
+````
+
+## File: nexusml/core/feature_engineering/transformers/hierarchical.py
+````python
+"""
+Hierarchical Transformers Module
+
+This module provides transformers for hierarchical features in the NexusML suite.
+Each transformer follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a specific hierarchical transformation.
+"""
+⋮----
+class HierarchyBuilder(BaseColumnTransformer)
+⋮----
+"""
+    Creates hierarchical category columns by combining parent columns.
+    
+    This transformer takes multiple parent columns and combines them into a single
+    hierarchical column using a specified separator.
+    
+    Config example: {"new_col": "Equipment_Type", "parents": ["Asset Category", "Equip Name ID"], "separator": "-"}
+    """
+⋮----
+"""
+        Initialize the hierarchy builder.
+        
+        Args:
+            parent_columns: Names of the parent columns to combine.
+            new_column: Name of the new hierarchical column to create.
+            separator: Separator to use between parent values.
+            name: Name of the transformer.
+        """
+⋮----
+def _transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Create a hierarchical column by combining parent columns.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the hierarchical column.
+        """
+# Create hierarchical column from all parent columns
+⋮----
+def _handle_missing_columns(self, X: pd.DataFrame, missing_columns: List[str]) -> pd.DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If some parent columns are missing, use only the available ones.
+        If all parent columns are missing, create an empty hierarchical column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Find available parent columns
+available_columns = [col for col in self.parent_columns if col in X.columns]
+⋮----
+# If no parent columns are available, create an empty hierarchical column
+⋮----
+# Create hierarchical column from available parent columns
+⋮----
+class HierarchyExpander(BaseColumnTransformer)
+⋮----
+"""
+    Expands a hierarchical column into its component parts.
+    
+    This transformer takes a hierarchical column and splits it into multiple
+    columns, one for each level of the hierarchy.
+    
+    Config example: {
+        "column": "Equipment_Type",
+        "separator": "-",
+        "level_names": ["Category", "Subcategory", "Type"],
+        "prefix": "Equipment_"
+    }
+    """
+⋮----
+"""
+        Initialize the hierarchy expander.
+        
+        Args:
+            column: Name of the hierarchical column to expand.
+            separator: Separator used between hierarchy levels.
+            level_names: Names to use for the expanded columns. If None, uses "Level_1", "Level_2", etc.
+            prefix: Prefix to add to the expanded column names.
+            name: Name of the transformer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'HierarchyExpander'
+⋮----
+"""
+        Fit the hierarchy expander to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+# Check if the input column exists
+⋮----
+# Determine the maximum number of levels in the hierarchy
+max_levels = X[self.column].str.split(self.separator).map(len).max()
+⋮----
+# Generate output column names
+⋮----
+# If level_names is provided but too short, extend it
+⋮----
+# Set output columns
+⋮----
+"""
+        Expand the hierarchical column into its component parts.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the expanded hierarchical column.
+        """
+# Split the hierarchical column into its component parts
+split_values = X[self.column].str.split(self.separator, expand=True)
+⋮----
+# Rename the columns
+⋮----
+# Add the expanded columns to the DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, create empty expanded columns.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create empty expanded columns
+⋮----
+def get_output_columns(self) -> List[str]
+⋮----
+"""
+        Get the names of the output columns produced by this transformer.
+        
+        Returns:
+            List of output column names.
+        """
+⋮----
+class HierarchyFilter(BaseColumnTransformer)
+⋮----
+"""
+    Filters rows based on hierarchical column values.
+    
+    This transformer filters rows based on the values in a hierarchical column,
+    allowing for filtering at different levels of the hierarchy.
+    
+    Config example: {
+        "column": "Equipment_Type",
+        "include": ["HVAC-*", "Plumbing-Fixtures-*"],
+        "exclude": ["*-Other"],
+        "separator": "-",
+        "case_sensitive": false
+    }
+    """
+⋮----
+"""
+        Initialize the hierarchy filter.
+        
+        Args:
+            column: Name of the hierarchical column to filter on.
+            include: Patterns to include. Rows with hierarchical values matching any of these patterns will be kept.
+                Wildcards (*) can be used to match any sequence of characters.
+                If None, all rows are included by default.
+            exclude: Patterns to exclude. Rows with hierarchical values matching any of these patterns will be removed.
+                Wildcards (*) can be used to match any sequence of characters.
+                If None, no rows are excluded by default.
+            separator: Separator used between hierarchy levels.
+            case_sensitive: Whether pattern matching should be case-sensitive.
+            name: Name of the transformer.
+        """
+⋮----
+"""
+        Filter rows based on hierarchical column values.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with filtered rows.
+        """
+# Create a copy of the DataFrame to avoid modifying the original
+X_filtered = X.copy()
+⋮----
+# Convert patterns to regular expressions
+⋮----
+def pattern_to_regex(pattern: str) -> str
+⋮----
+# Escape special characters except *
+pattern = re.escape(pattern).replace("\\*", ".*")
+⋮----
+include_regexes = [re.compile(pattern_to_regex(p), 0 if self.case_sensitive else re.IGNORECASE) for p in self.include]
+exclude_regexes = [re.compile(pattern_to_regex(p), 0 if self.case_sensitive else re.IGNORECASE) for p in self.exclude]
+⋮----
+# Create a mask for rows to keep
+include_mask = pd.Series(False, index=X_filtered.index)
+⋮----
+# Create a mask for rows to exclude
+exclude_mask = pd.Series(False, index=X_filtered.index)
+⋮----
+# Apply the filters
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, return an empty DataFrame with the same columns.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Return an empty DataFrame with the same columns
+⋮----
+# Register transformers with the registry
+````
+
+## File: nexusml/core/feature_engineering/transformers/mapping.py
+````python
+"""
+Mapping Functions Module
+
+This module provides mapping functions for feature engineering in the NexusML suite.
+These functions are used by transformers to map values from one domain to another.
+"""
+⋮----
+def load_masterformat_mappings() -> Tuple[Dict[str, Dict[str, str]], Dict[str, str]]
+⋮----
+"""
+    Load MasterFormat mappings from JSON files.
+    
+    Returns:
+        Tuple[Dict[str, Dict[str, str]], Dict[str, str]]: Primary and equipment-specific mappings
+    """
+root = get_project_root()
+⋮----
+primary_mapping = json.load(f)
+⋮----
+equipment_specific_mapping = json.load(f)
+⋮----
+# Return empty mappings if files cannot be loaded
+⋮----
+"""
+    Enhanced mapping with better handling of specialty equipment types.
+    
+    Args:
+        uniformat_class: Uniformat classification
+        system_type: System type
+        equipment_category: Equipment category
+        equipment_subcategory: Equipment subcategory
+        eav_manager: EAV manager instance. If None, uses the one from the DI container.
+    
+    Returns:
+        str: MasterFormat classification code
+    """
+# Load mappings from JSON files
+⋮----
+# Try equipment-specific mapping first
+⋮----
+# Then try primary mapping
+⋮----
+# Try EAV-based mapping
+⋮----
+# Get EAV manager from DI container if not provided
+⋮----
+container = ContainerProvider().container
+eav_manager = container.resolve("EAVManager")
+⋮----
+masterformat_id = eav_manager.get_classification_ids(equipment_category).get(
+⋮----
+# Refined fallback mappings by Uniformat class
+fallbacks = {
+⋮----
+"H": "23 00 00",  # Heating, Ventilating, and Air Conditioning (HVAC)
+"P": "22 00 00",  # Plumbing
+"SM": "23 00 00",  # HVAC
+"R": "11 40 00",  # Foodservice Equipment (Refrigeration)
+⋮----
+return fallbacks.get(uniformat_class, "00 00 00")  # Return unknown if no match
+⋮----
+"""
+    Map equipment category to OmniClass ID.
+    
+    Args:
+        equipment_category: Equipment category
+        eav_manager: EAV manager instance. If None, uses the one from the DI container.
+    
+    Returns:
+        str: OmniClass ID
+    """
+⋮----
+omniclass_id = eav_manager.get_classification_ids(equipment_category).get(
+⋮----
+"""
+    Map equipment category to Uniformat ID.
+    
+    Args:
+        equipment_category: Equipment category
+        eav_manager: EAV manager instance. If None, uses the one from the DI container.
+    
+    Returns:
+        str: Uniformat ID
+    """
+⋮----
+uniformat_id = eav_manager.get_classification_ids(equipment_category).get(
+````
+
+## File: nexusml/core/feature_engineering/transformers/numeric.py
+````python
+"""
+Numeric Transformers Module
+
+This module provides transformers for numeric features in the NexusML suite.
+Each transformer follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a specific numeric transformation.
+"""
+⋮----
+class NumericCleaner(BaseColumnTransformer)
+⋮----
+"""
+    Cleans and transforms numeric columns.
+    
+    This transformer handles missing values, converts to the specified data type,
+    and applies basic cleaning to numeric columns.
+    
+    Config example: {"name": "Service Life", "new_name": "service_life", "fill_value": 0, "dtype": "float"}
+    """
+⋮----
+"""
+        Initialize the numeric cleaner.
+        
+        Args:
+            column: Name of the column to clean.
+            new_name: Name of the new column to create. If None, uses the input column name.
+            fill_value: Value to use for filling missing values.
+            dtype: Data type to convert the column to. One of: "float", "int".
+            name: Name of the transformer.
+        """
+output_column = new_name or column
+⋮----
+def _transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Clean and transform the numeric column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the cleaned numeric column.
+        """
+# Clean and transform the numeric column
+⋮----
+def _handle_missing_columns(self, X: pd.DataFrame, missing_columns: List[str]) -> pd.DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, create a new column with the default value.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create a new column with the default value
+⋮----
+class NumericScaler(BaseColumnTransformer)
+⋮----
+"""
+    Scales numeric columns.
+    
+    This transformer applies scaling to numeric columns using various scaling methods.
+    
+    Config example: {
+        "column": "age",
+        "new_name": "scaled_age",
+        "method": "standard",
+        "with_mean": true,
+        "with_std": true
+    }
+    """
+⋮----
+"""
+        Initialize the numeric scaler.
+        
+        Args:
+            column: Name of the column to scale.
+            new_name: Name of the new column to create. If None, uses the input column name.
+            method: Scaling method to use. One of: "standard", "minmax".
+            with_mean: Whether to center the data before scaling (for standard scaling).
+            with_std: Whether to scale the data to unit variance (for standard scaling).
+            feature_range: Range of the scaled data (for minmax scaling).
+            name: Name of the transformer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'NumericScaler'
+⋮----
+"""
+        Fit the scaler to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing or the method is unsupported.
+        """
+# Check if the input column exists
+⋮----
+# Create the appropriate scaler
+⋮----
+# Fit the scaler
+values = X[self.column].values.reshape(-1, 1)
+⋮----
+"""
+        Scale the numeric column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the scaled numeric column.
+        """
+# Scale the column
+⋮----
+scaled_values = self.scaler.transform(values)
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, raise a ValueError since we can't scale without data.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+⋮----
+class MissingValueHandler(BaseColumnTransformer)
+⋮----
+"""
+    Handles missing values in numeric columns.
+    
+    This transformer provides various strategies for handling missing values in numeric columns.
+    
+    Config example: {
+        "column": "age",
+        "strategy": "mean",
+        "fill_value": 0
+    }
+    """
+⋮----
+"""
+        Initialize the missing value handler.
+        
+        Args:
+            column: Name of the column to handle missing values in.
+            strategy: Strategy to use for handling missing values.
+                One of: "mean", "median", "mode", "constant", "forward_fill", "backward_fill".
+            fill_value: Value to use for filling missing values when strategy is "constant".
+            name: Name of the transformer.
+        """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'MissingValueHandler'
+⋮----
+"""
+        Fit the missing value handler to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing or the strategy is unsupported.
+        """
+⋮----
+# Compute the fill value based on the strategy
+⋮----
+# No need to compute a fill value for these strategies
+⋮----
+"""
+        Handle missing values in the numeric column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with missing values handled.
+        """
+# Handle missing values based on the strategy
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, raise a ValueError since we can't handle missing values without data.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+⋮----
+class OutlierDetector(BaseColumnTransformer)
+⋮----
+"""
+    Detects and handles outliers in numeric columns.
+    
+    This transformer provides various methods for detecting and handling outliers in numeric columns.
+    
+    Config example: {
+        "column": "age",
+        "method": "zscore",
+        "threshold": 3.0,
+        "strategy": "clip"
+    }
+    """
+⋮----
+"""
+        Initialize the outlier detector.
+        
+        Args:
+            column: Name of the column to detect outliers in.
+            method: Method to use for detecting outliers. One of: "zscore", "iqr".
+            threshold: Threshold for outlier detection. For zscore, values with absolute z-score
+                greater than this are considered outliers. For IQR, values outside
+                Q1 - threshold * IQR and Q3 + threshold * IQR are considered outliers.
+            strategy: Strategy to use for handling outliers. One of: "clip", "remove", "flag".
+            name: Name of the transformer.
+        """
+output_columns = [column]
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'OutlierDetector'
+⋮----
+"""
+        Fit the outlier detector to the data.
+        
+        Args:
+            X: Input DataFrame to fit to.
+            y: Target values (optional).
+            
+        Returns:
+            Self for method chaining.
+            
+        Raises:
+            ValueError: If the input column is missing or the method/strategy is unsupported.
+        """
+⋮----
+# Validate method and strategy
+⋮----
+# Compute statistics for outlier detection
+⋮----
+q1 = X[self.column].quantile(0.25)
+q3 = X[self.column].quantile(0.75)
+iqr = q3 - q1
+⋮----
+"""
+        Detect and handle outliers in the numeric column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with outliers handled.
+        """
+# Detect outliers
+⋮----
+z_scores = (X[self.column] - self.stats["mean"]) / self.stats["std"]
+is_outlier = abs(z_scores) > self.threshold
+⋮----
+is_outlier = (X[self.column] < self.stats["lower_bound"]) | (X[self.column] > self.stats["upper_bound"])
+⋮----
+# Handle outliers based on the strategy
+⋮----
+lower_bound = self.stats["mean"] - self.threshold * self.stats["std"]
+upper_bound = self.stats["mean"] + self.threshold * self.stats["std"]
+else:  # iqr
+lower_bound = self.stats["lower_bound"]
+upper_bound = self.stats["upper_bound"]
+⋮----
+# Create a copy of the column with outliers set to NaN
+⋮----
+# Add a new column indicating whether each value is an outlier
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, raise a ValueError since we can't detect outliers without data.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+            
+        Raises:
+            ValueError: If the input column is missing.
+        """
+⋮----
+# Register transformers with the registry
+````
+
+## File: nexusml/core/feature_engineering/transformers/text.py
+````python
+"""
+Text Transformers Module
+
+This module provides transformers for text features in the NexusML suite.
+Each transformer follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a specific text transformation.
+"""
+⋮----
+class TextCombiner(BaseColumnTransformer)
+⋮----
+"""
+    Combines multiple text columns into one column.
+    
+    This transformer takes multiple text columns and combines them into a single
+    text column using a specified separator.
+    
+    Config example: {"columns": ["Asset Category","Equip Name ID"], "separator": " "}
+    """
+⋮----
+"""
+        Initialize the text combiner.
+        
+        Args:
+            columns: Names of the columns to combine.
+            separator: Separator to use between column values.
+            new_column: Name of the new column to create.
+            name: Name of the transformer.
+        """
+⋮----
+def _transform(self, X: pd.DataFrame) -> pd.DataFrame
+⋮----
+"""
+        Combine the specified columns into a single text column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the combined text column.
+        """
+# Create a single text column from all specified columns
+⋮----
+# Fill NaN values with empty string
+⋮----
+def _handle_missing_columns(self, X: pd.DataFrame, missing_columns: List[str]) -> pd.DataFrame
+⋮----
+"""
+        Handle missing input columns.
+        
+        If some columns are missing, use only the available ones.
+        If all columns are missing, create an empty column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Find available columns
+available_columns = [col for col in self.input_columns if col in X.columns]
+⋮----
+# If no columns are available, create an empty column
+⋮----
+# Create a single text column from available columns
+⋮----
+class TextNormalizer(BaseColumnTransformer)
+⋮----
+"""
+    Normalizes text in a column.
+    
+    This transformer applies various normalization techniques to text data,
+    such as lowercasing, removing special characters, and stemming.
+    
+    Config example: {
+        "column": "description",
+        "new_column": "normalized_description",
+        "lowercase": true,
+        "remove_special_chars": true,
+        "remove_stopwords": true,
+        "stemming": false
+    }
+    """
+⋮----
+"""
+        Initialize the text normalizer.
+        
+        Args:
+            column: Name of the column to normalize.
+            new_column: Name of the new column to create. If None, overwrites the input column.
+            lowercase: Whether to convert text to lowercase.
+            remove_special_chars: Whether to remove special characters.
+            remove_stopwords: Whether to remove stopwords.
+            stemming: Whether to apply stemming.
+            name: Name of the transformer.
+        """
+output_column = new_column or column
+⋮----
+# Initialize NLP components if needed
+⋮----
+# Download required NLTK resources
+⋮----
+"""
+        Normalize the text in the specified column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the normalized text column.
+        """
+# Create a copy of the column to normalize
+⋮----
+# Apply normalization techniques
+⋮----
+def _remove_stopwords(self, text: str) -> str
+⋮----
+"""
+        Remove stopwords from the text.
+        
+        Args:
+            text: Text to process.
+            
+        Returns:
+            Text with stopwords removed.
+        """
+⋮----
+words = text.split()
+filtered_words = [word for word in words if word.lower() not in self.stopwords]
+⋮----
+def _apply_stemming(self, text: str) -> str
+⋮----
+"""
+        Apply stemming to the text.
+        
+        Args:
+            text: Text to process.
+            
+        Returns:
+            Stemmed text.
+        """
+⋮----
+stemmed_words = [self.stemmer.stem(word) for word in words]
+⋮----
+"""
+        Handle missing input columns.
+        
+        If the input column is missing, create an empty output column.
+        
+        Args:
+            X: Input DataFrame.
+            missing_columns: List of missing column names.
+            
+        Returns:
+            Transformed DataFrame.
+        """
+# Create an empty output column
+⋮----
+class TextTokenizer(BaseColumnTransformer)
+⋮----
+"""
+    Tokenizes text in a column.
+    
+    This transformer splits text into tokens and creates a new column with the tokens.
+    
+    Config example: {
+        "column": "description",
+        "new_column": "tokens",
+        "lowercase": true,
+        "min_token_length": 2,
+        "max_tokens": 100
+    }
+    """
+⋮----
+"""
+        Initialize the text tokenizer.
+        
+        Args:
+            column: Name of the column to tokenize.
+            new_column: Name of the new column to create. If None, uses "{column}_tokens".
+            lowercase: Whether to convert text to lowercase before tokenizing.
+            min_token_length: Minimum length of tokens to keep.
+            max_tokens: Maximum number of tokens to keep. If None, keeps all tokens.
+            name: Name of the transformer.
+        """
+output_column = new_column or f"{column}_tokens"
+⋮----
+"""
+        Tokenize the text in the specified column.
+        
+        Args:
+            X: Input DataFrame to transform.
+            
+        Returns:
+            Transformed DataFrame with the tokenized text column.
+        """
+# Create a copy of the column to tokenize
+text_series = X[self.column].astype(str)
+⋮----
+# Apply lowercase if needed
+⋮----
+text_series = text_series.str.lower()
+⋮----
+# Tokenize the text
+⋮----
+def tokenize(text: str) -> List[str]
+⋮----
+# Split text into tokens
+tokens = re.findall(r"\b\w+\b", text)
+⋮----
+# Filter tokens by length
+tokens = [token for token in tokens if len(token) >= self.min_token_length]
+⋮----
+# Limit the number of tokens if needed
+⋮----
+tokens = tokens[:self.max_tokens]
+⋮----
+# Apply tokenization
+⋮----
+# Register transformers with the registry
+````
+
 ## File: nexusml/core/model_building.py
 ````python
 """
@@ -3770,6 +9300,1721 @@ scoring="f1_macro",  # Better for imbalanced classes than accuracy
 # Note: x_train must now be a DataFrame with both 'combined_features' and 'service_life' columns
 ````
 
+## File: nexusml/core/model_building/__init__.py
+````python
+"""
+Model Building Package
+
+This package provides model building components for the NexusML suite.
+It includes interfaces, base classes, and implementations for building
+machine learning models.
+"""
+⋮----
+# Import interfaces
+⋮----
+# Import base classes
+⋮----
+# Import model builders
+⋮----
+# Import compatibility functions
+⋮----
+# Define the public API
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Base classes
+⋮----
+# Model builders
+⋮----
+# Compatibility functions
+````
+
+## File: nexusml/core/model_building/base.py
+````python
+"""
+Model Building Base Implementations Module
+
+This module provides base implementations for the model building interfaces.
+These base classes implement common functionality and provide default behavior
+where appropriate, following the Template Method pattern.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+class BaseModelBuilder(ModelBuilder)
+⋮----
+"""
+    Base implementation of the ModelBuilder interface.
+    
+    Provides common functionality for model building components.
+    """
+⋮----
+"""
+        Initialize the model builder.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+        """
+⋮----
+def get_name(self) -> str
+⋮----
+"""
+        Get the name of the component.
+        
+        Returns:
+            Component name.
+        """
+⋮----
+def get_description(self) -> str
+⋮----
+"""
+        Get a description of the component.
+        
+        Returns:
+            Component description.
+        """
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a machine learning model.
+        
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific model building logic.
+        
+        Args:
+            **kwargs: Configuration parameters for the model.
+            
+        Returns:
+            Configured model pipeline.
+            
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+"""
+        Optimize hyperparameters for the model.
+        
+        This base implementation returns the model unchanged.
+        Subclasses should override this method to provide specific optimization logic.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for hyperparameter optimization.
+            
+        Returns:
+            Optimized model pipeline.
+        """
+⋮----
+def get_default_parameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the default parameters for the model.
+        
+        This base implementation returns an empty dictionary.
+        Subclasses should override this method to provide specific default parameters.
+        
+        Returns:
+            Dictionary of default parameters.
+        """
+⋮----
+def get_param_grid(self) -> Dict[str, List[Any]]
+⋮----
+"""
+        Get the parameter grid for hyperparameter optimization.
+        
+        This base implementation returns an empty dictionary.
+        Subclasses should override this method to provide specific parameter grids.
+        
+        Returns:
+            Dictionary mapping parameter names to lists of values to try.
+        """
+⋮----
+@injectable
+class BaseConfigurableModelBuilder(BaseModelBuilder, ConfigurableModelBuilder)
+⋮----
+"""
+    Base implementation of the ConfigurableModelBuilder interface.
+    
+    Provides common functionality for configurable model building components.
+    """
+⋮----
+"""
+        Initialize the configurable model builder.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+def _load_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Load the configuration from the provider.
+        
+        Returns:
+            Configuration dictionary.
+        """
+⋮----
+# Try to get model configuration from the provider
+⋮----
+model_config = self._config_provider.config.model.model_dump()
+⋮----
+# Return default configuration if no configuration is available
+⋮----
+def get_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the configuration for the model builder.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+def set_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Set the configuration for the model builder.
+        
+        Args:
+            config: Configuration dictionary.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model builder configuration.
+        
+        This base implementation always returns True.
+        Subclasses should override this method to provide specific validation.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+⋮----
+class BaseModelTrainer(ModelTrainer)
+⋮----
+"""
+    Base implementation of the ModelTrainer interface.
+    
+    Provides common functionality for model training components.
+    """
+⋮----
+"""
+        Initialize the model trainer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+        """
+⋮----
+"""
+        Train a model on the provided data.
+        
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+            
+        Returns:
+            Trained model pipeline.
+        """
+⋮----
+"""
+        Perform cross-validation on the model.
+        
+        Args:
+            model: Model pipeline to validate.
+            x: Feature data.
+            y: Target data.
+            **kwargs: Additional arguments for cross-validation.
+            
+        Returns:
+            Dictionary of validation metrics.
+        """
+⋮----
+cv = kwargs.get("cv", 5)
+scoring = kwargs.get("scoring", "accuracy")
+⋮----
+cv_results = cross_validate(
+⋮----
+@injectable
+class BaseConfigurableModelTrainer(BaseModelTrainer, ConfigurableModelTrainer)
+⋮----
+"""
+    Base implementation of the ConfigurableModelTrainer interface.
+    
+    Provides common functionality for configurable model training components.
+    """
+⋮----
+"""
+        Initialize the configurable model trainer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+# Try to get training configuration from the provider
+⋮----
+training_config = self._config_provider.config.training.model_dump()
+⋮----
+"""
+        Get the configuration for the model trainer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+"""
+        Set the configuration for the model trainer.
+        
+        Args:
+            config: Configuration dictionary.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+"""
+        Validate the model trainer configuration.
+        
+        This base implementation always returns True.
+        Subclasses should override this method to provide specific validation.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+⋮----
+# Update kwargs with configuration
+⋮----
+@injectable
+class BaseHyperparameterOptimizer(HyperparameterOptimizer)
+⋮----
+"""
+    Base implementation of the HyperparameterOptimizer interface.
+    
+    Provides common functionality for hyperparameter optimization components.
+    """
+⋮----
+"""
+        Initialize the hyperparameter optimizer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+# Try to get hyperparameter optimization configuration from the provider
+⋮----
+hp_config = self._config_provider.config.hyperparameter_optimization.model_dump()
+⋮----
+"""
+        Optimize hyperparameters for the model.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for optimization.
+            
+        Returns:
+            Optimized model pipeline.
+            
+        Raises:
+            ValueError: If hyperparameters cannot be optimized.
+        """
+⋮----
+# Get hyperparameter optimization settings
+param_grid = kwargs.get("param_grid", {})
+cv = kwargs.get("cv", self.config.get("cv", 3))
+scoring = kwargs.get("scoring", self.config.get("scoring", "f1_macro"))
+verbose = kwargs.get("verbose", self.config.get("verbose", 1))
+⋮----
+# Use GridSearchCV for hyperparameter optimization
+grid_search = GridSearchCV(
+⋮----
+# Fit the grid search to the data
+⋮----
+# Store the best parameters and score
+⋮----
+def get_best_params(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the best parameters found during optimization.
+        
+        Returns:
+            Dictionary of best parameters.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+def get_best_score(self) -> float
+⋮----
+"""
+        Get the best score achieved during optimization.
+        
+        Returns:
+            Best score.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+@injectable
+class BaseModelEvaluator(ModelEvaluator)
+⋮----
+"""
+    Base implementation of the ModelEvaluator interface.
+    
+    Provides common functionality for model evaluation components.
+    """
+⋮----
+"""
+        Initialize the model evaluator.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+# Try to get evaluation configuration from the provider
+⋮----
+eval_config = self._config_provider.config.evaluation.model_dump()
+⋮----
+"""
+        Evaluate a trained model on test data.
+        
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+            
+        Returns:
+            Dictionary of evaluation metrics.
+        """
+⋮----
+# Make predictions
+y_pred = model.predict(x_test)
+⋮----
+# Convert to DataFrame if it's not already
+⋮----
+y_pred = pd.DataFrame(y_pred, columns=y_test.columns)
+⋮----
+# Calculate metrics for each target column
+metrics = {}
+⋮----
+# Get the column values
+y_test_col = y_test[col]
+y_pred_col = y_pred[col]
+⋮----
+col_metrics = {
+⋮----
+# Add overall metrics
+⋮----
+"""
+        Analyze model predictions in detail.
+        
+        Args:
+            model: Trained model pipeline.
+            x_test: Test features.
+            y_test: Test targets.
+            y_pred: Model predictions.
+            **kwargs: Additional arguments for analysis.
+            
+        Returns:
+            Dictionary of analysis results.
+        """
+⋮----
+analysis = {}
+⋮----
+# Analyze each target column
+⋮----
+# Calculate confusion metrics
+tp = ((y_test[col] == y_pred[col]) & (y_pred[col] != "Other")).sum()
+fp = ((y_test[col] != y_pred[col]) & (y_pred[col] != "Other")).sum()
+tn = ((y_test[col] == y_pred[col]) & (y_pred[col] == "Other")).sum()
+fn = ((y_test[col] != y_pred[col]) & (y_pred[col] == "Other")).sum()
+⋮----
+# Calculate metrics
+precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+⋮----
+# Analyze "Other" category if present
+⋮----
+other_indices = y_test[col] == "Other"
+other_accuracy = (y_test[col][other_indices] == y_pred[col][other_indices]).mean()
+⋮----
+# Calculate confusion metrics for "Other" category
+tp_other = ((y_test[col] == "Other") & (y_pred[col] == "Other")).sum()
+fp_other = ((y_test[col] != "Other") & (y_pred[col] == "Other")).sum()
+fn_other = ((y_test[col] == "Other") & (y_pred[col] != "Other")).sum()
+⋮----
+precision_other = tp_other / (tp_other + fp_other) if (tp_other + fp_other) > 0 else 0
+recall_other = tp_other / (tp_other + fn_other) if (tp_other + fn_other) > 0 else 0
+f1_other = 2 * precision_other * recall_other / (precision_other + recall_other) if (precision_other + recall_other) > 0 else 0
+⋮----
+@injectable
+class BaseModelSerializer(ModelSerializer)
+⋮----
+"""
+    Base implementation of the ModelSerializer interface.
+    
+    Provides common functionality for model serialization components.
+    """
+⋮----
+"""
+        Initialize the model serializer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+# Try to get serialization configuration from the provider
+⋮----
+serial_config = self._config_provider.config.serialization.model_dump()
+⋮----
+def save_model(self, model: Pipeline, path: str, **kwargs) -> None
+⋮----
+"""
+        Save a trained model to disk.
+        
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            **kwargs: Additional arguments for saving.
+            
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+⋮----
+# Create parent directories if they don't exist
+⋮----
+# Save the model using pickle
+⋮----
+def load_model(self, path: str, **kwargs) -> Pipeline
+⋮----
+"""
+        Load a trained model from disk.
+        
+        Args:
+            path: Path to the saved model.
+            **kwargs: Additional arguments for loading.
+            
+        Returns:
+            Loaded model pipeline.
+            
+        Raises:
+            IOError: If the model cannot be loaded.
+            ValueError: If the loaded file is not a valid model.
+        """
+⋮----
+# Check if the file exists
+⋮----
+# Load the model using pickle
+⋮----
+model = pickle.load(f)
+⋮----
+# Verify that the loaded object is a Pipeline
+````
+
+## File: nexusml/core/model_building/builders/ensemble.py
+````python
+"""
+Ensemble Model Builder Module
+
+This module provides an EnsembleBuilder implementation that builds
+ensemble models combining multiple base classifiers for classification tasks.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class EnsembleBuilder(BaseConfigurableModelBuilder)
+⋮----
+"""
+    Implementation of the ModelBuilder interface for Ensemble models.
+    
+    This class builds ensemble models that combine multiple base classifiers
+    based on configuration provided by the ConfigurationProvider.
+    It supports both text and numeric features and provides hyperparameter optimization.
+    """
+⋮----
+"""
+        Initialize the EnsembleBuilder.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+def get_default_parameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the default parameters for the Ensemble model.
+        
+        Returns:
+            Dictionary of default parameters.
+        """
+⋮----
+"weights": [1, 1, 1],  # Equal weights for all classifiers
+⋮----
+def get_param_grid(self) -> Dict[str, List[Any]]
+⋮----
+"""
+        Get the parameter grid for hyperparameter optimization.
+        
+        Returns:
+            Dictionary mapping parameter names to lists of values to try.
+        """
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model builder configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+# Check if the required sections exist
+⋮----
+# Check if the required parameters exist in the ensemble section
+ensemble_required_params = ["voting", "weights", "random_state"]
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build an Ensemble model.
+        
+        This method creates a pipeline with a preprocessor for text and numeric features
+        and an ensemble classifier that combines multiple base classifiers.
+        
+        Args:
+            **kwargs: Configuration parameters for the model. These override the
+                    configuration from the provider.
+            
+        Returns:
+            Configured model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be built with the given parameters.
+        """
+⋮----
+# Update config with kwargs
+⋮----
+# Extract TF-IDF settings
+tfidf_settings = self.config.get("tfidf", {})
+max_features = tfidf_settings.get("max_features", 5000)
+ngram_range = tuple(tfidf_settings.get("ngram_range", [1, 3]))
+min_df = tfidf_settings.get("min_df", 2)
+max_df = tfidf_settings.get("max_df", 0.9)
+use_idf = tfidf_settings.get("use_idf", True)
+sublinear_tf = tfidf_settings.get("sublinear_tf", True)
+⋮----
+# Extract Ensemble settings
+ensemble_settings = self.config.get("ensemble", {})
+voting = ensemble_settings.get("voting", "soft")
+weights = ensemble_settings.get("weights", [1, 1, 1])
+random_state = ensemble_settings.get("random_state", 42)
+⋮----
+# Extract Random Forest settings
+rf_settings = self.config.get("random_forest", {})
+rf_n_estimators = rf_settings.get("n_estimators", 200)
+rf_max_depth = rf_settings.get("max_depth", None)
+rf_min_samples_split = rf_settings.get("min_samples_split", 2)
+rf_min_samples_leaf = rf_settings.get("min_samples_leaf", 1)
+rf_class_weight = rf_settings.get("class_weight", "balanced_subsample")
+rf_random_state = rf_settings.get("random_state", 42)
+⋮----
+# Extract Gradient Boosting settings
+gb_settings = self.config.get("gradient_boosting", {})
+gb_n_estimators = gb_settings.get("n_estimators", 100)
+gb_learning_rate = gb_settings.get("learning_rate", 0.1)
+gb_max_depth = gb_settings.get("max_depth", 3)
+gb_min_samples_split = gb_settings.get("min_samples_split", 2)
+gb_min_samples_leaf = gb_settings.get("min_samples_leaf", 1)
+gb_subsample = gb_settings.get("subsample", 1.0)
+gb_random_state = gb_settings.get("random_state", 42)
+⋮----
+# Text feature processing
+text_features = Pipeline(
+⋮----
+# Numeric feature processing
+numeric_features = Pipeline([("scaler", StandardScaler())])
+⋮----
+# Combine text and numeric features
+preprocessor = ColumnTransformer(
+⋮----
+# Create base classifiers
+rf_classifier = RandomForestClassifier(
+⋮----
+gb_classifier = GradientBoostingClassifier(
+⋮----
+# Create a voting classifier that combines the base classifiers
+voting_classifier = VotingClassifier(
+⋮----
+weights=weights[:2],  # Use only the first two weights
+⋮----
+# Complete pipeline with feature processing and classifier
+pipeline = Pipeline(
+````
+
+## File: nexusml/core/model_building/builders/gradient_boosting.py
+````python
+"""
+Gradient Boosting Model Builder Module
+
+This module provides a GradientBoostingBuilder implementation that builds
+Gradient Boosting models for classification tasks.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class GradientBoostingBuilder(BaseConfigurableModelBuilder)
+⋮----
+"""
+    Implementation of the ModelBuilder interface for Gradient Boosting models.
+    
+    This class builds Gradient Boosting models based on configuration provided by the
+    ConfigurationProvider. It supports both text and numeric features and provides
+    hyperparameter optimization.
+    """
+⋮----
+"""
+        Initialize the GradientBoostingBuilder.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+def get_default_parameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the default parameters for the Gradient Boosting model.
+        
+        Returns:
+            Dictionary of default parameters.
+        """
+⋮----
+def get_param_grid(self) -> Dict[str, List[Any]]
+⋮----
+"""
+        Get the parameter grid for hyperparameter optimization.
+        
+        Returns:
+            Dictionary mapping parameter names to lists of values to try.
+        """
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model builder configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+# Check if the required sections exist
+⋮----
+# Check if the required parameters exist in the tfidf section
+tfidf_required_params = ["max_features", "ngram_range", "min_df", "max_df"]
+⋮----
+# Check if the required parameters exist in the gradient_boosting section
+gb_required_params = ["n_estimators", "learning_rate", "max_depth", "random_state"]
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a Gradient Boosting model.
+        
+        This method creates a pipeline with a preprocessor for text and numeric features
+        and a Gradient Boosting classifier.
+        
+        Args:
+            **kwargs: Configuration parameters for the model. These override the
+                    configuration from the provider.
+            
+        Returns:
+            Configured model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be built with the given parameters.
+        """
+⋮----
+# Update config with kwargs
+⋮----
+# Extract TF-IDF settings
+tfidf_settings = self.config.get("tfidf", {})
+max_features = tfidf_settings.get("max_features", 5000)
+ngram_range = tuple(tfidf_settings.get("ngram_range", [1, 3]))
+min_df = tfidf_settings.get("min_df", 2)
+max_df = tfidf_settings.get("max_df", 0.9)
+use_idf = tfidf_settings.get("use_idf", True)
+sublinear_tf = tfidf_settings.get("sublinear_tf", True)
+⋮----
+# Extract Gradient Boosting settings
+gb_settings = self.config.get("gradient_boosting", {})
+n_estimators = gb_settings.get("n_estimators", 100)
+learning_rate = gb_settings.get("learning_rate", 0.1)
+max_depth = gb_settings.get("max_depth", 3)
+min_samples_split = gb_settings.get("min_samples_split", 2)
+min_samples_leaf = gb_settings.get("min_samples_leaf", 1)
+subsample = gb_settings.get("subsample", 1.0)
+random_state = gb_settings.get("random_state", 42)
+⋮----
+# Text feature processing
+text_features = Pipeline(
+⋮----
+# Numeric feature processing
+numeric_features = Pipeline([("scaler", StandardScaler())])
+⋮----
+# Combine text and numeric features
+preprocessor = ColumnTransformer(
+⋮----
+# Complete pipeline with feature processing and classifier
+pipeline = Pipeline(
+````
+
+## File: nexusml/core/model_building/builders/random_forest.py
+````python
+"""
+Random Forest Model Builder Module
+
+This module provides a RandomForestBuilder implementation that builds
+Random Forest models for classification tasks.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class RandomForestBuilder(BaseConfigurableModelBuilder)
+⋮----
+"""
+    Implementation of the ModelBuilder interface for Random Forest models.
+    
+    This class builds Random Forest models based on configuration provided by the
+    ConfigurationProvider. It supports both text and numeric features and provides
+    hyperparameter optimization.
+    """
+⋮----
+"""
+        Initialize the RandomForestBuilder.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+def get_default_parameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the default parameters for the Random Forest model.
+        
+        Returns:
+            Dictionary of default parameters.
+        """
+⋮----
+def get_param_grid(self) -> Dict[str, List[Any]]
+⋮----
+"""
+        Get the parameter grid for hyperparameter optimization.
+        
+        Returns:
+            Dictionary mapping parameter names to lists of values to try.
+        """
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model builder configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+# Check if the required sections exist
+⋮----
+# Check if the required parameters exist in the tfidf section
+tfidf_required_params = ["max_features", "ngram_range", "min_df", "max_df"]
+⋮----
+# Check if the required parameters exist in the random_forest section
+rf_required_params = ["n_estimators", "class_weight", "random_state"]
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a Random Forest model.
+        
+        This method creates a pipeline with a preprocessor for text and numeric features
+        and a Random Forest classifier.
+        
+        Args:
+            **kwargs: Configuration parameters for the model. These override the
+                    configuration from the provider.
+            
+        Returns:
+            Configured model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be built with the given parameters.
+        """
+⋮----
+# Update config with kwargs
+⋮----
+# Extract TF-IDF settings
+tfidf_settings = self.config.get("tfidf", {})
+max_features = tfidf_settings.get("max_features", 5000)
+ngram_range = tuple(tfidf_settings.get("ngram_range", [1, 3]))
+min_df = tfidf_settings.get("min_df", 2)
+max_df = tfidf_settings.get("max_df", 0.9)
+use_idf = tfidf_settings.get("use_idf", True)
+sublinear_tf = tfidf_settings.get("sublinear_tf", True)
+⋮----
+# Extract Random Forest settings
+rf_settings = self.config.get("random_forest", {})
+n_estimators = rf_settings.get("n_estimators", 200)
+max_depth = rf_settings.get("max_depth", None)
+min_samples_split = rf_settings.get("min_samples_split", 2)
+min_samples_leaf = rf_settings.get("min_samples_leaf", 1)
+class_weight = rf_settings.get("class_weight", "balanced_subsample")
+random_state = rf_settings.get("random_state", 42)
+⋮----
+# Text feature processing
+text_features = Pipeline(
+⋮----
+# Numeric feature processing
+numeric_features = Pipeline([("scaler", StandardScaler())])
+⋮----
+# Combine text and numeric features
+preprocessor = ColumnTransformer(
+⋮----
+# Complete pipeline with feature processing and classifier
+pipeline = Pipeline(
+````
+
+## File: nexusml/core/model_building/compatibility.py
+````python
+"""
+Compatibility Module for Model Building
+
+This module provides compatibility functions for the existing code that depends
+on the old model building API. It bridges the gap between the old and new APIs.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+"""
+    Build an enhanced model with configurable sampling strategy.
+
+    This function is provided for backward compatibility with the existing code.
+    It delegates to the RandomForestBuilder to build the model.
+
+    Args:
+        sampling_strategy: Sampling strategy to use ("direct" is the only supported option for now)
+        feature_config_path: Path to the feature configuration file. If None, uses the default path.
+        **kwargs: Additional parameters for the model
+
+    Returns:
+        Pipeline: Scikit-learn pipeline with feature engineering, preprocessor and classifier
+    """
+⋮----
+# Create a RandomForestBuilder
+builder = RandomForestBuilder()
+⋮----
+# Update the builder's configuration with the provided kwargs
+config = builder.get_config()
+⋮----
+# Set the updated configuration
+⋮----
+# Build the model
+model = builder.build_model()
+⋮----
+def optimize_hyperparameters(model: Pipeline, x_train, y_train) -> Pipeline
+⋮----
+"""
+    Optimize hyperparameters for better handling of all classes including "Other".
+
+    This function is provided for backward compatibility with the existing code.
+    It delegates to the RandomForestBuilder to optimize the hyperparameters.
+
+    Args:
+        model (Pipeline): Model pipeline to optimize
+        x_train: Training features
+        y_train: Training targets
+
+    Returns:
+        Pipeline: Optimized pipeline
+    """
+⋮----
+# Get the parameter grid
+param_grid = builder.get_param_grid()
+⋮----
+# Optimize hyperparameters
+optimized_model = builder.optimize_hyperparameters(
+````
+
+## File: nexusml/core/model_building/interfaces.py
+````python
+"""
+Model Building Interfaces Module
+
+This module defines the interfaces for model building components in the NexusML suite.
+Each interface follows the Interface Segregation Principle (ISP) from SOLID,
+defining a minimal set of methods that components must implement.
+"""
+⋮----
+class ModelBuilder(abc.ABC)
+⋮----
+"""
+    Interface for model building components.
+    
+    Responsible for creating and configuring machine learning models.
+    """
+⋮----
+@abc.abstractmethod
+    def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a machine learning model.
+        
+        Args:
+            **kwargs: Configuration parameters for the model.
+            
+        Returns:
+            Configured model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be built with the given parameters.
+        """
+⋮----
+"""
+        Optimize hyperparameters for the model.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for hyperparameter optimization.
+            
+        Returns:
+            Optimized model pipeline.
+            
+        Raises:
+            ValueError: If hyperparameters cannot be optimized.
+        """
+⋮----
+@abc.abstractmethod
+    def get_default_parameters(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the default parameters for the model.
+        
+        Returns:
+            Dictionary of default parameters.
+        """
+⋮----
+@abc.abstractmethod
+    def get_param_grid(self) -> Dict[str, List[Any]]
+⋮----
+"""
+        Get the parameter grid for hyperparameter optimization.
+        
+        Returns:
+            Dictionary mapping parameter names to lists of values to try.
+        """
+⋮----
+class ConfigurableModelBuilder(ModelBuilder)
+⋮----
+"""
+    Interface for configurable model builders.
+    
+    Extends the ModelBuilder interface with methods for configuration.
+    """
+⋮----
+@abc.abstractmethod
+    def get_config(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the configuration for the model builder.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+@abc.abstractmethod
+    def set_config(self, config: Dict[str, Any]) -> None
+⋮----
+"""
+        Set the configuration for the model builder.
+        
+        Args:
+            config: Configuration dictionary.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+@abc.abstractmethod
+    def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model builder configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+⋮----
+class ModelTrainer(abc.ABC)
+⋮----
+"""
+    Interface for model training components.
+    
+    Responsible for training machine learning models on prepared data.
+    """
+⋮----
+"""
+        Train a model on the provided data.
+        
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+            
+        Returns:
+            Trained model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be trained.
+        """
+⋮----
+"""
+        Perform cross-validation on the model.
+        
+        Args:
+            model: Model pipeline to validate.
+            x: Feature data.
+            y: Target data.
+            **kwargs: Additional arguments for cross-validation.
+            
+        Returns:
+            Dictionary of validation metrics.
+            
+        Raises:
+            ValueError: If cross-validation cannot be performed.
+        """
+⋮----
+class ConfigurableModelTrainer(ModelTrainer)
+⋮----
+"""
+    Interface for configurable model trainers.
+    
+    Extends the ModelTrainer interface with methods for configuration.
+    """
+⋮----
+"""
+        Get the configuration for the model trainer.
+        
+        Returns:
+            Dictionary containing the configuration.
+        """
+⋮----
+"""
+        Set the configuration for the model trainer.
+        
+        Args:
+            config: Configuration dictionary.
+            
+        Raises:
+            ValueError: If the configuration is invalid.
+        """
+⋮----
+"""
+        Validate the model trainer configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+⋮----
+class HyperparameterOptimizer(abc.ABC)
+⋮----
+"""
+    Interface for hyperparameter optimization components.
+    
+    Responsible for optimizing model hyperparameters.
+    """
+⋮----
+"""
+        Optimize hyperparameters for the model.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for optimization.
+            
+        Returns:
+            Optimized model pipeline.
+            
+        Raises:
+            ValueError: If hyperparameters cannot be optimized.
+        """
+⋮----
+@abc.abstractmethod
+    def get_best_params(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the best parameters found during optimization.
+        
+        Returns:
+            Dictionary of best parameters.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+@abc.abstractmethod
+    def get_best_score(self) -> float
+⋮----
+"""
+        Get the best score achieved during optimization.
+        
+        Returns:
+            Best score.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+class ModelEvaluator(abc.ABC)
+⋮----
+"""
+    Interface for model evaluation components.
+    
+    Responsible for evaluating trained models and analyzing their performance.
+    """
+⋮----
+"""
+        Evaluate a trained model on test data.
+        
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+            
+        Returns:
+            Dictionary of evaluation metrics.
+            
+        Raises:
+            ValueError: If the model cannot be evaluated.
+        """
+⋮----
+"""
+        Analyze model predictions in detail.
+        
+        Args:
+            model: Trained model pipeline.
+            x_test: Test features.
+            y_test: Test targets.
+            y_pred: Model predictions.
+            **kwargs: Additional arguments for analysis.
+            
+        Returns:
+            Dictionary of analysis results.
+            
+        Raises:
+            ValueError: If predictions cannot be analyzed.
+        """
+⋮----
+class ModelSerializer(abc.ABC)
+⋮----
+"""
+    Interface for model serialization components.
+    
+    Responsible for saving and loading trained models.
+    """
+⋮----
+@abc.abstractmethod
+    def save_model(self, model: Pipeline, path: str, **kwargs) -> None
+⋮----
+"""
+        Save a trained model to disk.
+        
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            **kwargs: Additional arguments for saving.
+            
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+⋮----
+@abc.abstractmethod
+    def load_model(self, path: str, **kwargs) -> Pipeline
+⋮----
+"""
+        Load a trained model from disk.
+        
+        Args:
+            path: Path to the saved model.
+            **kwargs: Additional arguments for loading.
+            
+        Returns:
+            Loaded model pipeline.
+            
+        Raises:
+            IOError: If the model cannot be loaded.
+            ValueError: If the loaded file is not a valid model.
+        """
+````
+
+## File: nexusml/core/model_training/__init__.py
+````python
+"""
+Model Training Package
+
+This package provides model training components for the NexusML suite.
+It includes interfaces, base classes, and implementations for training
+machine learning models.
+"""
+⋮----
+# Import interfaces from model_building
+⋮----
+# Import base classes from model_building
+⋮----
+# Import trainers
+⋮----
+# Define the public API
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Base classes
+⋮----
+# Trainers
+````
+
+## File: nexusml/core/model_training/trainers/cross_validation.py
+````python
+"""
+Cross-Validation Model Trainer Module
+
+This module provides a CrossValidationTrainer implementation that trains
+machine learning models using cross-validation procedures.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class CrossValidationTrainer(BaseConfigurableModelTrainer)
+⋮----
+"""
+    Implementation of the ModelTrainer interface for cross-validation training.
+    
+    This class trains models using cross-validation procedures based on
+    configuration provided by the ConfigurationProvider.
+    """
+⋮----
+"""
+        Initialize the CrossValidationTrainer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+"""
+        Train a model on the provided data using cross-validation.
+        
+        This method performs cross-validation on the model and then trains
+        the model on the full training set.
+        
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+            
+        Returns:
+            Trained model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be trained.
+        """
+⋮----
+# Extract cross-validation parameters from config and kwargs
+cv = kwargs.get("cv", self.config.get("cv", 5))
+scoring = kwargs.get("scoring", self.config.get("scoring", "accuracy"))
+verbose = kwargs.get("verbose", self.config.get("verbose", 1))
+return_train_score = kwargs.get("return_train_score", self.config.get("return_train_score", True))
+⋮----
+# Log training information
+⋮----
+# Perform cross-validation
+⋮----
+# Perform cross-validation and store results
+⋮----
+# Get cross-validation predictions
+⋮----
+# Print cross-validation results
+⋮----
+# Log cross-validation results
+⋮----
+# Train the model on the full training set
+⋮----
+# Call the parent class's train method to fit the model on the full training set
+trained_model = super().train(model, x_train, y_train, **kwargs)
+⋮----
+"""
+        Perform cross-validation on the model.
+        
+        Args:
+            model: Model pipeline to validate.
+            x: Feature data.
+            y: Target data.
+            **kwargs: Additional arguments for cross-validation.
+            
+        Returns:
+            Dictionary of validation metrics.
+        """
+⋮----
+# Log cross-validation information
+⋮----
+cv_results = cross_validate(
+⋮----
+# Convert numpy arrays to lists for serialization
+result = {
+⋮----
+def get_cv_results(self) -> Dict[str, List[float]]
+⋮----
+"""
+        Get the cross-validation results from the last training run.
+        
+        Returns:
+            Dictionary of cross-validation metrics.
+            
+        Raises:
+            ValueError: If cross-validation has not been performed.
+        """
+⋮----
+# Convert numpy arrays to lists for serialization
+result: Dict[str, List[float]] = {
+⋮----
+def get_cv_predictions(self) -> np.ndarray
+⋮----
+"""
+        Get the cross-validation predictions from the last training run.
+        
+        Returns:
+            Array of cross-validation predictions.
+            
+        Raises:
+            ValueError: If cross-validation has not been performed.
+        """
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model trainer configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+# Check if the required parameters exist
+required_params = ["cv", "scoring", "random_state"]
+````
+
+## File: nexusml/core/model_training/trainers/hyperparameter_optimizer.py
+````python
+"""
+Hyperparameter Optimizer Module
+
+This module provides a HyperparameterOptimizer implementation that optimizes
+hyperparameters for machine learning models.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class GridSearchOptimizer(BaseHyperparameterOptimizer)
+⋮----
+"""
+    Implementation of the HyperparameterOptimizer interface using GridSearchCV.
+    
+    This class optimizes hyperparameters for machine learning models using
+    GridSearchCV based on configuration provided by the ConfigurationProvider.
+    """
+⋮----
+"""
+        Initialize the GridSearchOptimizer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+"""
+        Optimize hyperparameters for the model using grid search.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for optimization.
+            
+        Returns:
+            Optimized model pipeline.
+            
+        Raises:
+            ValueError: If hyperparameters cannot be optimized.
+        """
+⋮----
+# Extract grid search parameters from config and kwargs
+param_grid = kwargs.get("param_grid", {})
+cv = kwargs.get("cv", self.config.get("cv", 3))
+scoring = kwargs.get("scoring", self.config.get("scoring", "f1_macro"))
+verbose = kwargs.get("verbose", self.config.get("verbose", 1))
+n_jobs = kwargs.get("n_jobs", self.config.get("n_jobs", None))
+⋮----
+# Log optimization information
+⋮----
+# Perform grid search
+⋮----
+# Create and fit the grid search
+⋮----
+# Store the best parameters and score
+⋮----
+# Print grid search results
+⋮----
+# Log grid search results
+⋮----
+def get_cv_results(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the cross-validation results from the grid search.
+        
+        Returns:
+            Dictionary of cross-validation results.
+            
+        Raises:
+            ValueError: If grid search has not been performed.
+        """
+⋮----
+# Convert numpy arrays to lists for serialization
+cv_results = {}
+⋮----
+def get_best_params(self) -> Dict[str, Any]
+⋮----
+"""
+        Get the best parameters found during optimization.
+        
+        Returns:
+            Dictionary of best parameters.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+def get_best_score(self) -> float
+⋮----
+"""
+        Get the best score achieved during optimization.
+        
+        Returns:
+            Best score.
+            
+        Raises:
+            ValueError: If optimization has not been performed.
+        """
+⋮----
+@injectable
+class RandomizedSearchOptimizer(BaseHyperparameterOptimizer)
+⋮----
+"""
+    Implementation of the HyperparameterOptimizer interface using RandomizedSearchCV.
+    
+    This class optimizes hyperparameters for machine learning models using
+    RandomizedSearchCV based on configuration provided by the ConfigurationProvider.
+    """
+⋮----
+"""
+        Initialize the RandomizedSearchOptimizer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+"""
+        Optimize hyperparameters for the model using randomized search.
+        
+        Args:
+            model: Model pipeline to optimize.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for optimization.
+            
+        Returns:
+            Optimized model pipeline.
+            
+        Raises:
+            ValueError: If hyperparameters cannot be optimized.
+        """
+⋮----
+# Import RandomizedSearchCV here to avoid circular imports
+⋮----
+# Extract randomized search parameters from config and kwargs
+param_distributions = kwargs.get("param_distributions", {})
+n_iter = kwargs.get("n_iter", self.config.get("n_iter", 10))
+⋮----
+random_state = kwargs.get("random_state", self.config.get("random_state", 42))
+⋮----
+# Perform randomized search
+⋮----
+# Create and fit the randomized search
+⋮----
+# Print randomized search results
+⋮----
+# Log randomized search results
+⋮----
+"""
+        Get the cross-validation results from the randomized search.
+        
+        Returns:
+            Dictionary of cross-validation results.
+            
+        Raises:
+            ValueError: If randomized search has not been performed.
+        """
+````
+
+## File: nexusml/core/model_training/trainers/standard.py
+````python
+"""
+Standard Model Trainer Module
+
+This module provides a StandardModelTrainer implementation that trains
+machine learning models using standard training procedures.
+"""
+⋮----
+# Set up logging
+logger = logging.getLogger(__name__)
+⋮----
+@injectable
+class StandardModelTrainer(BaseConfigurableModelTrainer)
+⋮----
+"""
+    Implementation of the ModelTrainer interface for standard model training.
+    
+    This class trains models using standard training procedures based on
+    configuration provided by the ConfigurationProvider.
+    """
+⋮----
+"""
+        Initialize the StandardModelTrainer.
+        
+        Args:
+            name: Component name.
+            description: Component description.
+            config_provider: Configuration provider instance. If None, creates a new one.
+        """
+⋮----
+"""
+        Train a model on the provided data.
+        
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+            
+        Returns:
+            Trained model pipeline.
+            
+        Raises:
+            ValueError: If the model cannot be trained.
+        """
+⋮----
+# Extract training parameters from config and kwargs
+verbose = kwargs.get("verbose", self.config.get("verbose", 1))
+⋮----
+# Log training information
+⋮----
+# Train the model
+⋮----
+# Call the parent class's train method to fit the model
+trained_model = super().train(model, x_train, y_train, **kwargs)
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool
+⋮----
+"""
+        Validate the model trainer configuration.
+        
+        Args:
+            config: Configuration to validate.
+            
+        Returns:
+            True if the configuration is valid, False otherwise.
+        """
+# Check if the required parameters exist
+required_params = ["random_state"]
+````
+
 ## File: nexusml/core/model.py
 ````python
 """
@@ -3834,8 +11079,14 @@ class EquipmentClassifier
         Args:
             data_path: Path to the training data
             feature_config_path: Path to the feature configuration
+            sampling_strategy: Strategy for handling class imbalance (default: "direct")
             **kwargs: Additional parameters for training
         """
+# Use the provided sampling_strategy or fall back to self.sampling_strategy if it exists
+strategy = sampling_strategy
+⋮----
+strategy = self.sampling_strategy
+⋮----
 # Train the model using the train_enhanced_model function
 ⋮----
 def load_model(self, model_path: str) -> None
@@ -3870,6 +11121,12 @@ equipment_type = result["category_name"]
 equipment_type  # Add for backward compatibility
 ⋮----
 equipment_type = "Unknown"
+⋮----
+# Create EAVManager if it doesn't exist
+⋮----
+# Generate attribute template
+⋮----
+# Provide a default attribute template if generation fails
 ⋮----
 def predict_from_row(self, row: pd.Series) -> Dict[str, Any]
 ⋮----
@@ -3927,8 +11184,12 @@ result["Equipment_Category"] = equipment_type  # Add for backward compatibility
 # This is a placeholder for attribute prediction
 # In a real implementation, this would use ML to predict attribute values
 # based on the description and equipment type
+⋮----
 template = self.eav_manager.get_equipment_template(equipment_type)
 required_attrs = template.get("required_attributes", [])
+⋮----
+template = {"required_attributes": []}
+required_attrs = []
 ⋮----
 # Simple rule-based attribute prediction based on keywords in description
 predictions = {}
@@ -4011,6 +11272,9 @@ container = ContainerProvider().container
 ⋮----
 eav_manager = container.resolve(EAVManager)
 ⋮----
+# If EAVManager is not registered in the container, create it directly
+eav_manager = EAVManager()
+⋮----
 # Create a new feature engineer with the provided config path and EAV manager
 feature_engineer = GenericFeatureEngineer(
 ⋮----
@@ -4074,6 +11338,8 @@ y_pred_df = enhanced_evaluation(model, x_test, y_test)
         dict: Prediction results with classifications and master DB mappings
     """
 # Get EAV manager from DI container if not provided
+⋮----
+# If EAVManager is not registered in the container, create it directly
 ⋮----
 # Create a DataFrame with the required structure for the pipeline
 input_data = pd.DataFrame(
@@ -4158,7 +11424,6 @@ classification_targets = mapper.get_classification_targets()
 ⋮----
 # Apply Generic Feature Engineering with EAV integration
 ⋮----
-eav_manager = EAVManager()
 feature_engineer = GenericFeatureEngineer(eav_manager=eav_manager)
 transformed_df = feature_engineer.transform(mapped_df)
 ⋮----
@@ -4200,8 +11465,25 @@ template = prediction["attribute_template"]
 """
 Pipeline Package
 
-This package contains the interfaces, base implementations, and adapters for the NexusML pipeline.
+This package contains the interfaces, base implementations, adapters, and stages for the NexusML pipeline.
 """
+⋮----
+# Import interfaces
+⋮----
+# Import base implementations
+⋮----
+# Import context and factory
+⋮----
+# Import stages package
+⋮----
+# Define __all__ to control what gets imported with "from nexusml.core.pipeline import *"
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Base implementations
+⋮----
+# Context and factory
 ````
 
 ## File: nexusml/core/pipeline/adapters.py
@@ -9377,6 +16659,3090 @@ def clear_implementations(self, component_type: Type) -> None
         """
 ````
 
+## File: nexusml/core/pipeline/stages/__init__.py
+````python
+"""
+Pipeline Stages Package
+
+This package provides implementations of pipeline stages for the NexusML pipeline system.
+Each stage represents a distinct step in the pipeline execution process and follows
+the Single Responsibility Principle (SRP) from SOLID.
+"""
+⋮----
+# Import interfaces
+⋮----
+# Import base implementations
+⋮----
+# Import concrete implementations
+⋮----
+# Define __all__ to control what gets imported with "from nexusml.core.pipeline.stages import *"
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Base implementations
+⋮----
+# Data loading stages
+⋮----
+# Data splitting stages
+⋮----
+# Feature engineering stages
+⋮----
+# Model building stages
+⋮----
+# Model training stages
+⋮----
+# Model evaluation stages
+⋮----
+# Model saving stages
+⋮----
+# Prediction stages
+⋮----
+# Validation stages
+````
+
+## File: nexusml/core/pipeline/stages/base.py
+````python
+"""
+Pipeline Stage Base Implementations Module
+
+This module provides base implementations for the pipeline stage interfaces.
+These base classes implement common functionality and provide default behavior
+where appropriate, following the Template Method pattern.
+"""
+⋮----
+class BasePipelineStage(PipelineStage)
+⋮----
+"""
+    Base implementation of the PipelineStage interface.
+
+    Provides common functionality for all pipeline stages.
+    """
+⋮----
+def __init__(self, name: str, description: str)
+⋮----
+"""
+        Initialize the stage with a name and description.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+        """
+⋮----
+def get_name(self) -> str
+⋮----
+"""
+        Get the name of the stage.
+
+        Returns:
+            Stage name.
+        """
+⋮----
+def get_description(self) -> str
+⋮----
+"""
+        Get a description of the stage.
+
+        Returns:
+            Stage description.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        This base implementation always returns True.
+        Subclasses should override this method to provide specific validation.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+def execute(self, context: PipelineContext, **kwargs) -> None
+⋮----
+"""
+        Execute the stage.
+
+        This base implementation logs the stage execution and delegates to
+        the stage-specific implementation method.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+
+        Raises:
+            ValueError: If the stage cannot be executed.
+        """
+⋮----
+# Start timing the stage execution
+⋮----
+# Validate the context
+⋮----
+# Execute the stage-specific implementation
+⋮----
+# End timing the stage execution
+⋮----
+# Log the error and re-raise
+⋮----
+def _execute_impl(self, context: PipelineContext, **kwargs) -> None
+⋮----
+"""
+        Stage-specific implementation of the execute method.
+
+        This method should be overridden by subclasses to provide the actual
+        implementation of the stage.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseDataLoadingStage(BasePipelineStage, DataLoadingStage)
+⋮----
+"""
+    Base implementation of the DataLoadingStage interface.
+
+    Provides common functionality for data loading stages.
+    """
+⋮----
+"""
+        Initialize the data loading stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the data loading stage.
+
+        This implementation loads data using the load_data method and stores
+        it in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Get the data path from the context or kwargs
+data_path = kwargs.get("data_path", context.get("data_path"))
+⋮----
+# Load the data
+data = self.load_data(data_path, **kwargs)
+⋮----
+# Store the data in the context
+⋮----
+def load_data(self, data_path: Optional[str] = None, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Load data from the specified path.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific data loading logic.
+
+        Args:
+            data_path: Path to the data file. If None, uses a default path.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseValidationStage(BasePipelineStage, ValidationStage)
+⋮----
+"""
+    Base implementation of the ValidationStage interface.
+
+    Provides common functionality for data validation stages.
+    """
+⋮----
+"""
+        Initialize the validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the validation stage.
+
+        This implementation validates the data using the validate_data method
+        and stores the validation results in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+
+        Raises:
+            ValueError: If the data is not valid and strict validation is enabled.
+        """
+# Get the data from the context
+data = context.get("data")
+⋮----
+# Validate the data
+validation_results = self.validate_data(data, **kwargs)
+⋮----
+# Store the validation results in the context
+⋮----
+# Log validation results
+⋮----
+issues = validation_results.get("issues", [])
+⋮----
+# If strict validation is enabled, raise an error
+⋮----
+def validate_data(self, data: pd.DataFrame, **kwargs) -> Dict[str, Any]
+⋮----
+"""
+        Validate the input data.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific validation logic.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseFeatureEngineeringStage(BasePipelineStage, FeatureEngineeringStage)
+⋮----
+"""
+    Base implementation of the FeatureEngineeringStage interface.
+
+    Provides common functionality for feature engineering stages.
+    """
+⋮----
+"""
+        Initialize the feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the feature engineering stage.
+
+        This implementation engineers features using the engineer_features method
+        and stores the engineered data in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+⋮----
+# Engineer features
+engineered_data = self.engineer_features(data, **kwargs)
+⋮----
+# Store the engineered data in the context
+⋮----
+def engineer_features(self, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Engineer features from the input data.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific feature engineering logic.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered features.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseDataSplittingStage(BasePipelineStage, DataSplittingStage)
+⋮----
+"""
+    Base implementation of the DataSplittingStage interface.
+
+    Provides common functionality for data splitting stages.
+    """
+⋮----
+"""
+        Initialize the data splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the data splitting stage.
+
+        This implementation splits the data using the split_data method
+        and stores the split data in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+⋮----
+data = context.get("engineered_data", context.get("data"))
+⋮----
+# Get target columns from kwargs or config
+target_columns = kwargs.get(
+⋮----
+# Split the data
+⋮----
+# Store the split data in the context
+⋮----
+"""
+        Split data into training and testing sets.
+
+        This base implementation uses scikit-learn's train_test_split function.
+        Subclasses can override this method to provide custom splitting logic.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+        """
+# Get feature columns (all columns except target columns)
+feature_columns = [col for col in data.columns if col not in target_columns]
+⋮----
+# Extract features and targets
+x = data[feature_columns]
+y = data[target_columns]
+⋮----
+# Get split parameters
+test_size = kwargs.get("test_size", self.config.get("test_size", 0.3))
+random_state = kwargs.get(
+stratify = kwargs.get("stratify", self.config.get("stratify", None))
+⋮----
+class BaseModelBuildingStage(BasePipelineStage, ModelBuildingStage)
+⋮----
+"""
+    Base implementation of the ModelBuildingStage interface.
+
+    Provides common functionality for model building stages.
+    """
+⋮----
+"""
+        Initialize the model building stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the model building stage.
+
+        This implementation builds a model using the build_model method
+        and stores it in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Build the model
+model = self.build_model(**kwargs)
+⋮----
+# Store the model in the context
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a machine learning model.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific model building logic.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseModelTrainingStage(BasePipelineStage, ModelTrainingStage)
+⋮----
+"""
+    Base implementation of the ModelTrainingStage interface.
+
+    Provides common functionality for model training stages.
+    """
+⋮----
+"""
+        Initialize the model training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the model training stage.
+
+        This implementation trains a model using the train_model method
+        and stores it in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Get the model, training features, and targets from the context
+model = context.get("model")
+⋮----
+x_train = context.get("x_train")
+⋮----
+y_train = context.get("y_train")
+⋮----
+# Train the model
+trained_model = self.train_model(model, x_train, y_train, **kwargs)
+⋮----
+# Store the trained model in the context
+⋮----
+"""
+        Train a model on the provided data.
+
+        This base implementation simply calls the model's fit method.
+        Subclasses can override this method to provide custom training logic.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+⋮----
+class BaseModelEvaluationStage(BasePipelineStage, ModelEvaluationStage)
+⋮----
+"""
+    Base implementation of the ModelEvaluationStage interface.
+
+    Provides common functionality for model evaluation stages.
+    """
+⋮----
+"""
+        Initialize the model evaluation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the model evaluation stage.
+
+        This implementation evaluates a model using the evaluate_model method
+        and stores the evaluation results in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Get the trained model, test features, and targets from the context
+model = context.get("trained_model", context.get("model"))
+⋮----
+x_test = context.get("x_test")
+⋮----
+y_test = context.get("y_test")
+⋮----
+# Evaluate the model
+evaluation_results = self.evaluate_model(model, x_test, y_test, **kwargs)
+⋮----
+# Store the evaluation results in the context
+⋮----
+"""
+        Evaluate a trained model on test data.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific evaluation logic.
+
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+
+        Returns:
+            Dictionary of evaluation metrics.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BaseModelSavingStage(BasePipelineStage, ModelSavingStage)
+⋮----
+"""
+    Base implementation of the ModelSavingStage interface.
+
+    Provides common functionality for model saving stages.
+    """
+⋮----
+"""
+        Initialize the model saving stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the model saving stage.
+
+        This implementation saves a model using the save_model method.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Get the trained model from the context
+⋮----
+# Get the output path from kwargs or context
+output_path = kwargs.get("output_path", context.get("output_path"))
+⋮----
+# Get metadata from the context
+metadata = {
+⋮----
+# Save the model
+⋮----
+"""
+        Save a trained model and its metadata to disk.
+
+        This base implementation raises NotImplementedError.
+        Subclasses must override this method to provide specific saving logic.
+
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            metadata: Model metadata to save.
+            **kwargs: Additional arguments for saving.
+
+        Raises:
+            NotImplementedError: This base method must be overridden by subclasses.
+        """
+⋮----
+class BasePredictionStage(BasePipelineStage, PredictionStage)
+⋮----
+"""
+    Base implementation of the PredictionStage interface.
+
+    Provides common functionality for prediction stages.
+    """
+⋮----
+"""
+        Initialize the prediction stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Execute the prediction stage.
+
+        This implementation makes predictions using the predict method
+        and stores the predictions in the context.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+        """
+# Get the model and data from the context
+⋮----
+# Make predictions
+predictions = self.predict(model, data, **kwargs)
+⋮----
+# Store the predictions in the context
+⋮----
+def predict(self, model: Pipeline, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Make predictions using a trained model.
+
+        This base implementation simply calls the model's predict method.
+        Subclasses can override this method to provide custom prediction logic.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing predictions.
+        """
+⋮----
+predictions = model.predict(data)
+⋮----
+# Convert to DataFrame if it's not already
+⋮----
+# Try to get column names from the model
+⋮----
+column_names = model.classes_
+⋮----
+# If that fails, use generic column names
+column_names = [f"prediction_{i}" for i in range(predictions.shape[1])]
+⋮----
+predictions = pd.DataFrame(predictions, columns=column_names)
+````
+
+## File: nexusml/core/pipeline/stages/data_loading.py
+````python
+"""
+Data Loading Stage Module
+
+This module provides implementations of the DataLoadingStage interface for
+loading data from various sources.
+"""
+⋮----
+class CSVDataLoadingStage(BaseDataLoadingStage)
+⋮----
+"""
+    Implementation of DataLoadingStage for loading data from CSV files.
+    """
+⋮----
+"""
+        Initialize the CSV data loading stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading data configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+# This stage doesn't require any data from the context
+⋮----
+def load_data(self, data_path: Optional[str] = None, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Load data from a CSV file.
+
+        Args:
+            data_path: Path to the CSV file. If None, uses the default path from config.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            FileNotFoundError: If the data file cannot be found.
+            ValueError: If the data format is invalid.
+        """
+# Use default path if none provided
+⋮----
+# Try to get the default path from the configuration
+data_config = self.config_manager.get_data_config()
+training_data_config = getattr(data_config, "training_data", {})
+default_path = training_data_config.get(
+data_path = str(
+⋮----
+# Get encoding from config or kwargs
+encoding = kwargs.get(
+fallback_encoding = kwargs.get(
+⋮----
+# Read CSV file using pandas
+df = pd.read_csv(data_path, encoding=encoding)
+⋮----
+# Try with a different encoding if the primary one fails
+⋮----
+df = pd.read_csv(data_path, encoding=fallback_encoding)
+⋮----
+class ExcelDataLoadingStage(BaseDataLoadingStage)
+⋮----
+"""
+    Implementation of DataLoadingStage for loading data from Excel files.
+    """
+⋮----
+"""
+        Initialize the Excel data loading stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading data configuration.
+        """
+⋮----
+"""
+        Load data from an Excel file.
+
+        Args:
+            data_path: Path to the Excel file. If None, uses the default path from config.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            FileNotFoundError: If the data file cannot be found.
+            ValueError: If the data format is invalid.
+        """
+⋮----
+# Get sheet name from kwargs or config
+sheet_name = kwargs.get("sheet_name", self.config.get("sheet_name", 0))
+⋮----
+# Read Excel file using pandas
+df = pd.read_excel(data_path, sheet_name=sheet_name)
+⋮----
+class SQLiteDataLoadingStage(BaseDataLoadingStage)
+⋮----
+"""
+    Implementation of DataLoadingStage for loading data from SQLite databases.
+    """
+⋮----
+"""
+        Initialize the SQLite data loading stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading data configuration.
+        """
+⋮----
+"""
+        Load data from a SQLite database.
+
+        Args:
+            data_path: Path to the SQLite database file. If None, uses the default path from config.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            FileNotFoundError: If the database file cannot be found.
+            ValueError: If the data format is invalid.
+        """
+⋮----
+# Get query from kwargs or config
+query = kwargs.get("query", self.config.get("query", "SELECT * FROM equipment"))
+⋮----
+# Connect to the database
+conn = sqlite3.connect(data_path)
+⋮----
+# Read data using pandas
+df = pd.read_sql_query(query, conn)
+⋮----
+# Close the connection
+⋮----
+class ConfigurableDataLoadingStage(BaseDataLoadingStage)
+⋮----
+"""
+    Implementation of DataLoadingStage that can load data from various sources
+    based on configuration.
+    """
+⋮----
+"""
+        Initialize the configurable data loading stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading data configuration.
+        """
+⋮----
+"""
+        Load data from a source determined by the file extension or configuration.
+
+        Args:
+            data_path: Path to the data file. If None, uses the default path from config.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            FileNotFoundError: If the data file cannot be found.
+            ValueError: If the data format is invalid or unsupported.
+        """
+⋮----
+# Get the file extension
+file_ext = os.path.splitext(data_path)[1].lower()
+⋮----
+# Determine the loader to use
+loader_type = kwargs.get("loader_type", self.config.get("loader_type", None))
+⋮----
+# Determine loader type from file extension
+⋮----
+loader_type = "csv"
+⋮----
+loader_type = "excel"
+⋮----
+loader_type = "sqlite"
+⋮----
+# Get the appropriate loader
+⋮----
+loader = self._loaders[loader_type]
+⋮----
+# Load the data using the selected loader
+````
+
+## File: nexusml/core/pipeline/stages/data_splitting.py
+````python
+"""
+Data Splitting Stage Module
+
+This module provides implementations of the DataSplittingStage interface for
+splitting data into training and testing sets.
+"""
+⋮----
+class RandomSplittingStage(BaseDataSplittingStage)
+⋮----
+"""
+    Implementation of DataSplittingStage for random data splitting.
+    """
+⋮----
+"""
+        Initialize the random splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading splitting configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+"""
+        Split data randomly.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+        """
+# Get feature columns (all columns except target columns)
+feature_columns = [col for col in data.columns if col not in target_columns]
+⋮----
+# Extract features and targets
+x = data[feature_columns]
+y = data[target_columns]
+⋮----
+# Get split parameters
+test_size = kwargs.get("test_size", self.config.get("test_size", 0.3))
+random_state = kwargs.get(
+shuffle = kwargs.get("shuffle", self.config.get("shuffle", True))
+⋮----
+# Split the data
+⋮----
+class StratifiedSplittingStage(BaseDataSplittingStage)
+⋮----
+"""
+    Implementation of DataSplittingStage for stratified data splitting.
+    """
+⋮----
+"""
+        Initialize the stratified splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading splitting configuration.
+        """
+⋮----
+"""
+        Split data with stratification.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+
+        Raises:
+            ValueError: If stratification column is not specified or not found.
+        """
+⋮----
+stratify_column = kwargs.get(
+⋮----
+# Get stratification values
+⋮----
+# If no stratification column is specified, use the first target column
+⋮----
+stratify = y[target_columns[0]]
+⋮----
+# If stratification column is a target column, use it
+stratify = y[stratify_column]
+⋮----
+# If stratification column is a feature column, use it
+stratify = x[stratify_column]
+⋮----
+class TimeSeriesSplittingStage(BaseDataSplittingStage)
+⋮----
+"""
+    Implementation of DataSplittingStage for time series data splitting.
+    """
+⋮----
+"""
+        Initialize the time series splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading splitting configuration.
+        """
+⋮----
+"""
+        Split time series data.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+
+        Raises:
+            ValueError: If time column is not specified or not found.
+        """
+⋮----
+time_column = kwargs.get("time_column", self.config.get("time_column"))
+⋮----
+# Check if time column is specified
+⋮----
+# Check if time column exists
+⋮----
+# Sort data by time column
+sorted_indices = data[time_column].argsort()
+x_sorted = x.iloc[sorted_indices]
+y_sorted = y.iloc[sorted_indices]
+⋮----
+# Calculate split point
+split_point = int(len(data) * (1 - test_size))
+⋮----
+x_train = x_sorted.iloc[:split_point]
+x_test = x_sorted.iloc[split_point:]
+y_train = y_sorted.iloc[:split_point]
+y_test = y_sorted.iloc[split_point:]
+⋮----
+class CrossValidationSplittingStage(BaseDataSplittingStage)
+⋮----
+"""
+    Implementation of DataSplittingStage for cross-validation data splitting.
+    """
+⋮----
+"""
+        Initialize the cross-validation splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading splitting configuration.
+        """
+⋮----
+"""
+        Split data for cross-validation.
+
+        This method returns a single fold of the cross-validation splits.
+        The fold index can be specified in kwargs.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+        """
+⋮----
+n_splits = kwargs.get("n_splits", self.config.get("n_splits", 5))
+fold_index = kwargs.get("fold_index", self.config.get("fold_index", 0))
+⋮----
+cv_type = kwargs.get("cv_type", self.config.get("cv_type", "kfold"))
+⋮----
+# Create cross-validator
+⋮----
+cv = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
+splits = list(cv.split(x))
+⋮----
+# Get stratification values
+⋮----
+# If no stratification column is specified, use the first target column
+⋮----
+# If stratification column is a target column, use it
+⋮----
+# If stratification column is a feature column, use it
+⋮----
+cv = StratifiedKFold(
+splits = list(cv.split(x, stratify))
+⋮----
+cv = TimeSeriesSplit(n_splits=n_splits)
+⋮----
+# Check if fold index is valid
+⋮----
+# Get the specified fold
+⋮----
+x_train = x.iloc[train_indices]
+x_test = x.iloc[test_indices]
+y_train = y.iloc[train_indices]
+y_test = y.iloc[test_indices]
+⋮----
+class ConfigDrivenDataSplittingStage(BaseDataSplittingStage)
+⋮----
+"""
+    Implementation of DataSplittingStage that uses configuration for data splitting.
+    """
+⋮----
+"""
+        Initialize the configuration-driven data splitting stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading splitting configuration.
+        """
+⋮----
+"""
+        Split data based on configuration.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+        """
+# Get the splitting type from kwargs or config
+splitting_type = kwargs.get(
+⋮----
+# Get the appropriate splitter
+⋮----
+splitter = self._splitters[splitting_type]
+````
+
+## File: nexusml/core/pipeline/stages/feature_engineering.py
+````python
+"""
+Feature Engineering Stage Module
+
+This module provides implementations of the FeatureEngineeringStage interface for
+transforming raw data into features suitable for model training.
+"""
+⋮----
+class ConfigDrivenFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage that uses configuration for transformations.
+    """
+⋮----
+"""
+        Initialize the configuration-driven feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading feature engineering configuration.
+            feature_engineer: Feature engineer to use. If None, creates a ConfigDrivenFeatureEngineer.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+def engineer_features(self, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Engineer features from the input data using configuration.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered features.
+        """
+# Get the configuration name from kwargs or config
+config_name = kwargs.get(
+⋮----
+# Engineer features
+⋮----
+class TextFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage for text feature engineering.
+    """
+⋮----
+"""
+        Initialize the text feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Engineer text features from the input data.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered text features.
+        """
+# Create a copy of the DataFrame to avoid modifying the original
+result = data.copy()
+⋮----
+# Get text combinations from kwargs or config
+text_combinations = kwargs.get(
+⋮----
+# Apply text combinations
+⋮----
+name = combo.get("name")
+columns = combo.get("columns", [])
+separator = combo.get("separator", " ")
+⋮----
+# Check if all required columns exist
+available_columns = [col for col in columns if col in result.columns]
+⋮----
+# Combine available columns
+⋮----
+# Create empty column if no source columns are available
+⋮----
+class NumericFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage for numeric feature engineering.
+    """
+⋮----
+"""
+        Initialize the numeric feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Engineer numeric features from the input data.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered numeric features.
+        """
+⋮----
+# Get numeric transformations from kwargs or config
+numeric_configs = kwargs.get(
+⋮----
+# Apply numeric transformations
+⋮----
+name = config.get("name")
+new_name = config.get("new_name", name)
+fill_value = config.get("fill_value", 0)
+dtype = config.get("dtype", "float")
+⋮----
+# Copy and convert the column
+⋮----
+# Create column with default value
+⋮----
+class HierarchicalFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage for hierarchical feature engineering.
+    """
+⋮----
+"""
+        Initialize the hierarchical feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Engineer hierarchical features from the input data.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered hierarchical features.
+        """
+⋮----
+# Get hierarchies from kwargs or config
+hierarchies = kwargs.get("hierarchies", self.config.get("hierarchies", []))
+⋮----
+# Apply hierarchical combinations
+⋮----
+new_col = hierarchy.get("new_col")
+parents = hierarchy.get("parents", [])
+separator = hierarchy.get("separator", "-")
+⋮----
+# Check if all parent columns exist
+available_parents = [col for col in parents if col in result.columns]
+⋮----
+# Combine available parent columns
+⋮----
+# Create empty column if no parent columns are available
+⋮----
+class CompositeFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage that combines multiple feature engineers.
+    """
+⋮----
+"""
+        Initialize the composite feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            stages: List of feature engineering stages to use.
+        """
+⋮----
+"""
+        Engineer features from the input data using multiple feature engineers.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered features.
+        """
+# Start with the original data
+⋮----
+# Apply each feature engineering stage in sequence
+⋮----
+result = stage.engineer_features(result, **kwargs)
+⋮----
+class SimpleFeatureEngineeringStage(BaseFeatureEngineeringStage)
+⋮----
+"""
+    Implementation of FeatureEngineeringStage with simplified feature engineering.
+    
+    This stage is designed to be compatible with the existing SimpleFeatureEngineer
+    used in train_model_pipeline_v2.py.
+    """
+⋮----
+"""
+        Initialize the simple feature engineering stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+        """
+⋮----
+"""
+        Perform simplified feature engineering.
+
+        This implementation combines the description field with other text fields
+        and adds a service_life column.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered features.
+        """
+⋮----
+# Combine text fields into a single field
+text_fields = ["description", "category_name", "mcaa_system_category"]
+available_fields = [field for field in text_fields if field in result.columns]
+⋮----
+# Add service_life column (default to 20 if not present)
+````
+
+## File: nexusml/core/pipeline/stages/interfaces.py
+````python
+"""
+Pipeline Stage Interfaces Module
+
+This module defines the interfaces for all pipeline stages in the NexusML suite.
+Each stage represents a distinct step in the pipeline execution process and follows
+the Single Responsibility Principle (SRP) from SOLID.
+"""
+⋮----
+class PipelineStage(abc.ABC)
+⋮----
+"""
+    Base interface for all pipeline stages.
+
+    A pipeline stage represents a distinct step in the pipeline execution process.
+    Each stage has a single responsibility and can be composed with other stages
+    to form a complete pipeline.
+    """
+⋮----
+@abc.abstractmethod
+    def execute(self, context: PipelineContext, **kwargs) -> None
+⋮----
+"""
+        Execute the stage.
+
+        Args:
+            context: The pipeline context for sharing data between stages.
+            **kwargs: Additional arguments for stage execution.
+
+        Raises:
+            ValueError: If the stage cannot be executed.
+        """
+⋮----
+@abc.abstractmethod
+    def get_name(self) -> str
+⋮----
+"""
+        Get the name of the stage.
+
+        Returns:
+            Stage name.
+        """
+⋮----
+@abc.abstractmethod
+    def get_description(self) -> str
+⋮----
+"""
+        Get a description of the stage.
+
+        Returns:
+            Stage description.
+        """
+⋮----
+@abc.abstractmethod
+    def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+
+        Raises:
+            ValueError: If the context is invalid.
+        """
+⋮----
+class DataLoadingStage(PipelineStage)
+⋮----
+"""
+    Interface for data loading stages.
+
+    Responsible for loading data from various sources and storing it in the context.
+    """
+⋮----
+@abc.abstractmethod
+    def load_data(self, data_path: Optional[str] = None, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Load data from the specified path.
+
+        Args:
+            data_path: Path to the data file. If None, uses a default path.
+            **kwargs: Additional arguments for data loading.
+
+        Returns:
+            DataFrame containing the loaded data.
+
+        Raises:
+            FileNotFoundError: If the data file cannot be found.
+            ValueError: If the data format is invalid.
+        """
+⋮----
+class ValidationStage(PipelineStage)
+⋮----
+"""
+    Interface for data validation stages.
+
+    Responsible for validating data against requirements and storing validation
+    results in the context.
+    """
+⋮----
+@abc.abstractmethod
+    def validate_data(self, data: pd.DataFrame, **kwargs) -> Dict[str, Any]
+⋮----
+"""
+        Validate the input data.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+
+        Raises:
+            ValueError: If the data cannot be validated.
+        """
+⋮----
+class FeatureEngineeringStage(PipelineStage)
+⋮----
+"""
+    Interface for feature engineering stages.
+
+    Responsible for transforming raw data into features suitable for model training.
+    """
+⋮----
+@abc.abstractmethod
+    def engineer_features(self, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Engineer features from the input data.
+
+        Args:
+            data: Input DataFrame with raw features.
+            **kwargs: Additional arguments for feature engineering.
+
+        Returns:
+            DataFrame with engineered features.
+
+        Raises:
+            ValueError: If features cannot be engineered.
+        """
+⋮----
+class ModelBuildingStage(PipelineStage)
+⋮----
+"""
+    Interface for model building stages.
+
+    Responsible for creating and configuring machine learning models.
+    """
+⋮----
+@abc.abstractmethod
+    def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a machine learning model.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+
+        Raises:
+            ValueError: If the model cannot be built with the given parameters.
+        """
+⋮----
+class ModelTrainingStage(PipelineStage)
+⋮----
+"""
+    Interface for model training stages.
+
+    Responsible for training machine learning models on prepared data.
+    """
+⋮----
+"""
+        Train a model on the provided data.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+
+        Raises:
+            ValueError: If the model cannot be trained.
+        """
+⋮----
+class ModelEvaluationStage(PipelineStage)
+⋮----
+"""
+    Interface for model evaluation stages.
+
+    Responsible for evaluating trained models and analyzing their performance.
+    """
+⋮----
+"""
+        Evaluate a trained model on test data.
+
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+
+        Returns:
+            Dictionary of evaluation metrics.
+
+        Raises:
+            ValueError: If the model cannot be evaluated.
+        """
+⋮----
+class ModelSavingStage(PipelineStage)
+⋮----
+"""
+    Interface for model saving stages.
+
+    Responsible for saving trained models and associated metadata.
+    """
+⋮----
+"""
+        Save a trained model and its metadata to disk.
+
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            metadata: Model metadata to save.
+            **kwargs: Additional arguments for saving.
+
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+⋮----
+class DataSplittingStage(PipelineStage)
+⋮----
+"""
+    Interface for data splitting stages.
+
+    Responsible for splitting data into training and testing sets.
+    """
+⋮----
+"""
+        Split data into training and testing sets.
+
+        Args:
+            data: Input DataFrame to split.
+            target_columns: List of target column names.
+            **kwargs: Additional arguments for splitting.
+
+        Returns:
+            Tuple containing (x_train, x_test, y_train, y_test).
+
+        Raises:
+            ValueError: If the data cannot be split.
+        """
+⋮----
+class PredictionStage(PipelineStage)
+⋮----
+"""
+    Interface for prediction stages.
+
+    Responsible for making predictions using trained models.
+    """
+⋮----
+@abc.abstractmethod
+    def predict(self, model: Pipeline, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Make predictions using a trained model.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing predictions.
+
+        Raises:
+            ValueError: If predictions cannot be made.
+        """
+````
+
+## File: nexusml/core/pipeline/stages/model_building.py
+````python
+"""
+Model Building Stage Module
+
+This module provides implementations of the ModelBuildingStage interface for
+creating and configuring machine learning models.
+"""
+⋮----
+class RandomForestModelBuildingStage(BaseModelBuildingStage)
+⋮----
+"""
+    Implementation of ModelBuildingStage for building Random Forest models.
+    """
+⋮----
+"""
+        Initialize the Random Forest model building stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading model configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+# This stage doesn't require any data from the context
+⋮----
+def build_model(self, **kwargs) -> Pipeline
+⋮----
+"""
+        Build a Random Forest model.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+        """
+# Get model parameters from kwargs or config
+n_estimators = kwargs.get(
+max_depth = kwargs.get("max_depth", self.config.get("max_depth", None))
+min_samples_split = kwargs.get(
+min_samples_leaf = kwargs.get(
+random_state = kwargs.get("random_state", self.config.get("random_state", 42))
+⋮----
+# Create the base classifier
+base_classifier = RandomForestClassifier(
+⋮----
+# Wrap in MultiOutputClassifier for multi-label classification
+classifier = MultiOutputClassifier(base_classifier)
+⋮----
+# Create the pipeline
+model = Pipeline(
+⋮----
+class GradientBoostingModelBuildingStage(BaseModelBuildingStage)
+⋮----
+"""
+    Implementation of ModelBuildingStage for building Gradient Boosting models.
+    """
+⋮----
+"""
+        Initialize the Gradient Boosting model building stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading model configuration.
+        """
+⋮----
+"""
+        Build a Gradient Boosting model.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+        """
+⋮----
+learning_rate = kwargs.get(
+max_depth = kwargs.get("max_depth", self.config.get("max_depth", 3))
+⋮----
+base_classifier = GradientBoostingClassifier(
+⋮----
+class ConfigDrivenModelBuildingStage(BaseModelBuildingStage)
+⋮----
+"""
+    Implementation of ModelBuildingStage that uses configuration for model building.
+    """
+⋮----
+"""
+        Initialize the configuration-driven model building stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading model configuration.
+            model_builder: Model builder to use. If None, uses the model type from config.
+        """
+⋮----
+"""
+        Build a model based on configuration.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+        """
+# If a model builder is provided, use it
+⋮----
+# Get the model type from kwargs or config
+model_type = kwargs.get("model_type", self.config.get("model_type", "random_forest"))
+⋮----
+# Get the appropriate builder
+⋮----
+builder = self._builders[model_type]
+⋮----
+# Build the model
+⋮----
+class EnsembleModelBuildingStage(BaseModelBuildingStage)
+⋮----
+"""
+    Implementation of ModelBuildingStage for building ensemble models.
+    """
+⋮----
+"""
+        Initialize the ensemble model building stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading model configuration.
+            model_builders: List of model builders to use.
+        """
+⋮----
+"""
+        Build an ensemble of models.
+
+        This implementation is a placeholder. In a real implementation, you would
+        build multiple models and combine them using a voting or stacking approach.
+
+        Args:
+            **kwargs: Configuration parameters for the model.
+
+        Returns:
+            Configured model pipeline.
+        """
+# For simplicity, we'll just use the first model builder
+# In a real implementation, you would build multiple models and combine them
+````
+
+## File: nexusml/core/pipeline/stages/model_evaluation.py
+````python
+"""
+Model Evaluation Stage Module
+
+This module provides implementations of the ModelEvaluationStage interface for
+evaluating trained models and analyzing their performance.
+"""
+⋮----
+class ClassificationEvaluationStage(BaseModelEvaluationStage)
+⋮----
+"""
+    Implementation of ModelEvaluationStage for evaluating classification models.
+    """
+⋮----
+"""
+        Initialize the classification evaluation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading evaluation configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+"""
+        Evaluate a classification model.
+
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+
+        Returns:
+            Dictionary of evaluation metrics.
+        """
+# Make predictions
+y_pred = model.predict(x_test)
+⋮----
+# Convert to DataFrame if it's not already
+⋮----
+y_pred = pd.DataFrame(y_pred, columns=y_test.columns)
+⋮----
+# Calculate metrics for each target column
+metrics = {}
+⋮----
+# Get the column values
+y_test_col = y_test[col]
+y_pred_col = y_pred[col]
+⋮----
+# Calculate metrics
+col_metrics = {
+⋮----
+# Add overall metrics
+⋮----
+# Store predictions in the metrics
+⋮----
+class DetailedClassificationEvaluationStage(BaseModelEvaluationStage)
+⋮----
+"""
+    Implementation of ModelEvaluationStage for detailed evaluation of classification models.
+    """
+⋮----
+"""
+        Initialize the detailed classification evaluation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading evaluation configuration.
+        """
+⋮----
+"""
+        Perform detailed evaluation of a classification model.
+
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+
+        Returns:
+            Dictionary of evaluation metrics.
+        """
+⋮----
+# Get unique classes
+classes = sorted(list(set(y_test_col.unique()) | set(y_pred_col.unique())))
+⋮----
+# Calculate confusion metrics
+cm = confusion_matrix(y_test_col, y_pred_col, labels=classes)
+cm_dict = {
+⋮----
+# Calculate per-class metrics
+class_metrics = {}
+⋮----
+# True positives: diagonal element for this class
+tp = cm[i, i]
+# False positives: sum of column minus true positives
+fp = np.sum(cm[:, i]) - tp
+# False negatives: sum of row minus true positives
+fn = np.sum(cm[i, :]) - tp
+# True negatives: sum of all elements minus tp, fp, and fn
+tn = np.sum(cm) - tp - fp - fn
+⋮----
+# Calculate metrics
+precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+f1 = (
+accuracy = (tp + tn) / (tp + tn + fp + fn) if (tp + tn + fp + fn) > 0 else 0
+⋮----
+# Calculate overall metrics
+⋮----
+# Add error analysis
+⋮----
+"""
+        Analyze prediction errors.
+
+        Args:
+            x_test: Test features.
+            y_test: Test targets.
+            y_pred: Model predictions.
+
+        Returns:
+            Dictionary of error analysis results.
+        """
+error_analysis = {}
+⋮----
+# Find misclassified samples for each target column
+⋮----
+# Get indices of misclassified samples
+misclassified = y_test[col] != y_pred[col]
+misclassified_indices = misclassified[misclassified].index.tolist()
+⋮----
+# Get misclassified samples
+misclassified_samples = []
+⋮----
+sample = {
+⋮----
+# Limit the number of samples to avoid large results
+max_samples = 10
+⋮----
+misclassified_samples = misclassified_samples[:max_samples]
+⋮----
+# Calculate error rate
+error_rate = misclassified.mean()
+⋮----
+class ConfigDrivenModelEvaluationStage(BaseModelEvaluationStage)
+⋮----
+"""
+    Implementation of ModelEvaluationStage that uses configuration for model evaluation.
+    """
+⋮----
+"""
+        Initialize the configuration-driven model evaluation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading evaluation configuration.
+        """
+⋮----
+"""
+        Evaluate a model based on configuration.
+
+        Args:
+            model: Trained model pipeline to evaluate.
+            x_test: Test features.
+            y_test: Test targets.
+            **kwargs: Additional arguments for evaluation.
+
+        Returns:
+            Dictionary of evaluation metrics.
+        """
+# Get the evaluation type from kwargs or config
+evaluation_type = kwargs.get(
+⋮----
+# Get the appropriate evaluator
+⋮----
+evaluator = self._evaluators[evaluation_type]
+⋮----
+# Evaluate the model
+````
+
+## File: nexusml/core/pipeline/stages/model_saving.py
+````python
+"""
+Model Saving Stage Module
+
+This module provides implementations of the ModelSavingStage interface for
+saving trained models and associated metadata.
+"""
+⋮----
+class PickleModelSavingStage(BaseModelSavingStage)
+⋮----
+"""
+    Implementation of ModelSavingStage for saving models using pickle.
+    """
+⋮----
+"""
+        Initialize the pickle model saving stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading saving configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+"""
+        Save a model using pickle.
+
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            metadata: Model metadata to save.
+            **kwargs: Additional arguments for saving.
+
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+⋮----
+# Convert path to Path object if it's a string
+⋮----
+path = Path(path)
+⋮----
+# Create parent directories if they don't exist
+⋮----
+# Save the model using pickle
+⋮----
+# Save metadata to a separate file
+metadata_path = path.with_suffix(".json")
+⋮----
+class ModelCardSavingStage(BaseModelSavingStage)
+⋮----
+"""
+    Implementation of ModelSavingStage for saving models with model cards.
+    """
+⋮----
+"""
+        Initialize the model card saving stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading saving configuration.
+        """
+⋮----
+"""
+        Save a model with a model card.
+
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            metadata: Model metadata to save.
+            **kwargs: Additional arguments for saving.
+
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+⋮----
+# Create a model card
+model_card = self._create_model_card(model, metadata, **kwargs)
+⋮----
+# Save the model card
+model_card_path = path.with_suffix(".md")
+⋮----
+"""
+        Create a model card for the model.
+
+        Args:
+            model: Trained model pipeline.
+            metadata: Model metadata.
+            **kwargs: Additional arguments for creating the model card.
+
+        Returns:
+            Model card as a string.
+        """
+# Get model card information from kwargs or config
+model_name = kwargs.get("model_name", self.config.get("model_name", "NexusML Model"))
+model_version = kwargs.get(
+model_description = kwargs.get(
+model_type = kwargs.get(
+model_authors = kwargs.get(
+model_license = kwargs.get(
+⋮----
+# Get evaluation metrics from metadata
+evaluation_metrics = metadata.get("evaluation_results", {})
+overall_metrics = evaluation_metrics.get("overall", {})
+⋮----
+# Create the model card
+model_card = f"""# {model_name}
+⋮----
+# Add overall metrics
+⋮----
+# Add per-column metrics
+⋮----
+# Add model parameters
+⋮----
+# Try to get model parameters
+⋮----
+params = model.get_params()
+⋮----
+# Add limitations and ethical considerations
+⋮----
+class ConfigDrivenModelSavingStage(BaseModelSavingStage)
+⋮----
+"""
+    Implementation of ModelSavingStage that uses configuration for model saving.
+    """
+⋮----
+"""
+        Initialize the configuration-driven model saving stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading saving configuration.
+        """
+⋮----
+"""
+        Save a model based on configuration.
+
+        Args:
+            model: Trained model pipeline to save.
+            path: Path where the model should be saved.
+            metadata: Model metadata to save.
+            **kwargs: Additional arguments for saving.
+
+        Raises:
+            IOError: If the model cannot be saved.
+        """
+# Get the saving type from kwargs or config
+saving_type = kwargs.get(
+⋮----
+# Get the appropriate saver
+⋮----
+saver = self._savers[saving_type]
+⋮----
+# Save the model
+````
+
+## File: nexusml/core/pipeline/stages/model_training.py
+````python
+"""
+Model Training Stage Module
+
+This module provides implementations of the ModelTrainingStage interface for
+training machine learning models on prepared data.
+"""
+⋮----
+class StandardModelTrainingStage(BaseModelTrainingStage)
+⋮----
+"""
+    Implementation of ModelTrainingStage for standard model training.
+    """
+⋮----
+"""
+        Initialize the standard model training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading training configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+"""
+        Train a model using standard training.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+# Train the model
+⋮----
+class CrossValidationTrainingStage(BaseModelTrainingStage)
+⋮----
+"""
+    Implementation of ModelTrainingStage for cross-validation training.
+    """
+⋮----
+"""
+        Initialize the cross-validation training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading training configuration.
+        """
+⋮----
+"""
+        Train a model using cross-validation.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+# Get cross-validation parameters from kwargs or config
+cv = kwargs.get("cv", self.config.get("cv", 5))
+scoring = kwargs.get("scoring", self.config.get("scoring", "accuracy"))
+⋮----
+# Perform cross-validation
+cv_results = cross_validate(
+⋮----
+# Store cross-validation results in the model's metadata
+⋮----
+# Train the model on the full training set
+⋮----
+class GridSearchTrainingStage(BaseModelTrainingStage)
+⋮----
+"""
+    Implementation of ModelTrainingStage for grid search hyperparameter optimization.
+    """
+⋮----
+"""
+        Initialize the grid search training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading training configuration.
+        """
+⋮----
+"""
+        Train a model using grid search.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+# Get grid search parameters from kwargs or config
+param_grid = kwargs.get("param_grid", self.config.get("param_grid", {}))
+⋮----
+n_jobs = kwargs.get("n_jobs", self.config.get("n_jobs", -1))
+verbose = kwargs.get("verbose", self.config.get("verbose", 1))
+⋮----
+# Create the grid search
+grid_search = GridSearchCV(
+⋮----
+# Get the best model
+best_model = grid_search.best_estimator_
+⋮----
+# Store grid search results in the model's metadata
+⋮----
+class RandomizedSearchTrainingStage(BaseModelTrainingStage)
+⋮----
+"""
+    Implementation of ModelTrainingStage for randomized search hyperparameter optimization.
+    """
+⋮----
+"""
+        Initialize the randomized search training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading training configuration.
+        """
+⋮----
+"""
+        Train a model using randomized search.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+# Get randomized search parameters from kwargs or config
+param_distributions = kwargs.get(
+n_iter = kwargs.get("n_iter", self.config.get("n_iter", 10))
+⋮----
+random_state = kwargs.get("random_state", self.config.get("random_state", 42))
+⋮----
+# Create the randomized search
+random_search = RandomizedSearchCV(
+⋮----
+best_model = random_search.best_estimator_
+⋮----
+# Store randomized search results in the model's metadata
+⋮----
+class ConfigDrivenModelTrainingStage(BaseModelTrainingStage)
+⋮----
+"""
+    Implementation of ModelTrainingStage that uses configuration for model training.
+    """
+⋮----
+"""
+        Initialize the configuration-driven model training stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading training configuration.
+            model_trainer: Model trainer to use. If None, uses the training type from config.
+        """
+⋮----
+"""
+        Train a model based on configuration.
+
+        Args:
+            model: Model pipeline to train.
+            x_train: Training features.
+            y_train: Training targets.
+            **kwargs: Additional arguments for training.
+
+        Returns:
+            Trained model pipeline.
+        """
+# If a model trainer is provided, use it
+⋮----
+# Get the training type from kwargs or config
+training_type = kwargs.get(
+⋮----
+# Get the appropriate trainer
+⋮----
+trainer = self._trainers[training_type]
+````
+
+## File: nexusml/core/pipeline/stages/prediction.py
+````python
+"""
+Prediction Stage Module
+
+This module provides implementations of the PredictionStage interface for
+making predictions using trained models.
+"""
+⋮----
+class StandardPredictionStage(BasePredictionStage)
+⋮----
+"""
+    Implementation of PredictionStage for standard predictions.
+    """
+⋮----
+"""
+        Initialize the standard prediction stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading prediction configuration.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+def predict(self, model: Pipeline, data: pd.DataFrame, **kwargs) -> pd.DataFrame
+⋮----
+"""
+        Make standard predictions.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing predictions.
+        """
+# Make predictions
+predictions = model.predict(data)
+⋮----
+# Convert to DataFrame if it's not already
+⋮----
+# Try to get column names from the model
+⋮----
+column_names = model.classes_
+⋮----
+# If that fails, use generic column names
+⋮----
+# Try to safely access shape
+⋮----
+column_names = [
+⋮----
+column_names = ["prediction"]
+⋮----
+predictions = pd.DataFrame(predictions, columns=column_names)
+⋮----
+class ProbabilityPredictionStage(BasePredictionStage)
+⋮----
+"""
+    Implementation of PredictionStage for probability predictions.
+    """
+⋮----
+"""
+        Initialize the probability prediction stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading prediction configuration.
+        """
+⋮----
+"""
+        Make probability predictions.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing probability predictions.
+
+        Raises:
+            ValueError: If the model does not support probability predictions.
+        """
+# Check if the model supports predict_proba
+⋮----
+# Make probability predictions
+probas = model.predict_proba(data)
+⋮----
+# Convert to DataFrame
+⋮----
+# MultiOutputClassifier returns a list of arrays
+⋮----
+# Try to get target names from the model
+target_names = getattr(model, "classes_", None)
+⋮----
+# If that fails, use generic target names
+target_names = [f"target_{i}" for i in range(len(probas))]
+⋮----
+# If that fails, use generic target names
+⋮----
+# Create a DataFrame for each target
+result_dfs = []
+⋮----
+target_name = (
+⋮----
+# Try to get class names from the model's estimators
+estimators = getattr(model, "estimators_", None)
+⋮----
+class_names = getattr(estimators[i], "classes_", None)
+⋮----
+class_names = None
+⋮----
+# If that fails, use generic class names
+⋮----
+class_names = [
+⋮----
+class_names = ["class_0"]
+⋮----
+# If that fails, use generic class names
+⋮----
+class_names = [f"class_{j}" for j in range(proba.shape[1])]
+⋮----
+# Create column names with target and class
+columns = [f"{target_name}_{cls}" for cls in class_names]
+⋮----
+# Concatenate all DataFrames
+result = pd.concat(result_dfs, axis=1)
+⋮----
+# Single output classifier returns a single array
+⋮----
+# Try to get class names from the model
+class_names = getattr(model, "classes_", None)
+⋮----
+class_names = [f"class_{j}" for j in range(probas.shape[1])]
+⋮----
+# If that fails, use generic class names
+⋮----
+# Create column names with class
+columns = [f"probability_{cls}" for cls in class_names]
+result = pd.DataFrame(probas, columns=columns)
+⋮----
+class ThresholdPredictionStage(BasePredictionStage)
+⋮----
+"""
+    Implementation of PredictionStage for predictions with custom thresholds.
+    """
+⋮----
+"""
+        Initialize the threshold prediction stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading prediction configuration.
+        """
+⋮----
+"""
+        Make predictions with custom thresholds.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing predictions.
+
+        Raises:
+            ValueError: If the model does not support probability predictions.
+        """
+⋮----
+# Get thresholds from kwargs or config
+thresholds = kwargs.get("thresholds", self.config.get("thresholds", {}))
+⋮----
+# Apply thresholds
+threshold = thresholds.get(target_name, 0.5)
+predictions = (proba >= threshold).astype(int)
+⋮----
+# Map predictions to class names
+prediction_df = pd.DataFrame(
+⋮----
+# Apply threshold
+threshold = thresholds.get("default", 0.5)
+predictions = (probas >= threshold).astype(int)
+⋮----
+# Map predictions to class names
+result = pd.DataFrame(
+⋮----
+class ConfigDrivenPredictionStage(BasePredictionStage)
+⋮----
+"""
+    Implementation of PredictionStage that uses configuration for predictions.
+    """
+⋮----
+"""
+        Initialize the configuration-driven prediction stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading prediction configuration.
+        """
+⋮----
+"""
+        Make predictions based on configuration.
+
+        Args:
+            model: Trained model pipeline.
+            data: Input data for prediction.
+            **kwargs: Additional arguments for prediction.
+
+        Returns:
+            DataFrame containing predictions.
+        """
+# Get the prediction type from kwargs or config
+prediction_type = kwargs.get(
+⋮----
+# Get the appropriate predictor
+⋮----
+predictor = self._predictors[prediction_type]
+````
+
+## File: nexusml/core/pipeline/stages/README.md
+````markdown
+# Pipeline Stages
+
+This package provides implementations of pipeline stages for the NexusML pipeline system. Each stage represents a distinct step in the pipeline execution process and follows the Single Responsibility Principle (SRP) from SOLID.
+
+## Overview
+
+The pipeline stages are organized into the following categories:
+
+1. **Data Loading Stages**: Load data from various sources
+2. **Validation Stages**: Validate data against requirements
+3. **Feature Engineering Stages**: Transform raw data into features
+4. **Data Splitting Stages**: Split data into training and testing sets
+5. **Model Building Stages**: Create and configure machine learning models
+6. **Model Training Stages**: Train machine learning models
+7. **Model Evaluation Stages**: Evaluate trained models
+8. **Model Saving Stages**: Save trained models and metadata
+9. **Prediction Stages**: Make predictions using trained models
+
+Each category has multiple implementations that can be used interchangeably, and each implementation follows a common interface.
+
+## Architecture
+
+The pipeline stages follow a consistent architecture:
+
+- **Interfaces**: Define the contract for each stage type
+- **Base Implementations**: Provide common functionality for all stages
+- **Concrete Implementations**: Implement specific functionality for each stage type
+
+### Interfaces
+
+All pipeline stages implement the `PipelineStage` interface, which defines the following methods:
+
+- `execute(context, **kwargs)`: Execute the stage
+- `get_name()`: Get the name of the stage
+- `get_description()`: Get a description of the stage
+- `validate_context(context)`: Validate that the context contains all required data
+
+Each stage type also has a specific interface that extends `PipelineStage` and adds methods specific to that stage type.
+
+### Base Implementations
+
+Base implementations provide common functionality for all stages of a particular type. They implement the stage interface and provide default behavior where appropriate.
+
+### Concrete Implementations
+
+Concrete implementations provide specific functionality for each stage type. They extend the base implementation and override methods as needed.
+
+## Usage
+
+### Basic Usage
+
+To use a pipeline stage, you need to:
+
+1. Create an instance of the stage
+2. Create a pipeline context
+3. Execute the stage with the context
+
+```python
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.pipeline.stages import ConfigurableDataLoadingStage
+
+# Create a pipeline context
+context = PipelineContext()
+context.start()
+
+# Create a data loading stage
+data_loading_stage = ConfigurableDataLoadingStage()
+
+# Execute the stage
+data_loading_stage.execute(context, data_path="path/to/data.csv")
+
+# Access the loaded data
+data = context.get("data")
+```
+
+### Creating a Pipeline
+
+You can create a complete pipeline by chaining multiple stages together:
+
+```python
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.pipeline.stages import (
+    ConfigurableDataLoadingStage,
+    ConfigDrivenValidationStage,
+    SimpleFeatureEngineeringStage,
+    RandomSplittingStage,
+    RandomForestModelBuildingStage,
+    StandardModelTrainingStage,
+    ClassificationEvaluationStage,
+)
+
+# Create a pipeline context
+context = PipelineContext()
+context.start()
+
+# Define the pipeline stages
+stages = [
+    ConfigurableDataLoadingStage(),
+    ConfigDrivenValidationStage(),
+    SimpleFeatureEngineeringStage(),
+    RandomSplittingStage(),
+    RandomForestModelBuildingStage(),
+    StandardModelTrainingStage(),
+    ClassificationEvaluationStage(),
+]
+
+# Execute each stage
+for stage in stages:
+    stage.execute(context)
+
+# Access the results
+model = context.get("trained_model")
+evaluation_results = context.get("evaluation_results")
+```
+
+### Configuration
+
+Most stages accept a configuration dictionary that can be used to customize their behavior:
+
+```python
+from nexusml.core.pipeline.stages import RandomForestModelBuildingStage
+
+# Create a model building stage with custom configuration
+model_building_stage = RandomForestModelBuildingStage(
+    config={
+        "n_estimators": 100,
+        "max_depth": 10,
+        "random_state": 42,
+    }
+)
+```
+
+### Dependency Injection
+
+Stages can also accept dependencies through constructor injection:
+
+```python
+from nexusml.config.manager import ConfigurationManager
+from nexusml.core.pipeline.stages import ConfigDrivenValidationStage
+
+# Create a configuration manager
+config_manager = ConfigurationManager()
+
+# Create a validation stage with the configuration manager
+validation_stage = ConfigDrivenValidationStage(
+    config_manager=config_manager
+)
+```
+
+## Available Stages
+
+### Data Loading Stages
+
+- `CSVDataLoadingStage`: Loads data from CSV files
+- `ExcelDataLoadingStage`: Loads data from Excel files
+- `SQLiteDataLoadingStage`: Loads data from SQLite databases
+- `ConfigurableDataLoadingStage`: Loads data from various sources based on configuration
+
+### Validation Stages
+
+- `ColumnValidationStage`: Validates specific columns
+- `DataTypeValidationStage`: Validates data types
+- `CompositeValidationStage`: Combines multiple validators
+- `DataFrameValidationStage`: Validates the entire DataFrame
+- `ConfigDrivenValidationStage`: Validates data against configuration-defined rules
+
+### Feature Engineering Stages
+
+- `TextFeatureEngineeringStage`: Engineers text features
+- `NumericFeatureEngineeringStage`: Engineers numeric features
+- `HierarchicalFeatureEngineeringStage`: Engineers hierarchical features
+- `CompositeFeatureEngineeringStage`: Combines multiple feature engineers
+- `SimpleFeatureEngineeringStage`: Performs simplified feature engineering
+- `ConfigDrivenFeatureEngineeringStage`: Engineers features based on configuration
+
+### Data Splitting Stages
+
+- `RandomSplittingStage`: Splits data randomly
+- `StratifiedSplittingStage`: Splits data with stratification
+- `TimeSeriesSplittingStage`: Splits time series data
+- `CrossValidationSplittingStage`: Splits data for cross-validation
+- `ConfigDrivenDataSplittingStage`: Splits data based on configuration
+
+### Model Building Stages
+
+- `RandomForestModelBuildingStage`: Builds Random Forest models
+- `GradientBoostingModelBuildingStage`: Builds Gradient Boosting models
+- `EnsembleModelBuildingStage`: Builds ensemble models
+- `ConfigDrivenModelBuildingStage`: Builds models based on configuration
+
+### Model Training Stages
+
+- `StandardModelTrainingStage`: Trains models using standard training
+- `CrossValidationTrainingStage`: Trains models using cross-validation
+- `GridSearchTrainingStage`: Trains models using grid search
+- `RandomizedSearchTrainingStage`: Trains models using randomized search
+- `ConfigDrivenModelTrainingStage`: Trains models based on configuration
+
+### Model Evaluation Stages
+
+- `ClassificationEvaluationStage`: Evaluates classification models
+- `DetailedClassificationEvaluationStage`: Performs detailed evaluation of classification models
+- `ConfigDrivenModelEvaluationStage`: Evaluates models based on configuration
+
+### Model Saving Stages
+
+- `PickleModelSavingStage`: Saves models using pickle
+- `ModelCardSavingStage`: Saves models with model cards
+- `ConfigDrivenModelSavingStage`: Saves models based on configuration
+
+### Prediction Stages
+
+- `StandardPredictionStage`: Makes standard predictions
+- `ProbabilityPredictionStage`: Makes probability predictions
+- `ThresholdPredictionStage`: Makes predictions with custom thresholds
+- `ConfigDrivenPredictionStage`: Makes predictions based on configuration
+
+## Examples
+
+See the `nexusml/examples/pipeline_stages_example.py` file for a complete example of how to use the pipeline stages.
+````
+
+## File: nexusml/core/pipeline/stages/validation.py
+````python
+"""
+Validation Stage Module
+
+This module provides implementations of the ValidationStage interface for
+validating data against requirements.
+"""
+⋮----
+class ConfigDrivenValidationStage(BaseValidationStage)
+⋮----
+"""
+    Implementation of ValidationStage that uses configuration for validation rules.
+    """
+⋮----
+"""
+        Initialize the configuration-driven validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            config_manager: Configuration manager for loading validation configuration.
+            validator: Data validator to use. If None, creates a ConfigDrivenValidator.
+        """
+⋮----
+def validate_context(self, context: PipelineContext) -> bool
+⋮----
+"""
+        Validate that the context contains all required data for this stage.
+
+        Args:
+            context: The pipeline context to validate.
+
+        Returns:
+            True if the context is valid, False otherwise.
+        """
+⋮----
+def validate_data(self, data: pd.DataFrame, **kwargs) -> Dict[str, Any]
+⋮----
+"""
+        Validate the input data using configuration-driven rules.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+        """
+# Get the configuration name from kwargs or config
+config_name = kwargs.get(
+⋮----
+# Validate the data
+⋮----
+class ColumnValidationStage(BaseValidationStage)
+⋮----
+"""
+    Implementation of ValidationStage that validates specific columns.
+    """
+⋮----
+"""
+        Initialize the column validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            required_columns: List of required column names.
+            column_validator: Column validator to use. If None, creates a new one.
+        """
+⋮----
+"""
+        Validate specific columns in the input data.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+        """
+# Get required columns from kwargs, config, or instance variable
+required_columns = kwargs.get(
+⋮----
+# Validate the columns
+missing_columns = [col for col in required_columns if col not in data.columns]
+⋮----
+# Check for missing values in critical columns
+critical_columns = kwargs.get(
+⋮----
+missing_values = {}
+⋮----
+missing_count = data[col].isna().sum()
+⋮----
+issues = [
+⋮----
+# All checks passed
+⋮----
+class DataTypeValidationStage(BaseValidationStage)
+⋮----
+"""
+    Implementation of ValidationStage that validates data types.
+    """
+⋮----
+"""
+        Initialize the data type validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            column_types: Dictionary mapping column names to expected data types.
+        """
+⋮----
+"""
+        Validate data types in the input data.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+        """
+# Get column types from kwargs, config, or instance variable
+column_types = kwargs.get(
+⋮----
+# Validate data types
+type_issues = []
+⋮----
+# Check if the column can be converted to the expected type
+⋮----
+# Unknown type, skip validation
+⋮----
+class CompositeValidationStage(BaseValidationStage)
+⋮----
+"""
+    Implementation of ValidationStage that combines multiple validators.
+    """
+⋮----
+"""
+        Initialize the composite validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            validators: List of validation stages to use.
+        """
+⋮----
+"""
+        Validate the input data using multiple validators.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+        """
+all_issues = []
+valid = True
+⋮----
+# Run all validators
+⋮----
+result = validator.validate_data(data, **kwargs)
+⋮----
+valid = False
+⋮----
+class DataFrameValidationStage(BaseValidationStage)
+⋮----
+"""
+    Implementation of ValidationStage that validates the entire DataFrame.
+    """
+⋮----
+"""
+        Initialize the DataFrame validation stage.
+
+        Args:
+            name: Stage name.
+            description: Stage description.
+            config: Configuration for the stage.
+            validator: DataFrame validator to use. If None, creates a new one.
+        """
+⋮----
+"""
+        Validate the entire DataFrame.
+
+        Args:
+            data: Input DataFrame to validate.
+            **kwargs: Additional arguments for validation.
+
+        Returns:
+            Dictionary with validation results.
+        """
+# Validate the DataFrame
+min_rows = kwargs.get("min_rows", self.config.get("min_rows", 1))
+max_rows = kwargs.get("max_rows", self.config.get("max_rows", None))
+min_columns = kwargs.get("min_columns", self.config.get("min_columns", 1))
+max_columns = kwargs.get("max_columns", self.config.get("max_columns", None))
+⋮----
+issues = []
+⋮----
+# Check row count
+⋮----
+# Check column count
+⋮----
+# Check for duplicate rows
+⋮----
+duplicate_count = data.duplicated().sum()
+````
+
 ## File: nexusml/core/reference_manager.py
 ````python
 """
@@ -10535,6 +20901,1254 @@ title_col = "title"
 # Calculate average service life if available
 ````
 
+## File: nexusml/core/validation/__init__.py
+````python
+"""
+Validation Package
+
+This package provides a comprehensive validation system for data in the NexusML suite.
+It follows SOLID principles, particularly the Single Responsibility Principle (SRP)
+and the Interface Segregation Principle (ISP).
+"""
+⋮----
+# Import interfaces
+⋮----
+# Import rules
+⋮----
+# Import validators
+⋮----
+# Import adapters
+⋮----
+# Define __all__ to control what gets imported with "from nexusml.core.validation import *"
+__all__ = [
+⋮----
+# Interfaces
+⋮----
+# Rules
+⋮----
+# Validators
+⋮----
+# Adapters
+⋮----
+# Convenience function to create a validator from a configuration
+def create_validator_from_config(config, name=None)
+⋮----
+"""
+    Create a validator from a configuration dictionary.
+    
+    Args:
+        config: Configuration dictionary.
+        name: Name of the validator. If None, uses "ConfigDrivenValidator".
+        
+    Returns:
+        ConfigDrivenValidator instance.
+    """
+⋮----
+# Convenience function to validate a DataFrame
+def validate_dataframe(df, config=None, validator=None)
+⋮----
+"""
+    Validate a DataFrame using a validator or configuration.
+    
+    Args:
+        df: DataFrame to validate.
+        config: Configuration dictionary. Used if validator is None.
+        validator: Validator to use. If None, creates a ConfigDrivenValidator from config.
+        
+    Returns:
+        ValidationReport instance.
+    """
+⋮----
+validator = create_validator_from_config(config)
+⋮----
+# Convenience function to validate a column
+def validate_column(df, column, config=None, validator=None)
+⋮----
+"""
+    Validate a column in a DataFrame using a validator or configuration.
+    
+    Args:
+        df: DataFrame containing the column.
+        column: Column name to validate.
+        config: Configuration dictionary. Used if validator is None.
+        validator: Validator to use. If None, creates a BasicColumnValidator from config.
+        
+    Returns:
+        ValidationReport instance.
+    """
+⋮----
+# Create a basic column validator with default rules
+validator = BasicColumnValidator(column)
+⋮----
+# Create a column validator from config
+rules = []
+⋮----
+validator = BasicColumnValidator(column, rules)
+⋮----
+# If the validator is a ColumnValidator, use validate_column
+⋮----
+# Otherwise, use the regular validate method
+````
+
+## File: nexusml/core/validation/adapters.py
+````python
+"""
+Validation Adapters Module
+
+This module provides adapters that convert existing validation functions to the new validation interfaces.
+These adapters follow the Adapter Pattern to allow legacy code to work with the new validation system.
+"""
+⋮----
+class ReferenceDataValidator(DataValidator)
+⋮----
+"""
+    Adapter for reference data validation functions.
+    
+    This adapter converts the existing reference data validation functions to the new validation interface.
+    """
+⋮----
+def __init__(self, name: str = "ReferenceDataValidator")
+⋮----
+"""
+        Initialize a reference data validator.
+        
+        Args:
+            name: Name of the validator.
+        """
+⋮----
+def validate(self, data: ReferenceDataSource) -> ValidationReport
+⋮----
+"""
+        Validate reference data using the appropriate validation function.
+        
+        Args:
+            data: Reference data source to validate.
+            
+        Returns:
+            Validation report.
+        """
+report = ValidationReport()
+⋮----
+# Call the appropriate validation function based on the type of reference data
+⋮----
+# Get the source type from the data source if available
+source_type = getattr(data, "source_type", "unknown")
+# Get the config from the data source if available
+config = getattr(data, "config", {})
+⋮----
+# Call the validation function
+result = validate_classification_data(data, source_type, config)
+⋮----
+# Convert the result to a ValidationResult
+⋮----
+result = validate_glossary_data(data)
+⋮----
+result = validate_manufacturer_data(data)
+⋮----
+result = validate_service_life_data(data)
+⋮----
+result = validate_equipment_taxonomy_data(data)
+⋮----
+# Unknown reference data type
+⋮----
+def _add_legacy_result_to_report(self, report: ValidationReport, legacy_result: Dict[str, Any]) -> None
+⋮----
+"""
+        Convert a legacy validation result to ValidationResults and add them to the report.
+        
+        Args:
+            report: Validation report to add results to.
+            legacy_result: Legacy validation result from the old validation functions.
+        """
+# Check if the data was loaded
+loaded = legacy_result.get("loaded", False)
+⋮----
+# Add a result for each issue
+issues = legacy_result.get("issues", [])
+⋮----
+# If there are no issues, add a success result
+⋮----
+# Add results for statistics
+stats = legacy_result.get("stats", {})
+⋮----
+def add_rule(self, rule: Any) -> None
+⋮----
+"""
+        Add a validation rule to this validator.
+        
+        This method is not used for this adapter, as it uses the legacy validation functions.
+        
+        Args:
+            rule: Validation rule to add.
+        """
+# This adapter doesn't use rules, as it uses the legacy validation functions
+⋮----
+def get_rules(self) -> List[Any]
+⋮----
+"""
+        Get all validation rules in this validator.
+        
+        This method is not used for this adapter, as it uses the legacy validation functions.
+        
+        Returns:
+            Empty list, as this adapter doesn't use rules.
+        """
+⋮----
+class LegacyDataFrameValidator(DataValidator)
+⋮----
+"""
+    Adapter for legacy DataFrame validation functions.
+    
+    This adapter converts legacy validation functions that take a DataFrame and return a dictionary
+    to the new validation interface.
+    """
+⋮----
+"""
+        Initialize a legacy DataFrame validator.
+        
+        Args:
+            validation_func: Legacy validation function that takes a DataFrame and returns a dictionary.
+            name: Name of the validator. If None, uses the function name.
+        """
+⋮----
+def validate(self, data: pd.DataFrame) -> ValidationReport
+⋮----
+"""
+        Validate a DataFrame using the legacy validation function.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+# Call the legacy validation function
+result = self.validation_func(data)
+⋮----
+# Convert the result to ValidationResults
+⋮----
+# Handle exceptions from the legacy validation function
+⋮----
+"""
+        Convert a legacy validation result to ValidationResults and add them to the report.
+        
+        Args:
+            report: Validation report to add results to.
+            legacy_result: Legacy validation result from the old validation function.
+        """
+# Check if the validation passed
+valid = legacy_result.get("valid", False)
+⋮----
+# Add results for any other keys in the legacy result
+⋮----
+"""
+        Add a validation rule to this validator.
+        
+        This method is not used for this adapter, as it uses a legacy validation function.
+        
+        Args:
+            rule: Validation rule to add.
+        """
+# This adapter doesn't use rules, as it uses a legacy validation function
+⋮----
+"""
+        Get all validation rules in this validator.
+        
+        This method is not used for this adapter, as it uses a legacy validation function.
+        
+        Returns:
+            Empty list, as this adapter doesn't use rules.
+        """
+````
+
+## File: nexusml/core/validation/interfaces.py
+````python
+"""
+Validation Interfaces Module
+
+This module defines the interfaces for data validation components in the NexusML suite.
+Each interface follows the Interface Segregation Principle (ISP) from SOLID,
+defining a minimal set of methods that components must implement.
+"""
+⋮----
+class ValidationLevel(Enum)
+⋮----
+"""Enumeration of validation severity levels."""
+ERROR = "error"
+WARNING = "warning"
+INFO = "info"
+⋮----
+class ValidationResult
+⋮----
+"""
+    Class representing the result of a validation check.
+    
+    Attributes:
+        valid (bool): Whether the validation passed.
+        level (ValidationLevel): Severity level of the validation.
+        message (str): Description of the validation result.
+        context (Dict[str, Any]): Additional context about the validation.
+    """
+⋮----
+"""
+        Initialize a validation result.
+        
+        Args:
+            valid: Whether the validation passed.
+            level: Severity level of the validation.
+            message: Description of the validation result.
+            context: Additional context about the validation.
+        """
+⋮----
+def __str__(self) -> str
+⋮----
+"""Return a string representation of the validation result."""
+⋮----
+def to_dict(self) -> Dict[str, Any]
+⋮----
+"""Convert the validation result to a dictionary."""
+⋮----
+class ValidationReport
+⋮----
+"""
+    Class representing a collection of validation results.
+    
+    Attributes:
+        results (List[ValidationResult]): List of validation results.
+    """
+⋮----
+def __init__(self, results: Optional[List[ValidationResult]] = None)
+⋮----
+"""
+        Initialize a validation report.
+        
+        Args:
+            results: Initial list of validation results.
+        """
+⋮----
+def add_result(self, result: ValidationResult) -> None
+⋮----
+"""
+        Add a validation result to the report.
+        
+        Args:
+            result: Validation result to add.
+        """
+⋮----
+def is_valid(self, include_warnings: bool = False, include_info: bool = False) -> bool
+⋮----
+"""
+        Check if all validations passed.
+        
+        Args:
+            include_warnings: Whether to consider warnings as validation failures.
+            include_info: Whether to consider info messages as validation failures.
+            
+        Returns:
+            True if all validations passed, False otherwise.
+        """
+⋮----
+def get_errors(self) -> List[ValidationResult]
+⋮----
+"""
+        Get all error-level validation results.
+        
+        Returns:
+            List of error-level validation results.
+        """
+⋮----
+def get_warnings(self) -> List[ValidationResult]
+⋮----
+"""
+        Get all warning-level validation results.
+        
+        Returns:
+            List of warning-level validation results.
+        """
+⋮----
+def get_info(self) -> List[ValidationResult]
+⋮----
+"""
+        Get all info-level validation results.
+        
+        Returns:
+            List of info-level validation results.
+        """
+⋮----
+"""
+        Convert the validation report to a dictionary.
+        
+        Returns:
+            Dictionary representation of the validation report.
+        """
+⋮----
+"""Return a string representation of the validation report."""
+lines = [
+⋮----
+class ValidationRule(abc.ABC)
+⋮----
+"""
+    Interface for validation rules.
+    
+    A validation rule is a single check that can be applied to data.
+    """
+⋮----
+@abc.abstractmethod
+    def validate(self, data: Any) -> ValidationResult
+⋮----
+"""
+        Validate the data against this rule.
+        
+        Args:
+            data: Data to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+@abc.abstractmethod
+    def get_name(self) -> str
+⋮----
+"""
+        Get the name of this validation rule.
+        
+        Returns:
+            Rule name.
+        """
+⋮----
+@abc.abstractmethod
+    def get_description(self) -> str
+⋮----
+"""
+        Get a description of this validation rule.
+        
+        Returns:
+            Rule description.
+        """
+⋮----
+class DataValidator(abc.ABC)
+⋮----
+"""
+    Interface for data validators.
+    
+    A data validator applies multiple validation rules to data.
+    """
+⋮----
+@abc.abstractmethod
+    def validate(self, data: Any) -> ValidationReport
+⋮----
+"""
+        Validate the data against all rules.
+        
+        Args:
+            data: Data to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+@abc.abstractmethod
+    def add_rule(self, rule: ValidationRule) -> None
+⋮----
+"""
+        Add a validation rule to this validator.
+        
+        Args:
+            rule: Validation rule to add.
+        """
+⋮----
+@abc.abstractmethod
+    def get_rules(self) -> List[ValidationRule]
+⋮----
+"""
+        Get all validation rules in this validator.
+        
+        Returns:
+            List of validation rules.
+        """
+⋮----
+class ColumnValidator(DataValidator)
+⋮----
+"""
+    Interface for column validators.
+    
+    A column validator applies validation rules to a specific column in a DataFrame.
+    """
+⋮----
+@abc.abstractmethod
+    def validate_column(self, df: pd.DataFrame, column: str) -> ValidationReport
+⋮----
+"""
+        Validate a specific column in a DataFrame.
+        
+        Args:
+            df: DataFrame to validate.
+            column: Column name to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+class RowValidator(DataValidator)
+⋮----
+"""
+    Interface for row validators.
+    
+    A row validator applies validation rules to rows in a DataFrame.
+    """
+⋮----
+@abc.abstractmethod
+    def validate_row(self, row: pd.Series) -> ValidationReport
+⋮----
+"""
+        Validate a single row in a DataFrame.
+        
+        Args:
+            row: Row to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+class DataFrameValidator(DataValidator)
+⋮----
+"""
+    Interface for DataFrame validators.
+    
+    A DataFrame validator applies validation rules to an entire DataFrame.
+    """
+⋮----
+@abc.abstractmethod
+    def validate_dataframe(self, df: pd.DataFrame) -> ValidationReport
+⋮----
+"""
+        Validate an entire DataFrame.
+        
+        Args:
+            df: DataFrame to validate.
+            
+        Returns:
+            Validation report.
+        """
+````
+
+## File: nexusml/core/validation/rules.py
+````python
+"""
+Validation Rules Module
+
+This module provides concrete implementations of validation rules for data validation.
+Each rule follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a single validation check.
+"""
+⋮----
+class ColumnExistenceRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if a column exists in a DataFrame.
+    """
+⋮----
+"""
+        Initialize a column existence rule.
+        
+        Args:
+            column: Column name to check.
+            level: Validation level for this rule.
+            required: Whether the column is required. If False, this rule will
+                     always pass but will add an info message if the column is missing.
+        """
+⋮----
+def validate(self, data: pd.DataFrame) -> ValidationResult
+⋮----
+"""
+        Validate that the column exists in the DataFrame.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+column_exists = self.column in data.columns
+⋮----
+def get_name(self) -> str
+⋮----
+"""Get the name of this validation rule."""
+⋮----
+def get_description(self) -> str
+⋮----
+"""Get a description of this validation rule."""
+⋮----
+class ColumnTypeRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if a column has the expected data type.
+    """
+⋮----
+"""
+        Initialize a column type rule.
+        
+        Args:
+            column: Column name to check.
+            expected_type: Expected data type. Can be a string ('int', 'float', 'str', etc.)
+                          or a Python type (int, float, str, etc.).
+            level: Validation level for this rule.
+        """
+⋮----
+"""
+        Validate that the column has the expected data type.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Get the actual type of the column
+actual_type = data[self.column].dtype
+⋮----
+# Convert expected_type to string for comparison
+expected_type_str = (
+⋮----
+# Check if the types match
+type_matches = False
+⋮----
+# Handle special cases for pandas/numpy types
+⋮----
+type_matches = pd.api.types.is_integer_dtype(actual_type)
+⋮----
+type_matches = pd.api.types.is_numeric_dtype(actual_type)
+⋮----
+type_matches = pd.api.types.is_string_dtype(actual_type)
+⋮----
+type_matches = pd.api.types.is_bool_dtype(actual_type)
+⋮----
+type_matches = pd.api.types.is_datetime64_dtype(actual_type)
+⋮----
+# For other types, compare the type names
+type_matches = str(actual_type) == expected_type_str
+⋮----
+class NonNullRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if a column has no null values.
+    """
+⋮----
+"""
+        Initialize a non-null rule.
+        
+        Args:
+            column: Column name to check.
+            level: Validation level for this rule.
+            max_null_fraction: Maximum allowed fraction of null values (0.0 to 1.0).
+                              If the fraction of null values is less than or equal to this value,
+                              the validation will pass.
+        """
+⋮----
+"""
+        Validate that the column has no null values.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Count null values
+null_count = data[self.column].isna().sum()
+total_count = len(data)
+null_fraction = null_count / total_count if total_count > 0 else 0.0
+⋮----
+class ValueRangeRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if numeric values in a column are within a specified range.
+    """
+⋮----
+"""
+        Initialize a value range rule.
+        
+        Args:
+            column: Column name to check.
+            min_value: Minimum allowed value (inclusive). If None, no minimum is enforced.
+            max_value: Maximum allowed value (inclusive). If None, no maximum is enforced.
+            level: Validation level for this rule.
+        """
+⋮----
+"""
+        Validate that values in the column are within the specified range.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Convert column to numeric, coercing errors to NaN
+numeric_values = pd.to_numeric(data[self.column], errors='coerce')
+⋮----
+# Count out-of-range values
+out_of_range_mask = pd.Series(False, index=numeric_values.index)
+⋮----
+# Exclude NaN values from the check
+⋮----
+out_of_range_count = out_of_range_mask.sum()
+total_count = len(numeric_values) - numeric_values.isna().sum()
+⋮----
+range_str = self._get_range_str()
+⋮----
+def _get_range_str(self) -> str
+⋮----
+"""Get a string representation of the range."""
+⋮----
+class UniqueValuesRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if a column has unique values.
+    """
+⋮----
+"""
+        Initialize a unique values rule.
+        
+        Args:
+            column: Column name to check.
+            level: Validation level for this rule.
+            max_duplicate_fraction: Maximum allowed fraction of duplicate values (0.0 to 1.0).
+                                   If the fraction of duplicate values is less than or equal to this value,
+                                   the validation will pass.
+        """
+⋮----
+"""
+        Validate that the column has unique values.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Count duplicate values
+duplicate_count = data[self.column].duplicated().sum()
+⋮----
+duplicate_fraction = duplicate_count / total_count if total_count > 0 else 0.0
+⋮----
+class AllowedValuesRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if values in a column are from a set of allowed values.
+    """
+⋮----
+"""
+        Initialize an allowed values rule.
+        
+        Args:
+            column: Column name to check.
+            allowed_values: Set of allowed values.
+            level: Validation level for this rule.
+            max_invalid_fraction: Maximum allowed fraction of invalid values (0.0 to 1.0).
+                                 If the fraction of invalid values is less than or equal to this value,
+                                 the validation will pass.
+        """
+⋮----
+"""
+        Validate that values in the column are from the set of allowed values.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Count invalid values
+invalid_mask = ~data[self.column].isin(self.allowed_values)
+⋮----
+invalid_count = invalid_mask.sum()
+total_count = len(data) - data[self.column].isna().sum()
+invalid_fraction = invalid_count / total_count if total_count > 0 else 0.0
+⋮----
+# Get a sample of invalid values
+invalid_values = data.loc[invalid_mask, self.column].unique()
+invalid_sample = list(invalid_values[:5])  # Limit to 5 examples
+⋮----
+class RegexPatternRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if string values in a column match a regular expression pattern.
+    """
+⋮----
+"""
+        Initialize a regex pattern rule.
+        
+        Args:
+            column: Column name to check.
+            pattern: Regular expression pattern to match. Can be a string or a compiled pattern.
+            level: Validation level for this rule.
+            max_invalid_fraction: Maximum allowed fraction of invalid values (0.0 to 1.0).
+                                 If the fraction of invalid values is less than or equal to this value,
+                                 the validation will pass.
+        """
+⋮----
+"""
+        Validate that string values in the column match the regular expression pattern.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Convert column to string
+str_values = data[self.column].astype(str)
+⋮----
+# Count invalid values (those that don't match the pattern)
+invalid_mask = ~str_values.str.match(self.pattern.pattern)
+⋮----
+class CrossColumnComparisonRule(ValidationRule)
+⋮----
+"""
+    Rule that compares values between two columns.
+    """
+⋮----
+"""
+        Initialize a cross-column comparison rule.
+        
+        Args:
+            column1: First column name.
+            column2: Second column name.
+            comparison: Comparison operator. One of: 'eq', 'ne', 'lt', 'le', 'gt', 'ge'.
+            level: Validation level for this rule.
+            max_invalid_fraction: Maximum allowed fraction of invalid comparisons (0.0 to 1.0).
+                                 If the fraction of invalid comparisons is less than or equal to this value,
+                                 the validation will pass.
+        """
+⋮----
+# Validate comparison operator
+valid_comparisons = {'eq', 'ne', 'lt', 'le', 'gt', 'ge'}
+⋮----
+"""
+        Validate the comparison between two columns.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+# Check if both columns exist
+missing_columns = []
+⋮----
+# Perform the comparison
+⋮----
+invalid_mask = data[self.column1] != data[self.column2]
+⋮----
+invalid_mask = data[self.column1] == data[self.column2]
+⋮----
+invalid_mask = data[self.column1] >= data[self.column2]
+⋮----
+invalid_mask = data[self.column1] > data[self.column2]
+⋮----
+invalid_mask = data[self.column1] <= data[self.column2]
+⋮----
+invalid_mask = data[self.column1] < data[self.column2]
+⋮----
+# This should never happen due to the check in __init__
+⋮----
+# Exclude rows where either column has NaN
+⋮----
+total_count = len(data) - (data[self.column1].isna() | data[self.column2].isna()).sum()
+⋮----
+comparison_str = self._get_comparison_str()
+⋮----
+def _get_comparison_str(self) -> str
+⋮----
+"""Get a string representation of the comparison operator."""
+comparison_map = {
+⋮----
+class RowCountRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if the DataFrame has a certain number of rows.
+    """
+⋮----
+"""
+        Initialize a row count rule.
+        
+        Args:
+            min_rows: Minimum number of rows (inclusive). If None, no minimum is enforced.
+            max_rows: Maximum number of rows (inclusive). If None, no maximum is enforced.
+            level: Validation level for this rule.
+        """
+⋮----
+"""
+        Validate that the DataFrame has the expected number of rows.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+row_count = len(data)
+⋮----
+# Check if row count is within range
+⋮----
+# Row count is within range
+⋮----
+"""Get a string representation of the row count range."""
+⋮----
+class ColumnCountRule(ValidationRule)
+⋮----
+"""
+    Rule that checks if the DataFrame has a certain number of columns.
+    """
+⋮----
+"""
+        Initialize a column count rule.
+        
+        Args:
+            min_columns: Minimum number of columns (inclusive). If None, no minimum is enforced.
+            max_columns: Maximum number of columns (inclusive). If None, no maximum is enforced.
+            level: Validation level for this rule.
+        """
+⋮----
+"""
+        Validate that the DataFrame has the expected number of columns.
+        
+        Args:
+            data: DataFrame to validate.
+            
+        Returns:
+            Validation result.
+        """
+⋮----
+column_count = len(data.columns)
+⋮----
+# Check if column count is within range
+⋮----
+# Column count is within range
+⋮----
+"""Get a string representation of the column count range."""
+````
+
+## File: nexusml/core/validation/validators.py
+````python
+"""
+Validators Module
+
+This module provides concrete implementations of data validators for the NexusML suite.
+Each validator follows the Single Responsibility Principle (SRP) from SOLID,
+focusing on a specific type of validation.
+"""
+⋮----
+class BaseValidator(DataValidator)
+⋮----
+"""
+    Base implementation of the DataValidator interface.
+    
+    Provides common functionality for all validators.
+    """
+⋮----
+def __init__(self, name: str = "BaseValidator")
+⋮----
+"""
+        Initialize a base validator.
+        
+        Args:
+            name: Name of the validator.
+        """
+⋮----
+def validate(self, data: Any) -> ValidationReport
+⋮----
+"""
+        Validate the data against all rules.
+        
+        Args:
+            data: Data to validate.
+            
+        Returns:
+            Validation report.
+        """
+report = ValidationReport()
+⋮----
+result = rule.validate(data)
+⋮----
+def add_rule(self, rule: ValidationRule) -> None
+⋮----
+"""
+        Add a validation rule to this validator.
+        
+        Args:
+            rule: Validation rule to add.
+        """
+⋮----
+def get_rules(self) -> List[ValidationRule]
+⋮----
+"""
+        Get all validation rules in this validator.
+        
+        Returns:
+            List of validation rules.
+        """
+⋮----
+class ConfigDrivenValidator(BaseValidator)
+⋮----
+"""
+    Validator that uses configuration to define validation rules.
+    
+    This validator creates validation rules based on a configuration dictionary.
+    """
+⋮----
+"""
+        Initialize a configuration-driven validator.
+        
+        Args:
+            config: Configuration dictionary. If None, uses an empty dictionary.
+            name: Name of the validator.
+        """
+⋮----
+def _create_rules_from_config(self) -> None
+⋮----
+"""Create validation rules from the configuration."""
+# Create rules for required columns
+required_columns = self.config.get("required_columns", [])
+⋮----
+column_name = column_info.get("name")
+⋮----
+# Add column existence rule
+⋮----
+# Add column type rule if specified
+data_type = column_info.get("data_type")
+⋮----
+# Add non-null rule if specified
+⋮----
+max_null_fraction = column_info.get("max_null_fraction", 0.0)
+⋮----
+# Add value range rule if specified
+min_value = column_info.get("min_value")
+max_value = column_info.get("max_value")
+⋮----
+# Add allowed values rule if specified
+allowed_values = column_info.get("allowed_values")
+⋮----
+# Add regex pattern rule if specified
+pattern = column_info.get("pattern")
+⋮----
+# Add unique values rule if specified
+⋮----
+# Create rules for cross-column comparisons
+comparisons = self.config.get("comparisons", [])
+⋮----
+column1 = comparison_info.get("column1")
+column2 = comparison_info.get("column2")
+operator = comparison_info.get("operator")
+⋮----
+# Create rules for row count
+row_count = self.config.get("row_count", {})
+min_rows = row_count.get("min")
+max_rows = row_count.get("max")
+⋮----
+# Create rules for column count
+column_count = self.config.get("column_count", {})
+min_columns = column_count.get("min")
+max_columns = column_count.get("max")
+⋮----
+class BasicColumnValidator(BaseValidator, ColumnValidator)
+⋮----
+"""
+    Validator for a single column in a DataFrame.
+    
+    This validator applies rules to a specific column.
+    """
+⋮----
+"""
+        Initialize a column validator.
+        
+        Args:
+            column: Column name to validate.
+            rules: Initial list of validation rules.
+            name: Name of the validator. If None, uses the column name.
+        """
+⋮----
+# Add initial rules
+⋮----
+def validate_column(self, df: pd.DataFrame, column: Optional[str] = None) -> ValidationReport
+⋮----
+"""
+        Validate a specific column in a DataFrame.
+        
+        Args:
+            df: DataFrame to validate.
+            column: Column name to validate. If None, uses the column specified in the constructor.
+            
+        Returns:
+            Validation report.
+        """
+column_to_validate = column or self.column
+⋮----
+# Check if the column exists
+⋮----
+# Extract the column as a Series
+column_data = df[column_to_validate]
+⋮----
+# Create a single-column DataFrame for validation
+column_df = pd.DataFrame({column_to_validate: column_data})
+⋮----
+# Validate using the base validator
+⋮----
+class BasicRowValidator(BaseValidator, RowValidator)
+⋮----
+"""
+    Validator for rows in a DataFrame.
+    
+    This validator applies rules to individual rows.
+    """
+⋮----
+"""
+        Initialize a row validator.
+        
+        Args:
+            rules: Initial list of validation rules.
+            name: Name of the validator.
+        """
+⋮----
+def validate_row(self, row: pd.Series) -> ValidationReport
+⋮----
+"""
+        Validate a single row in a DataFrame.
+        
+        Args:
+            row: Row to validate.
+            
+        Returns:
+            Validation report.
+        """
+# Convert the row to a single-row DataFrame
+row_df = pd.DataFrame([row])
+⋮----
+class BasicDataFrameValidator(BaseValidator, DataFrameValidator)
+⋮----
+"""
+    Validator for an entire DataFrame.
+    
+    This validator applies rules to the entire DataFrame.
+    """
+⋮----
+"""
+        Initialize a DataFrame validator.
+        
+        Args:
+            rules: Initial list of validation rules.
+            name: Name of the validator.
+        """
+⋮----
+def validate_dataframe(self, df: pd.DataFrame) -> ValidationReport
+⋮----
+"""
+        Validate an entire DataFrame.
+        
+        Args:
+            df: DataFrame to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+class CompositeValidator(BaseValidator)
+⋮----
+"""
+    Validator that combines multiple validators.
+    
+    This validator applies multiple validators to the same data.
+    """
+⋮----
+"""
+        Initialize a composite validator.
+        
+        Args:
+            validators: List of validators to apply.
+            name: Name of the validator.
+        """
+⋮----
+"""
+        Validate the data using all validators.
+        
+        Args:
+            data: Data to validate.
+            
+        Returns:
+            Validation report.
+        """
+⋮----
+# Apply each validator
+⋮----
+validator_report = validator.validate(data)
+⋮----
+# Add results from this validator to the composite report
+⋮----
+# Also apply rules directly added to this validator
+⋮----
+def add_validator(self, validator: DataValidator) -> None
+⋮----
+"""
+        Add a validator to this composite validator.
+        
+        Args:
+            validator: Validator to add.
+        """
+⋮----
+def get_validators(self) -> List[DataValidator]
+⋮----
+"""
+        Get all validators in this composite validator.
+        
+        Returns:
+            List of validators.
+        """
+⋮----
+class SchemaValidator(BaseValidator, DataFrameValidator)
+⋮----
+"""
+    Validator that validates a DataFrame against a schema.
+    
+    This validator checks that a DataFrame has the expected columns with the expected types.
+    """
+⋮----
+"""
+        Initialize a schema validator.
+        
+        Args:
+            schema: Dictionary mapping column names to expected types.
+            required_columns: Set of column names that are required. If None, all columns in the schema are required.
+            name: Name of the validator.
+        """
+⋮----
+# Create rules for each column in the schema
+⋮----
+# Add column existence rule if the column is required
+⋮----
+# Add column type rule
+⋮----
+"""
+        Validate a DataFrame against the schema.
+        
+        Args:
+            df: DataFrame to validate.
+            
+        Returns:
+            Validation report.
+        """
+````
+
 ## File: nexusml/data/training_data/fake_training_data.csv
 ````
 equipment_tag,manufacturer,model,category_name,omniclass_code,uniformat_code,masterformat_code,mcaa_system_category,building_name,initial_cost,condition_score,CategoryID,OmniClassID,UniFormatID,MasterFormatID,MCAAID,LocationID
@@ -10546,6 +22160,66 @@ HVAC-AHU-12,Daikin,Vision AHU,Air Handler,23-73-00,D3040,23 73 13,HVAC Equipment
 FIRE-SPK-07,Tyco,TY325,Fire Sprinkler,21-13-13,D4010,21 13 13,Fire Protection,Storage,12000,4.3,6,17,12,10,14,78
 HVAC-EXF-20,Greenheck,GB-420,Exhaust Fan,23-34-00,D3060,23 34 13,HVAC Equipment,Maintenance,4200,4.6,7,18,13,11,15,81
 ELEC-TRF-11,Siemens,3AX78,Transformer,26-12-00,D5010,26 12 19,Electrical Equipment,Utility Plant,22000,4.4,8,19,14,12,16,88
+````
+
+## File: nexusml/data/training_data/production_training_data.csv
+````
+equipment_tag,manufacturer,model,category_name,omniclass_code,uniformat_code,masterformat_code,mcaa_system_category,CategoryID,OmniClassID,UniFormatID,MasterFormatID,MCAAID,LocationID,Precon_System,Operations_System,Drawing_Abbreviation,Precon_Tag,System_Type_ID,Asset_Category,Equip_Name_ID,Sub_System_Type,Sub_System_ID,Sub_System_Class,Class_ID,Unit
+AHU-01,Trane,CSAA012,Air Handler,23-33 13 13,D3040,23 74 13,HVAC Equipment,101,2333,3040,2374,H,1001,Air Handling Units,Air Handling Units,AHU,AHU,H,Air Handling Unit,AHU,Packaged,PKG,Floor Mounted,FLR,CFM
+CH-01,Carrier,30XA,Chiller,23-33 13 19,D3040,23 64 23,HVAC Equipment,102,2334,3040,2364,H,1001,Chiller Plant,"Chilled, Condenser, Heating Water",CH,CH,H,Chiller,CH,Air Cooled,AIR,Packaged,PKG,TONS
+P-01,Grundfos,CR 32-2,Pump,23-33 13 25,D3020,23 21 23,Mechanical/Sheetmetal,103,2335,3020,2321,SM,1001,"Chilled, Condenser, Heating Water, Steam","Chilled, Condenser, Heating Water",PMP,PMP,H,Pump,PMP,Hydronic,HYD,Centrifugal,CNT,GPM
+FCU-01,Daikin,FXFQ,Fan Coil Unit,23-33 13 15,D3040,23 82 19,HVAC Equipment,104,2336,3040,2382,H,1001,Air Handling System Terminal Equipment,Terminal Equipment,FCU,FCU,H,Fan Coil Unit,FCU,Ceiling Mounted,CLG,Direct Expansion,DX,CFM
+RTU-01,York,DM090,Roof Top Unit,23-33 13 17,D3040,23 74 16,HVAC Equipment,105,2337,3040,2374,H,1001,Air Handling Units,Air Handling Units,RTU,RTU,H,Roof Top Unit,RTU,Packaged,PKG,"DX, Gas-Fired",DXG,CFM
+BLR-01,Cleaver-Brooks,CB-LE,Boiler,23-33 13 33,D3020,23 52 33,Hot Water Systems,106,2338,3020,2352,H,1001,Heating Water Boiler Plant,Heating Water,HWB,HWB,H,Boiler,BLR,Hot Water,HW,Packaged Fire Tube,PFT,MBH
+````
+
+## File: nexusml/mypy.ini
+````
+[mypy]
+python_version = 3.8
+warn_return_any = True
+warn_unused_configs = True
+disallow_untyped_defs = False
+disallow_incomplete_defs = False
+check_untyped_defs = True
+disallow_untyped_decorators = False
+no_implicit_optional = True
+strict_optional = True
+
+# Ignore errors in external libraries
+[mypy.plugins.numpy.*]
+follow_imports = skip
+follow_imports_for_stubs = True
+
+[mypy.plugins.pandas.*]
+follow_imports = skip
+follow_imports_for_stubs = True
+
+# Ignore errors in specific modules
+[mypy.plugins.sklearn.*]
+follow_imports = skip
+follow_imports_for_stubs = True
+
+# Ignore errors in fca_dashboard modules that we're not refactoring yet
+[mypy.fca_dashboard.*]
+ignore_errors = True
+
+# Ignore errors in specific files
+[mypy.nexusml.ingest.generator.omniclass_description_generator]
+ignore_errors = True
+
+[mypy.nexusml.utils.logging]
+ignore_errors = True
+
+[mypy.nexusml.utils.csv_utils]
+ignore_errors = True
+
+# Configure specific modules
+[mypy.nexusml.config.*]
+disallow_untyped_defs = True
+disallow_incomplete_defs = True
+check_untyped_defs = True
+disallow_untyped_decorators = True
 ````
 
 ## File: nexusml/predict_v2.py
@@ -10720,6 +22394,111 @@ logger = parser.setup_logging(args)
 # Validate arguments
 ⋮----
 # Run the appropriate prediction implementation based on the feature flag
+````
+
+## File: nexusml/predict.py
+````python
+#!/usr/bin/env python
+"""
+Equipment Classification Prediction Script
+
+This script loads a trained model and makes predictions on new equipment descriptions.
+"""
+⋮----
+# Add the project root to the Python path if needed
+project_root = Path(__file__).resolve().parent.parent
+⋮----
+def setup_logging(log_level="INFO")
+⋮----
+"""Set up logging configuration."""
+# Create logs directory if it doesn't exist
+log_dir = Path("logs")
+⋮----
+# Set up logging
+numeric_level = getattr(logging, log_level.upper(), logging.INFO)
+⋮----
+def main()
+⋮----
+"""Main function to run the prediction script."""
+# Parse command-line arguments
+parser = argparse.ArgumentParser(
+⋮----
+args = parser.parse_args()
+⋮----
+logger = setup_logging(args.log_level)
+⋮----
+# Load the model
+⋮----
+classifier = EquipmentClassifier()
+⋮----
+# Load input data
+⋮----
+input_data = pd.read_csv(args.input_file)
+⋮----
+# Check if we have the fake data columns or the description column
+has_fake_data_columns = all(
+⋮----
+# Apply feature engineering to input data
+⋮----
+# First map staging data columns to model input format
+input_data = map_staging_to_model_input(input_data)
+⋮----
+# Then apply feature engineering
+feature_engineer = GenericFeatureEngineer()
+processed_data = feature_engineer.transform(input_data)
+⋮----
+# Make predictions
+⋮----
+results = []
+⋮----
+# Get combined text from feature engineering
+⋮----
+description = row["combined_text"]
+⋮----
+# Fallback to creating a combined description
+description = f"{row.get('equipment_tag', '')} {row.get('manufacturer', '')} {row.get('model', '')} {row.get('category_name', '')} {row.get('mcaa_system_category', '')}"
+⋮----
+# Get service life from feature engineering
+service_life = 20.0
+⋮----
+service_life = float(row.get("service_life", 20.0))
+⋮----
+service_life = float(row.get("condition_score", 20.0))
+⋮----
+service_life = float(row.get(args.service_life_column, 20.0))
+⋮----
+# Get asset tag
+asset_tag = ""
+⋮----
+asset_tag = str(row.get("equipment_tag", ""))
+⋮----
+asset_tag = str(row.get(args.asset_tag_column, ""))
+⋮----
+# Debug the row data
+⋮----
+# Make prediction with properly processed data
+# Instead of just passing the description, service_life, and asset_tag,
+# we need to pass the entire row to the model
+prediction = classifier.predict_from_row(row)
+⋮----
+# Add original description and service life to results
+⋮----
+# Print progress
+current_index = int(i)
+total_items = len(input_data)
+⋮----
+# Convert results to DataFrame
+⋮----
+results_df = pd.DataFrame(results)
+⋮----
+# Create output directory if it doesn't exist
+output_path = Path(args.output_file)
+⋮----
+# Save results
+⋮----
+# Print summary
+⋮----
+# Print sample of predictions
 ````
 
 ## File: nexusml/README.md
@@ -11114,6 +22893,59 @@ project_root = Path(__file__).resolve().parent.parent
 ⋮----
 # Import legacy modules for backward compatibility
 ⋮----
+# Not importing validate_data - we'll create our own version
+⋮----
+# Import the config module
+⋮----
+# New validation function that uses data_config.yml
+def validate_data_from_config(data_path: str, logger=None) -> Dict
+⋮----
+"""
+    Validate the training data using required columns from data_config.yml.
+
+    Args:
+        data_path: Path to the training data
+        logger: Logger instance
+
+    Returns:
+        Validation results dictionary
+    """
+⋮----
+# Check if file exists
+⋮----
+# Try to read the file
+⋮----
+df = pd.read_csv(data_path)
+⋮----
+# Load required columns from production_data_config.yml
+config_path = get_config_file_path('production_data_config')
+⋮----
+# Fall back to hardcoded list if config file doesn't exist
+required_columns = [
+⋮----
+config = yaml.safe_load(f)
+⋮----
+# Extract source columns (not target columns that are created during feature engineering)
+required_columns = []
+⋮----
+# Only include source columns, not target columns
+# Target columns have names like Equipment_Category, Uniformat_Class, etc.
+⋮----
+# Fall back to hardcoded list if config file can't be parsed
+⋮----
+# Check required columns
+missing_columns = [col for col in required_columns if col not in df.columns]
+⋮----
+# Check for missing values in critical columns
+critical_columns = ["equipment_tag", "category_name", "mcaa_system_category"]
+missing_values = {}
+⋮----
+missing_count = df[col].isna().sum()
+⋮----
+issues = [
+⋮----
+# All checks passed
+⋮----
 def create_orchestrator(logger) -> PipelineOrchestrator
 ⋮----
 """
@@ -11428,10 +23260,12 @@ logger = setup_logging(args.log_level)
 ref_manager = load_reference_data(args.reference_config_path, logger)
 ⋮----
 # Step 2: Validate training data
-validation_results = validate_data(args.data_path, logger)
+validation_results = validate_data_from_config(args.data_path, logger)
 ⋮----
 # Step 3: Train the model
 start_time = time.time()
+⋮----
+# Set feature_config_path to production_data_config.yml if not specified
 ⋮----
 # Use the new orchestrator-based implementation
 ⋮----
@@ -11453,6 +23287,845 @@ sample_prediction = make_sample_prediction(classifier, logger=logger)
 model = classifier.model if hasattr(classifier, "model") else None
 ⋮----
 training_time = time.time() - start_time
+````
+
+## File: nexusml/train_model_pipeline.py
+````python
+#!/usr/bin/env python
+"""
+Production Model Training Pipeline for Equipment Classification
+
+This script implements a production-ready pipeline for training the equipment classification model
+following SOP 008. It provides a structured workflow with command-line arguments for flexibility,
+proper logging, comprehensive evaluation, and model versioning.
+
+Usage:
+    python train_model_pipeline.py --data-path PATH [options]
+
+Example:
+    python train_model_pipeline.py --data-path files/training-data/equipment_data.csv --optimize
+"""
+⋮----
+# Add the project root to the Python path if needed
+project_root = Path(__file__).resolve().parent.parent
+⋮----
+# Import core modules
+⋮----
+# Implement missing functions
+def validate_training_data(data_path: str) -> Dict
+⋮----
+"""
+    Validate the training data to ensure it meets quality standards.
+
+    This function checks:
+    1. If the file exists and can be read
+    2. If required columns are present
+    3. If data types are correct
+    4. If there are any missing values in critical columns
+
+    Args:
+        data_path: Path to the training data file
+
+    Returns:
+        Dictionary with validation results
+    """
+⋮----
+# Check if file exists
+⋮----
+# Try to read the file
+⋮----
+df = pd.read_csv(data_path)
+⋮----
+# Check required columns for the real data format
+required_columns = [
+⋮----
+missing_columns = [col for col in required_columns if col not in df.columns]
+⋮----
+# Check for missing values in critical columns
+critical_columns = ["equipment_tag", "category_name", "mcaa_system_category"]
+missing_values = {}
+⋮----
+missing_count = df[col].isna().sum()
+⋮----
+issues = [
+⋮----
+# All checks passed
+⋮----
+"""
+    Visualize the distribution of categories in the dataset.
+
+    Args:
+        df: DataFrame with category columns
+        output_dir: Directory to save visualizations
+
+    Returns:
+        Tuple of paths to the saved visualization files
+    """
+# Create output directory if it doesn't exist
+⋮----
+# Define output file paths
+equipment_category_file = f"{output_dir}/equipment_category_distribution.png"
+system_type_file = f"{output_dir}/system_type_distribution.png"
+⋮----
+# Generate visualizations
+⋮----
+)  # Use category_name instead of Equipment_Category
+⋮----
+)  # Use mcaa_system_category instead of System_Type
+⋮----
+"""
+    Create and save a confusion matrix visualization.
+
+    Args:
+        y_true: True labels
+        y_pred: Predicted labels
+        class_name: Name of the classification column
+        output_file: Path to save the visualization
+    """
+# Create confusion matrix
+cm = confusion_matrix(y_true, y_pred)
+⋮----
+# Get unique classes as a list of strings
+classes = sorted(list(set([str(c) for c in y_true] + [str(c) for c in y_pred])))
+⋮----
+# Create figure
+⋮----
+# Configure logging
+def setup_logging(log_level: str = "INFO") -> logging.Logger
+⋮----
+"""
+    Set up logging configuration.
+
+    Args:
+        log_level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
+    Returns:
+        Logger instance
+    """
+# Create logs directory if it doesn't exist
+log_dir = Path("logs")
+⋮----
+# Create a timestamp for the log file
+timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+log_file = log_dir / f"model_training_{timestamp}.log"
+⋮----
+# Set up logging
+numeric_level = getattr(logging, log_level.upper(), logging.INFO)
+⋮----
+def parse_arguments() -> argparse.Namespace
+⋮----
+"""
+    Parse command-line arguments.
+
+    Returns:
+        Parsed arguments
+    """
+parser = argparse.ArgumentParser(
+⋮----
+# Data arguments
+⋮----
+# Training arguments
+⋮----
+# Optimization arguments
+⋮----
+# Output arguments
+⋮----
+# Logging arguments
+⋮----
+# Visualization arguments
+⋮----
+"""
+    Load reference data using the ReferenceManager.
+
+    Args:
+        config_path: Path to the reference configuration file
+        logger: Logger instance
+
+    Returns:
+        Initialized ReferenceManager with loaded data
+    """
+⋮----
+ref_manager = ReferenceManager(config_path)
+⋮----
+def validate_data(data_path: str, logger: Optional[logging.Logger] = None) -> Dict
+⋮----
+"""
+    Validate the training data to ensure it meets quality standards.
+
+    Args:
+        data_path: Path to the training data
+        logger: Logger instance
+
+    Returns:
+        Validation results dictionary
+    """
+⋮----
+validation_results = validate_training_data(data_path)
+⋮----
+# Log validation summary
+⋮----
+"""
+    Train the equipment classification model.
+
+    Args:
+        data_path: Path to the training data
+        feature_config_path: Path to the feature configuration
+        sampling_strategy: Strategy for handling class imbalance
+        test_size: Proportion of data to use for testing
+        random_state: Random state for reproducibility
+        optimize_params: Whether to perform hyperparameter optimization
+        logger: Logger instance
+
+    Returns:
+        Tuple containing:
+        - Trained EquipmentClassifier
+        - Processed DataFrame
+        - Dictionary with evaluation metrics
+    """
+# Create classifier instance
+classifier = EquipmentClassifier(sampling_strategy=sampling_strategy)
+⋮----
+# Train the model
+⋮----
+start_time = time.time()
+⋮----
+# Train with custom parameters
+⋮----
+sampling_strategy=sampling_strategy,  # Pass sampling_strategy explicitly
+⋮----
+# Get the processed data
+df = classifier.df
+⋮----
+# Prepare data for evaluation
+x = pd.DataFrame(
+⋮----
+y = df[
+⋮----
+"category_name",  # Use category_name instead of Equipment_Category
+"uniformat_code",  # Use uniformat_code instead of Uniformat_Class
+"mcaa_system_category",  # Use mcaa_system_category instead of System_Type
+⋮----
+# Split for evaluation
+⋮----
+# Optimize hyperparameters if requested
+⋮----
+optimized_model = optimize_hyperparameters(classifier.model, x_train, y_train)
+⋮----
+# Update classifier with optimized model
+⋮----
+# Evaluate the model
+⋮----
+# Make predictions if model exists
+metrics = {}
+⋮----
+y_pred_df = enhanced_evaluation(classifier.model, x_test, y_test)
+⋮----
+# Calculate metrics
+⋮----
+# Analyze "Other" category performance
+⋮----
+training_time = time.time() - start_time
+⋮----
+"""
+    Save the trained model and metadata.
+
+    Args:
+        classifier: Trained EquipmentClassifier
+        output_dir: Directory to save the model
+        model_name: Base name for the model file
+        metrics: Evaluation metrics
+        logger: Logger instance
+
+    Returns:
+        Dictionary with paths to saved files
+    """
+⋮----
+output_path = Path(output_dir)
+⋮----
+# Create a timestamp for versioning
+⋮----
+model_filename = f"{model_name}_{timestamp}.pkl"
+metadata_filename = f"{model_name}_{timestamp}_metadata.json"
+⋮----
+model_path = output_path / model_filename
+metadata_path = output_path / metadata_filename
+⋮----
+# Save the model
+⋮----
+# Create and save metadata
+metadata = {
+⋮----
+# Create a copy of the latest model (instead of symlink which requires admin privileges on Windows)
+latest_model_path = output_path / f"{model_name}_latest.pkl"
+latest_metadata_path = output_path / f"{model_name}_latest_metadata.json"
+⋮----
+# Remove existing files if they exist
+⋮----
+# Copy the files instead of creating symlinks
+⋮----
+"""
+    Generate visualizations of model performance and data distribution.
+
+    Args:
+        classifier: Trained EquipmentClassifier
+        df: Processed DataFrame
+        output_dir: Directory to save visualizations
+        logger: Logger instance
+
+    Returns:
+        Dictionary with paths to visualization files
+    """
+# Create visualizations directory if it doesn't exist
+viz_dir = Path(output_dir) / "visualizations"
+⋮----
+# Visualize category distribution
+⋮----
+# Prepare data for confusion matrix
+⋮----
+# Generate confusion matrices if model exists
+confusion_matrix_files = {}
+⋮----
+# Make predictions
+y_pred = classifier.model.predict(x_test)
+y_pred_df = pd.DataFrame(y_pred, columns=y_test.columns)
+⋮----
+# Generate confusion matrices
+⋮----
+output_file = str(viz_dir / f"confusion_matrix_{col}.png")
+⋮----
+"""
+    Make a sample prediction using the trained model.
+
+    Args:
+        classifier: Trained EquipmentClassifier
+        description: Equipment description
+        service_life: Service life value
+        logger: Logger instance
+
+    Returns:
+        Prediction results
+    """
+⋮----
+# Check if classifier has a model
+⋮----
+prediction = classifier.predict(description, service_life)
+⋮----
+template = prediction.get("attribute_template", {})
+⋮----
+def main()
+⋮----
+"""Main function to run the model training pipeline."""
+# Parse command-line arguments
+args = parse_arguments()
+⋮----
+logger = setup_logging(args.log_level)
+⋮----
+# Step 1: Load reference data
+ref_manager = load_reference_data(args.reference_config, logger)
+⋮----
+# Step 2: Validate training data if a path is provided
+⋮----
+validation_results = validate_data(args.data_path, logger)
+⋮----
+# Step 3: Train the model
+⋮----
+# Step 4: Save the trained model
+save_paths = save_model(
+⋮----
+# Step 5: Generate visualizations if requested
+⋮----
+viz_paths = generate_visualizations(
+⋮----
+# Step 6: Make a sample prediction
+sample_prediction = make_sample_prediction(classifier, logger=logger)
+````
+
+## File: nexusml/types/feature_engineering/interfaces.py
+````python
+"""
+Type definitions for the feature engineering interfaces.
+
+This module provides type hints for the feature engineering interfaces to improve type safety.
+"""
+⋮----
+# Type variable for generic types
+T = TypeVar('T')
+T_co = TypeVar('T_co', covariant=True)
+⋮----
+class FeatureTransformer(Protocol)
+⋮----
+"""
+    Interface for feature transformers.
+    
+    A feature transformer is responsible for transforming raw data into features
+    suitable for model training. It follows the scikit-learn transformer interface
+    with fit, transform, and fit_transform methods.
+    """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'FeatureTransformer': ...
+⋮----
+def transform(self, X: pd.DataFrame) -> pd.DataFrame: ...
+⋮----
+def fit_transform(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> pd.DataFrame: ...
+⋮----
+def get_feature_names(self) -> List[str]: ...
+⋮----
+class ColumnTransformer(FeatureTransformer, Protocol)
+⋮----
+"""
+    Interface for column-specific transformers.
+    
+    A column transformer is a feature transformer that operates on specific columns
+    in a DataFrame. It knows which columns it needs to transform and can handle
+    missing columns gracefully.
+    """
+⋮----
+def get_input_columns(self) -> List[str]: ...
+⋮----
+def get_output_columns(self) -> List[str]: ...
+⋮----
+class ConfigurableTransformer(FeatureTransformer, Protocol)
+⋮----
+"""
+    Interface for configurable transformers.
+    
+    A configurable transformer is a feature transformer that can be configured
+    using a dictionary of parameters. This allows for dynamic configuration
+    without changing the code.
+    """
+⋮----
+def get_config(self) -> Dict[str, Any]: ...
+⋮----
+def set_config(self, config: Dict[str, Any]) -> None: ...
+⋮----
+class TransformerRegistry(Protocol)
+⋮----
+"""
+    Interface for transformer registries.
+    
+    A transformer registry maintains a collection of transformers and provides
+    methods for registering, retrieving, and creating transformers.
+    """
+⋮----
+def register_transformer(self, name: str, transformer_class: Type[FeatureTransformer]) -> None: ...
+⋮----
+def get_transformer_class(self, name: str) -> Type[FeatureTransformer]: ...
+⋮----
+def create_transformer(self, name: str, **kwargs: Any) -> FeatureTransformer: ...
+⋮----
+def get_registered_transformers(self) -> Dict[str, Type[FeatureTransformer]]: ...
+⋮----
+class FeatureEngineer(Protocol)
+⋮----
+"""
+    Interface for feature engineers.
+    
+    A feature engineer is responsible for coordinating the application of multiple
+    transformers to engineer features from raw data. It manages the transformer
+    pipeline and provides methods for fitting and transforming data.
+    """
+⋮----
+def fit(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> 'FeatureEngineer': ...
+⋮----
+def get_transformers(self) -> List[FeatureTransformer]: ...
+⋮----
+def add_transformer(self, transformer: FeatureTransformer) -> None: ...
+⋮----
+class ConfigDrivenFeatureEngineer(FeatureEngineer, Protocol)
+⋮----
+"""
+    Interface for configuration-driven feature engineers.
+    
+    A configuration-driven feature engineer is a feature engineer that can be configured
+    using a dictionary of parameters. This allows for dynamic configuration without
+    changing the code.
+    """
+⋮----
+def create_transformers_from_config(self) -> List[FeatureTransformer]: ...
+````
+
+## File: nexusml/types/model_building/interfaces.py
+````python
+"""
+Type definitions for the model building interfaces.
+
+This module provides type hints for the model building interfaces to improve type safety.
+"""
+⋮----
+# Type variable for generic types
+T = TypeVar('T')
+⋮----
+class ModelBuilder(Protocol)
+⋮----
+"""
+    Interface for model building components.
+    
+    Responsible for creating and configuring machine learning models.
+    """
+⋮----
+def build_model(self, **kwargs: Any) -> Pipeline: ...
+⋮----
+def get_default_parameters(self) -> Dict[str, Any]: ...
+⋮----
+def get_param_grid(self) -> Dict[str, List[Any]]: ...
+⋮----
+class ConfigurableModelBuilder(ModelBuilder, Protocol)
+⋮----
+"""
+    Interface for configurable model builders.
+    
+    Extends the ModelBuilder interface with methods for configuration.
+    """
+⋮----
+def get_config(self) -> Dict[str, Any]: ...
+⋮----
+def set_config(self, config: Dict[str, Any]) -> None: ...
+⋮----
+def validate_config(self, config: Dict[str, Any]) -> bool: ...
+⋮----
+class ModelTrainer(Protocol)
+⋮----
+"""
+    Interface for model training components.
+    
+    Responsible for training machine learning models on prepared data.
+    """
+⋮----
+class ConfigurableModelTrainer(ModelTrainer, Protocol)
+⋮----
+"""
+    Interface for configurable model trainers.
+    
+    Extends the ModelTrainer interface with methods for configuration.
+    """
+⋮----
+class HyperparameterOptimizer(Protocol)
+⋮----
+"""
+    Interface for hyperparameter optimization components.
+    
+    Responsible for optimizing model hyperparameters.
+    """
+⋮----
+def get_best_params(self) -> Dict[str, Any]: ...
+⋮----
+def get_best_score(self) -> float: ...
+⋮----
+class ModelEvaluator(Protocol)
+⋮----
+"""
+    Interface for model evaluation components.
+    
+    Responsible for evaluating trained models and analyzing their performance.
+    """
+⋮----
+class ModelSerializer(Protocol)
+⋮----
+"""
+    Interface for model serialization components.
+    
+    Responsible for saving and loading trained models.
+    """
+⋮----
+def save_model(self, model: Pipeline, path: str, **kwargs: Any) -> None: ...
+⋮----
+def load_model(self, path: str, **kwargs: Any) -> Pipeline: ...
+````
+
+## File: nexusml/types/validation.py
+````python
+"""
+Type definitions for the validation module.
+
+This module provides type hints for the validation module to improve type safety.
+"""
+⋮----
+# Type variable for generic types
+T = TypeVar('T')
+T_co = TypeVar('T_co', covariant=True)
+⋮----
+# Type aliases
+DataFrame = pd.DataFrame
+Series = pd.Series
+ValidationFunction = Callable[[DataFrame], Dict[str, Any]]
+⋮----
+# Protocol classes for structural typing
+class HasValidate(Protocol)
+⋮----
+"""Protocol for objects that have a validate method."""
+⋮----
+def validate(self, data: Any) -> 'ValidationReport'
+⋮----
+"""Validate data."""
+⋮----
+class HasAddRule(Protocol)
+⋮----
+"""Protocol for objects that have an add_rule method."""
+⋮----
+def add_rule(self, rule: 'ValidationRule') -> None
+⋮----
+"""Add a validation rule."""
+⋮----
+class HasGetRules(Protocol)
+⋮----
+"""Protocol for objects that have a get_rules method."""
+⋮----
+def get_rules(self) -> List['ValidationRule']
+⋮----
+"""Get all validation rules."""
+⋮----
+class ValidationLevel(Enum)
+⋮----
+"""Enumeration of validation severity levels."""
+ERROR = "error"
+WARNING = "warning"
+INFO = "info"
+⋮----
+class ValidationResult
+⋮----
+"""
+    Class representing the result of a validation check.
+    
+    Attributes:
+        valid (bool): Whether the validation passed.
+        level (ValidationLevel): Severity level of the validation.
+        message (str): Description of the validation result.
+        context (Dict[str, Any]): Additional context about the validation.
+    """
+⋮----
+valid: bool
+level: ValidationLevel
+message: str
+context: Dict[str, Any]
+⋮----
+def __str__(self) -> str: ...
+⋮----
+def to_dict(self) -> Dict[str, Any]: ...
+⋮----
+class ValidationReport
+⋮----
+"""
+    Class representing a collection of validation results.
+    
+    Attributes:
+        results (List[ValidationResult]): List of validation results.
+    """
+⋮----
+results: List[ValidationResult]
+⋮----
+def __init__(self, results: Optional[List[ValidationResult]] = None) -> None: ...
+⋮----
+def add_result(self, result: ValidationResult) -> None: ...
+⋮----
+def is_valid(self, include_warnings: bool = False, include_info: bool = False) -> bool: ...
+⋮----
+def get_errors(self) -> List[ValidationResult]: ...
+⋮----
+def get_warnings(self) -> List[ValidationResult]: ...
+⋮----
+def get_info(self) -> List[ValidationResult]: ...
+⋮----
+class ValidationRule(Protocol)
+⋮----
+"""
+    Interface for validation rules.
+    
+    A validation rule is a single check that can be applied to data.
+    """
+⋮----
+def validate(self, data: Any) -> ValidationResult: ...
+⋮----
+def get_name(self) -> str: ...
+⋮----
+def get_description(self) -> str: ...
+⋮----
+class DataValidator(Protocol)
+⋮----
+"""
+    Interface for data validators.
+    
+    A data validator applies multiple validation rules to data.
+    """
+⋮----
+def validate(self, data: Any) -> ValidationReport: ...
+⋮----
+def add_rule(self, rule: ValidationRule) -> None: ...
+⋮----
+def get_rules(self) -> List[ValidationRule]: ...
+⋮----
+class ColumnValidator(DataValidator, Protocol)
+⋮----
+"""
+    Interface for column validators.
+    
+    A column validator applies validation rules to a specific column in a DataFrame.
+    """
+⋮----
+def validate_column(self, df: DataFrame, column: str) -> ValidationReport: ...
+⋮----
+class RowValidator(DataValidator, Protocol)
+⋮----
+"""
+    Interface for row validators.
+    
+    A row validator applies validation rules to rows in a DataFrame.
+    """
+⋮----
+def validate_row(self, row: Series) -> ValidationReport: ...
+⋮----
+class DataFrameValidator(DataValidator, Protocol)
+⋮----
+"""
+    Interface for DataFrame validators.
+    
+    A DataFrame validator applies validation rules to an entire DataFrame.
+    """
+⋮----
+def validate_dataframe(self, df: DataFrame) -> ValidationReport: ...
+⋮----
+# Concrete rule types
+class ColumnExistenceRule
+⋮----
+"""Rule that checks if a column exists in a DataFrame."""
+⋮----
+column: str
+⋮----
+required: bool
+⋮----
+def validate(self, data: DataFrame) -> ValidationResult: ...
+⋮----
+class ColumnTypeRule
+⋮----
+"""Rule that checks if a column has the expected data type."""
+⋮----
+expected_type: Union[str, type]
+⋮----
+class NonNullRule
+⋮----
+"""Rule that checks if a column has no null values."""
+⋮----
+max_null_fraction: float
+⋮----
+class ValueRangeRule
+⋮----
+"""Rule that checks if numeric values in a column are within a specified range."""
+⋮----
+min_value: Optional[float]
+max_value: Optional[float]
+⋮----
+class UniqueValuesRule
+⋮----
+"""Rule that checks if a column has unique values."""
+⋮----
+max_duplicate_fraction: float
+⋮----
+class AllowedValuesRule
+⋮----
+"""Rule that checks if values in a column are from a set of allowed values."""
+⋮----
+allowed_values: Set[Any]
+⋮----
+max_invalid_fraction: float
+⋮----
+class RegexPatternRule
+⋮----
+"""Rule that checks if string values in a column match a regular expression pattern."""
+⋮----
+pattern: Pattern
+⋮----
+class CrossColumnComparisonRule
+⋮----
+"""Rule that compares values between two columns."""
+⋮----
+column1: str
+column2: str
+comparison: str
+⋮----
+class RowCountRule
+⋮----
+"""Rule that checks if the DataFrame has a certain number of rows."""
+⋮----
+min_rows: Optional[int]
+max_rows: Optional[int]
+⋮----
+class ColumnCountRule
+⋮----
+"""Rule that checks if the DataFrame has a certain number of columns."""
+⋮----
+min_columns: Optional[int]
+max_columns: Optional[int]
+⋮----
+# Concrete validator types
+class BaseValidator
+⋮----
+"""Base implementation of the DataValidator interface."""
+⋮----
+name: str
+rules: List[ValidationRule]
+⋮----
+def __init__(self, name: str = "BaseValidator") -> None: ...
+⋮----
+class ConfigDrivenValidator(BaseValidator)
+⋮----
+"""Validator that uses configuration to define validation rules."""
+⋮----
+config: Dict[str, Any]
+⋮----
+def _create_rules_from_config(self) -> None: ...
+⋮----
+class BasicColumnValidator(BaseValidator, ColumnValidator)
+⋮----
+"""Validator for a single column in a DataFrame."""
+⋮----
+def validate_column(self, df: DataFrame, column: Optional[str] = None) -> ValidationReport: ...
+⋮----
+class BasicRowValidator(BaseValidator, RowValidator)
+⋮----
+"""Validator for rows in a DataFrame."""
+⋮----
+class BasicDataFrameValidator(BaseValidator, DataFrameValidator)
+⋮----
+"""Validator for an entire DataFrame."""
+⋮----
+class CompositeValidator(BaseValidator)
+⋮----
+"""Validator that combines multiple validators."""
+⋮----
+validators: List[DataValidator]
+⋮----
+def add_validator(self, validator: DataValidator) -> None: ...
+⋮----
+def get_validators(self) -> List[DataValidator]: ...
+⋮----
+class SchemaValidator(BaseValidator, DataFrameValidator)
+⋮----
+"""Validator that validates a DataFrame against a schema."""
+⋮----
+schema: Dict[str, Union[str, type]]
+required_columns: Set[str]
+⋮----
+# Adapter types
+class ReferenceDataValidator(DataValidator)
+⋮----
+"""Adapter for reference data validation functions."""
+⋮----
+rules: List[Any]
+⋮----
+def __init__(self, name: str = "ReferenceDataValidator") -> None: ...
+⋮----
+def add_rule(self, rule: Any) -> None: ...
+⋮----
+def get_rules(self) -> List[Any]: ...
+⋮----
+class LegacyDataFrameValidator(DataValidator)
+⋮----
+"""Adapter for legacy DataFrame validation functions."""
+⋮----
+validation_func: ValidationFunction
+⋮----
+def validate(self, data: DataFrame) -> ValidationReport: ...
+⋮----
+# Convenience functions
 ````
 
 ## File: nexusml/utils/__init__.py

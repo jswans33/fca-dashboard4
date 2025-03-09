@@ -1,0 +1,241 @@
+{
+  "evaluation_results": {
+    "category_name": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "classification_report": {
+        "Air Handler": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "Chiller": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "Roof Top Unit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.0,
+        "macro avg": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "uniformat_code": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "classification_report": {
+        "D3040": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ]
+    },
+    "mcaa_system_category": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "classification_report": {
+        "HVAC Equipment": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ]
+    },
+    "System_Type_ID": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "classification_report": {
+        "H": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ]
+    },
+    "Equip_Name_ID": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "classification_report": {
+        "AHU": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "CH": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "RTU": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "accuracy": 0.0,
+        "macro avg": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "overall": {
+      "accuracy_mean": 0.6,
+      "precision_mean": 0.6,
+      "recall_mean": 0.6,
+      "f1_score_mean": 0.6
+    },
+    "predictions": {
+      "category_name": {
+        "0": "Roof Top Unit",
+        "1": "Roof Top Unit"
+      },
+      "uniformat_code": {
+        "0": "D3040",
+        "1": "D3040"
+      },
+      "mcaa_system_category": {
+        "0": "HVAC Equipment",
+        "1": "HVAC Equipment"
+      },
+      "System_Type_ID": {
+        "0": "H",
+        "1": "H"
+      },
+      "Equip_Name_ID": {
+        "0": "RTU",
+        "1": "RTU"
+      }
+    }
+  },
+  "created_at": "2025-03-08T23:45:12.733050"
+}
