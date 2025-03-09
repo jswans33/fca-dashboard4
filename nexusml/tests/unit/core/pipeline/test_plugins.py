@@ -192,6 +192,10 @@ class TestPluginManager(unittest.TestCase):
         # Set up the mock plugin module without a register_components function
         mock_plugin = MagicMock()
         mock_plugin.__name__ = "test_plugin"
+        
+        # Explicitly configure hasattr to return False for register_components
+        type(mock_plugin).register_components = MagicMock(side_effect=AttributeError)
+        
         mock_import_module.return_value = mock_plugin
 
         # Try to load the plugin
