@@ -26,6 +26,7 @@ Maps input data fields to model fields using flexible pattern matching based on 
 Initialize the mapper with a configuration file.
 
 **Parameters:**
+
 - `config_path` (Optional[str]): Path to the configuration YAML file. If None, uses the default path.
 
 **Example:**
@@ -53,6 +54,7 @@ mapper.load_config()
 ```
 
 **Notes:**
+
 - This method is called automatically during initialization
 - The default configuration path is `nexusml/config/classification_config.yml`
 - The configuration should contain `input_field_mappings` and `classification_targets` sections
@@ -62,10 +64,12 @@ mapper.load_config()
 Find the best matching column for a target field.
 
 **Parameters:**
+
 - `available_columns` (List[str]): List of available column names
 - `target_field` (str): Target field name to match
 
 **Returns:**
+
 - Optional[str]: Best matching column name or None if no match found
 
 **Example:**
@@ -82,6 +86,7 @@ print(f"Best match for '{target_field}': {best_match}")
 ```
 
 **Notes:**
+
 - The method first tries an exact match
 - If no exact match is found, it tries pattern matching based on the configuration
 - Pattern matching is case-insensitive
@@ -91,9 +96,11 @@ print(f"Best match for '{target_field}': {best_match}")
 Map input dataframe columns to the format expected by the ML model.
 
 **Parameters:**
+
 - `df` (pd.DataFrame): Input DataFrame with arbitrary column names
 
 **Returns:**
+
 - pd.DataFrame: DataFrame with columns mapped to what the model expects
 
 **Example:**
@@ -116,6 +123,7 @@ print(mapped_data.head())
 ```
 
 **Notes:**
+
 - The method creates a new DataFrame with the required fields
 - Required fields are determined from the feature configuration file
 - If a required field has no match in the input data, an empty column is created
@@ -125,6 +133,7 @@ print(mapped_data.head())
 Get the list of classification targets.
 
 **Returns:**
+
 - List[str]: List of classification target names
 
 **Example:**
@@ -137,6 +146,7 @@ print(f"Classification targets: {targets}")
 ```
 
 **Notes:**
+
 - Classification targets are defined in the configuration file
 - These are the fields that the model will predict
 
@@ -145,6 +155,7 @@ print(f"Classification targets: {targets}")
 Get the mapping of classification targets to database fields.
 
 **Returns:**
+
 - Dict[str, Dict]: Dictionary mapping classification names to DB field info
 
 **Example:**
@@ -159,6 +170,7 @@ for target, field_info in db_fields.items():
 ```
 
 **Notes:**
+
 - This method returns only the targets marked as required in the configuration
 - Each target includes information about the corresponding database fields
 

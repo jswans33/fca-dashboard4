@@ -22,44 +22,44 @@ This checklist tracks the progress of the NexusML documentation effort. It follo
 
 ## Level 3: Module and Class Documentation
 
-- [ ] **Core Modules** - Document core functionality
+- [x] **Core Modules** - Document core functionality
   - [x] data_mapper.py
   - [x] data_preprocessing.py
   - [x] dynamic_mapper.py
-  - [ ] eav_manager.py
-  - [ ] evaluation.py
-  - [ ] feature_engineering.py
-  - [ ] model_building.py
-  - [ ] model.py
-  - [ ] reference_manager.py
+  - [x] eav_manager.py
+  - [x] evaluation.py
+  - [x] feature_engineering.py
+  - [x] model_building.py
+  - [x] model.py
+  - [x] reference_manager.py
 
-- [ ] **Utility Modules** - Document utility functions
-  - [ ] csv_utils.py
-  - [ ] data_selection.py
-  - [ ] excel_utils.py
-  - [ ] logging.py
-  - [ ] notebook_utils.py
-  - [ ] path_utils.py
-  - [ ] verification.py
+- [x] **Utility Modules** - Document utility functions
+  - [x] csv_utils.py
+  - [x] data_selection.py
+  - [x] excel_utils.py
+  - [x] logging.py
+  - [x] notebook_utils.py
+  - [x] path_utils.py
+  - [x] verification.py
 
-- [ ] **Command-Line Tools** - Document CLI tools
-  - [ ] classify_equipment.py
-  - [ ] predict.py
-  - [ ] predict_v2.py
-  - [ ] train_model_pipeline.py
-  - [ ] train_model_pipeline_v2.py
-  - [ ] test_reference_validation.py
+- [x] **Command-Line Tools** - Document CLI tools
+  - [x] classify_equipment.py
+  - [x] predict.py
+  - [x] predict_v2.py
+  - [x] train_model_pipeline.py
+  - [x] train_model_pipeline_v2.py
+  - [x] test_reference_validation.py
 
-- [ ] **Utility Scripts** - Document utility scripts
-  - [ ] model_card_tool.py
-  - [ ] train_model.sh
+- [x] **Utility Scripts** - Document utility scripts
+  - [x] model_card_tool.py
+  - [x] train_model.sh
 
 ## Level 4: Example Verification
 
-- [ ] **Basic Examples** - Verify and update basic examples
-  - [ ] simple_example.py
-  - [ ] advanced_example.py
-  - [ ] random_guessing.py
+- [x] **Basic Examples** - Verify and update basic examples
+  - [x] simple_example.py
+  - [x] advanced_example.py
+  - [x] random_guessing.py
 
 - [ ] **Data Loading Examples** - Verify and update data loading examples
   - [ ] data_loader_example.py
@@ -99,19 +99,33 @@ This checklist tracks the progress of the NexusML documentation effort. It follo
 
 ## Next Steps
 
-1. Continue with Level 3 documentation of core modules:
-   - eav_manager.py
-   - evaluation.py
-   - feature_engineering.py
-   - model_building.py
-   - model.py
-   - reference_manager.py
+1. Complete Level 1 (High-Level Architecture Documentation):
+   - Installation Guide - Update with current installation steps
+   - Usage Guide - Create comprehensive usage documentation
+   - API Reference - Document public API and interfaces
 
-2. Document command-line tools:
-   - classify_equipment.py
-   - predict.py and predict_v2.py
-   - train_model_pipeline.py and train_model_pipeline_v2.py
-
-3. Verify and update examples:
-   - Start with basic examples
-   - Then move to more complex examples
+2. Complete remaining examples documentation:
+   - Data Loading Examples:
+     - data_loader_example.py
+     - enhanced_data_loader_example.py
+     - staging_data_example.py
+   
+   - Feature Engineering Examples:
+     - feature_engineering_example.py
+   
+   - Model Building Examples:
+     - model_building_example.py
+     - training_pipeline_example.py
+   
+   - Pipeline Examples:
+     - pipeline_factory_example.py
+     - pipeline_orchestrator_example.py
+     - pipeline_stages_example.py
+     - integrated_classifier_example.py
+   
+   - Domain-Specific Examples:
+     - omniclass_generator_example.py
+     - omniclass_hierarchy_example.py
+     - uniformat_keywords_example.py
+     - validation_example.py
+=======

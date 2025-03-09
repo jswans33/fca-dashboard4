@@ -171,6 +171,60 @@ def my_function(data_loader=Inject(DataLoader)):
     return data
 ```
 
+## Model Verification and Testing
+
+NexusML includes a comprehensive verification system to ensure the reliability and correctness of the model training, evaluation, and prediction pipelines. This verification system is a critical part of the refactoring work to establish a production-ready model card system.
+
+### Verification Components
+
+The verification system tests the following components:
+
+1. **Component Resolution**: Verifies that all required components can be resolved from the Dependency Injection container, ensuring proper registration and dependency management.
+
+2. **Pipeline Factory**: Tests the creation of different pipeline types (training, prediction, evaluation) through the factory pattern, confirming the factory correctly assembles pipeline components.
+
+3. **Feature Engineering**: Validates the feature engineering components by applying transformations to sample data and verifying the expected output columns are created.
+
+4. **Model Building**: Ensures model builders can create valid models with the expected interfaces and behaviors.
+
+5. **Model Card System**: Verifies the model card generation, saving, and loading functionality, which is essential for model governance and documentation.
+
+6. **End-to-End Functionality**: Tests the complete workflow from data loading to model saving, ensuring all components work together correctly.
+
+7. **Prediction Pipeline**: Validates the prediction pipeline by loading a trained model and making predictions on sample data.
+
+### Current Status
+
+As of March 2025, the verification system is fully operational and passing all tests. Recent improvements include:
+
+- Fixed issues with the StandardDataLoader class accessibility
+- Enhanced the prediction pipeline to handle different model types
+- Improved feature handling based on model's feature_names_in_ attribute
+- Added better error handling and logging throughout the pipeline
+- Implemented comprehensive model card generation and validation
+
+### Running Verification Tests
+
+You can run the verification tests using the following command:
+
+```bash
+python -m nexusml.tests.verification_script
+```
+
+This script will execute all verification tests and provide detailed output on the status of each component. A successful verification will show "✅ All verification tests passed!" at the end of the output.
+
+### Integration with Model Card System
+
+The verification system is a key enabler for the production model card system, which is the ultimate goal of the NexusML refactoring work. The model card system provides:
+
+- Standardized model training with proper validation and evaluation
+- Consistent model metadata and documentation
+- Reproducible model building and deployment processes
+- Better tracking and versioning of models in production
+- Improved model governance and compliance
+
+By ensuring all components work correctly through verification, we can confidently deploy models to production with proper documentation and governance.
+
 ## Documentation
 
 For more detailed documentation, see the following:
