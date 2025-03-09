@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Data Configuration Schema",
+  "description": "Schema for validating data configuration files",
+  "type": "object",
+  "properties": {
+    "required_columns": {
+      "type": "array",
+      "description": "List of required columns for the data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the column"
+          },
+          "default_value": {
+            "description": "Default value for the column if missing",
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "boolean" },
+              { "type": "null" }
+            ]
+          },
+          "data_type": {
+            "type": "string",
+            "description": "Data type of the column",
+            "enum": ["str", "int", "float", "bool"]
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": true
+      }
+    },
+    "mcaaid_mapping": {
+      "type": "object",
+      "description": "Mapping of system types to MCAA ID abbreviations",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "training_data": {
+      "type": "object",
+      "description": "Configuration for training data",
+      "properties": {
+        "default_path": {
+          "type": "string",
+          "description": "Default path to the training data file"
+        },
+        "encoding": {
+          "type": "string",
+          "description": "Encoding of the training data file"
+        },
+        "fallback_encoding": {
+          "type": "string",
+          "description": "Fallback encoding if the primary encoding fails"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["required_columns"],
+  "additionalProperties": true
+}

@@ -1,0 +1,296 @@
+# Model Card Configuration for Equipment Classification Production Model
+# This file provides a machine-readable version of the model card information
+
+model_details:
+  name: "Equipment Classification Production Model"
+  version: "1.0.0"
+  date_created: "2025-03-08"
+  type: "Multi-output classification model"
+  framework: "Scikit-learn"
+  architecture: "RandomForestClassifier with TF-IDF and numeric features"
+  license: "Proprietary"
+
+inputs:
+  - name: "text_descriptions"
+    description: "Equipment tags, manufacturer names, model numbers, etc."
+    type: "text"
+  - name: "service_life"
+    description: "Expected service life of the equipment"
+    type: "numeric"
+
+outputs:
+  - name: "category_name"
+    description: "Equipment category (e.g., 'HVAC', 'Plumbing')"
+    type: "categorical"
+  - name: "uniformat_code"
+    description: "Uniformat classification code (e.g., 'D3050', 'D2020')"
+    type: "categorical"
+  - name: "mcaa_system_category"
+    description: "MCAA system category (e.g., 'Mechanical', 'Plumbing Equipment')"
+    type: "categorical"
+  - name: "Equipment_Type"
+    description: "Hierarchical equipment type (e.g., 'HVAC-Air Handling')"
+    type: "categorical"
+  - name: "System_Subtype"
+    description: "System subtype (e.g., 'Mechanical-Cooling')"
+    type: "categorical"
+  - name: "MasterFormat_Class"
+    description: "MasterFormat classification (derived from other classifications)"
+    type: "categorical"
+
+data_format:
+  fields:
+    - name: "equipment_tag"
+      data_type: "string"
+      description: "Equipment identifier or tag number"
+      example: "AHU-01"
+      is_required: true
+      is_target: false
+    - name: "manufacturer"
+      data_type: "string"
+      description: "Equipment manufacturer name"
+      example: "Trane"
+      is_required: true
+      is_target: false
+    - name: "model"
+      data_type: "string"
+      description: "Equipment model number or identifier"
+      example: "CSAA012"
+      is_required: true
+      is_target: false
+    - name: "category_name"
+      data_type: "string"
+      description: "Primary equipment category"
+      example: "Air Handler"
+      is_required: true
+      is_target: true
+    - name: "omniclass_code"
+      data_type: "string"
+      description: "OmniClass classification code"
+      example: "23-33 13 13"
+      is_required: true
+      is_target: false
+    - name: "uniformat_code"
+      data_type: "string"
+      description: "Uniformat classification code"
+      example: "D3040"
+      is_required: true
+      is_target: true
+    - name: "masterformat_code"
+      data_type: "string"
+      description: "MasterFormat classification code"
+      example: "23 74 13"
+      is_required: true
+      is_target: false
+    - name: "mcaa_system_category"
+      data_type: "string"
+      description: "MCAA system category"
+      example: "HVAC Equipment"
+      is_required: true
+      is_target: true
+    - name: "CategoryID"
+      data_type: "integer"
+      description: "Category ID from reference database"
+      example: "101"
+      is_required: true
+      is_target: false
+    - name: "OmniClassID"
+      data_type: "integer"
+      description: "OmniClass ID from reference database"
+      example: "2333"
+      is_required: true
+      is_target: false
+    - name: "UniFormatID"
+      data_type: "integer"
+      description: "Uniformat ID from reference database"
+      example: "3040"
+      is_required: true
+      is_target: false
+    - name: "MasterFormatID"
+      data_type: "integer"
+      description: "MasterFormat ID from reference database"
+      example: "2374"
+      is_required: true
+      is_target: false
+    - name: "MCAAID"
+      data_type: "string"
+      description: "MCAA abbreviation"
+      example: "H"
+      is_required: true
+      is_target: false
+    - name: "LocationID"
+      data_type: "integer"
+      description: "Location ID from reference database"
+      example: "1001"
+      is_required: true
+      is_target: false
+    - name: "Precon_System"
+      data_type: "string"
+      description: "Preconstruction system category"
+      example: "Air Handling Units"
+      is_required: false
+      is_target: false
+    - name: "Drawing_Abbreviation"
+      data_type: "string"
+      description: "Standard drawing abbreviation"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "Precon_Tag"
+      data_type: "string"
+      description: "Preconstruction tag identifier"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "System_Type_ID"
+      data_type: "string"
+      description: "System type identifier (H, P, R)"
+      example: "H"
+      is_required: false
+      is_target: false
+    - name: "Equip_Name_ID"
+      data_type: "string"
+      description: "Equipment name identifier"
+      example: "AHU"
+      is_required: false
+      is_target: false
+    - name: "Sub_System_ID"
+      data_type: "string"
+      description: "Subsystem identifier"
+      example: "PKG"
+      is_required: false
+      is_target: false
+    - name: "Sub_System_Class"
+      data_type: "string"
+      description: "Subsystem classification"
+      example: "Floor Mounted"
+      is_required: false
+      is_target: false
+    - name: "Class_ID"
+      data_type: "string"
+      description: "Class identifier"
+      example: "FLR"
+      is_required: false
+      is_target: false
+    - name: "Unit"
+      data_type: "string"
+      description: "Unit of measurement"
+      example: "CFM"
+      is_required: false
+      is_target: false
+
+# MCAA ID mapping
+mcaaid_mapping:
+  "HVAC Equipment": "H"
+  "Plumbing Equipment": "P"
+  "Mechanical/Sheetmetal": "SM"
+  "Process Cooling Water": "R"
+  "Hot Water Systems": "H"
+  "Refrigeration": "R"
+  "Electrical": "E"
+  "Fire Protection": "F"
+  "Controls": "C"
+
+# Standard equipment categories
+standard_categories:
+  - "Accessory"
+  - "Air Compressor"
+  - "Air Curtain"
+  - "Air Dryer"
+  - "Air Handler"
+  - "Air Receiver"
+  - "Air Rotator"
+  - "Air Scoop"
+  - "Air Separator"
+  - "Baseboard"
+  - "Boiler"
+  - "Bypass Filter"
+  - "Cabinet Unit"
+  - "Chiller"
+  - "Compressor"
+  - "Computer"
+  - "Condenser"
+  - "Connector"
+  - "Cooling Tower"
+  - "Coupon Rack"
+  - "DI/RO Equipment"
+  - "Direct Outdoor Air System"
+  - "Domestic"
+  - "Dual Duct"
+  - "Ductless Split"
+  - "Energy Recovery"
+  - "Evaporator"
+  - "Expansion"
+  - "Fan"
+  - "Fan Coil"
+  - "Fan Coil Unit"
+  - "Fan Power"
+  - "Fixture"
+  - "Furnace"
+  - "Glycol Feeder"
+  - "Grease Interceptor"
+  - "Grease Trap"
+  - "Heat Exchanger"
+  - "Heat Pump"
+  - "Heat Trace"
+  - "Humidifier"
+  - "Infrared"
+  - "Make-up Air"
+  - "Nitrogen"
+  - "Pot Feeder"
+  - "PRV"
+  - "Pump"
+  - "Radiant Panel"
+  - "Rear Door"
+  - "Return Air"
+  - "Roof Top Unit"
+  - "Sand/Oil Interceptor"
+  - "Tank"
+  - "Unit Heater"
+  - "Unit Ventilator"
+  - "Vacuum"
+  - "VAV Box"
+  - "Venturi"
+  - "Water Softener"
+
+# Technical specifications
+technical_specifications:
+  hyperparameters:
+    n_estimators: 100
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+    class_weight: "balanced"
+  
+  feature_engineering:
+    text_combinations:
+      - name: "combined_text"
+        columns:
+          - "equipment_tag"
+          - "manufacturer"
+          - "model"
+          - "category_name"
+          - "mcaa_system_category"
+          - "building_name"
+        separator: " "
+    
+    hierarchical_categories:
+      - name: "Equipment_Type"
+        parent_columns:
+          - "mcaa_system_category"
+          - "category_name"
+        separator: "-"
+      
+      - name: "System_Subtype"
+        parent_columns:
+          - "mcaa_system_category"
+          - "category_name"
+        separator: "-"
+
+# Reference data paths
+reference_data:
+  enumerations_file: "files/training-data/enumeratins for training data.csv"
+  omniclass_file: "files/omniclass_tables/omniclass_23.csv"
+  uniformat_file: "files/uniformat/uniformat_ii.csv"
+  masterformat_file: "files/masterformat/masterformat_2018.csv"
+  mcaa_file: "files/mcaa-glossary/mcaa_glossary.csv"

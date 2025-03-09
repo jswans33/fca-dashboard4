@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Feature Configuration Schema",
+  "description": "Schema for validating feature engineering configuration files",
+  "type": "object",
+  "properties": {
+    "text_combinations": {
+      "type": "array",
+      "description": "Configuration for text column combinations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the combined column"
+          },
+          "columns": {
+            "type": "array",
+            "description": "List of columns to combine",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separator": {
+            "type": "string",
+            "description": "Separator to use between column values",
+            "default": " "
+          }
+        },
+        "required": ["name", "columns"],
+        "additionalProperties": true
+      }
+    },
+    "numeric_columns": {
+      "type": "array",
+      "description": "Configuration for numeric column transformations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the source column"
+          },
+          "new_name": {
+            "type": "string",
+            "description": "Name of the transformed column"
+          },
+          "fill_value": {
+            "type": "number",
+            "description": "Value to use for filling missing values"
+          },
+          "dtype": {
+            "type": "string",
+            "description": "Data type of the transformed column",
+            "enum": ["float", "int"]
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": true
+      }
+    },
+    "hierarchies": {
+      "type": "array",
+      "description": "Configuration for hierarchical column combinations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "new_col": {
+            "type": "string",
+            "description": "Name of the new hierarchical column"
+          },
+          "parents": {
+            "type": "array",
+            "description": "List of parent columns to combine",
+            "items": {
+              "type": "string"
+            }
+          },
+          "separator": {
+            "type": "string",
+            "description": "Separator to use between parent values",
+            "default": "-"
+          }
+        },
+        "required": ["new_col", "parents"],
+        "additionalProperties": true
+      }
+    },
+    "column_mappings": {
+      "type": "array",
+      "description": "Configuration for direct column mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source column name"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target column name"
+          }
+        },
+        "required": ["source", "target"],
+        "additionalProperties": true
+      }
+    },
+    "classification_systems": {
+      "type": "array",
+      "description": "Configuration for classification system mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the classification system",
+            "enum": ["OmniClass", "MasterFormat", "Uniformat"]
+          },
+          "source_column": {
+            "type": "string",
+            "description": "Source column for the mapping"
+          },
+          "target_column": {
+            "type": "string",
+            "description": "Target column for the mapping"
+          },
+          "mapping_type": {
+            "type": "string",
+            "description": "Type of mapping to use",
+            "enum": ["direct", "eav", "function"]
+          },
+          "mapping_function": {
+            "type": "string",
+            "description": "Name of the function to use for mapping (if mapping_type is 'function')"
+          }
+        },
+        "required": ["name", "source_column", "target_column"],
+        "additionalProperties": true
+      }
+    },
+    "direct_mappings": {
+      "type": "array",
+      "description": "Configuration for direct ID mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source column name"
+          },
+          "target": {
+            "type": "string",
+            "description": "Target column name"
+          }
+        },
+        "required": ["source", "target"],
+        "additionalProperties": true
+      }
+    },
+    "eav_integration": {
+      "type": "object",
+      "description": "Configuration for EAV integration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether EAV integration is enabled"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Model Card Configuration Schema",
+  "description": "Schema for validating model card configuration files",
+  "type": "object",
+  "properties": {
+    "model_details": {
+      "type": "object",
+      "description": "Basic information about the model",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the model"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the model"
+        },
+        "date_created": {
+          "type": "string",
+          "description": "Date the model was created"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of model"
+        },
+        "framework": {
+          "type": "string",
+          "description": "Framework used to build the model"
+        },
+        "architecture": {
+          "type": "string",
+          "description": "Architecture of the model"
+        }
+      },
+      "required": ["name", "version"]
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Input features for the model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the input feature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the input feature"
+          },
+          "type": {
+            "type": "string",
+            "description": "Data type of the input feature"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Output targets for the model",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the output target"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the output target"
+          },
+          "type": {
+            "type": "string",
+            "description": "Data type of the output target"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "data_format": {
+      "type": "object",
+      "description": "Format of the training data",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "description": "Fields in the training data",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the field"
+              },
+              "data_type": {
+                "type": "string",
+                "description": "Data type of the field"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the field"
+              },
+              "example": {
+                "type": "string",
+                "description": "Example value for the field"
+              },
+              "is_required": {
+                "type": "boolean",
+                "description": "Whether the field is required"
+              },
+              "is_target": {
+                "type": "boolean",
+                "description": "Whether the field is a target for prediction"
+              }
+            },
+            "required": ["name", "data_type"]
+          }
+        },
+        "enumerations": {
+          "type": "object",
+          "description": "Enumeration values for categorical fields",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "standard_categories": {
+      "type": "array",
+      "description": "Standard equipment categories",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mcaaid_mapping": {
+      "type": "object",
+      "description": "Mapping of system categories to MCAA ID abbreviations",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "performance_metrics": {
+      "type": "object",
+      "description": "Performance metrics for the model",
+      "properties": {
+        "overall": {
+          "type": "object",
+          "description": "Overall performance metrics",
+          "properties": {
+            "accuracy": {
+              "type": "number",
+              "description": "Overall accuracy"
+            },
+            "f1_score": {
+              "type": "number",
+              "description": "Overall F1 score"
+            },
+            "precision": {
+              "type": "number",
+              "description": "Overall precision"
+            },
+            "recall": {
+              "type": "number",
+              "description": "Overall recall"
+            }
+          }
+        },
+        "per_target": {
+          "type": "object",
+          "description": "Performance metrics for each target",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "accuracy": {
+                "type": "number",
+                "description": "Accuracy for the target"
+              },
+              "f1_score": {
+                "type": "number",
+                "description": "F1 score for the target"
+              },
+              "precision": {
+                "type": "number",
+                "description": "Precision for the target"
+              },
+              "recall": {
+                "type": "number",
+                "description": "Recall for the target"
+              }
+            }
+          }
+        }
+      }
+    },
+    "technical_specifications": {
+      "type": "object",
+      "description": "Technical specifications for the model",
+      "properties": {
+        "hyperparameters": {
+          "type": "object",
+          "description": "Hyperparameters for the model",
+          "additionalProperties": {
+            "type": ["number", "string", "boolean", "null"]
+          }
+        },
+        "feature_engineering": {
+          "type": "object",
+          "description": "Feature engineering details",
+          "properties": {
+            "text_combinations": {
+              "type": "array",
+              "description": "Text combination configurations",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the combined column"
+                  },
+                  "columns": {
+                    "type": "array",
+                    "description": "Columns to combine",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "separator": {
+                    "type": "string",
+                    "description": "Separator to use between column values"
+                  }
+                }
+              }
+            },
+            "hierarchical_categories": {
+              "type": "array",
+              "description": "Hierarchical category configurations",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the hierarchical category"
+                  },
+                  "parent_columns": {
+                    "type": "array",
+                    "description": "Parent columns for the hierarchy",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "separator": {
+                    "type": "string",
+                    "description": "Separator to use between parent values"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
