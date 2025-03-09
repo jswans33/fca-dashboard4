@@ -2,167 +2,184 @@
 Component Registry Module
 
 This module provides the ComponentRegistry class, which is responsible for
-registering and retrieving component implementations.
+registering and retrieving component implementations for the pipeline system.
 """
 
-from typing import Any, Dict, Generic, Optional, Type, TypeVar, cast
+import logging
+from typing import Any, Dict, List, Optional, Type, TypeVar, cast
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 T = TypeVar("T")
 
 
 class ComponentRegistryError(Exception):
     """Exception raised for errors in the ComponentRegistry."""
-
     pass
 
 
 class ComponentRegistry:
     """
-    Registry for pipeline component implementations.
+    Registry for pipeline components.
 
-    This class manages the registration and retrieval of component implementations.
-    It allows registering multiple implementations of the same component type
-    and setting a default implementation for each type.
+    The ComponentRegistry class is responsible for registering and retrieving
+    component implementations for the pipeline system. It allows registering
+    components by type and name, and retrieving them later.
 
-    Example:
-        >>> registry = ComponentRegistry()
-        >>> registry.register(DataLoader, "csv", CSVDataLoader)
-        >>> registry.register(DataLoader, "excel", ExcelDataLoader)
-        >>> registry.set_default_implementation(DataLoader, "csv")
-        >>> loader = registry.get_default_implementation(DataLoader)
-        >>> # Use the loader...
+    Attributes:
+        _components: Dictionary mapping component types to dictionaries of name-to-class mappings.
     """
 
     def __init__(self):
-        """Initialize a new ComponentRegistry."""
-        self._registry: Dict[Type, Dict[str, Type]] = {}
-        self._defaults: Dict[Type, str] = {}
-
-    def register(
-        self, component_type: Type[T], name: str, implementation: Type[T]
-    ) -> None:
         """
-        Register a component implementation.
+        Initialize a new ComponentRegistry.
+        """
+        self._components: Dict[str, Dict[str, Type[Any]]] = {}
+        logger.info("ComponentRegistry initialized")
+
+    def register(self, component_type: str, name: str, component_class: Type[Any]) -> None:
+        """
+        Register a component.
 
         Args:
-            component_type: The interface or base class of the component.
-            name: A unique name for this implementation.
-            implementation: The implementation class.
+            component_type: Type of component (e.g., "stage", "transformer", "pipeline").
+            name: Name of the component.
+            component_class: Component class to register.
 
         Raises:
-            ComponentRegistryError: If an implementation with the same name already exists.
+            ComponentRegistryError: If a component with the same type and name is already registered.
         """
-        if component_type not in self._registry:
-            self._registry[component_type] = {}
+        # Initialize the component type dictionary if it doesn't exist
+        if component_type not in self._components:
+            self._components[component_type] = {}
 
-        if name in self._registry[component_type]:
+        # Check if the component is already registered
+        if name in self._components[component_type]:
             raise ComponentRegistryError(
-                f"Implementation '{name}' for {component_type.__name__} already exists"
+                f"Component of type '{component_type}' with name '{name}' is already registered"
             )
 
-        self._registry[component_type][name] = implementation
+        # Register the component
+        self._components[component_type][name] = component_class
+        logger.debug(f"Registered component: {component_type}/{name}")
 
-    def get_implementation(self, component_type: Type[T], name: str) -> Type[T]:
+    def get(self, component_type: str, name: str) -> Optional[Type[Any]]:
         """
-        Get a specific component implementation.
+        Get a component by type and name.
 
         Args:
-            component_type: The interface or base class of the component.
-            name: The name of the implementation to retrieve.
+            component_type: Type of component.
+            name: Name of the component.
 
         Returns:
-            The implementation class.
+            Component class if found, None otherwise.
+        """
+        # Check if the component type exists
+        if component_type not in self._components:
+            return None
+
+        # Return the component if it exists
+        return self._components[component_type].get(name)
+
+    def get_all(self, component_type: str) -> Dict[str, Type[Any]]:
+        """
+        Get all components of a specific type.
+
+        Args:
+            component_type: Type of components to get.
+
+        Returns:
+            Dictionary mapping component names to component classes.
+        """
+        return self._components.get(component_type, {}).copy()
+
+    def get_types(self) -> List[str]:
+        """
+        Get all registered component types.
+
+        Returns:
+            List of component types.
+        """
+        return list(self._components.keys())
+
+    def get_names(self, component_type: str) -> List[str]:
+        """
+        Get all registered component names for a specific type.
+
+        Args:
+            component_type: Type of components to get names for.
+
+        Returns:
+            List of component names.
+        """
+        return list(self._components.get(component_type, {}).keys())
+
+    def has_type(self, component_type: str) -> bool:
+        """
+        Check if a component type is registered.
+
+        Args:
+            component_type: Type of component to check.
+
+        Returns:
+            True if the component type is registered, False otherwise.
+        """
+        return component_type in self._components
+
+    def has_component(self, component_type: str, name: str) -> bool:
+        """
+        Check if a component is registered.
+
+        Args:
+            component_type: Type of component to check.
+            name: Name of the component to check.
+
+        Returns:
+            True if the component is registered, False otherwise.
+        """
+        return component_type in self._components and name in self._components[component_type]
+
+    def register_from_module(self, module: Any) -> None:
+        """
+        Register components from a module.
+
+        This method looks for a `register_components` function in the module
+        and calls it with this registry as an argument.
+
+        Args:
+            module: Module to register components from.
 
         Raises:
-            ComponentRegistryError: If the implementation does not exist.
+            ComponentRegistryError: If the module doesn't have a `register_components` function.
         """
-        if (
-            component_type not in self._registry
-            or name not in self._registry[component_type]
-        ):
+        if not hasattr(module, "register_components"):
             raise ComponentRegistryError(
-                f"Implementation '{name}' for {component_type.__name__} not found"
+                f"Module {module.__name__} doesn't have a register_components function"
             )
 
-        return self._registry[component_type][name]
-
-    def get_implementations(self, component_type: Type[T]) -> Dict[str, Type[T]]:
-        """
-        Get all implementations of a component type.
-
-        Args:
-            component_type: The interface or base class of the component.
-
-        Returns:
-            A dictionary mapping implementation names to implementation classes.
-        """
-        if component_type not in self._registry:
-            return {}
-
-        return self._registry[component_type]
-
-    def set_default_implementation(self, component_type: Type[T], name: str) -> None:
-        """
-        Set the default implementation for a component type.
-
-        Args:
-            component_type: The interface or base class of the component.
-            name: The name of the implementation to set as default.
-
-        Raises:
-            ComponentRegistryError: If the implementation does not exist.
-        """
-        # Verify the implementation exists
-        self.get_implementation(component_type, name)
-
-        # Set as default
-        self._defaults[component_type] = name
-
-    def get_default_implementation(self, component_type: Type[T]) -> Type[T]:
-        """
-        Get the default implementation for a component type.
-
-        Args:
-            component_type: The interface or base class of the component.
-
-        Returns:
-            The default implementation class.
-
-        Raises:
-            ComponentRegistryError: If no default implementation is set.
-        """
-        if component_type not in self._defaults:
+        try:
+            module.register_components(self)
+            logger.info(f"Registered components from module {module.__name__}")
+        except Exception as e:
             raise ComponentRegistryError(
-                f"No default implementation set for {component_type.__name__}"
-            )
+                f"Error registering components from module {module.__name__}: {str(e)}"
+            ) from e
 
-        name = self._defaults[component_type]
-        return self.get_implementation(component_type, name)
-
-    def has_implementation(self, component_type: Type, name: str) -> bool:
+    def clear(self) -> None:
         """
-        Check if an implementation exists.
+        Clear all registered components.
+        """
+        self._components.clear()
+        logger.info("Cleared all registered components")
+
+    def clear_type(self, component_type: str) -> None:
+        """
+        Clear all registered components of a specific type.
 
         Args:
-            component_type: The interface or base class of the component.
-            name: The name of the implementation to check.
-
-        Returns:
-            True if the implementation exists, False otherwise.
+            component_type: Type of components to clear.
         """
-        return (
-            component_type in self._registry and name in self._registry[component_type]
-        )
-
-    def clear_implementations(self, component_type: Type) -> None:
-        """
-        Clear all implementations of a component type.
-
-        Args:
-            component_type: The interface or base class of the component.
-        """
-        if component_type in self._registry:
-            self._registry[component_type] = {}
-
-        if component_type in self._defaults:
-            del self._defaults[component_type]
+        if component_type in self._components:
+            self._components[component_type].clear()
+            logger.info(f"Cleared all registered components of type {component_type}")

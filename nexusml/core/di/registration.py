@@ -11,6 +11,7 @@ from typing import Any, Dict, Optional, Type
 
 from nexusml.core.di.container import DIContainer
 from nexusml.core.di.provider import ContainerProvider
+from nexusml.core.di.pipeline_registration import register_pipeline_components
 from nexusml.core.eav_manager import EAVManager
 from nexusml.core.feature_engineering import GenericFeatureEngineer
 from nexusml.core.model import EquipmentClassifier
@@ -53,6 +54,10 @@ def register_core_components(
         EquipmentClassifier, EquipmentClassifier, singleton=False
     )
     logger.info("Registered EquipmentClassifier with DI container")
+    
+    # Register pipeline components
+    register_pipeline_components(provider)
+    logger.info("Registered pipeline components with DI container")
 
 
 def register_custom_implementation(

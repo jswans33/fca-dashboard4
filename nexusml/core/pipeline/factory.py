@@ -2,289 +2,184 @@
 Pipeline Factory Module
 
 This module provides the PipelineFactory class, which is responsible for
-creating pipeline components with proper dependencies.
+creating pipeline instances with proper dependencies.
 """
 
-import inspect
-from typing import Any, Dict, Optional, Type, TypeVar, cast, get_type_hints
+import logging
+from typing import Any, Dict, List, Optional, Type, Union
 
+from nexusml.config.manager import ConfigurationManager
 from nexusml.core.di.container import DIContainer
-from nexusml.core.pipeline.interfaces import (
-    DataLoader,
-    DataPreprocessor,
-    FeatureEngineer,
-    ModelBuilder,
-    ModelEvaluator,
-    ModelSerializer,
-    ModelTrainer,
-    Predictor,
-)
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.pipeline.pipelines.base import BasePipeline
+from nexusml.core.pipeline.pipelines.training import TrainingPipeline
+from nexusml.core.pipeline.pipelines.prediction import PredictionPipeline
+from nexusml.core.pipeline.pipelines.evaluation import EvaluationPipeline
 from nexusml.core.pipeline.registry import ComponentRegistry
 
-T = TypeVar("T")
+# Set up logging
+logger = logging.getLogger(__name__)
 
 
 class PipelineFactoryError(Exception):
     """Exception raised for errors in the PipelineFactory."""
-
     pass
 
 
 class PipelineFactory:
     """
-    Factory for creating pipeline components.
+    Factory for creating pipeline instances.
 
-    This class is responsible for creating pipeline components with proper dependencies.
-    It uses the ComponentRegistry to look up component implementations and the
-    DIContainer to resolve dependencies.
+    The PipelineFactory class is responsible for creating pipeline instances
+    with proper dependencies. It uses the ComponentRegistry to look up pipeline
+    implementations and the DIContainer to resolve dependencies.
 
-    Example:
-        >>> registry = ComponentRegistry()
-        >>> container = DIContainer()
-        >>> factory = PipelineFactory(registry, container)
-        >>> data_loader = factory.create_data_loader()
-        >>> preprocessor = factory.create_data_preprocessor()
-        >>> # Use the components...
+    Attributes:
+        registry: Component registry for looking up pipeline implementations.
+        container: DI container for resolving dependencies.
+        config_manager: Configuration manager for loading pipeline configurations.
     """
 
-    def __init__(self, registry: ComponentRegistry, container: DIContainer):
+    def __init__(
+        self, 
+        registry: ComponentRegistry, 
+        container: DIContainer,
+        config_manager: Optional[ConfigurationManager] = None
+    ):
         """
         Initialize a new PipelineFactory.
 
         Args:
-            registry: The component registry to use for looking up implementations.
-            container: The dependency injection container to use for resolving dependencies.
+            registry: Component registry for looking up pipeline implementations.
+            container: DI container for resolving dependencies.
+            config_manager: Configuration manager for loading pipeline configurations.
         """
         self.registry = registry
         self.container = container
+        self.config_manager = config_manager or ConfigurationManager()
+        
+        # Register built-in pipeline types
+        self._pipeline_types = {
+            "training": TrainingPipeline,
+            "prediction": PredictionPipeline,
+            "evaluation": EvaluationPipeline,
+        }
+        
+        logger.info("PipelineFactory initialized with built-in pipeline types")
 
-    def create(
-        self, component_type: Type[T], name: Optional[str] = None, **kwargs
-    ) -> T:
+    def create_pipeline(
+        self, 
+        pipeline_type: str, 
+        config: Optional[Dict[str, Any]] = None
+    ) -> BasePipeline:
         """
-        Create a component of the specified type.
-
-        This method looks up the component implementation in the registry and creates
-        an instance with dependencies resolved from the container.
+        Create a pipeline of the specified type.
 
         Args:
-            component_type: The interface or base class of the component to create.
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
+            pipeline_type: Type of pipeline to create.
+            config: Configuration for the pipeline.
 
         Returns:
-            An instance of the component.
+            Created pipeline instance.
 
         Raises:
-            PipelineFactoryError: If the component cannot be created.
+            PipelineFactoryError: If the pipeline type is not supported.
         """
         try:
-            # Get the implementation class
-            if name is not None:
-                implementation = self.registry.get_implementation(component_type, name)
+            # Check if the pipeline type is registered
+            if pipeline_type not in self._pipeline_types:
+                # Try to get it from the registry
+                pipeline_class = self.registry.get("pipeline", pipeline_type)
+                if pipeline_class is None:
+                    raise PipelineFactoryError(f"Unsupported pipeline type: {pipeline_type}")
             else:
-                try:
-                    implementation = self.registry.get_default_implementation(
-                        component_type
-                    )
-                except Exception as e:
-                    raise PipelineFactoryError(
-                        f"No default implementation for {component_type.__name__}. "
-                        f"Please specify a name or set a default implementation."
-                    ) from e
-
-            # Get the constructor signature
-            signature = inspect.signature(implementation.__init__)
-            parameters = signature.parameters
-
-            # Prepare arguments for the constructor
-            args: Dict[str, Any] = {}
-
-            # Add dependencies from the container
-            for param_name, param in parameters.items():
-                if param_name == "self":
-                    continue
-
-                # If the parameter is provided in kwargs, use that
-                if param_name in kwargs:
-                    args[param_name] = kwargs[param_name]
-                    continue
-
-                # Try to get the parameter type
-                param_type = param.annotation
-                if param_type is inspect.Parameter.empty:
-                    # Try to get the type from type hints
-                    type_hints = get_type_hints(implementation.__init__)
-                    if param_name in type_hints:
-                        param_type = type_hints[param_name]
-                    else:
-                        # Skip parameters without type hints
-                        continue
-
-                # Try to resolve the dependency from the container
-                try:
-                    args[param_name] = self.container.resolve(param_type)
-                except Exception:
-                    # If the parameter has a default value, skip it
-                    if param.default is not inspect.Parameter.empty:
-                        continue
-                    # Otherwise, try to create it using the factory
-                    try:
-                        args[param_name] = self.create(param_type)
-                    except Exception as e:
-                        # If we can't create it, and it's not in kwargs, raise an error
-                        if param_name not in kwargs:
-                            raise PipelineFactoryError(
-                                f"Could not resolve dependency '{param_name}' "
-                                f"of type '{param_type}' for {implementation.__name__}"
-                            ) from e
-
-            # Create the component
-            return implementation(**args)
-
+                pipeline_class = self._pipeline_types[pipeline_type]
+            
+            # Create the pipeline instance
+            pipeline = pipeline_class(config=config or {}, container=self.container)
+            logger.info(f"Created pipeline of type {pipeline_type}")
+            
+            return pipeline
         except Exception as e:
             if isinstance(e, PipelineFactoryError):
                 raise
-            raise PipelineFactoryError(
-                f"Error creating {component_type.__name__}: {str(e)}"
-            ) from e
+            raise PipelineFactoryError(f"Error creating pipeline: {str(e)}") from e
 
-    def create_data_loader(self, name: Optional[str] = None, **kwargs) -> DataLoader:
+    def register_pipeline_type(self, name: str, pipeline_class: Type[BasePipeline]) -> None:
         """
-        Create a data loader component.
+        Register a new pipeline type.
 
         Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
-
-        Returns:
-            An instance of DataLoader.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
+            name: Name of the pipeline type.
+            pipeline_class: Pipeline class to register.
         """
-        return self.create(DataLoader, name, **kwargs)
+        self._pipeline_types[name] = pipeline_class
+        logger.info(f"Registered pipeline type: {name}")
+        
+        # Also register with the component registry
+        self.registry.register("pipeline", name, pipeline_class)
 
-    def create_data_preprocessor(
-        self, name: Optional[str] = None, **kwargs
-    ) -> DataPreprocessor:
+    def create_training_pipeline(self, config: Optional[Dict[str, Any]] = None) -> TrainingPipeline:
         """
-        Create a data preprocessor component.
+        Create a training pipeline.
 
         Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
+            config: Configuration for the pipeline.
 
         Returns:
-            An instance of DataPreprocessor.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
+            Training pipeline instance.
         """
-        return self.create(DataPreprocessor, name, **kwargs)
+        return self.create_pipeline("training", config)
 
-    def create_feature_engineer(
-        self, name: Optional[str] = None, **kwargs
-    ) -> FeatureEngineer:
+    def create_prediction_pipeline(self, config: Optional[Dict[str, Any]] = None) -> PredictionPipeline:
         """
-        Create a feature engineer component.
+        Create a prediction pipeline.
 
         Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
+            config: Configuration for the pipeline.
 
         Returns:
-            An instance of FeatureEngineer.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
+            Prediction pipeline instance.
         """
-        return self.create(FeatureEngineer, name, **kwargs)
+        return self.create_pipeline("prediction", config)
 
-    def create_model_builder(
-        self, name: Optional[str] = None, **kwargs
-    ) -> ModelBuilder:
+    def create_evaluation_pipeline(self, config: Optional[Dict[str, Any]] = None) -> EvaluationPipeline:
         """
-        Create a model builder component.
+        Create an evaluation pipeline.
 
         Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
+            config: Configuration for the pipeline.
 
         Returns:
-            An instance of ModelBuilder.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
+            Evaluation pipeline instance.
         """
-        return self.create(ModelBuilder, name, **kwargs)
+        return self.create_pipeline("evaluation", config)
 
-    def create_model_trainer(
-        self, name: Optional[str] = None, **kwargs
-    ) -> ModelTrainer:
+    def create_pipeline_from_config(self, config_path: str) -> BasePipeline:
         """
-        Create a model trainer component.
+        Create a pipeline from a configuration file.
 
         Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
+            config_path: Path to the configuration file.
 
         Returns:
-            An instance of ModelTrainer.
+            Created pipeline instance.
 
         Raises:
-            PipelineFactoryError: If the component cannot be created.
+            PipelineFactoryError: If the configuration is invalid or the pipeline type is not supported.
         """
-        return self.create(ModelTrainer, name, **kwargs)
-
-    def create_model_evaluator(
-        self, name: Optional[str] = None, **kwargs
-    ) -> ModelEvaluator:
-        """
-        Create a model evaluator component.
-
-        Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
-
-        Returns:
-            An instance of ModelEvaluator.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
-        """
-        return self.create(ModelEvaluator, name, **kwargs)
-
-    def create_model_serializer(
-        self, name: Optional[str] = None, **kwargs
-    ) -> ModelSerializer:
-        """
-        Create a model serializer component.
-
-        Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
-
-        Returns:
-            An instance of ModelSerializer.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
-        """
-        return self.create(ModelSerializer, name, **kwargs)
-
-    def create_predictor(self, name: Optional[str] = None, **kwargs) -> Predictor:
-        """
-        Create a predictor component.
-
-        Args:
-            name: The name of the specific implementation to create. If None, uses the default.
-            **kwargs: Additional arguments to pass to the component constructor.
-
-        Returns:
-            An instance of Predictor.
-
-        Raises:
-            PipelineFactoryError: If the component cannot be created.
-        """
-        return self.create(Predictor, name, **kwargs)
+        try:
+            # Load the configuration
+            config = self.config_manager.load_config(config_path)
+            
+            # Get the pipeline type
+            pipeline_type = config.get("pipeline_type")
+            if not pipeline_type:
+                raise PipelineFactoryError("Pipeline type not specified in configuration")
+            
+            # Create the pipeline
+            return self.create_pipeline(pipeline_type, config)
+        except Exception as e:
+            if isinstance(e, PipelineFactoryError):
+                raise
+            raise PipelineFactoryError(f"Error creating pipeline from config: {str(e)}") from e
