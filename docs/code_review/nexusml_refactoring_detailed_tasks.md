@@ -319,6 +319,7 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
   - Fixed model building stage to handle mixed data types (text and numeric)
   - Fixed prediction stage to handle MultiOutputClassifier correctly
 - ✅ Update documentation based on testing results
+- ⏳ Register pipeline components with the dependency injection container
 - Proceed with implementing the Pipeline Factory and Integration
 =======
 
@@ -350,7 +351,66 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
   - Register model training components:
     - StandardModelTrainer, CrossValidationTrainer
     - GridSearchOptimizer, RandomizedSearchOptimizer
-  - Register pipeline components (to be implemented in Phase 3)
+  - Register pipeline components:
+    - ConfigurableDataLoadingStage
+    - ConfigDrivenValidationStage
+    - SimpleFeatureEngineeringStage, TextFeatureEngineeringStage, NumericFeatureEngineeringStage
+    - RandomSplittingStage
+    - ConfigDrivenModelBuildingStage, RandomForestModelBuildingStage, GradientBoostingModelBuildingStage
+    - StandardModelTrainingStage
+    - ClassificationEvaluationStage
+    - ModelCardSavingStage
+    - StandardPredictionStage, ProbabilityPredictionStage
+
+**Detailed Steps for Component Registration:**
+1. Create a new file `nexusml/core/di/pipeline_registration.py` for registering pipeline components
+2. Implement registration functions for each component category:
+   ```python
+   def register_pipeline_stages(container: DIContainer) -> None:
+       # Register data loading stages
+       container.register(ConfigurableDataLoadingStage, lambda c: ConfigurableDataLoadingStage())
+       
+       # Register validation stages
+       container.register(ConfigDrivenValidationStage, lambda c: ConfigDrivenValidationStage(
+           config_manager=c.resolve(ConfigurationManager)
+       ))
+       
+       # Register feature engineering stages
+       container.register(SimpleFeatureEngineeringStage, lambda c: SimpleFeatureEngineeringStage())
+       container.register(TextFeatureEngineeringStage, lambda c: TextFeatureEngineeringStage())
+       container.register(NumericFeatureEngineeringStage, lambda c: NumericFeatureEngineeringStage())
+       
+       # Register data splitting stages
+       container.register(RandomSplittingStage, lambda c: RandomSplittingStage())
+       
+       # Register model building stages
+       container.register(ConfigDrivenModelBuildingStage, lambda c: ConfigDrivenModelBuildingStage(
+           config_manager=c.resolve(ConfigurationManager)
+       ))
+       container.register(RandomForestModelBuildingStage, lambda c: RandomForestModelBuildingStage(
+           config_manager=c.resolve(ConfigurationManager)
+       ))
+       container.register(GradientBoostingModelBuildingStage, lambda c: GradientBoostingModelBuildingStage(
+           config_manager=c.resolve(ConfigurationManager)
+       ))
+       
+       # Register model training stages
+       container.register(StandardModelTrainingStage, lambda c: StandardModelTrainingStage())
+       
+       # Register model evaluation stages
+       container.register(ClassificationEvaluationStage, lambda c: ClassificationEvaluationStage())
+       
+       # Register model saving stages
+       container.register(ModelCardSavingStage, lambda c: ModelCardSavingStage(
+           config_manager=c.resolve(ConfigurationManager)
+       ))
+       
+       # Register prediction stages
+       container.register(StandardPredictionStage, lambda c: StandardPredictionStage())
+       container.register(ProbabilityPredictionStage, lambda c: ProbabilityPredictionStage())
+   ```
+3. Update the main registration function in `nexusml/core/di/registration.py` to call the pipeline registration function
+4. Create a test script to verify that all components can be resolved from the container
 
 #### 2.3 Update Classes for DI
 - Update all classes to use constructor injection
@@ -368,23 +428,321 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 - Add support for different pipeline types
 - Use DI container for resolving dependencies
 
+**Detailed Steps for PipelineFactory:**
+1. Create a new file `nexusml/core/pipeline/factory.py` with the following structure:
+   ```python
+   from typing import Any, Dict, List, Optional, Type, Union
+   
+   from nexusml.config.manager import ConfigurationManager
+   from nexusml.core.di.container import DIContainer
+   from nexusml.core.pipeline.context import PipelineContext
+   from nexusml.core.pipeline.pipelines.base import BasePipeline
+   from nexusml.core.pipeline.pipelines.training import TrainingPipeline
+   from nexusml.core.pipeline.pipelines.prediction import PredictionPipeline
+   from nexusml.core.pipeline.pipelines.evaluation import EvaluationPipeline
+   from nexusml.core.pipeline.stages.base import PipelineStage
+   
+   
+   class PipelineFactory:
+       """
+       Factory for creating pipeline instances.
+       """
+   
+       def __init__(self, container: DIContainer, config_manager: Optional[ConfigurationManager] = None):
+           """
+           Initialize the pipeline factory.
+           
+           Args:
+               container: DI container for resolving dependencies.
+               config_manager: Configuration manager for loading pipeline configurations.
+           """
+           self.container = container
+           self.config_manager = config_manager or ConfigurationManager()
+           self._pipeline_types = {
+               "training": TrainingPipeline,
+               "prediction": PredictionPipeline,
+               "evaluation": EvaluationPipeline,
+           }
+       
+       def create_pipeline(self, pipeline_type: str, config: Optional[Dict[str, Any]] = None) -> BasePipeline:
+           """
+           Create a pipeline of the specified type.
+           
+           Args:
+               pipeline_type: Type of pipeline to create.
+               config: Configuration for the pipeline.
+               
+           Returns:
+               Created pipeline instance.
+               
+           Raises:
+               ValueError: If the pipeline type is not supported.
+           """
+           if pipeline_type not in self._pipeline_types:
+               raise ValueError(f"Unsupported pipeline type: {pipeline_type}")
+           
+           pipeline_class = self._pipeline_types[pipeline_type]
+           return pipeline_class(config=config or {}, container=self.container)
+       
+       def register_pipeline_type(self, name: str, pipeline_class: Type[BasePipeline]) -> None:
+           """
+           Register a new pipeline type.
+           
+           Args:
+               name: Name of the pipeline type.
+               pipeline_class: Pipeline class to register.
+           """
+           self._pipeline_types[name] = pipeline_class
+   ```
+
 #### 3.2 Implement Pipeline Types
 - Create `TrainingPipeline` for model training
 - Create `PredictionPipeline` for making predictions
 - Create `EvaluationPipeline` for model evaluation
+
+**Detailed Steps for Pipeline Types:**
+1. Create a base pipeline class in `nexusml/core/pipeline/pipelines/base.py`:
+   ```python
+   from typing import Any, Dict, List, Optional
+   
+   from nexusml.core.di.container import DIContainer
+   from nexusml.core.pipeline.context import PipelineContext
+   from nexusml.core.pipeline.stages.base import PipelineStage
+   
+   
+   class BasePipeline:
+       """
+       Base class for all pipelines.
+       """
+   
+       def __init__(self, config: Dict[str, Any], container: DIContainer):
+           """
+           Initialize the base pipeline.
+           
+           Args:
+               config: Configuration for the pipeline.
+               container: DI container for resolving dependencies.
+           """
+           self.config = config
+           self.container = container
+           self.stages = []
+           self._initialize_stages()
+       
+       def _initialize_stages(self) -> None:
+           """
+           Initialize the pipeline stages.
+           
+           This method should be overridden by subclasses to add stages to the pipeline.
+           """
+           pass
+       
+       def add_stage(self, stage: PipelineStage) -> None:
+           """
+           Add a stage to the pipeline.
+           
+           Args:
+               stage: Stage to add.
+           """
+           self.stages.append(stage)
+       
+       def execute(self, **kwargs) -> PipelineContext:
+           """
+           Execute the pipeline.
+           
+           Args:
+               **kwargs: Additional arguments for pipeline execution.
+               
+           Returns:
+               Pipeline context with execution results.
+           """
+           context = PipelineContext()
+           context.start()
+           
+           try:
+               for stage in self.stages:
+                   stage.execute(context, **kwargs)
+               
+               context.end("completed")
+           except Exception as e:
+               context.log("ERROR", f"Pipeline execution failed: {str(e)}")
+               context.end("failed")
+               raise
+           
+           return context
+   ```
+
+2. Create the training pipeline in `nexusml/core/pipeline/pipelines/training.py`:
+   ```python
+   from typing import Any, Dict, List, Optional
+   
+   from nexusml.core.di.container import DIContainer
+   from nexusml.core.pipeline.pipelines.base import BasePipeline
+   from nexusml.core.pipeline.stages.data_loading import ConfigurableDataLoadingStage
+   from nexusml.core.pipeline.stages.validation import ConfigDrivenValidationStage
+   from nexusml.core.pipeline.stages.feature_engineering import SimpleFeatureEngineeringStage
+   from nexusml.core.pipeline.stages.data_splitting import RandomSplittingStage
+   from nexusml.core.pipeline.stages.model_building import ConfigDrivenModelBuildingStage
+   from nexusml.core.pipeline.stages.model_training import StandardModelTrainingStage
+   from nexusml.core.pipeline.stages.model_evaluation import ClassificationEvaluationStage
+   from nexusml.core.pipeline.stages.model_saving import ModelCardSavingStage
+   
+   
+   class TrainingPipeline(BasePipeline):
+       """
+       Pipeline for training machine learning models.
+       """
+   
+       def _initialize_stages(self) -> None:
+           """
+           Initialize the training pipeline stages.
+           """
+           # Add data loading stage
+           self.add_stage(self.container.resolve(ConfigurableDataLoadingStage))
+           
+           # Add validation stage
+           self.add_stage(self.container.resolve(ConfigDrivenValidationStage))
+           
+           # Add feature engineering stage
+           self.add_stage(self.container.resolve(SimpleFeatureEngineeringStage))
+           
+           # Add data splitting stage
+           self.add_stage(self.container.resolve(RandomSplittingStage))
+           
+           # Add model building stage
+           self.add_stage(self.container.resolve(ConfigDrivenModelBuildingStage))
+           
+           # Add model training stage
+           self.add_stage(self.container.resolve(StandardModelTrainingStage))
+           
+           # Add model evaluation stage
+           self.add_stage(self.container.resolve(ClassificationEvaluationStage))
+           
+           # Add model saving stage
+           self.add_stage(self.container.resolve(ModelCardSavingStage))
+   ```
+
+3. Create similar implementations for PredictionPipeline and EvaluationPipeline
 
 #### 3.3 Add Extension Points
 - Implement plugin system for adding new components
 - Use strategy pattern for selecting implementations
 - Add configuration-driven component selection
 
+**Detailed Steps for Extension Points:**
+1. Create a component registry in `nexusml/core/pipeline/registry.py`:
+   ```python
+   from typing import Any, Callable, Dict, List, Optional, Type
+   
+   from nexusml.core.pipeline.stages.base import PipelineStage
+   
+   
+   class ComponentRegistry:
+       """
+       Registry for pipeline components.
+       """
+   
+       def __init__(self):
+           """
+           Initialize the component registry.
+           """
+           self._components = {}
+       
+       def register(self, component_type: str, name: str, component_class: Type[Any]) -> None:
+           """
+           Register a component.
+           
+           Args:
+               component_type: Type of component (e.g., "stage", "transformer").
+               name: Name of the component.
+               component_class: Component class to register.
+           """
+           if component_type not in self._components:
+               self._components[component_type] = {}
+           
+           self._components[component_type][name] = component_class
+       
+       def get(self, component_type: str, name: str) -> Optional[Type[Any]]:
+           """
+           Get a component by type and name.
+           
+           Args:
+               component_type: Type of component.
+               name: Name of the component.
+               
+           Returns:
+               Component class if found, None otherwise.
+           """
+           if component_type not in self._components:
+               return None
+           
+           return self._components[component_type].get(name)
+       
+       def get_all(self, component_type: str) -> Dict[str, Type[Any]]:
+           """
+           Get all components of a specific type.
+           
+           Args:
+               component_type: Type of components to get.
+               
+           Returns:
+               Dictionary mapping component names to component classes.
+           """
+           return self._components.get(component_type, {})
+   ```
+
+2. Create a plugin system in `nexusml/core/pipeline/plugins.py`:
+   ```python
+   import importlib
+   import pkgutil
+   from typing import Any, Callable, Dict, List, Optional, Type
+   
+   from nexusml.core.pipeline.registry import ComponentRegistry
+   
+   
+   class PluginManager:
+       """
+       Manager for pipeline plugins.
+       """
+   
+       def __init__(self, registry: ComponentRegistry):
+           """
+           Initialize the plugin manager.
+           
+           Args:
+               registry: Component registry to register plugins with.
+           """
+           self.registry = registry
+       
+       def discover_plugins(self, package_name: str) -> None:
+           """
+           Discover and load plugins from a package.
+           
+           Args:
+               package_name: Name of the package to discover plugins from.
+           """
+           package = importlib.import_module(package_name)
+           
+           for _, name, is_pkg in pkgutil.iter_modules(package.__path__, package.__name__ + "."):
+               if is_pkg:
+                   self.discover_plugins(name)
+               else:
+                   try:
+                       module = importlib.import_module(name)
+                       if hasattr(module, "register_components"):
+                           module.register_components(self.registry)
+                   except (ImportError, AttributeError):
+                       pass
+   ```
+
 **Files to Create/Modify:**
 - `nexusml/core/pipeline/factory.py` - For pipeline factory
 - `nexusml/core/pipeline/pipelines/` - Directory for pipeline implementations
-- `nexusml/core/pipeline/pipelines/training.py`
-- `nexusml/core/pipeline/pipelines/prediction.py`
-- `nexusml/core/pipeline/pipelines/evaluation.py`
+- `nexusml/core/pipeline/pipelines/base.py` - Base pipeline class
+- `nexusml/core/pipeline/pipelines/training.py` - Training pipeline
+- `nexusml/core/pipeline/pipelines/prediction.py` - Prediction pipeline
+- `nexusml/core/pipeline/pipelines/evaluation.py` - Evaluation pipeline
 - `nexusml/core/pipeline/registry.py` - For component registry
+- `nexusml/core/pipeline/plugins.py` - For plugin system
 
 ## Phase 4: Testing and Documentation
 
@@ -483,7 +841,7 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 - Week 1: Pipeline Components and Dependency Injection (In Progress)
   - ✅ Pipeline Components: Interfaces and base implementations
   - ✅ Pipeline Components: Concrete implementations
-  - ⏳ Pipeline Components: Testing and verification
+  - ✅ Pipeline Components: Testing and verification
   - ⏳ Dependency Injection: Register components
 - Week 2: Pipeline Factory and Integration
 
