@@ -383,9 +383,18 @@ class PipelineFactory:
             predictor_class = self.registry.get("predictor", "standard")
             if predictor_class is None:
                 # Try to resolve it from the container
-                from nexusml.core.model import EquipmentClassifier
-                predictor = self.container.resolve(EquipmentClassifier)
-                return predictor
+                from nexusml.core.pipeline.interfaces import Predictor
+                from nexusml.core.pipeline.stages.prediction import StandardPredictionStage
+                
+                # First try to resolve a Predictor interface
+                try:
+                    predictor = self.container.resolve(Predictor)
+                    logger.info("Resolved Predictor from container")
+                    return predictor
+                except Exception:
+                    # If that fails, create a StandardPredictionStage
+                    logger.info("Creating StandardPredictionStage as fallback")
+                    return StandardPredictionStage(config=config or {})
             
             # Create the predictor instance
             predictor = predictor_class(config=config or {})

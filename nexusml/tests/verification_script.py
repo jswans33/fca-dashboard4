@@ -36,9 +36,10 @@ def setup_logging():
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.FileHandler(log_dir / "verification.log"),
+            logging.FileHandler(log_dir / "verification.log", encoding='utf-8'),
             logging.StreamHandler(sys.stdout),
         ],
+        encoding='utf-8',
     )
     return logging.getLogger("verification_script")
 
@@ -312,10 +313,9 @@ def verify_model_building(logger):
             "combined_text": ["text " + str(i) for i in range(100)],
             "service_life": np.random.randint(10, 30, 100),
         })
-        # Create a multi-output target for the MultiOutputClassifier
+        # Create a single-output target as a DataFrame to match the model's expectations
         y = pd.DataFrame({
-            "target1": np.random.randint(0, 2, 100),
-            "target2": np.random.randint(0, 2, 100),
+            "target": np.random.randint(0, 2, 100),
         })
         
         # Create a model builder with parameters

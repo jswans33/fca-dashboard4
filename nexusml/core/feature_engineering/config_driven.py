@@ -72,8 +72,10 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
             yaml.YAMLError: If the configuration file is not valid YAML.
         """
         with open(config_path, "r") as f:
-            return yaml.safe_load(f)
-    
+            config_dict = yaml.safe_load(f)
+            if not isinstance(config_dict, dict):
+                raise yaml.YAMLError("Configuration must be a dictionary")
+            return config_dict
     def _validate_config(self, config: Dict[str, Any]) -> None:
         """
         Validate the configuration.
@@ -148,9 +150,16 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
                 # Get the transformer type
                 transformer_type = config_copy.pop("type")
                 
-                # Remove 'name' from config_copy if it exists to avoid duplicate parameter error
-                if 'name' in config_copy:
-                    config_copy.pop('name')  # Just remove it, no need to store
+                # Handle the 'name' parameter based on transformer type
+                if transformer_type in ["keyword_classification_mapper", "classification_system_mapper"]:
+                    # These transformers require a name parameter
+                    # Keep it in the config if it exists, or provide a default
+                    if 'name' not in config_copy:
+                        config_copy['name'] = f"{transformer_type}_default"
+                else:
+                    # For other transformers, remove the name parameter to avoid duplicate parameter error
+                    if 'name' in config_copy:
+                        config_copy.pop('name')
                 
                 # Create the transformer
                 transformer = create_transformer(transformer_type, **config_copy)
@@ -217,18 +226,21 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
                 # Create a copy of the system config to avoid modifying the original
                 system_copy = system.copy()
                 
-                # Extract the name parameter to avoid duplicate parameter error
-                if 'name' in system_copy:
-                    system_copy.pop('name')
+                # Extract the name parameter - KeywordClassificationMapper requires it
+                system_name = system_copy.get("name", "unknown")
                 
-                transformer = create_transformer(
-                    "keyword_classification_mapper",
-                    source_column=system_copy["source_column"],
-                    target_column=system_copy["target_column"],
-                    reference_manager=system_copy.get("reference_manager", "uniformat_keywords"),
-                    max_results=system_copy.get("max_results", 1),
-                    confidence_threshold=system_copy.get("confidence_threshold", 0.0),
-                )
+                # Create kwargs dictionary without the name parameter
+                kwargs = {
+                    "source_column": system_copy["source_column"],
+                    "target_column": system_copy["target_column"],
+                    "reference_manager": system_copy.get("reference_manager", "uniformat_keywords"),
+                    "max_results": system_copy.get("max_results", 1),
+                    "confidence_threshold": system_copy.get("confidence_threshold", 0.0),
+                }
+                
+                # Import the class directly to create the instance
+                from nexusml.core.feature_engineering.transformers.categorical import KeywordClassificationMapper
+                transformer = KeywordClassificationMapper(name=system_name, **kwargs)
                 transformers.append(transformer)
         
         # 6. Classification systems
@@ -237,9 +249,8 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
                 # Create a copy of the system config to avoid modifying the original
                 system_copy = system.copy()
                 
-                # Extract the name parameter to avoid duplicate parameter error
-                if 'name' in system_copy:
-                    system_copy.pop('name')
+                # Extract the name parameter - ClassificationSystemMapper requires it
+                system_name = system_copy.get("name", "unknown")
                 
                 # Create the kwargs dictionary with the correct parameters
                 kwargs = {
@@ -249,8 +260,9 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
                     "mapping_function": system_copy.get("mapping_function"),
                 }
                 
-                # Create the transformer using the global create_transformer function
-                transformer = create_transformer("classification_system_mapper", **kwargs)
+                # Import the class directly to create the instance
+                from nexusml.core.feature_engineering.transformers.categorical import ClassificationSystemMapper
+                transformer = ClassificationSystemMapper(name=system_name, **kwargs)
                 transformers.append(transformer)
         
         # 7. EAV integration

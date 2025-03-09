@@ -1,27 +1,89 @@
 {
   "metrics": {
-    "accuracy": 0.92,
-    "f1": 0.88
+    "category_name": {
+      "accuracy": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+    },
+    "uniformat_code": {
+      "accuracy": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+    },
+    "mcaa_system_category": {
+      "accuracy": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+    },
+    "Equipment_Type": {
+      "accuracy": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+    },
+    "System_Subtype": {
+      "accuracy": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+    },
+    "overall": {
+      "accuracy_mean": 1.0,
+      "f1_macro_mean": 1.0
+    }
   },
   "analysis": {
-    "confusion_matrix": [
-      [
-        10,
-        1
-      ],
-      [
-        2,
-        8
-      ]
-    ]
+    "category_name": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "uniformat_code": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "mcaa_system_category": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "Equipment_Type": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    },
+    "System_Subtype": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    }
   },
   "component_execution_times": {
-    "data_loading": 0.0020236968994140625,
-    "data_preprocessing": 0.0010118484497070312,
-    "feature_engineering": 0.0030121803283691406,
-    "data_splitting": 0.0029993057250976562,
-    "model_building": 0.0009982585906982422,
-    "model_training": 0.09462285041809082,
-    "model_evaluation": 0.014430522918701172
+    "data_loading": 0.19838380813598633,
+    "data_preprocessing": 0.0,
+    "feature_engineering": 0.0,
+    "data_splitting": 0.015481233596801758,
+    "model_building": 0.0031757354736328125,
+    "model_training": 7.13934588432312,
+    "model_evaluation": 0.11946725845336914
   }
 }

@@ -56,15 +56,24 @@ def test_transformer_with_name_parameter():
     
     try:
         # Create the feature engineer with the test configuration
+        logger.info("Creating ConfigDrivenFeatureEngineer with test configuration")
         feature_engineer = ConfigDrivenFeatureEngineer(config=config)
         
         # Create transformers from the configuration
+        logger.info("Creating transformers from configuration")
         transformers = feature_engineer.create_transformers_from_config()
         
-        # Log the number of transformers created
+        # Log the number and types of transformers created
         logger.info(f"Successfully created {len(transformers)} transformers")
+        for i, transformer in enumerate(transformers):
+            logger.info(f"  Transformer {i+1}: {transformer.__class__.__name__}")
         
-        # Try to transform the data
+        # Fit the feature engineer before transforming
+        logger.info("Fitting feature engineer")
+        feature_engineer.fit(data)
+        
+        # Transform the data
+        logger.info("Transforming data")
         transformed_data = feature_engineer.transform(data)
         
         # Log the columns in the transformed data
@@ -77,6 +86,8 @@ def test_transformer_with_name_parameter():
     except Exception as e:
         # If we get an error, the fix didn't work
         logger.error(f"❌ Test failed: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
         return False
 
 if __name__ == "__main__":

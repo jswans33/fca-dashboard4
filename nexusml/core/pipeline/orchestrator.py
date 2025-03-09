@@ -208,8 +208,8 @@ class PipelineOrchestrator:
             self.logger.info(f"x_test columns: {x_test.columns}")
             self.logger.info(f"y_test columns: {y_test.columns}")
 
-            # Only use service_life for prediction to match what the model expects
-            features_for_prediction = x_test[["service_life"]]
+            # Use both combined_text and service_life for prediction
+            features_for_prediction = x_test[["combined_text", "service_life"]]
             self.logger.info(
                 f"Making predictions with features shape: {features_for_prediction.shape}"
             )
@@ -575,8 +575,8 @@ class PipelineOrchestrator:
             self.logger.info(f"x columns: {x.columns}")
             self.logger.info(f"y columns: {y.columns}")
 
-            # Only use service_life for prediction to match what the model expects
-            features_for_prediction = x[["service_life"]]
+            # Use both combined_text and service_life for prediction
+            features_for_prediction = x[["combined_text", "service_life"]]
             self.logger.info(
                 f"Making predictions with features shape: {features_for_prediction.shape}"
             )

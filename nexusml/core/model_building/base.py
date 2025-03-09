@@ -755,11 +755,15 @@ class BaseModelEvaluator(ModelEvaluator):
             
             # Analyze each target column
             for col in y_test.columns:
+                # Make sure the indices match
+                y_test_col = y_test[col].reset_index(drop=True)
+                y_pred_col = y_pred[col].reset_index(drop=True)
+                
                 # Calculate confusion metrics
-                tp = ((y_test[col] == y_pred[col]) & (y_pred[col] != "Other")).sum()
-                fp = ((y_test[col] != y_pred[col]) & (y_pred[col] != "Other")).sum()
-                tn = ((y_test[col] == y_pred[col]) & (y_pred[col] == "Other")).sum()
-                fn = ((y_test[col] != y_pred[col]) & (y_pred[col] == "Other")).sum()
+                tp = ((y_test_col == y_pred_col) & (y_pred_col != "Other")).sum()
+                fp = ((y_test_col != y_pred_col) & (y_pred_col != "Other")).sum()
+                tn = ((y_test_col == y_pred_col) & (y_pred_col == "Other")).sum()
+                fn = ((y_test_col != y_pred_col) & (y_pred_col == "Other")).sum()
                 
                 # Calculate metrics
                 precision = tp / (tp + fp) if (tp + fp) > 0 else 0
@@ -777,14 +781,14 @@ class BaseModelEvaluator(ModelEvaluator):
                 }
                 
                 # Analyze "Other" category if present
-                if "Other" in y_test[col].unique():
-                    other_indices = y_test[col] == "Other"
-                    other_accuracy = (y_test[col][other_indices] == y_pred[col][other_indices]).mean()
+                if "Other" in y_test_col.unique():
+                    other_indices = y_test_col == "Other"
+                    other_accuracy = (y_test_col[other_indices] == y_pred_col[other_indices]).mean()
                     
                     # Calculate confusion metrics for "Other" category
-                    tp_other = ((y_test[col] == "Other") & (y_pred[col] == "Other")).sum()
-                    fp_other = ((y_test[col] != "Other") & (y_pred[col] == "Other")).sum()
-                    fn_other = ((y_test[col] == "Other") & (y_pred[col] != "Other")).sum()
+                    tp_other = ((y_test_col == "Other") & (y_pred_col == "Other")).sum()
+                    fp_other = ((y_test_col != "Other") & (y_pred_col == "Other")).sum()
+                    fn_other = ((y_test_col == "Other") & (y_pred_col != "Other")).sum()
                     
                     precision_other = tp_other / (tp_other + fp_other) if (tp_other + fp_other) > 0 else 0
                     recall_other = tp_other / (tp_other + fn_other) if (tp_other + fn_other) > 0 else 0
