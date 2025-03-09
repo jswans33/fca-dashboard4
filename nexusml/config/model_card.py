@@ -21,32 +21,32 @@ class ModelCardConfig(ConfigSection):
     @property
     def model_name(self) -> str:
         """Get the model name."""
-        return self.model_details.get('name', 'Unknown Model')
+        return str(self.model_details.get('name', 'Unknown Model'))
     
     @property
     def model_version(self) -> str:
         """Get the model version."""
-        return self.model_details.get('version', '0.0.0')
+        return str(self.model_details.get('version', '0.0.0'))
     
     @property
     def inputs(self) -> List[Dict[str, Any]]:
         """Get the model inputs."""
-        return self.data.get('inputs', [])
+        return list(self.data.get('inputs', []))
     
     @property
     def outputs(self) -> List[Dict[str, Any]]:
         """Get the model outputs."""
-        return self.data.get('outputs', [])
+        return list(self.data.get('outputs', []))
     
     @property
     def data_format(self) -> Dict[str, Any]:
         """Get the data format information."""
-        return self.data.get('data_format', {})
+        return dict(self.data.get('data_format', {}))
     
     @property
     def fields(self) -> List[Dict[str, Any]]:
         """Get the field definitions."""
-        return self.data_format.get('fields', [])
+        return list(self.data_format.get('fields', []))
     
     @property
     def required_fields(self) -> List[Dict[str, Any]]:
@@ -61,42 +61,46 @@ class ModelCardConfig(ConfigSection):
     @property
     def mcaaid_mapping(self) -> Dict[str, str]:
         """Get the MCAA ID mapping."""
-        return self.data.get('mcaaid_mapping', {})
+        return dict(self.data.get('mcaaid_mapping', {}))
     
     @property
     def standard_categories(self) -> List[str]:
         """Get the standard equipment categories."""
-        return self.data.get('standard_categories', [])
+        return list(self.data.get('standard_categories', []))
     
     @property
     def technical_specifications(self) -> Dict[str, Any]:
         """Get the technical specifications."""
-        return self.data.get('technical_specifications', {})
+        return dict(self.data.get('technical_specifications', {}))
     
     @property
     def hyperparameters(self) -> Dict[str, Any]:
         """Get the model hyperparameters."""
-        return self.technical_specifications.get('hyperparameters', {})
+        return dict(self.technical_specifications.get('hyperparameters', {}))
     
     @property
     def feature_engineering(self) -> Dict[str, Any]:
         """Get the feature engineering specifications."""
-        return self.technical_specifications.get('feature_engineering', {})
+        return dict(self.technical_specifications.get('feature_engineering', {}))
     
     @property
     def text_combinations(self) -> List[Dict[str, Any]]:
         """Get the text combination configurations."""
-        return self.feature_engineering.get('text_combinations', [])
+        return list(self.feature_engineering.get('text_combinations', []))
     
     @property
     def hierarchical_categories(self) -> List[Dict[str, Any]]:
         """Get the hierarchical category configurations."""
-        return self.feature_engineering.get('hierarchical_categories', [])
+        return list(self.feature_engineering.get('hierarchical_categories', []))
     
     @property
     def reference_data(self) -> Dict[str, str]:
         """Get the reference data paths."""
-        return self.data.get('reference_data', {})
+        # Ensure all values are strings
+        result = {}
+        for key, value in self.data.get('reference_data', {}).items():
+            result[str(key)] = str(value)
+        return result
     
     def get_field_by_name(self, name: str) -> Optional[Dict[str, Any]]:
         """

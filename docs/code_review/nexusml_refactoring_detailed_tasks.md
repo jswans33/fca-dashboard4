@@ -99,90 +99,144 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 - ✅ `nexusml/config/validation.py` - New file for configuration validation
 - ✅ `nexusml/tests/test_config_phase1.py` - Test script for Phase 1
 
-## Phase 2: Core Component Refactoring
+## Phase 2: Core Component Refactoring (IN PROGRESS)
 
-### 1. Data Validation
+### 0. Type Safety Improvements ✅
 
-#### 1.1 Create DataValidator Interface
-- Define clear validation contract
-- Add support for different validation levels (error, warning, info)
-- Include methods for getting validation results
+#### 0.1 Address mypy Errors ✅
+- ✅ Fix type annotations in core components
+- ✅ Add proper return type annotations
+- ✅ Ensure type safety in all new code
+- ✅ Use explicit casting where necessary
 
-#### 1.2 Implement ConfigDrivenValidator
-- Create rule-based validation system
-- Implement column existence validation
-- Implement data type validation
-- Implement value range validation
-- Implement custom validation rules
+#### 0.2 Add Type Stubs ✅
+- ✅ Create type stubs for external dependencies
+- ✅ Add missing type annotations
+- ✅ Improve type inference
 
-#### 1.3 Create Specialized Validators
-- Create `ColumnValidator` for column-level validation
-- Create `RowValidator` for row-level validation
-- Create `DataFrameValidator` for dataset-level validation
+**Files Created/Modified:**
+- ✅ `nexusml/mypy.ini` - Configuration for mypy
+- ✅ `nexusml/types/validation.py` - Type stubs for validation components
+- ✅ All new files created in Phase 2 for Data Validation
 
-**Files to Create/Modify:**
-- `nexusml/core/validation/interfaces.py` - For validation interfaces
-- `nexusml/core/validation/validators.py` - For validator implementations
-- `nexusml/core/validation/rules.py` - For validation rules
-- `nexusml/core/validation/__init__.py` - To expose functionality
+### 0.3 Leverage Existing Components ✅
+- ✅ Identify and document existing components that can be reused
+- ✅ Ensure compatibility with the new architecture
+- ✅ Refactor as needed to fit into the new design
+
+**Existing Components Leveraged:**
+- ✅ `nexusml/core/reference/validation.py` - Reference Validation Functions (adapted in `nexusml/core/validation/adapters.py`)
+- `nexusml/core/di/container.py` - Dependency Injection Container
+- `nexusml/core/feature_engineering.py` - Feature Engineering Components
+- `nexusml/core/model_building.py` - Model Building Components
+- `nexusml/core/pipeline/components/model_builder.py` - Model Builder Component
+
+### 1. Data Validation ✅
+
+#### 1.1 Create DataValidator Interface ✅
+- ✅ Define clear validation contract based on existing reference validation patterns
+- ✅ Add support for different validation levels (error, warning, info)
+- ✅ Include methods for getting validation results
+- ✅ Ensure compatibility with existing validation functions
+
+#### 1.2 Implement ConfigDrivenValidator ✅
+- ✅ Create rule-based validation system using configuration
+- ✅ Leverage existing validation functions in `nexusml/core/reference/validation.py`
+- ✅ Implement column existence validation
+- ✅ Implement data type validation
+- ✅ Implement value range validation
+- ✅ Implement custom validation rules
+
+#### 1.3 Create Specialized Validators ✅
+- ✅ Create `ColumnValidator` for column-level validation
+- ✅ Create `RowValidator` for row-level validation
+- ✅ Create `DataFrameValidator` for dataset-level validation
+- ✅ Ensure all validators follow the same interface
+
+**Files Created/Modified:**
+- ✅ `nexusml/core/validation/interfaces.py` - For validation interfaces
+- ✅ `nexusml/core/validation/validators.py` - For validator implementations
+- ✅ `nexusml/core/validation/rules.py` - For validation rules
+- ✅ `nexusml/core/validation/__init__.py` - To expose functionality
+- ✅ `nexusml/core/validation/adapters.py` - For adapting existing validation functions
+- ✅ `nexusml/types/validation.py` - Type stubs for validation components
+- ✅ `nexusml/tests/test_validation.py` - Tests for validation components
+- ✅ `nexusml/examples/validation_example.py` - Example usage of validation components
+- ✅ `docs/code_review/nexusml_refactoring_phase2_data_validation.md` - Documentation
 
 ### 2. Feature Engineering
 
-#### 2.1 Create FeatureEngineer Interface
-- Define methods for fit, transform, and fit_transform
-- Add support for configuration-driven behavior
-- Include methods for getting feature information
+#### 2.1 Enhance Existing FeatureEngineer Interface
+- Refine the existing `GenericFeatureEngineer` interface in `nexusml/core/feature_engineering.py`
+- Ensure proper implementation of fit, transform, and fit_transform methods
+- Improve configuration-driven behavior
+- Add methods for getting feature information
 
-#### 2.2 Implement ConfigDrivenFeatureEngineer
-- Create transformer registry for different transformation types
-- Implement text combination transformers
-- Implement numeric column transformers
-- Implement categorical column transformers
-- Implement hierarchical column transformers
+#### 2.2 Improve ConfigDrivenFeatureEngineer
+- Enhance the existing transformer registry for different transformation types
+- Improve error handling and logging
+- Add support for more transformation types
+- Ensure proper dependency injection
 
-#### 2.3 Create Specialized Transformers
-- Create `TextCombiner` for combining text columns
-- Create `NumericCleaner` for cleaning numeric columns
-- Create `HierarchyBuilder` for building hierarchical columns
-- Create `CategoryMapper` for mapping categories
-- Create `MissingValueHandler` for handling missing values
+#### 2.3 Refactor Specialized Transformers
+- Refactor existing transformers to follow SOLID principles:
+  - `TextCombiner` for combining text columns
+  - `NumericCleaner` for cleaning numeric columns
+  - `HierarchyBuilder` for building hierarchical columns
+  - `ColumnMapper` for mapping columns
+  - `KeywordClassificationMapper` for keyword-based classification
+  - `ClassificationSystemMapper` for mapping to classification systems
+- Add new transformers as needed:
+  - `MissingValueHandler` for handling missing values
+  - `OutlierDetector` for detecting outliers
+  - `FeatureSelector` for selecting features
 
 **Files to Create/Modify:**
-- `nexusml/core/feature_engineering/interfaces.py` - For feature engineering interfaces
-- `nexusml/core/feature_engineering/transformers/` - Directory for transformers
-- `nexusml/core/feature_engineering/transformers/text.py`
-- `nexusml/core/feature_engineering/transformers/numeric.py`
-- `nexusml/core/feature_engineering/transformers/categorical.py`
-- `nexusml/core/feature_engineering/transformers/hierarchical.py`
-- `nexusml/core/feature_engineering/config_driven.py` - For ConfigDrivenFeatureEngineer
+- `nexusml/core/feature_engineering.py` - Refactor existing implementation
+- `nexusml/core/feature_engineering/interfaces.py` - Extract interfaces from existing code
+- `nexusml/core/feature_engineering/transformers/` - Directory for refactored transformers
+- `nexusml/core/feature_engineering/transformers/text.py` - Extract from existing code
+- `nexusml/core/feature_engineering/transformers/numeric.py` - Extract from existing code
+- `nexusml/core/feature_engineering/transformers/categorical.py` - Extract from existing code
+- `nexusml/core/feature_engineering/transformers/hierarchical.py` - Extract from existing code
+- `nexusml/core/feature_engineering/config_driven.py` - Extract from existing code
 
 ### 3. Model Building and Training
 
-#### 3.1 Create Model Interfaces
-- Define clear contracts for building and training models
-- Add support for different model types
-- Include methods for hyperparameter optimization
+#### 3.1 Enhance Existing Model Interfaces
+- Refine the existing `BaseModelBuilder` interface in `nexusml/core/pipeline/base.py`
+- Improve the existing `RandomForestModelBuilder` in `nexusml/core/pipeline/components/model_builder.py`
+- Ensure proper implementation of build_model and optimize_hyperparameters methods
+- Add support for more model types
 
-#### 3.2 Implement Model Builders
-- Create `RandomForestBuilder` for building random forest models
-- Create `GradientBoostingBuilder` for building gradient boosting models
-- Create `NeuralNetworkBuilder` for building neural network models
+#### 3.2 Refactor and Extend Model Builders
+- Refactor the existing `RandomForestModelBuilder` to follow SOLID principles
+- Create additional model builders:
+  - `GradientBoostingBuilder` for building gradient boosting models
+  - `NeuralNetworkBuilder` for building neural network models
+  - `EnsembleBuilder` for building ensemble models
+- Ensure proper dependency injection and configuration
 
-#### 3.3 Implement Model Trainers
-- Create `StandardModelTrainer` for training models
-- Create `CrossValidationTrainer` for cross-validation
-- Create `HyperparameterOptimizer` for hyperparameter optimization
+#### 3.3 Enhance Model Trainers
+- Refactor the existing model training code in `nexusml/core/model_building.py`
+- Create dedicated trainer classes:
+  - `StandardModelTrainer` for training models
+  - `CrossValidationTrainer` for cross-validation
+  - `HyperparameterOptimizer` for hyperparameter optimization
+- Ensure proper integration with the configuration system
 
 **Files to Create/Modify:**
-- `nexusml/core/model_building/interfaces.py` - For model building interfaces
-- `nexusml/core/model_building/builders/` - Directory for model builders
-- `nexusml/core/model_building/builders/random_forest.py`
-- `nexusml/core/model_building/builders/gradient_boosting.py`
-- `nexusml/core/model_building/builders/neural_network.py`
-- `nexusml/core/model_training/interfaces.py` - For model training interfaces
-- `nexusml/core/model_training/trainers/` - Directory for model trainers
-- `nexusml/core/model_training/trainers/standard.py`
-- `nexusml/core/model_training/trainers/cross_validation.py`
+- `nexusml/core/model_building.py` - Refactor existing implementation
+- `nexusml/core/pipeline/components/model_builder.py` - Refactor existing implementation
+- `nexusml/core/model_building/interfaces.py` - Extract interfaces from existing code
+- `nexusml/core/model_building/builders/` - Directory for refactored model builders
+- `nexusml/core/model_building/builders/random_forest.py` - Extract from existing code
+- `nexusml/core/model_building/builders/gradient_boosting.py` - New implementation
+- `nexusml/core/model_building/builders/neural_network.py` - New implementation
+- `nexusml/core/model_training/interfaces.py` - Extract interfaces from existing code
+- `nexusml/core/model_training/trainers/` - Directory for refactored trainers
+- `nexusml/core/model_training/trainers/standard.py` - Extract from existing code
+- `nexusml/core/model_training/trainers/cross_validation.py` - Extract from existing code
 
 ## Phase 3: Pipeline Orchestration
 
@@ -221,11 +275,10 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 
 ### 2. Dependency Injection
 
-#### 2.1 Create DI Container
-- Implement a lightweight DI container
-- Add support for singleton and transient registrations
-- Implement constructor injection
-- Add support for factory methods
+#### 2.1 Leverage Existing DI Container
+- Utilize the existing DIContainer implementation in `nexusml/core/di/container.py`
+- Add any necessary extensions or improvements
+- Create documentation for the DI container usage
 
 #### 2.2 Register Components
 - Register configuration components
@@ -237,14 +290,14 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 
 #### 2.3 Update Classes for DI
 - Update all classes to use constructor injection
-- Add factory methods for creating instances
-- Implement service locator pattern for finding implementations
+- Ensure proper dependency resolution
+- Add factory methods where needed
 
 **Files to Create/Modify:**
-- `nexusml/core/di/container.py` - For DI container
-- `nexusml/core/di/provider.py` - For service provider
-- `nexusml/core/di/decorators.py` - For DI decorators
-- `nexusml/core/di/__init__.py` - To expose functionality
+- `nexusml/core/di/__init__.py` - Update to expose functionality
+- `nexusml/core/di/provider.py` - Create if needed for service provider
+- `nexusml/core/di/decorators.py` - Create if needed for DI decorators
+- Component registration files for each module
 
 ### 3. Pipeline Factory
 
@@ -354,14 +407,15 @@ This document provides a detailed breakdown of tasks for each phase of the Nexus
 
 ## Implementation Timeline
 
-### Phase 1: Configuration Centralization (2 weeks)
-- Week 1: Enhance Config Module and Create Configuration Interfaces
-- Week 2: Update Path Management and Integration Testing
+### Phase 1: Configuration Centralization (✅ COMPLETED)
+- ✅ Enhance Config Module and Create Configuration Interfaces
+- ✅ Update Path Management and Integration Testing
+- ✅ Add Configuration Validation and Model Card Support
 
-### Phase 2: Core Component Refactoring (3 weeks)
-- Week 1: Data Validation
-- Week 2: Feature Engineering
-- Week 3: Model Building and Training
+### Phase 2: Core Component Refactoring (IN PROGRESS - 3 weeks)
+- ✅ Week 1: Type Safety Improvements and Data Validation (Completed March 8, 2025)
+- Week 2: Feature Engineering (Starting March 11, 2025)
+- Week 3: Model Building and Training (Starting March 18, 2025)
 
 ### Phase 3: Pipeline Orchestration (2 weeks)
 - Week 1: Pipeline Components and Dependency Injection
