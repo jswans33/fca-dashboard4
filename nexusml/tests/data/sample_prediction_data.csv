@@ -1,0 +1,11 @@
+equipment_tag,description,manufacturer,model,service_life,installation_year,location,department
+NEW-01,"New Air Handling Unit with cooling coil",Trane,M-2000,20,2023,"Building C",Facilities
+NEW-02,"New Centrifugal Chiller for HVAC system",Carrier,C-6000,25,2022,"Building C",Facilities
+NEW-03,"New Centrifugal Pump for chilled water",Armstrong,A-4000,15,2023,"Building C",Facilities
+NEW-04,"New Hot water boiler",Cleaver-Brooks,CB-3000,30,2022,"Building C",Facilities
+NEW-05,"New Cooling tower",Baltimore Aircoil,BAC-2000,20,2023,"Building C",Facilities
+NEW-06,"New Variable air volume terminal",Trane,T-4000,15,2022,"Building C",IT
+NEW-07,"New Fan coil unit",Daikin,D-2000,15,2023,"Building C",Production
+NEW-08,"New Electric water heater",A.O. Smith,AOS-2000,12,2022,"Building C",Facilities
+NEW-09,"New Fire pump",Armstrong,A-6000,25,2023,"Building C",Facilities
+NEW-10,"New Fire sprinkler system",Tyco,T-6000,30,2022,"Building C",Facilities

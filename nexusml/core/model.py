@@ -484,7 +484,7 @@ def train_enhanced_model(
     # Create a DataFrame with both text and numeric features
     x = pd.DataFrame(
         {
-            "combined_features": df["combined_text"],  # Using the name from config
+            "combined_text": df["combined_text"],  # Using the name from config
             "service_life": df["service_life"],
         }
     )
@@ -570,7 +570,7 @@ def predict_with_enhanced_model(
 
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(
-        {"combined_features": [description], "service_life": [service_life]}
+        {"combined_text": [description], "service_life": [service_life]}
     )
 
     # Predict using the trained pipeline

@@ -1,0 +1,140 @@
+# Comprehensive configuration for testing the NexusML pipeline
+# This configuration includes all possible parameters
+
+data:
+  # Data configuration
+  input_path: tests/data/sample_data.csv
+  target_column: category_name
+  test_size: 0.3
+  random_state: 42
+  validation_size: 0.2
+  stratify: true
+  shuffle: true
+  columns:
+    - equipment_tag
+    - description
+    - manufacturer
+    - model
+    - service_life
+    - installation_year
+    - location
+    - department
+    - category_name
+    - uniformat_code
+    - mcaa_system_category
+
+features:
+  # Feature engineering configuration
+  text_columns:
+    - description
+    - manufacturer
+    - model
+  numeric_columns:
+    - service_life
+    - installation_year
+  categorical_columns:
+    - location
+    - department
+  date_columns: []
+  transformations:
+    # Text transformations
+    - type: text_combiner
+      columns:
+        - description
+        - manufacturer
+        - model
+      output_column: combined_text
+      separator: " "
+    
+    - type: text_normalizer
+      columns:
+        - combined_text
+      lowercase: true
+      remove_punctuation: true
+      remove_stopwords: true
+      stemming: true
+    
+    # Numeric transformations
+    - type: numeric_scaler
+      columns:
+        - service_life
+      method: standard
+      with_mean: true
+      with_std: true
+    
+    - type: numeric_scaler
+      columns:
+        - installation_year
+      method: minmax
+      feature_range:
+        - 0
+        - 1
+    
+    # Categorical transformations
+    - type: one_hot_encoder
+      columns:
+        - location
+        - department
+      drop: first
+      sparse: false
+
+model:
+  # Model configuration
+  type: gradient_boosting
+  params:
+    n_estimators: 200
+    max_depth: 10
+    learning_rate: 0.1
+    subsample: 0.8
+    random_state: 42
+  
+  # Hyperparameter optimization
+  optimization:
+    method: grid_search
+    param_grid:
+      n_estimators:
+        - 100
+        - 200
+        - 300
+      max_depth:
+        - 5
+        - 10
+        - 15
+      learning_rate:
+        - 0.01
+        - 0.1
+        - 0.2
+    cv: 5
+    scoring: f1_weighted
+    n_jobs: -1
+    verbose: 1
+
+evaluation:
+  # Evaluation configuration
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+    - roc_auc
+  cv: 5
+  n_jobs: -1
+  verbose: 1
+
+output:
+  # Output configuration
+  model_dir: tests/output/models
+  results_dir: tests/output/results
+  model_name: comprehensive_model
+  save_predictions: true
+  save_feature_importance: true
+  save_confusion_matrix: true
+  save_roc_curve: true
+  save_precision_recall_curve: true
+
+logging:
+  # Logging configuration
+  level: INFO
+  file: tests/output/logs/pipeline.log
+  console: true
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

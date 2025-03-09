@@ -224,7 +224,7 @@ class EnsembleBuilder(BaseConfigurableModelBuilder):
             # Combine text and numeric features
             preprocessor = ColumnTransformer(
                 transformers=[
-                    ("text", text_features, "combined_features"),
+                    ("text", text_features, "combined_text"),
                     ("numeric", numeric_features, ["service_life"]),
                 ],
                 remainder="drop",

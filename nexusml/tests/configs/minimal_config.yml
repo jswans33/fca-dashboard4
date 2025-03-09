@@ -1,0 +1,22 @@
+# Minimal configuration for testing the NexusML pipeline
+# This configuration includes only the required parameters
+
+data:
+  # Data configuration
+  input_path: tests/data/sample_data.csv
+  target_column: category_name
+
+features:
+  # Feature engineering configuration
+  text_columns: 
+    - description
+  numeric_columns:
+    - service_life
+
+model:
+  # Model configuration
+  type: random_forest
+  params:
+    n_estimators: 50
+    max_depth: 5
+    random_state: 42

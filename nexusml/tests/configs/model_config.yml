@@ -1,0 +1,47 @@
+# Model configuration for testing
+
+# Model type
+type: random_forest
+
+# Model parameters
+params:
+  n_estimators: 100
+  max_depth: 10
+  min_samples_split: 2
+  min_samples_leaf: 1
+  max_features: auto
+  bootstrap: true
+  random_state: 42
+
+# Target columns
+target_columns:
+  - category_name
+  - uniformat_code
+  - mcaa_system_category
+
+# Hyperparameter optimization
+optimization:
+  method: grid_search
+  param_grid:
+    n_estimators:
+      - 50
+      - 100
+      - 200
+    max_depth:
+      - 5
+      - 10
+      - 15
+  cv: 3
+  scoring: f1_weighted
+  n_jobs: -1
+  verbose: 1
+
+# Evaluation
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+  cv: 3
+  n_jobs: -1

@@ -1,0 +1,11 @@
+equipment_tag,manufacturer,model,description,service_life
+AHU-01,Trane,M-1000,Air Handling Unit with cooling coil,20
+CHW-01,Carrier,C-2000,Centrifugal Chiller for HVAC system,25
+P-01,Armstrong,A-3000,Centrifugal Pump for chilled water,15
+VAV-01,Johnson Controls,J-4000,Variable Air Volume terminal unit,15
+FCU-01,Daikin,D-5000,Fan Coil Unit for zone temperature control,10
+RTU-01,York,Y-6000,Rooftop Unit with economizer,18
+CT-01,Baltimore Aircoil,B-7000,Cooling Tower for condenser water,20
+BLR-01,Cleaver-Brooks,CB-8000,Hot Water Boiler for heating,30
+EF-01,Greenheck,G-9000,Exhaust Fan for bathroom ventilation,15
+HX-01,Alfa Laval,AL-1000,Heat Exchanger for energy recovery,25

@@ -2,16 +2,14 @@
 """
 Prediction Pipeline Example
 
-This example demonstrates how to use the updated prediction pipeline entry point
-with both the legacy implementation and the new orchestrator-based implementation.
+This example demonstrates how to use the prediction pipeline to make predictions
+on new data using a trained model.
 """
 
-import argparse
 import logging
 import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Union
 
 import pandas as pd
 
@@ -20,8 +18,11 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from nexusml.core.cli.prediction_args import PredictionArgumentParser
-from nexusml.predict_v2 import create_orchestrator, run_legacy_prediction, run_orchestrator_prediction
+from nexusml.core.di.container import DIContainer
+from nexusml.core.pipeline.context import PipelineContext
+from nexusml.core.pipeline.factory import PipelineFactory
+from nexusml.core.pipeline.orchestrator import PipelineOrchestrator
+from nexusml.core.pipeline.registry import ComponentRegistry
 
 
 def setup_logging():
@@ -35,7 +36,7 @@ def setup_logging():
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
-            logging.FileHandler(log_dir / "prediction_example.log"),
+            logging.FileHandler(log_dir / "prediction_pipeline_example.log"),
             logging.StreamHandler(sys.stdout),
         ],
     )
@@ -43,253 +44,144 @@ def setup_logging():
     return logging.getLogger("prediction_pipeline_example")
 
 
-def create_sample_data():
-    """
-    Create sample data for prediction.
+def create_orchestrator():
+    """Create a PipelineOrchestrator instance."""
+    # Import the orchestrator creation function from the pipeline_orchestrator_example
+    from examples.pipeline_orchestrator_example import create_orchestrator as create_base_orchestrator
+    
+    # Create the orchestrator
+    return create_base_orchestrator()
 
-    Returns:
-        Path to the sample data file.
-    """
+
+def load_model(orchestrator, model_path="outputs/models/equipment_classifier.pkl"):
+    """Load a trained model."""
     logger = logging.getLogger("prediction_pipeline_example")
-    logger.info("Creating sample data for prediction")
+    logger.info(f"Loading model from {model_path}")
+    
+    try:
+        model = orchestrator.load_model(model_path)
+        logger.info("Model loaded successfully")
+        return model
+    except Exception as e:
+        logger.error(f"Error loading model: {e}")
+        return None
 
-    # Create sample data directory if it doesn't exist
-    sample_dir = Path("examples/data")
-    sample_dir.mkdir(parents=True, exist_ok=True)
 
-    # Create sample data
-    sample_data = pd.DataFrame(
+def load_prediction_data(data_path="examples/data/sample_prediction_data.csv"):
+    """Load data for prediction."""
+    logger = logging.getLogger("prediction_pipeline_example")
+    logger.info(f"Loading prediction data from {data_path}")
+    
+    try:
+        # Check if the file exists
+        if not Path(data_path).exists():
+            logger.error(f"File not found: {data_path}")
+            # Create a sample data file if it doesn't exist
+            create_sample_prediction_data(data_path)
+            logger.info(f"Created sample prediction data at {data_path}")
+        
+        # Load the data
+        if data_path.lower().endswith(".csv"):
+            data = pd.read_csv(data_path)
+        elif data_path.lower().endswith((".xls", ".xlsx")):
+            data = pd.read_excel(data_path)
+        else:
+            raise ValueError(f"Unsupported file format: {data_path}")
+        
+        logger.info(f"Loaded {len(data)} records for prediction")
+        return data
+    except Exception as e:
+        logger.error(f"Error loading prediction data: {e}")
+        return None
+
+
+def create_sample_prediction_data(output_path="examples/data/sample_prediction_data.csv"):
+    """Create sample prediction data."""
+    logger = logging.getLogger("prediction_pipeline_example")
+    logger.info(f"Creating sample prediction data at {output_path}")
+    
+    # Create a sample DataFrame
+    data = pd.DataFrame(
         {
-            "equipment_tag": ["AHU-01", "CHW-01", "P-01"],
-            "manufacturer": ["Trane", "Carrier", "Armstrong"],
-            "model": ["M-1000", "C-2000", "A-3000"],
+            "equipment_tag": ["AHU-01", "CHW-01", "P-01", "VAV-01", "FCU-01"],
+            "manufacturer": ["Trane", "Carrier", "Armstrong", "Johnson Controls", "Daikin"],
+            "model": ["M-1000", "C-2000", "A-3000", "J-4000", "D-5000"],
             "description": [
                 "Air Handling Unit with cooling coil",
                 "Centrifugal Chiller for HVAC system",
                 "Centrifugal Pump for chilled water",
+                "Variable Air Volume terminal unit",
+                "Fan Coil Unit for zone temperature control",
             ],
+            "service_life": [20, 25, 15, 15, 10],
         }
     )
-
-    # Save sample data
-    sample_path = sample_dir / "sample_prediction_data.csv"
-    sample_data.to_csv(sample_path, index=False)
-    logger.info(f"Sample data saved to {sample_path}")
-
-    return sample_path
-
-
-def create_args_namespace(**kwargs) -> argparse.Namespace:
-    """
-    Create an argparse.Namespace object with the given keyword arguments.
-
-    Args:
-        **kwargs: Keyword arguments to set as attributes on the Namespace.
-
-    Returns:
-        An argparse.Namespace object with the given attributes.
-    """
-    return argparse.Namespace(**kwargs)
+    
+    # Create the directory if it doesn't exist
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    # Save the data
+    data.to_csv(output_path, index=False)
+    
+    logger.info(f"Created sample prediction data with {len(data)} records")
+    return data
 
 
-def legacy_prediction_example(logger):
-    """
-    Example of using the legacy prediction implementation.
-
-    Args:
-        logger: Logger instance for logging messages.
-    """
-    logger.info("Legacy Prediction Example")
-
-    # Create sample data
-    sample_path = create_sample_data()
-
-    # Create output directory if it doesn't exist
-    output_dir = Path("examples/output")
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Set up arguments using argparse.Namespace for proper type checking
-    args = create_args_namespace(
-        model_path="outputs/models/equipment_classifier_latest.pkl",
-        input_file=str(sample_path),
-        output_file=str(output_dir / "legacy_prediction_results.csv"),
-        log_level="INFO",
-        description_column="description",
-        service_life_column="service_life",
-        asset_tag_column="equipment_tag",
-        feature_config_path=None,
-        use_orchestrator=False,
-    )
-
-    # Check if model exists, if not, skip this example
-    if not Path(args.model_path).exists():
-        logger.warning(f"Model file not found: {args.model_path}")
-        logger.warning("Skipping legacy prediction example")
+def orchestrator_prediction_example(logger=None):
+    """Example of using the orchestrator for prediction."""
+    if logger is None:
+        logger = setup_logging()
+    
+    logger.info("Starting prediction pipeline example")
+    
+    # Create orchestrator
+    orchestrator = create_orchestrator()
+    
+    # Load model
+    model = load_model(orchestrator)
+    if model is None:
+        logger.error("Failed to load model, cannot proceed with prediction")
         return
-
+    
+    # Load prediction data
+    data = load_prediction_data()
+    if data is None:
+        logger.error("Failed to load prediction data, cannot proceed with prediction")
+        return
+    
+    # Make predictions
     try:
-        # Run legacy prediction
-        logger.info(f"Running legacy prediction with input file: {args.input_file}")
-        run_legacy_prediction(args, logger)
-
-        # Check if output file was created
-        if Path(args.output_file).exists():
-            logger.info(f"Legacy prediction results saved to: {args.output_file}")
-
-            # Load and display results
-            results = pd.read_csv(args.output_file)
-            logger.info(f"Legacy prediction results ({len(results)} rows):")
-            for idx, row in enumerate(results.head(3).iterrows()):
-                logger.info(f"  Item {idx+1}:")
-                logger.info(f"    Description: {row[1].get('original_description', 'N/A')}")
-                logger.info(f"    Equipment Category: {row[1].get('category_name', 'N/A')}")
-                logger.info(f"    System Type: {row[1].get('mcaa_system_category', 'N/A')}")
-        else:
-            logger.warning(f"Output file not created: {args.output_file}")
-
+        output_path = "examples/output/orchestrator_prediction_results.csv"
+        predictions = orchestrator.predict(
+            model=model,
+            data=data,
+            output_path=output_path,
+        )
+        
+        logger.info("Predictions completed successfully")
+        logger.info(f"Predictions saved to: {output_path}")
+        logger.info("Sample predictions:")
+        for i, row in predictions.head(3).iterrows():
+            logger.info(f"  Item {i+1}:")
+            logger.info(f"    Equipment Tag: {data.iloc[i]['equipment_tag']}")
+            logger.info(f"    Description: {data.iloc[i]['description']}")
+            logger.info(f"    Predicted Category: {row.get('category_name', 'N/A')}")
+            logger.info(f"    Predicted System Type: {row.get('mcaa_system_category', 'N/A')}")
+        
+        # Get execution summary
+        summary = orchestrator.get_execution_summary()
+        logger.info("Execution summary:")
+        logger.info(f"  Status: {summary['status']}")
+        logger.info("  Component execution times:")
+        for component, time in summary["component_execution_times"].items():
+            logger.info(f"    {component}: {time:.2f} seconds")
+        logger.info(f"  Total execution time: {summary.get('total_execution_time', 0):.2f} seconds")
+        
+        return predictions
+    
     except Exception as e:
-        logger.error(f"Error in legacy prediction example: {e}", exc_info=True)
-
-
-def orchestrator_prediction_example(logger):
-    """
-    Example of using the orchestrator-based prediction implementation.
-
-    Args:
-        logger: Logger instance for logging messages.
-    """
-    logger.info("Orchestrator Prediction Example")
-
-    # Create sample data
-    sample_path = create_sample_data()
-
-    # Create output directory if it doesn't exist
-    output_dir = Path("examples/output")
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Set up arguments using argparse.Namespace for proper type checking
-    args = create_args_namespace(
-        model_path="outputs/models/equipment_classifier_latest.pkl",
-        input_file=str(sample_path),
-        output_file=str(output_dir / "orchestrator_prediction_results.csv"),
-        log_level="INFO",
-        description_column="description",
-        service_life_column="service_life",
-        asset_tag_column="equipment_tag",
-        feature_config_path="nexusml/config/feature_config.yml",
-        use_orchestrator=True,
-    )
-
-    # Check if model exists, if not, skip this example
-    if not Path(args.model_path).exists():
-        logger.warning(f"Model file not found: {args.model_path}")
-        logger.warning("Skipping orchestrator prediction example")
-        return
-
-    # Check if feature config exists, if not, skip this example
-    if args.feature_config_path and not Path(args.feature_config_path).exists():
-        logger.warning(f"Feature config file not found: {args.feature_config_path}")
-        logger.warning("Skipping orchestrator prediction example")
-        return
-
-    try:
-        # Run orchestrator prediction
-        logger.info(f"Running orchestrator prediction with input file: {args.input_file}")
-        run_orchestrator_prediction(args, logger)
-
-        # Check if output file was created
-        if Path(args.output_file).exists():
-            logger.info(f"Orchestrator prediction results saved to: {args.output_file}")
-
-            # Load and display results
-            results = pd.read_csv(args.output_file)
-            logger.info(f"Orchestrator prediction results ({len(results)} rows):")
-            for idx, row in enumerate(results.head(3).iterrows()):
-                logger.info(f"  Item {idx+1}:")
-                if "original_description" in row[1]:
-                    logger.info(f"    Description: {row[1].get('original_description', 'N/A')}")
-                elif "combined_text" in row[1]:
-                    logger.info(f"    Description: {row[1].get('combined_text', 'N/A')}")
-                logger.info(f"    Equipment Category: {row[1].get('category_name', 'N/A')}")
-                logger.info(f"    System Type: {row[1].get('mcaa_system_category', 'N/A')}")
-        else:
-            logger.warning(f"Output file not created: {args.output_file}")
-
-    except Exception as e:
-        logger.error(f"Error in orchestrator prediction example: {e}", exc_info=True)
-
-
-def command_line_example(logger):
-    """
-    Example of using the prediction pipeline from the command line.
-
-    Args:
-        logger: Logger instance for logging messages.
-    """
-    logger.info("Command Line Example")
-
-    # Create sample data
-    sample_path = create_sample_data()
-
-    # Create output directory if it doesn't exist
-    output_dir = Path("examples/output")
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Legacy command
-    legacy_cmd = (
-        f"python -m nexusml.predict_v2 "
-        f"--input-file={sample_path} "
-        f"--output-file={output_dir / 'cli_legacy_results.csv'} "
-        f"--description-column=description "
-        f"--service-life-column=service_life "
-        f"--asset-tag-column=equipment_tag"
-    )
-
-    # Orchestrator command
-    orchestrator_cmd = (
-        f"python -m nexusml.predict_v2 "
-        f"--input-file={sample_path} "
-        f"--output-file={output_dir / 'cli_orchestrator_results.csv'} "
-        f"--description-column=description "
-        f"--service-life-column=service_life "
-        f"--asset-tag-column=equipment_tag "
-        f"--use-orchestrator"
-    )
-
-    logger.info("To run the prediction pipeline from the command line:")
-    logger.info(f"  Legacy mode: {legacy_cmd}")
-    logger.info(f"  Orchestrator mode: {orchestrator_cmd}")
-
-
-def error_handling_example(logger):
-    """
-    Example of error handling in the prediction pipeline.
-
-    Args:
-        logger: Logger instance for logging messages.
-    """
-    logger.info("Error Handling Example")
-
-    # Set up arguments using argparse.Namespace for proper type checking
-    args = create_args_namespace(
-        model_path="nonexistent_model.pkl",
-        input_file="nonexistent_input.csv",
-        output_file="nonexistent_output.csv",
-        log_level="INFO",
-        description_column="description",
-        service_life_column="service_life",
-        asset_tag_column="equipment_tag",
-        feature_config_path=None,
-        use_orchestrator=False,
-    )
-
-    try:
-        # Try to validate arguments (should fail)
-        parser = PredictionArgumentParser()
-        parser.validate_args(args)
-    except ValueError as e:
-        logger.info(f"Expected error caught: {e}")
-        logger.info("Error handling worked correctly")
+        logger.error(f"Error making predictions: {e}")
+        return None
 
 
 def main():
@@ -297,13 +189,10 @@ def main():
     # Set up logging
     logger = setup_logging()
     logger.info("Starting Prediction Pipeline Example")
-
-    # Run examples
-    legacy_prediction_example(logger)
+    
+    # Run the prediction example
     orchestrator_prediction_example(logger)
-    command_line_example(logger)
-    error_handling_example(logger)
-
+    
     logger.info("Prediction Pipeline Example completed")
 
 

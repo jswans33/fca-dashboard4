@@ -352,8 +352,25 @@ def create_orchestrator():
     registry.set_default_implementation(ModelSerializer, "simple")
     registry.set_default_implementation(Predictor, "simple")
 
-    # Create a dependency injection container
-    container = DIContainer()
+    # Get the container from the ContainerProvider
+    from nexusml.core.di.provider import ContainerProvider
+    from nexusml.core.di.registration import register_core_components, register_pipeline_components
+    
+    # Get the default container provider
+    provider = ContainerProvider()
+    
+    # Register core components
+    register_core_components(provider)
+    
+    # Register pipeline components
+    register_pipeline_components(provider)
+    
+    # Get the container from the provider
+    container = provider.container
+    
+    # Register our components with the container
+    container.register_instance(DataLoader, StandardDataLoader())
+    container.register_instance(ModelSerializer, SimpleModelSerializer())
 
     # Create a pipeline factory
     factory = PipelineFactory(registry, container)

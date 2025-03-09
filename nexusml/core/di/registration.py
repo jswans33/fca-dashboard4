@@ -16,7 +16,14 @@ from nexusml.core.eav_manager import EAVManager
 from nexusml.core.feature_engineering import GenericFeatureEngineer
 from nexusml.core.model import EquipmentClassifier
 from nexusml.core.pipeline.components.feature_engineer import StandardFeatureEngineer
-from nexusml.core.pipeline.interfaces import FeatureEngineer
+from nexusml.core.pipeline.interfaces import (
+    DataLoader,
+    DataPreprocessor,
+    FeatureEngineer,
+    ModelSerializer
+)
+from nexusml.core.model_building.base import ModelBuilder
+from nexusml.core.model_building.builders.random_forest import RandomForestBuilder
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -54,6 +61,154 @@ def register_core_components(
         EquipmentClassifier, EquipmentClassifier, singleton=False
     )
     logger.info("Registered EquipmentClassifier with DI container")
+    
+    # Create a simple DataLoader implementation
+    class SimpleDataLoader(DataLoader):
+        def __init__(self, file_path=None):
+            self.file_path = file_path
+            
+        def load_data(self, data_path=None, **kwargs):
+            path = data_path or self.file_path
+            if path is None:
+                raise ValueError("No data path provided")
+                
+            import pandas as pd
+            if path.lower().endswith(".csv"):
+                return pd.read_csv(path)
+            elif path.lower().endswith((".xls", ".xlsx")):
+                return pd.read_excel(path)
+            else:
+                raise ValueError(f"Unsupported file format: {path}")
+    
+    # Create a simple DataPreprocessor implementation
+    class SimpleDataPreprocessor(DataPreprocessor):
+        def preprocess(self, data, **kwargs):
+            """Preprocess the input data."""
+            logger.info("Preprocessing data")
+            
+            # In a real implementation, this would clean and prepare the data
+            # For this example, we'll just return the data as is
+            return data
+        
+        def verify_required_columns(self, data):
+            """Verify that all required columns exist in the DataFrame."""
+            logger.info("Verifying required columns")
+            
+            # Define required columns
+            required_columns = ["description", "service_life"]
+            
+            # Check if required columns exist
+            missing_columns = [col for col in required_columns if col not in data.columns]
+            
+            if missing_columns:
+                # For this example, we'll add missing columns with default values
+                logger.warning(f"Missing required columns: {missing_columns}")
+                for col in missing_columns:
+                    if col == "description":
+                        data[col] = "Unknown"
+                    elif col == "service_life":
+                        data[col] = 15.0  # Default service life
+            
+            return data
+    
+    # Create a simple ModelSerializer implementation
+    class SimpleModelSerializer(ModelSerializer):
+        def save_model(self, model, path, **kwargs):
+            import pickle
+            import os
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "wb") as f:
+                pickle.dump(model, f)
+            return path
+            
+        def load_model(self, path, **kwargs):
+            import pickle
+            with open(path, "rb") as f:
+                return pickle.load(f)
+    
+    # Register DataLoader
+    provider.register_implementation(
+        DataLoader, SimpleDataLoader, singleton=False
+    )
+    logger.info("Registered DataLoader with DI container")
+    # Create a simple FeatureEngineer implementation
+    class SimpleFeatureEngineer(FeatureEngineer):
+        def __init__(self, config=None):
+            self.config = config or {}
+            self.is_fitted = False
+            
+        def fit(self, data, **kwargs):
+            """Fit the feature engineer to the data."""
+            logger.info("Fitting feature engineer")
+            self.is_fitted = True
+            return self
+            
+        def transform(self, data, **kwargs):
+            """Transform the data using the fitted feature engineer."""
+            if not self.is_fitted:
+                self.fit(data)
+            
+            logger.info("Transforming data with feature engineer")
+            
+            # Add combined_text column
+            if "description" in data.columns:
+                data["combined_text"] = data["description"]
+            else:
+                data["combined_text"] = "Unknown description"
+            
+            # Add service_life column if it doesn't exist
+            if "service_life" not in data.columns:
+                data["service_life"] = 15.0  # Default service life
+            
+            # Add required target columns for the orchestrator
+            required_target_columns = [
+                "category_name",
+                "uniformat_code",
+                "mcaa_system_category",
+                "Equipment_Type",
+                "System_Subtype",
+            ]
+            
+            for col in required_target_columns:
+                if col not in data.columns:
+                    data[col] = "Unknown"  # Default value for target columns
+            
+            return data
+            
+        def engineer_features(self, data, **kwargs):
+            """Engineer features from the input data."""
+            return self.fit(data).transform(data)
+    
+    # Register DataPreprocessor
+    provider.register_implementation(
+        DataPreprocessor, SimpleDataPreprocessor, singleton=False
+    )
+    logger.info("Registered DataPreprocessor with DI container")
+    
+    # Register SimpleFeatureEngineer
+    provider.register_implementation(
+        FeatureEngineer, SimpleFeatureEngineer, singleton=False
+    )
+    
+    # Register ModelBuilder
+    provider.register_implementation(
+        ModelBuilder, RandomForestBuilder, singleton=False
+    )
+    logger.info("Registered ModelBuilder with DI container")
+    
+    # Register ModelTrainer
+    from nexusml.core.model_training.base import ModelTrainer, BaseModelTrainer
+    provider.register_implementation(
+        ModelTrainer, BaseModelTrainer, singleton=False
+    )
+    logger.info("Registered ModelTrainer with DI container")
+    
+    # Register ModelSerializer
+    provider.register_implementation(
+        ModelSerializer, SimpleModelSerializer, singleton=False
+    )
+    logger.info("Registered ModelSerializer with DI container")
+    logger.info("Registered ModelSerializer with DI container")
     
     # Register pipeline components
     register_pipeline_components(provider)

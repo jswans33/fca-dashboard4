@@ -1,0 +1,39 @@
+equipment_tag,description,manufacturer,model,service_life,installation_year,location,department,category_name,uniformat_code,mcaa_system_category
+AHU-01,"Air Handling Unit with cooling coil",Trane,M-1000,20,2015,"Building A",Facilities,HVAC,D3010,Mechanical
+AHU-02,"Air Handling Unit with heating coil",Carrier,C-2000,18,2016,"Building A",Facilities,HVAC,D3010,Mechanical
+AHU-03,"Air Handling Unit with heat recovery",York,Y-3000,22,2014,"Building B",Facilities,HVAC,D3010,Mechanical
+CHW-01,"Centrifugal Chiller for HVAC system",Carrier,C-5000,25,2012,"Building A",Facilities,HVAC,D3020,Mechanical
+CHW-02,"Absorption Chiller",York,Y-6000,20,2013,"Building B",Facilities,HVAC,D3020,Mechanical
+P-01,"Centrifugal Pump for chilled water",Armstrong,A-1000,15,2015,"Building A",Facilities,Plumbing,D2010,Plumbing
+P-02,"Centrifugal Pump for hot water",Grundfos,G-2000,15,2016,"Building A",Facilities,Plumbing,D2010,Plumbing
+P-03,"Positive displacement pump",Armstrong,A-3000,12,2018,"Building B",Facilities,Plumbing,D2010,Plumbing
+B-01,"Hot water boiler",Cleaver-Brooks,CB-1000,30,2010,"Building A",Facilities,HVAC,D3020,Mechanical
+B-02,"Steam boiler",Cleaver-Brooks,CB-2000,25,2012,"Building B",Facilities,HVAC,D3020,Mechanical
+CT-01,"Cooling tower",Baltimore Aircoil,BAC-1000,20,2015,"Building A",Facilities,HVAC,D3030,Mechanical
+CT-02,"Evaporative condenser",Evapco,E-2000,18,2017,"Building B",Facilities,HVAC,D3030,Mechanical
+VAV-01,"Variable air volume terminal",Trane,T-1000,15,2018,"Building A",IT,HVAC,D3040,Mechanical
+VAV-02,"Variable air volume terminal with reheat",Carrier,C-1000,15,2018,"Building A",Production,HVAC,D3040,Mechanical
+VAV-03,"Variable air volume terminal with fan",York,Y-1000,15,2019,"Building B",IT,HVAC,D3040,Mechanical
+FPT-01,"Fan powered terminal",Trane,T-2000,15,2018,"Building A",Production,HVAC,D3040,Mechanical
+FPT-02,"Fan powered terminal with reheat",Carrier,C-2000,15,2019,"Building B",IT,HVAC,D3040,Mechanical
+FCU-01,"Fan coil unit",Daikin,D-1000,15,2018,"Building A",Production,HVAC,D3040,Mechanical
+FCU-02,"Fan coil unit with electric heat",Trane,T-3000,15,2019,"Building B",IT,HVAC,D3040,Mechanical
+WH-01,"Electric water heater",A.O. Smith,AOS-1000,12,2020,"Building A",Facilities,Plumbing,D2020,Plumbing
+WH-02,"Gas water heater",Bradford White,BW-2000,15,2018,"Building B",Facilities,Plumbing,D2020,Plumbing
+WH-03,"Heat pump water heater",Rheem,R-3000,10,2022,"Building A",Facilities,Plumbing,D2020,Plumbing
+FP-01,"Fire pump",Armstrong,A-5000,25,2010,"Building A",Facilities,Fire Protection,D4010,Fire Protection
+FP-02,"Jockey pump",Grundfos,G-5000,15,2015,"Building B",Facilities,Fire Protection,D4010,Fire Protection
+FS-01,"Fire sprinkler system",Tyco,T-5000,30,2010,"Building A",Facilities,Fire Protection,D4010,Fire Protection
+FS-02,"Fire sprinkler system",Viking,V-5000,30,2012,"Building B",Facilities,Fire Protection,D4010,Fire Protection
+FA-01,"Fire alarm control panel",Simplex,S-1000,15,2015,"Building A",Facilities,Fire Protection,D4020,Fire Protection
+FA-02,"Fire alarm control panel",Notifier,N-2000,15,2016,"Building B",Facilities,Fire Protection,D4020,Fire Protection
+SB-01,"Switchboard",Square D,SD-1000,30,2010,"Building A",Facilities,Electrical,D5010,Electrical
+SB-02,"Switchboard",Eaton,E-1000,30,2012,"Building B",Facilities,Electrical,D5010,Electrical
+PP-01,"Power panel",Square D,SD-2000,25,2015,"Building A",IT,Electrical,D5020,Electrical
+PP-02,"Power panel",Eaton,E-2000,25,2016,"Building B",Production,Electrical,D5020,Electrical
+LP-01,"Lighting panel",Square D,SD-3000,25,2015,"Building A",IT,Electrical,D5020,Electrical
+LP-02,"Lighting panel",Eaton,E-3000,25,2016,"Building B",Production,Electrical,D5020,Electrical
+TR-01,"Transformer",Square D,SD-4000,30,2010,"Building A",Facilities,Electrical,D5010,Electrical
+TR-02,"Transformer",Eaton,E-4000,30,2012,"Building B",Facilities,Electrical,D5010,Electrical
+GEN-01,"Emergency generator",Caterpillar,CAT-1000,25,2015,"Building A",Facilities,Electrical,D5090,Electrical
+GEN-02,"Emergency generator",Cummins,CUM-2000,25,2016,"Building B",Facilities,Electrical,D5090,Electrical

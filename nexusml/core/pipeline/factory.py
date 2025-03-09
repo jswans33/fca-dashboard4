@@ -154,7 +154,217 @@ class PipelineFactory:
             Evaluation pipeline instance.
         """
         return self.create_pipeline("evaluation", config)
+        
+    def create_data_loader(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a data loader instance.
 
+        Args:
+            config: Configuration for the data loader.
+
+        Returns:
+            Data loader instance.
+            
+        Raises:
+            PipelineFactoryError: If the data loader cannot be created.
+        """
+        try:
+            # Try to get the data loader from the registry
+            data_loader_class = self.registry.get("data_loader", "standard")
+            if data_loader_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.pipeline.interfaces import DataLoader
+                data_loader = self.container.resolve(DataLoader)
+                return data_loader
+            
+            # Create the data loader instance
+            data_loader = data_loader_class(config=config or {})
+            logger.info("Created data loader")
+            
+            return data_loader
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating data loader: {str(e)}") from e
+            
+    def create_model_serializer(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a model serializer instance.
+
+        Args:
+            config: Configuration for the model serializer.
+
+        Returns:
+            Model serializer instance.
+            
+        Raises:
+            PipelineFactoryError: If the model serializer cannot be created.
+        """
+        try:
+            # Try to get the model serializer from the registry
+            model_serializer_class = self.registry.get("model_serializer", "simple")
+            if model_serializer_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.pipeline.interfaces import ModelSerializer
+                model_serializer = self.container.resolve(ModelSerializer)
+                return model_serializer
+            
+            # Create the model serializer instance
+            model_serializer = model_serializer_class(config=config or {})
+            logger.info("Created model serializer")
+            
+            return model_serializer
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating model serializer: {str(e)}") from e
+
+    def create_data_preprocessor(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a data preprocessor instance.
+
+        Args:
+            config: Configuration for the data preprocessor.
+
+        Returns:
+            Data preprocessor instance.
+            
+        Raises:
+            PipelineFactoryError: If the data preprocessor cannot be created.
+        """
+        try:
+            # Try to get the data preprocessor from the registry
+            data_preprocessor_class = self.registry.get("data_preprocessor", "standard")
+            if data_preprocessor_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.pipeline.interfaces import DataPreprocessor
+                data_preprocessor = self.container.resolve(DataPreprocessor)
+                return data_preprocessor
+            
+            # Create the data preprocessor instance
+            data_preprocessor = data_preprocessor_class(config=config or {})
+            logger.info("Created data preprocessor")
+            
+            return data_preprocessor
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating data preprocessor: {str(e)}") from e
+    
+    def create_feature_engineer(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a feature engineer instance.
+
+        Args:
+            config: Configuration for the feature engineer.
+
+        Returns:
+            Feature engineer instance.
+            
+        Raises:
+            PipelineFactoryError: If the feature engineer cannot be created.
+        """
+        try:
+            # Try to get the feature engineer from the registry
+            feature_engineer_class = self.registry.get("feature_engineer", "simple")
+            if feature_engineer_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.pipeline.interfaces import FeatureEngineer
+                feature_engineer = self.container.resolve(FeatureEngineer)
+                return feature_engineer
+            
+            # Create the feature engineer instance
+            feature_engineer = feature_engineer_class(config=config or {})
+            logger.info("Created feature engineer")
+            
+            return feature_engineer
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating feature engineer: {str(e)}") from e
+    
+    def create_model_builder(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a model builder instance.
+
+        Args:
+            config: Configuration for the model builder.
+
+        Returns:
+            Model builder instance.
+            
+        Raises:
+            PipelineFactoryError: If the model builder cannot be created.
+        """
+        try:
+            # Try to get the model builder from the registry
+            model_builder_class = self.registry.get("model_builder", "random_forest")
+            if model_builder_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.model_building.base import ModelBuilder
+                model_builder = self.container.resolve(ModelBuilder)
+                return model_builder
+            
+            # Create the model builder instance
+            model_builder = model_builder_class(config=config or {})
+            logger.info("Created model builder")
+            
+            return model_builder
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating model builder: {str(e)}") from e
+    
+    def create_model_trainer(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a model trainer instance.
+
+        Args:
+            config: Configuration for the model trainer.
+
+        Returns:
+            Model trainer instance.
+            
+        Raises:
+            PipelineFactoryError: If the model trainer cannot be created.
+        """
+        try:
+            # Try to get the model trainer from the registry
+            model_trainer_class = self.registry.get("model_trainer", "standard")
+            if model_trainer_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.model_training.base import ModelTrainer
+                model_trainer = self.container.resolve(ModelTrainer)
+                return model_trainer
+            
+            # Create the model trainer instance
+            model_trainer = model_trainer_class(config=config or {})
+            logger.info("Created model trainer")
+            
+            return model_trainer
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating model trainer: {str(e)}") from e
+    
+    def create_predictor(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a predictor instance.
+
+        Args:
+            config: Configuration for the predictor.
+
+        Returns:
+            Predictor instance.
+            
+        Raises:
+            PipelineFactoryError: If the predictor cannot be created.
+        """
+        try:
+            # Try to get the predictor from the registry
+            predictor_class = self.registry.get("predictor", "standard")
+            if predictor_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.model import EquipmentClassifier
+                predictor = self.container.resolve(EquipmentClassifier)
+                return predictor
+            
+            # Create the predictor instance
+            predictor = predictor_class(config=config or {})
+            logger.info("Created predictor")
+            
+            return predictor
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating predictor: {str(e)}") from e
+            
     def create_pipeline_from_config(self, config_path: str) -> BasePipeline:
         """
         Create a pipeline from a configuration file.

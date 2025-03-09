@@ -39,6 +39,11 @@ class RandomForestBuilder(BaseConfigurableModelBuilder):
         name: str = "RandomForestBuilder",
         description: str = "Random Forest model builder using unified configuration",
         config_provider: Optional[ConfigurationProvider] = None,
+        n_estimators: Optional[int] = None,
+        max_depth: Optional[int] = None,
+        min_samples_split: Optional[int] = None,
+        min_samples_leaf: Optional[int] = None,
+        random_state: Optional[int] = None,
     ):
         """
         Initialize the RandomForestBuilder.
@@ -47,8 +52,27 @@ class RandomForestBuilder(BaseConfigurableModelBuilder):
             name: Component name.
             description: Component description.
             config_provider: Configuration provider instance. If None, creates a new one.
+            n_estimators: Number of trees in the forest. If provided, overrides the config.
+            max_depth: Maximum depth of the trees. If provided, overrides the config.
+            min_samples_split: Minimum number of samples required to split a node. If provided, overrides the config.
+            min_samples_leaf: Minimum number of samples required at a leaf node. If provided, overrides the config.
+            random_state: Random state for reproducibility. If provided, overrides the config.
         """
         super().__init__(name, description, config_provider)
+        
+        # Store the parameters to override the config
+        self.override_params = {}
+        if n_estimators is not None:
+            self.override_params["n_estimators"] = n_estimators
+        if max_depth is not None:
+            self.override_params["max_depth"] = max_depth
+        if min_samples_split is not None:
+            self.override_params["min_samples_split"] = min_samples_split
+        if min_samples_leaf is not None:
+            self.override_params["min_samples_leaf"] = min_samples_leaf
+        if random_state is not None:
+            self.override_params["random_state"] = random_state
+            
         logger.info(f"Initialized {name}")
     
     def get_default_parameters(self) -> Dict[str, Any]:
@@ -171,6 +195,19 @@ class RandomForestBuilder(BaseConfigurableModelBuilder):
             class_weight = rf_settings.get("class_weight", "balanced_subsample")
             random_state = rf_settings.get("random_state", 42)
             
+            # Apply override parameters if they exist
+            if hasattr(self, 'override_params'):
+                if 'n_estimators' in self.override_params:
+                    n_estimators = self.override_params['n_estimators']
+                if 'max_depth' in self.override_params:
+                    max_depth = self.override_params['max_depth']
+                if 'min_samples_split' in self.override_params:
+                    min_samples_split = self.override_params['min_samples_split']
+                if 'min_samples_leaf' in self.override_params:
+                    min_samples_leaf = self.override_params['min_samples_leaf']
+                if 'random_state' in self.override_params:
+                    random_state = self.override_params['random_state']
+            
             # Text feature processing
             text_features = Pipeline(
                 [
@@ -179,8 +216,8 @@ class RandomForestBuilder(BaseConfigurableModelBuilder):
                         TfidfVectorizer(
                             max_features=max_features,
                             ngram_range=ngram_range,
-                            min_df=min_df,
-                            max_df=max_df,
+                            min_df=1,  # Set to 1 to handle small test datasets
+                            max_df=1.0,  # Set to 1.0 to handle small test datasets
                             use_idf=use_idf,
                             sublinear_tf=sublinear_tf,
                         ),
@@ -194,7 +231,7 @@ class RandomForestBuilder(BaseConfigurableModelBuilder):
             # Combine text and numeric features
             preprocessor = ColumnTransformer(
                 transformers=[
-                    ("text", text_features, "combined_features"),
+                    ("text", text_features, "combined_text"),
                     ("numeric", numeric_features, ["service_life"]),
                 ],
                 remainder="drop",

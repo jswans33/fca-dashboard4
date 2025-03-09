@@ -1,0 +1,51 @@
+# Feature engineering configuration for testing
+
+# Column definitions
+text_columns:
+  - description
+  - manufacturer
+  - model
+
+numeric_columns:
+  - service_life
+  - installation_year
+
+categorical_columns:
+  - location
+  - department
+
+# Transformations
+transformations:
+  # Text transformations
+  - type: text_combiner
+    columns:
+      - description
+      - manufacturer
+      - model
+    output_column: combined_text
+    separator: " "
+  
+  - type: text_normalizer
+    columns:
+      - combined_text
+    lowercase: true
+    remove_punctuation: true
+    remove_stopwords: true
+    stemming: false
+  
+  # Numeric transformations
+  - type: numeric_scaler
+    columns:
+      - service_life
+      - installation_year
+    method: standard
+    with_mean: true
+    with_std: true
+  
+  # Categorical transformations
+  - type: one_hot_encoder
+    columns:
+      - location
+      - department
+    drop: first
+    sparse: false
