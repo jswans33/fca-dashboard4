@@ -1,320 +1,138 @@
 # NexusML Architecture Overview
 
-## Introduction
-
-This document provides an overview of the NexusML architecture, explaining the
-key components, their interactions, and the design principles that guided the
-refactoring. It serves as a starting point for understanding the system
-architecture and navigating the more detailed documentation.
-
-NexusML is a Python machine learning package for equipment classification. It
-uses machine learning techniques to categorize equipment into standardized
-classification systems like MasterFormat and OmniClass based on textual
-descriptions and metadata.
-
-## Architecture Diagram
-
-The following diagram illustrates the high-level architecture of NexusML:
-
-```mermaid
-graph TD
-    subgraph Configuration
-        Config[Configuration System]
-    end
-
-    subgraph "Pipeline Components"
-        DataLoader[Data Loader]
-        DataPreprocessor[Data Preprocessor]
-        FeatureEngineer[Feature Engineer]
-        ModelBuilder[Model Builder]
-        ModelTrainer[Model Trainer]
-        ModelEvaluator[Model Evaluator]
-        ModelSerializer[Model Serializer]
-        Predictor[Predictor]
-    end
-
-    subgraph "Pipeline Management"
-        Factory[Pipeline Factory]
-        Registry[Component Registry]
-        Orchestrator[Pipeline Orchestrator]
-        Context[Pipeline Context]
-    end
-
-    subgraph "Dependency Injection"
-        DIContainer[DI Container]
-    end
-
-    subgraph "Entry Points"
-        TrainingEntry[Training Entry Point]
-        PredictionEntry[Prediction Entry Point]
-    end
-
-    Config --> Factory
-    Config --> DataLoader
-    Config --> FeatureEngineer
-    Config --> ModelBuilder
-
-    DIContainer --> Factory
-    Registry --> Factory
-
-    Factory --> DataLoader
-    Factory --> DataPreprocessor
-    Factory --> FeatureEngineer
-    Factory --> ModelBuilder
-    Factory --> ModelTrainer
-    Factory --> ModelEvaluator
-    Factory --> ModelSerializer
-    Factory --> Predictor
-
-    Orchestrator --> Factory
-    Orchestrator --> Context
-
-    TrainingEntry --> Orchestrator
-    PredictionEntry --> Orchestrator
-
-    DataLoader --> DataPreprocessor
-    DataPreprocessor --> FeatureEngineer
-    FeatureEngineer --> ModelBuilder
-    ModelBuilder --> ModelTrainer
-    ModelTrainer --> ModelEvaluator
-    ModelEvaluator --> ModelSerializer
-    ModelSerializer --> Predictor
-```
-
-## Key Components
-
-### Configuration System
-
-The configuration system centralizes all settings in a single file, provides
-validation through Pydantic models, supports loading from YAML files or
-environment variables, and ensures consistent access through a singleton
-provider.
-
-Key features:
-
-- Unified configuration in a single file
-- Validation through Pydantic models
-- Default values for all settings
-- Loading from YAML files or environment variables
-- Consistent access through a singleton provider
-
-For more details, see [Configuration System](configuration.md).
+## Core Components
 
 ### Pipeline Components
+- **DataLoader**: Loads data from CSV, Excel, and databases
+- **DataPreprocessor**: Cleans and prepares data
+- **FeatureEngineer**: Transforms raw data into ML features
+- **ModelBuilder**: Creates and configures ML models
+- **ModelTrainer**: Trains models with data
+- **ModelEvaluator**: Calculates performance metrics
+- **ModelSerializer**: Saves/loads models to/from disk
+- **Predictor**: Makes predictions with trained models
 
-The pipeline components are responsible for the various stages of the machine
-learning pipeline, from data loading to prediction. Each component has a clear
-interface and is responsible for a specific part of the pipeline.
+### Management Components
+- **ComponentRegistry**: Maps interfaces to implementations
+- **PipelineFactory**: Creates component instances
+- **PipelineOrchestrator**: Coordinates pipeline execution
+- **PipelineContext**: Stores state during execution
+- **DIContainer**: Manages component dependencies
 
-Key components:
+### Configuration System
+- **ConfigProvider**: Singleton access to configuration
+- **Configuration**: Validated settings via Pydantic
+- **YAMLConfigLoader**: Loads settings from YAML files
 
-- **Data Loader**: Loads data from various sources
-- **Data Preprocessor**: Cleans and prepares data
-- **Feature Engineer**: Transforms raw data into features
-- **Model Builder**: Creates and configures models
-- **Model Trainer**: Trains models
-- **Model Evaluator**: Evaluates models
-- **Model Serializer**: Saves and loads models
-- **Predictor**: Makes predictions
+## Data Flow
 
-For more details, see [Pipeline Architecture](pipeline.md).
+1. **Data Loading**: CSV/Excel → DataFrame
+2. **Preprocessing**: Raw data → Clean data
+3. **Feature Engineering**: Clean data → Feature vectors
+4. **Model Building**: Parameters → Model instance
+5. **Training**: Features + Labels → Trained model
+6. **Evaluation**: Predictions + Ground truth → Metrics
+7. **Serialization**: Model → Disk
+8. **Prediction**: New data → Classifications
 
-### Pipeline Management
+## Key Interfaces
 
-The pipeline management components are responsible for creating, configuring,
-and orchestrating the pipeline components.
+```python
+# Core interfaces in nexusml.core.pipeline.interfaces
 
-Key components:
+class DataLoader:
+    def load_data(self, data_path: str, **kwargs) -> pd.DataFrame: ...
 
-- **Component Registry**: Registers component implementations and their default
-  implementations
-- **Pipeline Factory**: Creates pipeline components with proper dependencies
-- **Pipeline Orchestrator**: Coordinates the execution of the pipeline
-- **Pipeline Context**: Stores state and data during pipeline execution
+class FeatureEngineer:
+    def engineer_features(self, data: pd.DataFrame, **kwargs) -> pd.DataFrame: ...
+    def fit(self, data: pd.DataFrame, **kwargs) -> 'FeatureEngineer': ...
+    def transform(self, data: pd.DataFrame, **kwargs) -> pd.DataFrame: ...
 
-For more details, see [Pipeline Architecture](pipeline.md).
+class ModelBuilder:
+    def build_model(self, **kwargs) -> Any: ...
+    def optimize_hyperparameters(self, model: Any, x_train: pd.DataFrame, 
+                                y_train: pd.DataFrame, **kwargs) -> Any: ...
 
-### Dependency Injection
+class ModelTrainer:
+    def train(self, model: Any, x_train: pd.DataFrame, 
+             y_train: pd.DataFrame, **kwargs) -> Any: ...
+    def cross_validate(self, model: Any, x: pd.DataFrame, 
+                      y: pd.DataFrame, **kwargs) -> Dict[str, List[float]]: ...
 
-The dependency injection system provides a way to manage component dependencies,
-making the system more testable and maintainable. It follows the Dependency
-Inversion Principle from SOLID, allowing high-level modules to depend on
-abstractions rather than concrete implementations.
+class ModelEvaluator:
+    def evaluate(self, model: Any, x_test: pd.DataFrame, 
+                y_test: pd.DataFrame, **kwargs) -> Dict[str, float]: ...
+    def analyze_predictions(self, model: Any, x_test: pd.DataFrame, 
+                           y_test: pd.DataFrame, y_pred: pd.DataFrame, 
+                           **kwargs) -> Dict[str, Any]: ...
 
-Key components:
+class ModelSerializer:
+    def save_model(self, model: Any, path: str, **kwargs) -> None: ...
+    def load_model(self, path: str, **kwargs) -> Any: ...
 
-- **DI Container**: Registers and resolves dependencies
-- **Component Registry**: Registers component implementations
-- **Pipeline Factory**: Creates components with dependencies
-
-For more details, see [Dependency Injection](dependency_injection.md).
-
-### Entry Points
-
-The entry points provide a way to use the system for training models and making
-predictions. They use the pipeline orchestrator to coordinate the execution of
-the pipeline.
-
-Key entry points:
-
-- **Training Entry Point**: Trains a model using the pipeline
-- **Prediction Entry Point**: Makes predictions using a trained model
-
-## Design Principles
-
-The refactoring of NexusML was guided by several design principles:
-
-### SOLID Principles
-
-The architecture follows the SOLID principles:
-
-- **Single Responsibility Principle**: Each component has a single
-  responsibility
-- **Open/Closed Principle**: Components are open for extension but closed for
-  modification
-- **Liskov Substitution Principle**: Implementations can be substituted for
-  their interfaces
-- **Interface Segregation Principle**: Interfaces are specific to client needs
-- **Dependency Inversion Principle**: High-level modules depend on abstractions
-
-### Dependency Injection
-
-The architecture uses dependency injection to manage component dependencies,
-making the system more testable and maintainable. Components depend on
-abstractions rather than concrete implementations, and dependencies are injected
-through constructors.
-
-### Factory Pattern
-
-The architecture uses the factory pattern to create components with proper
-dependencies. The factory uses the component registry to look up implementations
-and the dependency injection container to resolve dependencies.
-
-### Adapter Pattern
-
-The architecture uses the adapter pattern to maintain backward compatibility
-while introducing new components. Adapters allow old components to be used in
-the new architecture and new components to be used in the old architecture.
-
-### Orchestrator Pattern
-
-The architecture uses the orchestrator pattern to coordinate the execution of
-the pipeline. The orchestrator uses the factory to create components and the
-context to store state and data during execution.
-
-## Folder Structure
-
-The NexusML codebase is organized into the following folders:
-
-```
-nexusml/
-├── config/                  # Configuration files
-├── core/                    # Core components
-│   ├── config/              # Configuration system
-│   ├── di/                  # Dependency injection system
-│   ├── pipeline/            # Pipeline components
-│   │   ├── adapters/        # Adapters for backward compatibility
-│   │   ├── components/      # Component implementations
-│   │   ├── interfaces.py    # Component interfaces
-│   │   ├── base.py          # Base implementations
-│   │   ├── context.py       # Pipeline context
-│   │   ├── factory.py       # Pipeline factory
-│   │   ├── orchestrator.py  # Pipeline orchestrator
-│   │   └── registry.py      # Component registry
-├── data/                    # Data files
-├── examples/                # Example scripts
-├── scripts/                 # Utility scripts
-└── tests/                   # Tests
-    ├── integration/         # Integration tests
-    └── unit/                # Unit tests
+class Predictor:
+    def predict(self, model: Any, data: pd.DataFrame, **kwargs) -> pd.DataFrame: ...
+    def predict_proba(self, model: Any, data: pd.DataFrame, 
+                     **kwargs) -> Dict[str, pd.DataFrame]: ...
 ```
 
-## Execution Flow
+## Dependency Injection
 
-The following diagram illustrates the execution flow for training a model:
+```python
+# Register components
+registry = ComponentRegistry()
+registry.register(DataLoader, "csv", CSVDataLoader)
+registry.register(DataLoader, "excel", ExcelDataLoader)
+registry.set_default_implementation(DataLoader, "csv")
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant TrainingEntry as Training Entry Point
-    participant Orchestrator as Pipeline Orchestrator
-    participant Factory as Pipeline Factory
-    participant DataLoader
-    participant DataPreprocessor
-    participant FeatureEngineer
-    participant ModelBuilder
-    participant ModelTrainer
-    participant ModelEvaluator
-    participant ModelSerializer
+# Create container
+container = DIContainer()
 
-    User->>TrainingEntry: train_model(data_path)
-    TrainingEntry->>Orchestrator: train_model(data_path)
-    Orchestrator->>Factory: create_data_loader()
-    Factory-->>Orchestrator: data_loader
-    Orchestrator->>DataLoader: load_data(data_path)
-    DataLoader-->>Orchestrator: data
-    Orchestrator->>Factory: create_data_preprocessor()
-    Factory-->>Orchestrator: preprocessor
-    Orchestrator->>DataPreprocessor: preprocess(data)
-    DataPreprocessor-->>Orchestrator: preprocessed_data
-    Orchestrator->>Factory: create_feature_engineer()
-    Factory-->>Orchestrator: feature_engineer
-    Orchestrator->>FeatureEngineer: engineer_features(preprocessed_data)
-    FeatureEngineer-->>Orchestrator: features
-    Orchestrator->>Factory: create_model_builder()
-    Factory-->>Orchestrator: model_builder
-    Orchestrator->>ModelBuilder: build_model()
-    ModelBuilder-->>Orchestrator: model
-    Orchestrator->>Factory: create_model_trainer()
-    Factory-->>Orchestrator: model_trainer
-    Orchestrator->>ModelTrainer: train(model, features)
-    ModelTrainer-->>Orchestrator: trained_model
-    Orchestrator->>Factory: create_model_evaluator()
-    Factory-->>Orchestrator: model_evaluator
-    Orchestrator->>ModelEvaluator: evaluate(trained_model, features)
-    ModelEvaluator-->>Orchestrator: metrics
-    Orchestrator->>Factory: create_model_serializer()
-    Factory-->>Orchestrator: model_serializer
-    Orchestrator->>ModelSerializer: save_model(trained_model, path)
-    ModelSerializer-->>Orchestrator: model_path
-    Orchestrator-->>TrainingEntry: trained_model, metrics
-    TrainingEntry-->>User: trained_model, metrics
+# Create factory
+factory = PipelineFactory(registry, container)
+
+# Get component instance
+data_loader = factory.create(DataLoader)  # Returns CSVDataLoader instance
+excel_loader = factory.create(DataLoader, "excel")  # Returns ExcelDataLoader instance
 ```
 
-The execution flow for making predictions is similar, but it uses the
-`Predictor` component instead of the training components.
+## Pipeline Orchestration
 
-## Backward Compatibility
+```python
+# Create orchestrator
+orchestrator = PipelineOrchestrator(factory, context)
 
-The architecture maintains backward compatibility through several mechanisms:
+# Train model
+model, metrics = orchestrator.train_model(
+    data_path="data.csv",
+    test_size=0.3,
+    random_state=42,
+    optimize_hyperparameters=True,
+    output_dir="outputs/models",
+    model_name="equipment_classifier",
+)
 
-1. **Adapter Pattern**: Adapters are provided for all components, allowing old
-   components to be used in the new architecture and new components to be used
-   in the old architecture.
+# Make predictions
+predictions = orchestrator.predict(
+    model=model,
+    data_path="new_data.csv",
+    output_path="outputs/predictions.csv",
+)
+```
 
-2. **Feature Flags**: Feature flags are used to toggle between old and new code
-   paths, allowing you to test the new architecture without affecting existing
-   functionality.
+## Extension Points
 
-3. **Compatibility Layers**: Compatibility layers are provided for all entry
-   points, allowing you to use the new architecture with existing code.
+1. **Custom Components**: Implement interfaces and register with ComponentRegistry
+2. **Custom Transformers**: Extend base transformer classes for feature engineering
+3. **Custom Models**: Use any scikit-learn compatible model
+4. **Pipeline Hooks**: Register callbacks for pipeline events
+5. **Configuration Overrides**: Override default settings via YAML or environment variables
 
-4. **Configuration Migration**: Tools are provided for migrating from old
-   configuration files to the new unified format.
+## Design Patterns
 
-For more details, see [Migration Overview](../migration/overview.md).
-
-## Conclusion
-
-The NexusML architecture provides a flexible, maintainable, and testable system
-for equipment classification. By following a modular design with clear
-interfaces, dependency injection, and a factory pattern, it makes it easy to
-create, configure, and extend the pipeline.
-
-For more detailed information about specific components, see the following
-documentation:
-
-- [Configuration System](configuration.md)
-- [Pipeline Architecture](pipeline.md)
-- [Dependency Injection](dependency_injection.md)
-- [Migration Overview](../migration/overview.md)
+- **Factory Pattern**: PipelineFactory creates components
+- **Strategy Pattern**: Interchangeable algorithm implementations
+- **Dependency Injection**: Components receive dependencies
+- **Singleton**: ConfigProvider ensures single configuration instance
+- **Observer**: Pipeline events notify registered callbacks
+- **Adapter**: Compatibility layers for different APIs

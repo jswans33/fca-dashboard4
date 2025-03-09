@@ -1,0 +1,76 @@
+@startuml "NexusML Architecture Overview"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ComponentBorderColor #999999
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam PackageBackgroundColor #FFFFFF
+skinparam PackageBorderColor #AAAAAA
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Main components
+package "NexusML" {
+  package "Core" {
+    component [Configuration System] as Config
+    component [Dependency Injection] as DI
+    component [Pipeline System] as Pipeline
+    component [Feature Engineering] as FeatureEng
+    component [Model Building] as ModelBuild
+    component [Model Training] as ModelTrain
+    component [Prediction] as Predict
+    component [Evaluation] as Eval
+    component [Reference Data] as RefData
+  }
+  
+  package "CLI Tools" {
+    component [train_model_pipeline.py] as TrainCLI
+    component [predict.py] as PredictCLI
+    component [classify_equipment.py] as ClassifyCLI
+  }
+  
+  package "Utils" {
+    component [Logging] as Log
+    component [CSV Utils] as CSV
+    component [Excel Utils] as Excel
+    component [Path Utils] as Path
+  }
+  
+  package "Examples" {
+    component [Simple Examples] as SimpleEx
+    component [Advanced Examples] as AdvEx
+  }
+}
+
+' External dependencies
+package "External" {
+  component [scikit-learn] as SKLearn
+  component [pandas] as Pandas
+  component [numpy] as Numpy
+}
+
+' Relationships
+Config <-- DI
+Pipeline --> DI
+Pipeline --> Config
+FeatureEng --> Pipeline
+ModelBuild --> Pipeline
+ModelTrain --> Pipeline
+Predict --> Pipeline
+Eval --> Pipeline
+RefData --> Pipeline
+
+TrainCLI --> Pipeline
+PredictCLI --> Pipeline
+ClassifyCLI --> Pipeline
+
+Pipeline --> SKLearn
+Pipeline --> Pandas
+Pipeline --> Numpy
+
+SimpleEx --> Pipeline
+AdvEx --> Pipeline
+
+@enduml
