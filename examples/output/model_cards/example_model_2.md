@@ -4,7 +4,7 @@
 
 - **Version:** 1.0.0
 - **Type:** ensemble
-- **Created:** 2025-03-09T13:26:12.212648
+- **Created:** 2025-03-09T13:28:49.212228
 - **Description:** A model generated from sample data
 - **Author:** NexusML Team
 
@@ -16,10 +16,10 @@
 
 ## Performance Metrics
 
-- **accuracy:** 0.5
-- **precision:** 0.625
-- **recall:** 0.4166666666666667
-- **f1:** 0.5
+- **accuracy:** 0.4
+- **precision:** 0.3333333333333333
+- **recall:** 0.5
+- **f1:** 0.4
 
 ## Model Parameters
 

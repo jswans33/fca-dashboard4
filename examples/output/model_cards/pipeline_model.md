@@ -4,16 +4,16 @@
 
 - **Version:** 1.0.0
 - **Type:** ensemble
-- **Created:** 2025-03-09T13:26:12.384841
+- **Created:** 2025-03-09T13:28:49.362196
 - **Description:** A machine learning model for equipment classification.
 - **Author:** NexusML Team
 
 ## Performance Metrics
 
-- **accuracy:** 0.65
-- **precision:** 0.7142857142857143
-- **recall:** 0.5
-- **f1:** 0.5882352941176471
+- **accuracy:** 0.55
+- **precision:** 0.625
+- **recall:** 0.45454545454545453
+- **f1:** 0.5263157894736842
 
 ## Model Parameters
 

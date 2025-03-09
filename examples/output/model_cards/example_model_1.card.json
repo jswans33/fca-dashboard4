@@ -1,7 +1,7 @@
 {
   "model_id": "example_model_1",
   "model_type": "random_forest",
-  "creation_date": "2025-03-09T13:26:12.062630",
+  "creation_date": "2025-03-09T13:28:49.061951",
   "version": "1.0.0",
   "metrics": {
     "accuracy": 0.95,
