@@ -389,6 +389,9 @@ for key, value in prediction.items():
 ```bash
 python -m nexusml.predict_v2 --model-path outputs/models/equipment_classifier_production.pkl --input-file path/to/data.csv --output-file predictions.csv --use-orchestrator
 ```
+```bash
+python -m nexusml.train_model_pipeline --data-path nexusml/data/training_data/production_training_data.csv
+```
 
 ## Maintenance
 

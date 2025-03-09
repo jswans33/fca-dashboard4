@@ -18,6 +18,15 @@ DEFAULT_PATHS = {
     "config_file": "config/settings.yml",
 }
 
+# Configuration file paths
+CONFIG_FILES = {
+    "production_data_config": "config/production_data_config.yml",
+    "feature_config": "config/feature_config.yml",
+    "classification_config": "config/classification_config.yml",
+    "reference_config": "config/reference_config.yml",
+    "nexusml_config": "config/nexusml_config.yml",
+}
+
 # Try to load from fca_dashboard if available (only once at import time)
 try:
     from fca_dashboard.utils.path_util import get_config_path, resolve_path
@@ -136,6 +145,29 @@ def load_settings() -> Dict[str, Any]:
             }
         }
     }
+
+
+def get_config_file_path(config_name: str) -> Path:
+    """
+    Get the path to a specific configuration file.
+
+    Args:
+        config_name: Name of the configuration file (e.g., 'production_data_config')
+
+    Returns:
+        Path to the configuration file
+    """
+    root = get_project_root()
+    
+    # Get the relative path from CONFIG_FILES
+    if config_name in CONFIG_FILES:
+        relative_path = CONFIG_FILES[config_name]
+    else:
+        # Default to the config directory
+        relative_path = f"config/{config_name}.yml"
+    
+    # Return the absolute path
+    return root / relative_path
 
 
 def get_config_value(key_path: str, default: Any = None) -> Any:

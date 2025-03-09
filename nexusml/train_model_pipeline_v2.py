@@ -46,8 +46,102 @@ from nexusml.train_model_pipeline import (
     make_sample_prediction,
     save_model,
     train_model,
-    validate_data,
+    # Not importing validate_data - we'll create our own version
 )
+
+# Import the config module
+from nexusml.config import get_config_file_path
+
+# New validation function that uses data_config.yml
+def validate_data_from_config(data_path: str, logger=None) -> Dict:
+    """
+    Validate the training data using required columns from data_config.yml.
+
+    Args:
+        data_path: Path to the training data
+        logger: Logger instance
+
+    Returns:
+        Validation results dictionary
+    """
+    if logger:
+        logger.info(f"Validating training data at {data_path}...")
+
+    try:
+        # Check if file exists
+        if not os.path.exists(data_path):
+            return {"valid": False, "issues": [f"File not found: {data_path}"]}
+
+        # Try to read the file
+        try:
+            df = pd.read_csv(data_path)
+        except Exception as e:
+            return {"valid": False, "issues": [f"Error reading file: {str(e)}"]}
+
+        # Load required columns from production_data_config.yml
+        config_path = get_config_file_path('production_data_config')
+        if not config_path.exists():
+            # Fall back to hardcoded list if config file doesn't exist
+            required_columns = [
+                "equipment_tag", "manufacturer", "model", "category_name",
+                "omniclass_code", "uniformat_code", "masterformat_code", "mcaa_system_category"
+            ]
+        else:
+            try:
+                import yaml
+                with open(config_path, 'r') as f:
+                    config = yaml.safe_load(f)
+                
+                # Extract source columns (not target columns that are created during feature engineering)
+                required_columns = []
+                for col in config.get('required_columns', []):
+                    # Only include source columns, not target columns
+                    # Target columns have names like Equipment_Category, Uniformat_Class, etc.
+                    if not col['name'].startswith(('Equipment_', 'Uniformat_', 'System_', 'combined_', 'service_life')):
+                        required_columns.append(col['name'])
+            except Exception as e:
+                if logger:
+                    logger.warning(f"Error loading production_data_config.yml: {str(e)}")
+                # Fall back to hardcoded list if config file can't be parsed
+                required_columns = [
+                    "equipment_tag", "manufacturer", "model", "category_name",
+                    "omniclass_code", "uniformat_code", "masterformat_code", "mcaa_system_category"
+                ]
+
+        # Check required columns
+        missing_columns = [col for col in required_columns if col not in df.columns]
+
+        if missing_columns:
+            return {
+                "valid": False,
+                "issues": [f"Missing required columns: {', '.join(missing_columns)}"],
+            }
+
+        # Check for missing values in critical columns
+        critical_columns = ["equipment_tag", "category_name", "mcaa_system_category"]
+        missing_values = {}
+
+        for col in critical_columns:
+            if col in df.columns:
+                missing_count = df[col].isna().sum()
+                if missing_count > 0:
+                    missing_values[col] = missing_count
+
+        if missing_values:
+            issues = [
+                f"Missing values in {col}: {count}"
+                for col, count in missing_values.items()
+            ]
+            return {"valid": False, "issues": issues}
+
+        # All checks passed
+        return {"valid": True, "issues": []}
+
+    except Exception as e:
+        return {
+            "valid": False,
+            "issues": [f"Unexpected error during validation: {str(e)}"],
+        }
 
 
 def create_orchestrator(logger) -> PipelineOrchestrator:
@@ -561,7 +655,7 @@ def main():
         ref_manager = load_reference_data(args.reference_config_path, logger)
 
         # Step 2: Validate training data
-        validation_results = validate_data(args.data_path, logger)
+        validation_results = validate_data_from_config(args.data_path, logger)
         if not validation_results.get("valid", False):
             logger.warning("Data validation failed, but continuing with training")
 
@@ -569,6 +663,11 @@ def main():
         start_time = time.time()
 
         if args.use_orchestrator:
+            # Set feature_config_path to production_data_config.yml if not specified
+            if args.feature_config_path is None:
+                args.feature_config_path = str(get_config_file_path('production_data_config'))
+                logger.info(f"Using production data config for feature engineering: {args.feature_config_path}")
+            
             # Use the new orchestrator-based implementation
             model, metrics, viz_paths = train_with_orchestrator(args, logger)
 
