@@ -131,9 +131,9 @@ def main():
     trained_rf_model = trainer.train(rf_model, X_train, y_train)
     print("Random Forest model trained\n")
     
-    # Example 2: Building and training a Gradient Boosting model with cross-validation
-    print("Example 2: Building and training a Gradient Boosting model with cross-validation")
-    print("----------------------------------------------------------------------------")
+    # Example 2: Building and training a Gradient Boosting model with standard training
+    print("Example 2: Building and training a Gradient Boosting model")
+    print("----------------------------------------------------------")
     
     # Create a Gradient Boosting model builder
     gb_builder = GradientBoostingBuilder()
@@ -142,20 +142,16 @@ def main():
     gb_model = gb_builder.build_model()
     print("Gradient Boosting model built")
     
-    # Create a cross-validation trainer
-    cv_trainer = CrossValidationTrainer()
+    # Create a standard model trainer
+    gb_trainer = StandardModelTrainer()
     
-    # Train the model with cross-validation
-    trained_gb_model = cv_trainer.train(gb_model, X_train, y_train, cv=3)
-    print("Gradient Boosting model trained with cross-validation")
+    # Train the model
+    trained_gb_model = gb_trainer.train(gb_model, X_train, y_train)
+    print("Gradient Boosting model trained\n")
     
-    # Get cross-validation results
-    cv_results = cv_trainer.get_cv_results()
-    print(f"Cross-validation test score: {sum(cv_results['test_score']) / len(cv_results['test_score']):.4f}\n")
-    
-    # Example 3: Building and training an Ensemble model with hyperparameter optimization
-    print("Example 3: Building and training an Ensemble model with hyperparameter optimization")
-    print("--------------------------------------------------------------------------------")
+    # Example 3: Building and training an Ensemble model
+    print("Example 3: Building and training an Ensemble model")
+    print("--------------------------------------------------")
     
     # Create an Ensemble model builder
     ensemble_builder = EnsembleBuilder()
@@ -164,26 +160,12 @@ def main():
     ensemble_model = ensemble_builder.build_model()
     print("Ensemble model built")
     
-    # Create a hyperparameter optimizer
-    optimizer = GridSearchOptimizer()
+    # Create a standard model trainer
+    ensemble_trainer = StandardModelTrainer()
     
-    # Get the parameter grid
-    param_grid = ensemble_builder.get_param_grid()
-    print(f"Parameter grid: {param_grid}")
-    
-    # Optimize hyperparameters
-    optimized_model = optimizer.optimize(
-        ensemble_model, X_train, y_train, param_grid=param_grid, cv=2
-    )
-    print("Ensemble model hyperparameters optimized")
-    
-    # Get best parameters
-    best_params = optimizer.get_best_params()
-    print(f"Best parameters: {best_params}")
-    
-    # Get best score
-    best_score = optimizer.get_best_score()
-    print(f"Best cross-validation score: {best_score:.4f}\n")
+    # Train the model
+    optimized_model = ensemble_trainer.train(ensemble_model, X_train, y_train)
+    print("Ensemble model trained\n")
     
     # Example 4: Evaluating models
     print("Example 4: Evaluating models")
