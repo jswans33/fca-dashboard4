@@ -350,6 +350,124 @@ def verify_model_building(logger):
         return False
 
 
+def verify_model_card_system(logger):
+    """Verify the model card system."""
+    logger.info("Verifying model card system...")
+    
+    try:
+        import tempfile
+        from nexusml.core.model_card.model_card import ModelCard
+        from nexusml.core.model_card.generator import ModelCardGenerator
+        from nexusml.core.model_card.viewer import print_model_card_summary
+        
+        # Create a temporary directory for test files
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_dir_path = Path(temp_dir)
+            
+            # Create a model card
+            model_card = ModelCard(
+                model_id="test_model",
+                model_type="random_forest",
+                description="A test model for verification",
+                author="NexusML Team"
+            )
+            
+            # Add some data to the model card
+            model_card.add_training_data_info(
+                source="test_data.csv",
+                size=1000,
+                features=["feature1", "feature2", "combined_text", "service_life"],
+                target="target"
+            )
+            
+            model_card.add_metrics({
+                "accuracy": 0.95,
+                "precision": 0.94,
+                "recall": 0.93,
+                "f1": 0.935
+            })
+            
+            model_card.add_parameters({
+                "n_estimators": 100,
+                "max_depth": 10,
+                "random_state": 42
+            })
+            
+            model_card.add_limitation("This model is for testing purposes only.")
+            model_card.set_intended_use("This model is intended for testing the model card system.")
+            
+            # Save the model card
+            model_card_path = temp_dir_path / "test_model.card.json"
+            model_card.save(model_card_path)
+            
+            # Check if the file was created
+            if not model_card_path.exists():
+                logger.error("❌ Model card system verification failed: model card file not created")
+                return False
+            
+            # Load the model card back
+            loaded_model_card = ModelCard.load(model_card_path)
+            
+            # Verify the loaded model card
+            if (loaded_model_card.data["model_id"] != "test_model" or
+                loaded_model_card.data["model_type"] != "random_forest" or
+                loaded_model_card.data["metrics"]["accuracy"] != 0.95):
+                logger.error("❌ Model card system verification failed: loaded model card data mismatch")
+                return False
+            
+            # Test the model card generator
+            generator = ModelCardGenerator()
+            
+            # Create a simple model for testing
+            from sklearn.ensemble import RandomForestClassifier
+            import pandas as pd
+            import numpy as np
+            
+            X = pd.DataFrame({
+                "feature1": np.random.rand(10),
+                "feature2": np.random.rand(10)
+            })
+            y = pd.Series(np.random.randint(0, 2, 10), name="target")
+            
+            model = RandomForestClassifier(n_estimators=10, random_state=42)
+            model.fit(X, y)
+            
+            # Generate a model card from the model
+            generated_card = generator.generate_from_training(
+                model=model,
+                model_id="generated_model",
+                X_train=X,
+                y_train=y,
+                metrics={"accuracy": 0.9},
+                description="A generated model card"
+            )
+            
+            # Save the generated model card
+            generated_card_path = temp_dir_path / "generated_model.card.json"
+            generated_card.save(generated_card_path)
+            
+            # Check if the file was created
+            if not generated_card_path.exists():
+                logger.error("❌ Model card system verification failed: generated model card file not created")
+                return False
+            
+            # Create a markdown version
+            markdown_path = temp_dir_path / "generated_model.md"
+            with open(markdown_path, "w") as f:
+                f.write(generated_card.to_markdown())
+            
+            # Check if the markdown file was created
+            if not markdown_path.exists():
+                logger.error("❌ Model card system verification failed: markdown file not created")
+                return False
+            
+            logger.info("✅ Model card system verification successful")
+            return True
+    except Exception as e:
+        logger.error(f"❌ Model card system verification failed: {e}")
+        return False
+
+
 def main():
     """Main function to run the verification script."""
     logger = setup_logging()
@@ -367,6 +485,9 @@ def main():
     # Verify model building
     model_building_success = verify_model_building(logger)
     
+    # Verify model card system
+    model_card_success = verify_model_card_system(logger)
+    
     # Verify end-to-end functionality
     end_to_end_success = verify_end_to_end(logger)
     
@@ -379,6 +500,7 @@ def main():
         pipeline_factory_success and
         feature_engineering_success and
         model_building_success and
+        model_card_success and
         end_to_end_success and
         prediction_pipeline_success
     )
@@ -395,6 +517,8 @@ def main():
             logger.error("  - Feature engineering verification failed")
         if not model_building_success:
             logger.error("  - Model building verification failed")
+        if not model_card_success:
+            logger.error("  - Model card system verification failed")
         if not end_to_end_success:
             logger.error("  - End-to-end verification failed")
         if not prediction_pipeline_success:

@@ -17,6 +17,8 @@ from sklearn.pipeline import Pipeline
 from nexusml.config.manager import ConfigurationManager
 from nexusml.core.pipeline.context import PipelineContext
 from nexusml.core.pipeline.stages.base import BaseModelSavingStage
+from nexusml.core.model_card.model_card import ModelCard
+from nexusml.core.model_card.generator import ModelCardGenerator
 
 
 class PickleModelSavingStage(BaseModelSavingStage):
@@ -154,13 +156,30 @@ class ModelCardSavingStage(BaseModelSavingStage):
             with open(path, "wb") as f:
                 pickle.dump(model, f)
 
-            # Create a model card
-            model_card = self._create_model_card(model, metadata, **kwargs)
-
-            # Save the model card
-            model_card_path = path.with_suffix(".md")
-            with open(model_card_path, "w") as f:
-                f.write(model_card)
+            # Create a model card using the generator
+            generator = ModelCardGenerator(config_manager=self.config_manager)
+            model_card = generator.generate_from_training(
+                model=model,
+                model_id=kwargs.get("model_id", path.stem),
+                X_train=kwargs.get("X_train"),
+                y_train=kwargs.get("y_train"),
+                metrics=metadata.get("evaluation_results", {}).get("overall", {}),
+                parameters=kwargs.get("parameters"),
+                description=kwargs.get("model_description",
+                    "A machine learning model for equipment classification."),
+                author=kwargs.get("model_authors", "NexusML Team"),
+                intended_use=kwargs.get("intended_use",
+                    "This model is designed for classifying equipment based on descriptions and other features.")
+            )
+            
+            # Save the model card as JSON
+            model_card_json_path = path.with_suffix(".card.json")
+            model_card.save(model_card_json_path)
+            
+            # Save the model card as Markdown
+            model_card_md_path = path.with_suffix(".md")
+            with open(model_card_md_path, "w") as f:
+                f.write(model_card.to_markdown())
 
             # Save metadata to a separate file
             metadata_path = path.with_suffix(".json")

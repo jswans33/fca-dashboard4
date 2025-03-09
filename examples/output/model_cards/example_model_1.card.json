@@ -1,0 +1,34 @@
+{
+  "model_id": "example_model_1",
+  "model_type": "random_forest",
+  "creation_date": "2025-03-09T13:26:12.062630",
+  "version": "1.0.0",
+  "metrics": {
+    "accuracy": 0.95,
+    "precision": 0.94,
+    "recall": 0.93,
+    "f1": 0.935
+  },
+  "description": "A simple example model for binary classification",
+  "author": "NexusML Team",
+  "training_data": {
+    "source": "synthetic_data.csv",
+    "size": 80,
+    "features": [
+      "feature1",
+      "feature2",
+      "feature3"
+    ],
+    "target": "target"
+  },
+  "parameters": {
+    "n_estimators": 100,
+    "max_depth": null,
+    "random_state": 42
+  },
+  "limitations": [
+    "This model is trained on synthetic data and may not perform well on real-world data.",
+    "The model has not been tested for fairness across different demographic groups."
+  ],
+  "intended_use": "This model is intended for educational purposes only."
+}
