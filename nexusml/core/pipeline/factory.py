@@ -335,6 +335,36 @@ class PipelineFactory:
         except Exception as e:
             raise PipelineFactoryError(f"Error creating model trainer: {str(e)}") from e
     
+    def create_model_evaluator(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Create a model evaluator instance.
+
+        Args:
+            config: Configuration for the model evaluator.
+
+        Returns:
+            Model evaluator instance.
+            
+        Raises:
+            PipelineFactoryError: If the model evaluator cannot be created.
+        """
+        try:
+            # Try to get the model evaluator from the registry
+            model_evaluator_class = self.registry.get("model_evaluator", "classification")
+            if model_evaluator_class is None:
+                # Try to resolve it from the container
+                from nexusml.core.model_building.base import ModelEvaluator
+                model_evaluator = self.container.resolve(ModelEvaluator)
+                return model_evaluator
+            
+            # Create the model evaluator instance
+            model_evaluator = model_evaluator_class(config=config or {})
+            logger.info("Created model evaluator")
+            
+            return model_evaluator
+        except Exception as e:
+            raise PipelineFactoryError(f"Error creating model evaluator: {str(e)}") from e
+    
     def create_predictor(self, config: Optional[Dict[str, Any]] = None):
         """
         Create a predictor instance.

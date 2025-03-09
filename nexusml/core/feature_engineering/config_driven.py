@@ -148,13 +148,12 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
                 # Get the transformer type
                 transformer_type = config_copy.pop("type")
                 
-                # Create the transformer
                 # Remove 'name' from config_copy if it exists to avoid duplicate parameter error
                 if 'name' in config_copy:
-                    name_param = config_copy.pop('name')
-                    transformer = create_transformer(transformer_type, **config_copy)
-                else:
-                    transformer = create_transformer(transformer_type, **config_copy)
+                    config_copy.pop('name')  # Just remove it, no need to store
+                
+                # Create the transformer
+                transformer = create_transformer(transformer_type, **config_copy)
                 
                 # Add the transformer to the list
                 transformers.append(transformer)
@@ -215,31 +214,42 @@ class ConfigDrivenFeatureEngineer(BaseConfigDrivenFeatureEngineer):
         # 5. Keyword classifications
         if "keyword_classifications" in self.config:
             for system in self.config["keyword_classifications"]:
+                # Create a copy of the system config to avoid modifying the original
+                system_copy = system.copy()
+                
                 # Extract the name parameter to avoid duplicate parameter error
-                system_name = system["name"]
+                if 'name' in system_copy:
+                    system_copy.pop('name')
+                
                 transformer = create_transformer(
                     "keyword_classification_mapper",
-                    source_column=system["source_column"],
-                    target_column=system["target_column"],
-                    reference_manager=system.get("reference_manager", "uniformat_keywords"),
-                    max_results=system.get("max_results", 1),
-                    confidence_threshold=system.get("confidence_threshold", 0.0),
+                    source_column=system_copy["source_column"],
+                    target_column=system_copy["target_column"],
+                    reference_manager=system_copy.get("reference_manager", "uniformat_keywords"),
+                    max_results=system_copy.get("max_results", 1),
+                    confidence_threshold=system_copy.get("confidence_threshold", 0.0),
                 )
                 transformers.append(transformer)
         
         # 6. Classification systems
         if "classification_systems" in self.config:
             for system in self.config["classification_systems"]:
+                # Create a copy of the system config to avoid modifying the original
+                system_copy = system.copy()
+                
                 # Extract the name parameter to avoid duplicate parameter error
-                system_name = system["name"]
-                # Create a copy of the kwargs to avoid modifying the original
+                if 'name' in system_copy:
+                    system_copy.pop('name')
+                
+                # Create the kwargs dictionary with the correct parameters
                 kwargs = {
-                    "name": system_name,  # Include name as a parameter
-                    "source_column": system.get("source_column") or system.get("source_columns", []),
-                    "target_column": system["target_column"],
-                    "mapping_type": system.get("mapping_type", "eav"),
-                    "mapping_function": system.get("mapping_function"),
+                    "source_column": system_copy.get("source_column") or system_copy.get("source_columns", []),
+                    "target_column": system_copy["target_column"],
+                    "mapping_type": system_copy.get("mapping_type", "eav"),
+                    "mapping_function": system_copy.get("mapping_function"),
                 }
+                
+                # Create the transformer using the global create_transformer function
                 transformer = create_transformer("classification_system_mapper", **kwargs)
                 transformers.append(transformer)
         

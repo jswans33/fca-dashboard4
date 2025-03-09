@@ -203,6 +203,13 @@ def register_core_components(
     )
     logger.info("Registered ModelTrainer with DI container")
     
+    # Register ModelEvaluator
+    from nexusml.core.model_building.base import ModelEvaluator, BaseModelEvaluator
+    provider.register_implementation(
+        ModelEvaluator, BaseModelEvaluator, singleton=False
+    )
+    logger.info("Registered ModelEvaluator with DI container")
+    
     # Register ModelSerializer
     provider.register_implementation(
         ModelSerializer, SimpleModelSerializer, singleton=False
