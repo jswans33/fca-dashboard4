@@ -1,0 +1,226 @@
+@startuml "NexusML Model Training System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Model Training System
+
+' Interfaces
+interface "ModelTrainer" as IModelTrainer {
+  + train(model, x_train, y_train, **kwargs): Any
+  + cross_validate(model, x, y, **kwargs): Dict[str, List[float]]
+}
+
+interface "ModelEvaluator" as IModelEvaluator {
+  + evaluate(model, x_test, y_test, **kwargs): Dict[str, float]
+  + analyze_predictions(model, x_test, y_test, y_pred, **kwargs): Dict[str, Any]
+}
+
+interface "ModelSerializer" as IModelSerializer {
+  + save_model(model, path, **kwargs): None
+  + load_model(path, **kwargs): Any
+}
+
+' Base classes
+abstract class BaseModelTrainer {
+  # _config: ModelTrainingConfig
+  + train(model, x_train, y_train, **kwargs): Any
+  + cross_validate(model, x, y, **kwargs): Dict[str, List[float]]
+  # _validate_config()
+  # _fit_model(model, x_train, y_train, **kwargs): Any
+}
+
+abstract class BaseModelEvaluator {
+  + evaluate(model, x_test, y_test, **kwargs): Dict[str, float]
+  + analyze_predictions(model, x_test, y_test, y_pred, **kwargs): Dict[str, Any]
+  # _calculate_metrics(y_true, y_pred, **kwargs): Dict[str, float]
+  # _create_confusion_matrix(y_true, y_pred): ndarray
+}
+
+abstract class BaseModelSerializer {
+  + save_model(model, path, **kwargs): None
+  + load_model(path, **kwargs): Any
+  # _validate_path(path)
+  # _create_directory(path)
+}
+
+' Concrete implementations
+class StandardModelTrainer {
+  - _early_stopping: bool
+  - _class_weight: str
+  - _sample_weight: str
+  + __init__(early_stopping=False, class_weight=None, sample_weight=None)
+  + train(model, x_train, y_train, **kwargs): Any
+  + cross_validate(model, x, y, **kwargs): Dict[str, List[float]]
+  # _fit_model(model, x_train, y_train, **kwargs): Any
+  # _calculate_class_weights(y_train): Dict[int, float]
+  # _calculate_sample_weights(y_train): ndarray
+}
+
+class MultiTargetModelTrainer {
+  - _base_trainer: ModelTrainer
+  - _target_columns: List[str]
+  + __init__(base_trainer: ModelTrainer, target_columns: List[str])
+  + train(models, x_train, y_train, **kwargs): Dict[str, Any]
+  + cross_validate(models, x, y, **kwargs): Dict[str, Dict[str, List[float]]]
+  # _train_model_for_target(model, x_train, y_train, target, **kwargs): Any
+  # _cross_validate_for_target(model, x, y, target, **kwargs): Dict[str, List[float]]
+}
+
+class StandardModelEvaluator {
+  - _metrics: List[str]
+  + __init__(metrics=None)
+  + evaluate(model, x_test, y_test, **kwargs): Dict[str, float]
+  + analyze_predictions(model, x_test, y_test, y_pred, **kwargs): Dict[str, Any]
+  # _calculate_metrics(y_true, y_pred, **kwargs): Dict[str, float]
+  # _create_confusion_matrix(y_true, y_pred): ndarray
+  # _analyze_misclassifications(x_test, y_test, y_pred): Dict[str, Any]
+}
+
+class MultiTargetModelEvaluator {
+  - _base_evaluator: ModelEvaluator
+  - _target_columns: List[str]
+  + __init__(base_evaluator: ModelEvaluator, target_columns: List[str])
+  + evaluate(models, x_test, y_test, **kwargs): Dict[str, Dict[str, float]]
+  + analyze_predictions(models, x_test, y_test, y_pred, **kwargs): Dict[str, Dict[str, Any]]
+  # _evaluate_model_for_target(model, x_test, y_test, target, **kwargs): Dict[str, float]
+  # _analyze_predictions_for_target(model, x_test, y_test, y_pred, target, **kwargs): Dict[str, Any]
+}
+
+class PickleModelSerializer {
+  - _protocol: int
+  + __init__(protocol=4)
+  + save_model(model, path, **kwargs): None
+  + load_model(path, **kwargs): Any
+  # _validate_path(path)
+  # _create_directory(path)
+}
+
+class JobLibModelSerializer {
+  - _compress: int
+  + __init__(compress=3)
+  + save_model(model, path, **kwargs): None
+  + load_model(path, **kwargs): Any
+  # _validate_path(path)
+  # _create_directory(path)
+}
+
+' Helper classes
+class ModelTrainingCallback {
+  + on_training_start(model, x_train, y_train, **kwargs): None
+  + on_training_end(model, x_train, y_train, **kwargs): None
+  + on_epoch_start(epoch, logs, **kwargs): None
+  + on_epoch_end(epoch, logs, **kwargs): None
+}
+
+class EarlyStoppingCallback {
+  - _patience: int
+  - _min_delta: float
+  - _monitor: str
+  - _best_score: float
+  - _wait: int
+  + __init__(patience=10, min_delta=0.001, monitor='val_loss')
+  + on_epoch_end(epoch, logs, **kwargs): bool
+  # _is_improvement(current, best): bool
+}
+
+class ModelCardGenerator {
+  - _template_path: str
+  - _output_dir: str
+  + __init__(template_path=None, output_dir=None)
+  + generate_model_card(model, metrics, config, **kwargs): str
+  + save_model_card(model_card, path): None
+  # _load_template(): str
+  # _fill_template(template, model, metrics, config, **kwargs): str
+}
+
+' Relationships
+BaseModelTrainer .up.|> IModelTrainer
+StandardModelTrainer --|> BaseModelTrainer
+MultiTargetModelTrainer --|> BaseModelTrainer
+
+BaseModelEvaluator .up.|> IModelEvaluator
+StandardModelEvaluator --|> BaseModelEvaluator
+MultiTargetModelEvaluator --|> BaseModelEvaluator
+
+BaseModelSerializer .up.|> IModelSerializer
+PickleModelSerializer --|> BaseModelSerializer
+JobLibModelSerializer --|> BaseModelSerializer
+
+MultiTargetModelTrainer --> IModelTrainer : uses
+MultiTargetModelEvaluator --> IModelEvaluator : uses
+
+StandardModelTrainer --> ModelTrainingCallback : uses
+StandardModelTrainer --> EarlyStoppingCallback : uses
+
+' Notes
+note right of IModelTrainer
+  Main interface for model training
+  components in the pipeline
+end note
+
+note right of IModelEvaluator
+  Main interface for model evaluation
+  components in the pipeline
+end note
+
+note right of IModelSerializer
+  Main interface for model serialization
+  components in the pipeline
+end note
+
+note right of ModelCardGenerator
+  Generates model cards for
+  model documentation and governance
+end note
+
+' Example usage
+note bottom of IModelTrainer
+Example usage:
+```python
+# Create trainer
+trainer = StandardModelTrainer(
+    early_stopping=True,
+    class_weight="balanced"
+)
+
+# Train model
+trained_model = trainer.train(
+    model, x_train, y_train
+)
+
+# Cross-validate model
+cv_results = trainer.cross_validate(
+    model, x, y, cv=5
+)
+```
+end note
+
+note bottom of IModelEvaluator
+Example usage:
+```python
+# Create evaluator
+evaluator = StandardModelEvaluator(
+    metrics=["accuracy", "f1_macro", "precision", "recall"]
+)
+
+# Evaluate model
+metrics = evaluator.evaluate(
+    model, x_test, y_test
+)
+
+# Analyze predictions
+analysis = evaluator.analyze_predictions(
+    model, x_test, y_test, y_pred
+)
+```
+end note
+
+@enduml

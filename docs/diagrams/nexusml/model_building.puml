@@ -1,0 +1,189 @@
+@startuml "NexusML Model Building System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Model Building System
+
+' Interfaces
+interface "ModelBuilder" as IModelBuilder {
+  + build_model(**kwargs): Any
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Any
+}
+
+' Base classes
+abstract class BaseModelBuilder {
+  # _config: ModelBuildingConfig
+  + build_model(**kwargs): Any
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Any
+  # _validate_config()
+  # _create_pipeline(): Pipeline
+}
+
+' Concrete implementations
+class RandomForestBuilder {
+  - _n_estimators: int
+  - _max_depth: int
+  - _random_state: int
+  + __init__(n_estimators=100, max_depth=None, random_state=42)
+  + build_model(**kwargs): Pipeline
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Pipeline
+  # _create_pipeline(): Pipeline
+  # _get_param_grid(): Dict[str, List]
+}
+
+class GradientBoostingBuilder {
+  - _n_estimators: int
+  - _learning_rate: float
+  - _max_depth: int
+  - _random_state: int
+  + __init__(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+  + build_model(**kwargs): Pipeline
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Pipeline
+  # _create_pipeline(): Pipeline
+  # _get_param_grid(): Dict[str, List]
+}
+
+class SVMBuilder {
+  - _C: float
+  - _kernel: str
+  - _random_state: int
+  + __init__(C=1.0, kernel='rbf', random_state=42)
+  + build_model(**kwargs): Pipeline
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Pipeline
+  # _create_pipeline(): Pipeline
+  # _get_param_grid(): Dict[str, List]
+}
+
+class ConfigDrivenModelBuilder {
+  - _config: ModelBuildingConfig
+  + __init__(config: ModelBuildingConfig)
+  + build_model(**kwargs): Pipeline
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Pipeline
+  # _create_pipeline(): Pipeline
+  # _get_builder_class(): Type[BaseModelBuilder]
+  # _create_builder(): BaseModelBuilder
+}
+
+class MultiTargetModelBuilder {
+  - _base_builder: ModelBuilder
+  - _target_columns: List[str]
+  + __init__(base_builder: ModelBuilder, target_columns: List[str])
+  + build_model(**kwargs): Dict[str, Pipeline]
+  + optimize_hyperparameters(model, x_train, y_train, **kwargs): Dict[str, Pipeline]
+  # _build_model_for_target(target: str, **kwargs): Pipeline
+  # _optimize_hyperparameters_for_target(model, x_train, y_train, target, **kwargs): Pipeline
+}
+
+' Helper classes
+class ModelRegistry {
+  - _builders: Dict[str, Type[ModelBuilder]]
+  + register(name: str, builder_class: Type[ModelBuilder])
+  + create_builder(name: str, **kwargs): ModelBuilder
+  + get_builder_class(name: str): Type[ModelBuilder]
+  + has_builder(name: str): bool
+}
+
+class HyperparameterOptimizer {
+  - _method: str
+  - _cv: int
+  - _scoring: str
+  - _n_jobs: int
+  + __init__(method='grid', cv=5, scoring='f1_macro', n_jobs=-1)
+  + optimize(model, x_train, y_train, param_grid): Any
+  # _create_optimizer(param_grid): BaseSearchCV
+}
+
+class ModelEvaluator {
+  + evaluate(model, x_test, y_test): Dict[str, float]
+  + cross_validate(model, x, y, cv=5): Dict[str, List[float]]
+  + analyze_predictions(model, x_test, y_test, y_pred): Dict[str, Any]
+  # _calculate_metrics(y_true, y_pred): Dict[str, float]
+}
+
+' Relationships
+BaseModelBuilder .up.|> IModelBuilder
+RandomForestBuilder --|> BaseModelBuilder
+GradientBoostingBuilder --|> BaseModelBuilder
+SVMBuilder --|> BaseModelBuilder
+ConfigDrivenModelBuilder --|> BaseModelBuilder
+MultiTargetModelBuilder --|> BaseModelBuilder
+
+ConfigDrivenModelBuilder --> ModelRegistry : uses
+ConfigDrivenModelBuilder --> BaseModelBuilder : creates
+
+MultiTargetModelBuilder --> IModelBuilder : uses
+
+BaseModelBuilder --> HyperparameterOptimizer : uses
+
+' Notes
+note right of IModelBuilder
+  Main interface for model building
+  components in the pipeline
+end note
+
+note right of ModelRegistry
+  Registry for model builder implementations
+  that can be created by name
+end note
+
+note right of HyperparameterOptimizer
+  Handles hyperparameter optimization
+  using grid search or random search
+end note
+
+note right of ModelEvaluator
+  Evaluates model performance
+  with various metrics
+end note
+
+' Example usage
+note bottom of IModelBuilder
+Example usage:
+```python
+# Create model builder
+builder = RandomForestBuilder(
+    n_estimators=100,
+    max_depth=10,
+    random_state=42
+)
+
+# Build model
+model = builder.build_model()
+
+# Optimize hyperparameters
+optimized_model = builder.optimize_hyperparameters(
+    model, x_train, y_train
+)
+```
+end note
+
+note bottom of MultiTargetModelBuilder
+Example with multiple targets:
+```python
+# Create base builder
+base_builder = RandomForestBuilder()
+
+# Create multi-target builder
+multi_builder = MultiTargetModelBuilder(
+    base_builder=base_builder,
+    target_columns=["category_name", "mcaa_system_category"]
+)
+
+# Build models for all targets
+models = multi_builder.build_model()
+
+# Access individual models
+category_model = models["category_name"]
+system_model = models["mcaa_system_category"]
+```
+end note
+
+@enduml

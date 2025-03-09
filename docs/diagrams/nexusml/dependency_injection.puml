@@ -1,0 +1,125 @@
+@startuml "NexusML Dependency Injection System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Dependency Injection System
+
+' Classes
+class DIContainer {
+  - _instances: Dict[Type, Dict[str, Any]]
+  - _factories: Dict[Type, Dict[str, Callable]]
+  + register_instance(interface: Type, instance: Any, name: str = None)
+  + register_factory(interface: Type, factory: Callable, name: str = None)
+  + get(interface: Type, name: str = None): Any
+  + has(interface: Type, name: str = None): bool
+  + clear()
+}
+
+class Inject {
+  + interface: Type
+  + name: str
+  + __init__(interface: Type, name: str = None)
+}
+
+annotation inject {
+  + __call__(func: Callable): Callable
+}
+
+class ComponentRegistry {
+  - _implementations: Dict[Type, Dict[str, Type]]
+  - _default_implementations: Dict[Type, str]
+  + register(interface: Type, name: str, implementation: Type)
+  + set_default_implementation(interface: Type, name: str)
+  + get_implementation(interface: Type, name: str = None): Type
+  + has_implementation(interface: Type, name: str = None): bool
+  + get_all_implementations(interface: Type): Dict[str, Type]
+}
+
+class PipelineFactory {
+  - _registry: ComponentRegistry
+  - _container: DIContainer
+  + __init__(registry: ComponentRegistry, container: DIContainer)
+  + create(interface: Type, name: str = None, **kwargs): Any
+  + register_instance(interface: Type, instance: Any, name: str = None)
+}
+
+' Example classes
+class DataLoader {
+  + load_data(data_path: str, **kwargs): DataFrame
+}
+
+class CSVDataLoader {
+  - _encoding: str
+  - _delimiter: str
+  + __init__(encoding: str = "utf-8", delimiter: str = ",")
+  + load_data(data_path: str, **kwargs): DataFrame
+}
+
+class FeatureEngineer {
+  + engineer_features(data: DataFrame, **kwargs): DataFrame
+}
+
+class Service {
+  - _data_loader: DataLoader
+  - _feature_engineer: FeatureEngineer
+  + __init__(data_loader: DataLoader, feature_engineer: FeatureEngineer)
+  + process_data(data_path: str): DataFrame
+}
+
+' Relationships
+CSVDataLoader .up.|> DataLoader
+PipelineFactory --> ComponentRegistry : uses
+PipelineFactory --> DIContainer : uses
+inject ..> DIContainer : uses
+Inject ..> DIContainer : used by
+
+' Implementation relationships
+note right of inject
+  Decorator for injecting dependencies
+  into function parameters
+end note
+
+note right of Inject
+  Annotation for marking parameters
+  to be injected
+end note
+
+' Example usage
+note bottom of Service
+Example with constructor injection:
+```python
+class Service:
+    def __init__(self, data_loader: DataLoader, feature_engineer: FeatureEngineer):
+        self._data_loader = data_loader
+        self._feature_engineer = feature_engineer
+        
+    def process_data(self, data_path: str):
+        data = self._data_loader.load_data(data_path)
+        return self._feature_engineer.engineer_features(data)
+```
+end note
+
+note bottom of inject
+Example with parameter injection:
+```python
+from nexusml.core.di.decorators import inject
+from nexusml.core.di.container import Inject
+
+@inject
+def process_data(data_path: str, 
+                data_loader: DataLoader = Inject(DataLoader),
+                feature_engineer: FeatureEngineer = Inject(FeatureEngineer)):
+    data = data_loader.load_data(data_path)
+    return feature_engineer.engineer_features(data)
+```
+end note
+
+@enduml

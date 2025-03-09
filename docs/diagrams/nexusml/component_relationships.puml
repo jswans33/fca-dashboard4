@@ -1,0 +1,90 @@
+@startuml "NexusML Component Relationships"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam InterfaceBorderColor #999999
+skinparam InterfaceBackgroundColor #EEEEEE
+skinparam ComponentBorderColor #999999
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Component Relationships
+
+' Interfaces
+interface "DataLoader" as IDataLoader
+interface "DataPreprocessor" as IDataPreprocessor
+interface "FeatureEngineer" as IFeatureEngineer
+interface "ModelBuilder" as IModelBuilder
+interface "ModelTrainer" as IModelTrainer
+interface "ModelEvaluator" as IModelEvaluator
+interface "ModelSerializer" as IModelSerializer
+interface "Predictor" as IPredictor
+
+' Management components
+component "ComponentRegistry" as Registry
+component "PipelineFactory" as Factory
+component "PipelineOrchestrator" as Orchestrator
+component "PipelineContext" as Context
+component "DIContainer" as Container
+
+' Implementations
+component "CSVDataLoader" as CSVLoader
+component "ExcelDataLoader" as ExcelLoader
+component "StandardPreprocessor" as StdPreprocessor
+component "GenericFeatureEngineer" as GenFeatureEng
+component "TextFeatureEngineer" as TextFeatureEng
+component "RandomForestBuilder" as RFBuilder
+component "StandardTrainer" as StdTrainer
+component "StandardEvaluator" as StdEvaluator
+component "PickleSerializer" as PickleSerializer
+component "StandardPredictor" as StdPredictor
+
+' Interface implementations
+CSVLoader .up.|> IDataLoader
+ExcelLoader .up.|> IDataLoader
+StdPreprocessor .up.|> IDataPreprocessor
+GenFeatureEng .up.|> IFeatureEngineer
+TextFeatureEng .up.|> IFeatureEngineer
+RFBuilder .up.|> IModelBuilder
+StdTrainer .up.|> IModelTrainer
+StdEvaluator .up.|> IModelEvaluator
+PickleSerializer .up.|> IModelSerializer
+StdPredictor .up.|> IPredictor
+
+' Registry relationships
+Registry -- IDataLoader
+Registry -- IDataPreprocessor
+Registry -- IFeatureEngineer
+Registry -- IModelBuilder
+Registry -- IModelTrainer
+Registry -- IModelEvaluator
+Registry -- IModelSerializer
+Registry -- IPredictor
+
+' Factory relationships
+Factory --> Registry : uses
+Factory --> Container : uses
+
+' Orchestrator relationships
+Orchestrator --> Factory : creates components via
+Orchestrator --> Context : stores state in
+Orchestrator --> IDataLoader : uses
+Orchestrator --> IDataPreprocessor : uses
+Orchestrator --> IFeatureEngineer : uses
+Orchestrator --> IModelBuilder : uses
+Orchestrator --> IModelTrainer : uses
+Orchestrator --> IModelEvaluator : uses
+Orchestrator --> IModelSerializer : uses
+Orchestrator --> IPredictor : uses
+
+' Context relationships
+note right of Context : Stores pipeline state\nand intermediate data
+
+' Container relationships
+note right of Container : Manages component\ndependencies
+
+@enduml

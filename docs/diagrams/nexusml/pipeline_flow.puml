@@ -1,0 +1,80 @@
+@startuml "NexusML Pipeline Flow"
+
+' Style definitions
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ActivityBorderColor #999999
+skinparam ActivityBackgroundColor #EEEEEE
+skinparam ActivityDiamondBorderColor #999999
+skinparam ActivityDiamondBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Pipeline Flow
+
+' Start
+start
+
+' Training flow
+partition "Training Pipeline" {
+  :DataLoader.load_data();
+  note right: Load data from CSV, Excel, or database
+  
+  :DataPreprocessor.preprocess();
+  note right: Clean and prepare data
+  
+  :Split data into train/test sets;
+  
+  :FeatureEngineer.fit();
+  note right: Learn feature transformations
+  
+  :FeatureEngineer.transform();
+  note right: Apply transformations to training data
+  
+  :ModelBuilder.build_model();
+  note right: Create model instance
+  
+  if (Optimize hyperparameters?) then (yes)
+    :ModelBuilder.optimize_hyperparameters();
+    note right: Tune model parameters
+  else (no)
+  endif
+  
+  :ModelTrainer.train();
+  note right: Train model with features
+  
+  :FeatureEngineer.transform();
+  note right: Apply transformations to test data
+  
+  :ModelEvaluator.evaluate();
+  note right: Calculate performance metrics
+  
+  :ModelSerializer.save_model();
+  note right: Save model to disk
+}
+
+' Prediction flow
+partition "Prediction Pipeline" {
+  :ModelSerializer.load_model();
+  note right: Load model from disk
+  
+  :DataLoader.load_data();
+  note right: Load new data
+  
+  :DataPreprocessor.preprocess();
+  note right: Clean and prepare data
+  
+  :FeatureEngineer.transform();
+  note right: Apply transformations to new data
+  
+  :Predictor.predict();
+  note right: Generate predictions
+  
+  :Save or return predictions;
+}
+
+' End
+stop
+
+@enduml

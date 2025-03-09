@@ -1,0 +1,172 @@
+@startuml "NexusML Feature Engineering System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Feature Engineering System
+
+' Interfaces
+interface "FeatureEngineer" as IFeatureEngineer {
+  + engineer_features(data: DataFrame, **kwargs): DataFrame
+  + fit(data: DataFrame, **kwargs): FeatureEngineer
+  + transform(data: DataFrame, **kwargs): DataFrame
+}
+
+interface "Transformer" as ITransformer {
+  + fit(X, y=None): Transformer
+  + transform(X): ndarray
+  + fit_transform(X, y=None): ndarray
+}
+
+' Base classes
+abstract class BaseFeatureEngineer {
+  # _transformers: Dict[str, Transformer]
+  + engineer_features(data: DataFrame, **kwargs): DataFrame
+  + fit(data: DataFrame, **kwargs): BaseFeatureEngineer
+  + transform(data: DataFrame, **kwargs): DataFrame
+  # _create_transformers(): Dict[str, Transformer]
+  # _validate_data(data: DataFrame)
+}
+
+abstract class BaseTransformer {
+  + fit(X, y=None): BaseTransformer
+  + transform(X): ndarray
+  + fit_transform(X, y=None): ndarray
+  # _validate_input(X)
+}
+
+' Concrete implementations
+class GenericFeatureEngineer {
+  - _text_columns: List[str]
+  - _numerical_columns: List[str]
+  - _categorical_columns: List[str]
+  - _config: FeatureEngineeringConfig
+  + __init__(text_columns=None, numerical_columns=None, categorical_columns=None, config=None)
+  + engineer_features(data: DataFrame, **kwargs): DataFrame
+  # _create_transformers(): Dict[str, Transformer]
+  # _combine_features(text_features, numerical_features, categorical_features): DataFrame
+}
+
+class TextFeatureEngineer {
+  - _text_columns: List[str]
+  - _max_features: int
+  - _ngram_range: Tuple[int, int]
+  + __init__(text_columns, max_features=1000, ngram_range=(1, 2))
+  # _create_transformers(): Dict[str, Transformer]
+}
+
+class ConfigDrivenFeatureEngineer {
+  - _config: FeatureEngineeringConfig
+  + __init__(config: FeatureEngineeringConfig)
+  # _create_transformers(): Dict[str, Transformer]
+  # _load_transformers_from_config(): Dict[str, Transformer]
+}
+
+' Transformers
+class TextTransformer {
+  - _vectorizer: TfidfVectorizer
+  - _max_features: int
+  - _ngram_range: Tuple[int, int]
+  + __init__(max_features=1000, ngram_range=(1, 2))
+  + fit(X, y=None): TextTransformer
+  + transform(X): ndarray
+}
+
+class NumericalTransformer {
+  - _scaler: StandardScaler
+  + __init__()
+  + fit(X, y=None): NumericalTransformer
+  + transform(X): ndarray
+}
+
+class CategoricalTransformer {
+  - _encoder: OneHotEncoder
+  + __init__(handle_unknown='ignore')
+  + fit(X, y=None): CategoricalTransformer
+  + transform(X): ndarray
+}
+
+class ClassificationSystemMapper {
+  - _mapping: Dict[str, int]
+  - _name: str
+  + __init__(name: str, mapping: Dict[str, int] = None)
+  + fit(X, y=None): ClassificationSystemMapper
+  + transform(X): ndarray
+  + get_mapping(): Dict[str, int]
+}
+
+class TransformerRegistry {
+  - _transformers: Dict[str, Type[Transformer]]
+  + register(name: str, transformer_class: Type[Transformer])
+  + create_transformer(name: str, **kwargs): Transformer
+  + get_transformer_class(name: str): Type[Transformer]
+  + has_transformer(name: str): bool
+}
+
+' Relationships
+BaseFeatureEngineer .up.|> IFeatureEngineer
+GenericFeatureEngineer --|> BaseFeatureEngineer
+TextFeatureEngineer --|> BaseFeatureEngineer
+ConfigDrivenFeatureEngineer --|> BaseFeatureEngineer
+
+BaseTransformer .up.|> ITransformer
+TextTransformer --|> BaseTransformer
+NumericalTransformer --|> BaseTransformer
+CategoricalTransformer --|> BaseTransformer
+ClassificationSystemMapper --|> BaseTransformer
+
+GenericFeatureEngineer --> TextTransformer : uses
+GenericFeatureEngineer --> NumericalTransformer : uses
+GenericFeatureEngineer --> CategoricalTransformer : uses
+
+ConfigDrivenFeatureEngineer --> TransformerRegistry : uses
+TransformerRegistry --> BaseTransformer : creates
+
+' Notes
+note right of IFeatureEngineer
+  Main interface for feature engineering
+  components in the pipeline
+end note
+
+note right of TransformerRegistry
+  Registry for transformer implementations
+  that can be created by name
+end note
+
+note bottom of GenericFeatureEngineer
+  Default implementation that handles
+  text, numerical, and categorical features
+end note
+
+note bottom of ConfigDrivenFeatureEngineer
+  Creates transformers based on
+  configuration settings
+end note
+
+' Example usage
+note bottom of IFeatureEngineer
+Example usage:
+```python
+# Create feature engineer
+engineer = GenericFeatureEngineer(
+    text_columns=["description"],
+    numerical_columns=["service_life"],
+    categorical_columns=["category"]
+)
+
+# Fit to training data
+engineer.fit(training_data)
+
+# Transform new data
+features = engineer.transform(new_data)
+```
+end note
+
+@enduml

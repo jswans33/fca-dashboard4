@@ -1,0 +1,197 @@
+@startuml "NexusML Prediction System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Prediction System
+
+' Interfaces
+interface "Predictor" as IPredictor {
+  + predict(model, data, **kwargs): DataFrame
+  + predict_proba(model, data, **kwargs): Dict[str, DataFrame]
+}
+
+interface "ModelSerializer" as IModelSerializer {
+  + save_model(model, path, **kwargs): None
+  + load_model(path, **kwargs): Any
+}
+
+interface "DataLoader" as IDataLoader {
+  + load_data(data_path, **kwargs): DataFrame
+}
+
+interface "FeatureEngineer" as IFeatureEngineer {
+  + engineer_features(data, **kwargs): DataFrame
+  + fit(data, **kwargs): FeatureEngineer
+  + transform(data, **kwargs): DataFrame
+}
+
+' Base classes
+abstract class BasePredictor {
+  # _config: PredictionConfig
+  + predict(model, data, **kwargs): DataFrame
+  + predict_proba(model, data, **kwargs): Dict[str, DataFrame]
+  # _validate_config()
+  # _validate_model(model)
+  # _validate_data(data)
+}
+
+' Concrete implementations
+class StandardPredictor {
+  - _threshold: float
+  - _output_columns: List[str]
+  + __init__(threshold=0.5, output_columns=None)
+  + predict(model, data, **kwargs): DataFrame
+  + predict_proba(model, data, **kwargs): Dict[str, DataFrame]
+  # _format_predictions(predictions, column_names): DataFrame
+  # _apply_threshold(probabilities, threshold): ndarray
+}
+
+class MultiTargetPredictor {
+  - _base_predictor: Predictor
+  - _target_columns: List[str]
+  + __init__(base_predictor: Predictor, target_columns: List[str])
+  + predict(models, data, **kwargs): Dict[str, DataFrame]
+  + predict_proba(models, data, **kwargs): Dict[str, Dict[str, DataFrame]]
+  # _predict_for_target(model, data, target, **kwargs): DataFrame
+  # _predict_proba_for_target(model, data, target, **kwargs): Dict[str, DataFrame]
+}
+
+class BatchPredictor {
+  - _predictor: Predictor
+  - _batch_size: int
+  + __init__(predictor: Predictor, batch_size=1000)
+  + predict(model, data, **kwargs): DataFrame
+  + predict_proba(model, data, **kwargs): Dict[str, DataFrame]
+  # _split_batches(data, batch_size): List[DataFrame]
+  # _combine_predictions(predictions): DataFrame
+}
+
+class PredictionPipeline {
+  - _model_serializer: ModelSerializer
+  - _data_loader: DataLoader
+  - _feature_engineer: FeatureEngineer
+  - _predictor: Predictor
+  + __init__(model_serializer, data_loader, feature_engineer, predictor)
+  + predict_from_file(model_path, data_path, output_path=None, **kwargs): DataFrame
+  + predict_from_data(model, data, output_path=None, **kwargs): DataFrame
+  + save_predictions(predictions, output_path, **kwargs): None
+  # _load_model(model_path): Any
+  # _load_data(data_path): DataFrame
+  # _engineer_features(data): DataFrame
+}
+
+' Helper classes
+class PredictionFormatter {
+  - _column_mapping: Dict[str, str]
+  - _include_probabilities: bool
+  + __init__(column_mapping=None, include_probabilities=False)
+  + format_predictions(predictions, probabilities=None): DataFrame
+  # _rename_columns(predictions): DataFrame
+  # _add_probability_columns(predictions, probabilities): DataFrame
+}
+
+class PredictionExplainer {
+  - _feature_names: List[str]
+  + __init__(feature_names=None)
+  + explain_prediction(model, data, prediction_idx): Dict[str, Any]
+  + explain_predictions(model, data, prediction_indices=None): List[Dict[str, Any]]
+  # _get_feature_importance(model, data, prediction_idx): Dict[str, float]
+  # _get_prediction_path(model, data, prediction_idx): List[Dict[str, Any]]
+}
+
+class PredictionValidator {
+  - _required_columns: List[str]
+  - _value_ranges: Dict[str, Tuple[Any, Any]]
+  + __init__(required_columns=None, value_ranges=None)
+  + validate_predictions(predictions): Dict[str, Any]
+  # _check_required_columns(predictions): List[str]
+  # _check_value_ranges(predictions): Dict[str, List[int]]
+}
+
+' Relationships
+BasePredictor .up.|> IPredictor
+StandardPredictor --|> BasePredictor
+MultiTargetPredictor --|> BasePredictor
+BatchPredictor --|> BasePredictor
+
+PredictionPipeline --> IModelSerializer : uses
+PredictionPipeline --> IDataLoader : uses
+PredictionPipeline --> IFeatureEngineer : uses
+PredictionPipeline --> IPredictor : uses
+
+MultiTargetPredictor --> IPredictor : uses
+BatchPredictor --> IPredictor : uses
+
+StandardPredictor --> PredictionFormatter : uses
+StandardPredictor --> PredictionValidator : uses
+
+' Notes
+note right of IPredictor
+  Main interface for prediction
+  components in the pipeline
+end note
+
+note right of PredictionPipeline
+  Coordinates the prediction process
+  from loading to output
+end note
+
+note right of PredictionExplainer
+  Provides explanations for
+  model predictions
+end note
+
+' Example usage
+note bottom of IPredictor
+Example usage:
+```python
+# Create predictor
+predictor = StandardPredictor(
+    threshold=0.5,
+    output_columns=["category_name", "mcaa_system_category"]
+)
+
+# Make predictions
+predictions = predictor.predict(
+    model, data
+)
+
+# Get prediction probabilities
+probabilities = predictor.predict_proba(
+    model, data
+)
+```
+end note
+
+note bottom of PredictionPipeline
+Example usage:
+```python
+# Create pipeline components
+model_serializer = PickleModelSerializer()
+data_loader = CSVDataLoader()
+feature_engineer = GenericFeatureEngineer()
+predictor = StandardPredictor()
+
+# Create prediction pipeline
+pipeline = PredictionPipeline(
+    model_serializer, data_loader, feature_engineer, predictor
+)
+
+# Make predictions from file
+predictions = pipeline.predict_from_file(
+    model_path="models/classifier.pkl",
+    data_path="data/new_data.csv",
+    output_path="outputs/predictions.csv"
+)
+```
+end note
+
+@enduml

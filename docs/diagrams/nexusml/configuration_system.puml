@@ -1,0 +1,122 @@
+@startuml "NexusML Configuration System"
+
+' Style definitions
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ClassBorderColor #999999
+skinparam ClassBackgroundColor #EEEEEE
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+
+' Title
+title NexusML Configuration System
+
+' Classes
+class ConfigProvider {
+  + {static} get_config(): Configuration
+  + {static} initialize(config_path: str = None)
+  + {static} reset()
+  - {static} _instance: ConfigProvider
+  - _config: Configuration
+  - _config_path: str
+  - __init__(config_path: str = None)
+  - _load_config()
+}
+
+class Configuration {
+  + feature_engineering: FeatureEngineeringConfig
+  + model_building: ModelBuildingConfig
+  + data_loading: DataLoadingConfig
+  + reference_data: ReferenceDataConfig
+  + paths: PathsConfig
+  + __init__(...)
+}
+
+class FeatureEngineeringConfig {
+  + text_columns: List[str]
+  + numerical_columns: List[str]
+  + categorical_columns: List[str]
+  + transformers: Dict[str, Any]
+  + __init__(...)
+}
+
+class ModelBuildingConfig {
+  + model_type: str
+  + hyperparameters: Dict[str, Any]
+  + optimization: OptimizationConfig
+  + __init__(...)
+}
+
+class DataLoadingConfig {
+  + encoding: str
+  + delimiter: str
+  + required_columns: List[str]
+  + __init__(...)
+}
+
+class ReferenceDataConfig {
+  + paths: Dict[str, str]
+  + mappings: Dict[str, str]
+  + __init__(...)
+}
+
+class PathsConfig {
+  + output_dir: str
+  + models_dir: str
+  + data_dir: str
+  + __init__(...)
+}
+
+class YAMLConfigLoader {
+  + load(path: str): Dict[str, Any]
+  - _validate_config(config: Dict[str, Any])
+  - _apply_environment_overrides(config: Dict[str, Any])
+}
+
+class ConfigSchema {
+  + {static} get_schema(): Dict[str, Any]
+}
+
+' Relationships
+ConfigProvider --> Configuration : creates and manages
+ConfigProvider --> YAMLConfigLoader : uses
+Configuration *-- FeatureEngineeringConfig
+Configuration *-- ModelBuildingConfig
+Configuration *-- DataLoadingConfig
+Configuration *-- ReferenceDataConfig
+Configuration *-- PathsConfig
+YAMLConfigLoader --> ConfigSchema : uses for validation
+
+' Notes
+note right of ConfigProvider
+  Singleton provider that ensures
+  only one configuration instance exists
+end note
+
+note right of YAMLConfigLoader
+  Loads configuration from YAML files
+  and applies environment variable overrides
+end note
+
+note right of ConfigSchema
+  Defines the schema for configuration
+  validation using JSON Schema
+end note
+
+' Usage examples
+note bottom of ConfigProvider
+Example usage:
+```python
+from nexusml.core.config.provider import ConfigProvider
+
+# Get configuration
+config = ConfigProvider.get_config()
+
+# Access configuration sections
+feature_config = config.feature_engineering
+model_config = config.model_building
+```
+end note
+
+@enduml
