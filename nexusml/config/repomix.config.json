@@ -8,7 +8,7 @@
     "removeComments": false,
     "removeEmptyLines": false,
     "compress": true,
-    "topFilesLength": 5,
+    "topFilesLength": 50,
     "showLineNumbers": false,
     "copyToClipboard": true
   },
@@ -21,8 +21,21 @@
       "nexusml/docs",
       "nexusml/output/**",
       "nexusml/core/deprecated/**",
-      "nexusml/test/**",
-      "nexusml/ingest/**"
+      "nexusml/tests/**",
+      "nexusml/ingest/**",
+      "nexusml/examples/**",
+      "nexusml/notebooks/configuration_example.ipynb ",
+      "nexusml/notebooks/configuration_guide.md",
+      "nexusml/notebooks/configuration_examples.py",
+      "nexusml/notebooks/**",
+      "nexusml/test_output/**",
+      "nexusml/readme.md",
+      "nexusml/requirements.txt",
+      "nexusml/setup.py",
+      "nexusml/setup.cfg",
+      "nexusml/pyproject.toml",
+      "nexusml/tox.ini"
+      
     ]
   },
   "security": {

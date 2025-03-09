@@ -431,6 +431,7 @@ def train_model(
         feature_config_path=feature_config_path,
         test_size=test_size,
         random_state=random_state,
+        sampling_strategy=sampling_strategy,  # Pass sampling_strategy explicitly
     )
 
     # Get the processed data
@@ -564,7 +565,7 @@ def save_model(
         "metrics": metrics,
         "model_type": "EquipmentClassifier",
         "training_parameters": {
-            "sampling_strategy": classifier.sampling_strategy,
+            "sampling_strategy": getattr(classifier, 'sampling_strategy', 'direct'),
         },
     }
 
@@ -574,22 +575,23 @@ def save_model(
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
-    # Create a symlink to the latest model
+    # Create a copy of the latest model (instead of symlink which requires admin privileges on Windows)
     latest_model_path = output_path / f"{model_name}_latest.pkl"
     latest_metadata_path = output_path / f"{model_name}_latest_metadata.json"
 
-    # Remove existing symlinks if they exist
+    # Remove existing files if they exist
     if latest_model_path.exists():
         latest_model_path.unlink()
     if latest_metadata_path.exists():
         latest_metadata_path.unlink()
 
-    # Create new symlinks
-    latest_model_path.symlink_to(model_filename)
-    latest_metadata_path.symlink_to(metadata_filename)
+    # Copy the files instead of creating symlinks
+    import shutil
+    shutil.copy2(model_path, latest_model_path)
+    shutil.copy2(metadata_path, latest_metadata_path)
 
     if logger:
-        logger.info(f"Created symlinks to latest model and metadata")
+        logger.info(f"Created copies of latest model and metadata")
 
     return {
         "model_path": str(model_path),

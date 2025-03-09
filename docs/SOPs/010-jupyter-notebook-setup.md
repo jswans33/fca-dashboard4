@@ -28,11 +28,11 @@ The following dependencies are optional but may be required for specific functio
 
 ### 3.1 Using the Launch Script (Recommended)
 
-The `launch_jupyter.sh` script will automatically install the required dependencies using UV (a faster alternative to pip) and prompt you to install optional dependencies:
+The `launch_nexusml.sh` script will automatically install the required dependencies and set up the environment:
 
 ```bash
 cd nexusml/notebooks
-bash launch_jupyter.sh
+bash launch_nexusml.sh
 ```
 
 ### 3.2 Manual Installation
@@ -100,7 +100,7 @@ Alternatively, you can run the launch script directly:
 cd nexusml/notebooks
 
 # Run the launch script
-bash launch_jupyter.sh
+bash launch_nexusml.sh
 ```
 
 This script will:
@@ -137,37 +137,23 @@ jupyter notebook
 
 To ensure that the nexusml package can be imported correctly in your notebooks, use one of the following methods:
 
-### 5.1 Using the Initialization Script (Recommended)
+=======
+### 5.1 Using the Unified Initialization Script (Recommended)
 
 At the beginning of your notebook, add the following cell and run it:
 
 ```python
-%run init_notebook.py
+%run nexusml_init.py
 ```
 
 This will:
 1. Add the necessary directories to the Python path
-2. Verify that nexusml can be imported
-3. Return useful paths for your notebook
-
-### 5.2 Using the Setup Script (Alternative)
-
-Alternatively, you can use the setup_notebook.py script which provides the `setup_notebook_environment()` function:
-
-```python
-%run setup_notebook.py
-
-# Then you can use the setup_notebook_environment function:
-paths = setup_notebook_environment()
-print("Project paths:")
-for name, path in paths.items():
-    print(f"  {name}: {path}")
-```
-
-This will:
-1. Run the initialization script
-2. Set up additional environment variables if needed
-3. Return a dictionary of useful paths for your notebook
+2. Set up the NEXUSML_CONFIG environment variable
+3. Configure visualization libraries
+4. Import common utility functions
+5. Return a dictionary of useful paths (available in the `paths` variable)
+6. Verify that nexusml can be imported
+=======
 
 ### 5.3 Manual Initialization
 
@@ -246,7 +232,7 @@ If you encounter "ModuleNotFoundError: No module named 'nexusml'":
 
 1. Run the initialization script:
    ```python
-   %run init_notebook.py
+   %run nexusml_init.py
    ```
 
 2. Verify the Python path:
@@ -308,45 +294,13 @@ If you're having issues with file paths:
 
 ## 10. Example Notebook Structure
 
-### 10.1 Using init_notebook.py
+### 10.1 Using nexusml_init.py
 
 ```python
 # Initialize the environment
-%run init_notebook.py
+%run nexusml_init.py
 
-# Import standard libraries
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# Import from nexusml
-from nexusml.core.model import EquipmentClassifier
-from nexusml.utils.path_utils import find_data_files
-
-# Load data
-data_files = find_data_files()
-data_path = data_files.get("sample_data.xlsx")
-data = pd.read_excel(data_path)
-
-# Process data
-# ...
-
-# Train model
-# ...
-
-# Evaluate results
-# ...
-```
-
-### 10.2 Using setup_notebook.py
-
-```python
-# Set up the notebook environment
-%run setup_notebook.py
-
-# Get paths from the setup function
-paths = setup_notebook_environment()
+# The paths variable is now available with useful paths
 print("Project paths:")
 for name, path in paths.items():
     print(f"  {name}: {path}")
@@ -354,25 +308,29 @@ for name, path in paths.items():
 # Import standard libraries
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Import from nexusml
-from nexusml.core.model import EquipmentClassifier
-from nexusml.utils.path_utils import find_data_files
+# Common utilities are already imported into the notebook namespace
+# discover_and_load_data, explore_data, setup_pipeline_components,
+# visualize_metrics, visualize_confusion_matrix
 
 # Load data
-data_files = find_data_files()
-data_path = data_files.get("sample_data.xlsx")
-data = pd.read_excel(data_path)
+data, data_path = discover_and_load_data()
 
-# Process data
+# Explore the data
+exploration_results = explore_data(data)
+
+# Set up pipeline components
+pipeline_components = setup_pipeline_components()
+registry = pipeline_components["registry"]
+container = pipeline_components["container"]
+factory = pipeline_components["factory"]
+context = pipeline_components["context"]
+orchestrator = pipeline_components["orchestrator"]
+
+# Process data and train model
 # ...
 
-# Train model
-# ...
-
-# Evaluate results
+# Evaluate results and visualize
 # ...
 ```
 

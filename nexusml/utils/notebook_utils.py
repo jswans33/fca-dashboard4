@@ -191,12 +191,12 @@ def setup_pipeline_components():
     component_imports = {
         "data_preprocessor": {
             "interface": DataPreprocessor,
-            "implementation": "StandardPreprocessor",
+            "implementation": "StandardDataPreprocessor",
             "module": "nexusml.core.pipeline.components.data_preprocessor",
         },
         "feature_engineer": {
             "interface": FeatureEngineer,
-            "implementation": "TextFeatureEngineer",
+            "implementation": "StandardFeatureEngineer",
             "module": "nexusml.core.pipeline.components.feature_engineer",
         },
         "model_builder": {
@@ -211,7 +211,7 @@ def setup_pipeline_components():
         },
         "model_evaluator": {
             "interface": ModelEvaluator,
-            "implementation": "StandardModelEvaluator",
+            "implementation": "EnhancedModelEvaluator",
             "module": "nexusml.core.pipeline.components.model_evaluator",
         },
         "model_serializer": {
@@ -219,11 +219,12 @@ def setup_pipeline_components():
             "implementation": "PickleModelSerializer",
             "module": "nexusml.core.pipeline.components.model_serializer",
         },
-        "predictor": {
-            "interface": Predictor,
-            "implementation": "StandardPredictor",
-            "module": "nexusml.core.pipeline.components.predictor",
-        },
+        # Predictor module doesn't exist yet, so commenting out
+        # "predictor": {
+        #     "interface": Predictor,
+        #     "implementation": "StandardPredictor",
+        #     "module": "nexusml.core.pipeline.components.predictor",
+        # },
     }
 
     # Try to import and register each component

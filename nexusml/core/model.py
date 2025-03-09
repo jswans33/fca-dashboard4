@@ -97,6 +97,7 @@ class EquipmentClassifier:
         self,
         data_path: Optional[str] = None,
         feature_config_path: Optional[str] = None,
+        sampling_strategy: str = "direct",
         **kwargs,
     ) -> None:
         """
@@ -105,12 +106,18 @@ class EquipmentClassifier:
         Args:
             data_path: Path to the training data
             feature_config_path: Path to the feature configuration
+            sampling_strategy: Strategy for handling class imbalance (default: "direct")
             **kwargs: Additional parameters for training
         """
+        # Use the provided sampling_strategy or fall back to self.sampling_strategy if it exists
+        strategy = sampling_strategy
+        if hasattr(self, 'sampling_strategy'):
+            strategy = self.sampling_strategy
+            
         # Train the model using the train_enhanced_model function
         self.model, self.df = train_enhanced_model(
             data_path=data_path,
-            sampling_strategy=self.sampling_strategy,
+            sampling_strategy=strategy,
             feature_config_path=feature_config_path,
             **kwargs,
         )
@@ -163,9 +170,24 @@ class EquipmentClassifier:
             result["Equipment_Category"] = equipment_type
             result["category_name"] = equipment_type
 
-        result["attribute_template"] = self.eav_manager.generate_attribute_template(
-            equipment_type
-        )
+        # Create EAVManager if it doesn't exist
+        if not hasattr(self, 'eav_manager') or self.eav_manager is None:
+            self.eav_manager = EAVManager()
+            
+        # Generate attribute template
+        try:
+            result["attribute_template"] = self.eav_manager.generate_attribute_template(
+                equipment_type
+            )
+        except Exception as e:
+            # Provide a default attribute template if generation fails
+            result["attribute_template"] = {
+                "equipment_type": equipment_type,
+                "classification": {},
+                "required_attributes": {},
+                "optional_attributes": {}
+            }
+            print(f"Warning: Could not generate attribute template: {e}")
 
         return result
 
@@ -229,9 +251,25 @@ class EquipmentClassifier:
         # Add EAV template for the predicted equipment type
         equipment_type = result["category_name"]
         result["Equipment_Category"] = equipment_type  # Add for backward compatibility
-        result["attribute_template"] = self.eav_manager.generate_attribute_template(
-            equipment_type
-        )
+        
+        # Create EAVManager if it doesn't exist
+        if not hasattr(self, 'eav_manager') or self.eav_manager is None:
+            self.eav_manager = EAVManager()
+            
+        # Generate attribute template
+        try:
+            result["attribute_template"] = self.eav_manager.generate_attribute_template(
+                equipment_type
+            )
+        except Exception as e:
+            # Provide a default attribute template if generation fails
+            result["attribute_template"] = {
+                "equipment_type": equipment_type,
+                "classification": {},
+                "required_attributes": {},
+                "optional_attributes": {}
+            }
+            print(f"Warning: Could not generate attribute template: {e}")
 
         # Map predictions to master database fields
         result["master_db_mapping"] = map_predictions_to_master_db(result)
@@ -254,8 +292,18 @@ class EquipmentClassifier:
         # This is a placeholder for attribute prediction
         # In a real implementation, this would use ML to predict attribute values
         # based on the description and equipment type
-        template = self.eav_manager.get_equipment_template(equipment_type)
-        required_attrs = template.get("required_attributes", [])
+        
+        # Create EAVManager if it doesn't exist
+        if not hasattr(self, 'eav_manager') or self.eav_manager is None:
+            self.eav_manager = EAVManager()
+            
+        try:
+            template = self.eav_manager.get_equipment_template(equipment_type)
+            required_attrs = template.get("required_attributes", [])
+        except Exception as e:
+            print(f"Warning: Could not get equipment template: {e}")
+            template = {"required_attributes": []}
+            required_attrs = []
 
         # Simple rule-based attribute prediction based on keywords in description
         predictions = {}
@@ -343,9 +391,17 @@ class EquipmentClassifier:
         Returns:
             Dictionary with filled attributes
         """
-        return self.eav_manager.fill_missing_attributes(
-            equipment_type, attributes, description, self
-        )
+        # Create EAVManager if it doesn't exist
+        if not hasattr(self, 'eav_manager') or self.eav_manager is None:
+            self.eav_manager = EAVManager()
+            
+        try:
+            return self.eav_manager.fill_missing_attributes(
+                equipment_type, attributes, description, self
+            )
+        except Exception as e:
+            print(f"Warning: Could not fill missing attributes: {e}")
+            return attributes
 
     def validate_attributes(
         self, equipment_type: str, attributes: Dict[str, Any]
@@ -360,7 +416,15 @@ class EquipmentClassifier:
         Returns:
             Dictionary with validation results
         """
-        return self.eav_manager.validate_attributes(equipment_type, attributes)
+        # Create EAVManager if it doesn't exist
+        if not hasattr(self, 'eav_manager') or self.eav_manager is None:
+            self.eav_manager = EAVManager()
+            
+        try:
+            return self.eav_manager.validate_attributes(equipment_type, attributes)
+        except Exception as e:
+            print(f"Warning: Could not validate attributes: {e}")
+            return {"errors": [], "warnings": []}
 
 
 def train_enhanced_model(
@@ -392,7 +456,11 @@ def train_enhanced_model(
         container = ContainerProvider().container
 
         if eav_manager is None:
-            eav_manager = container.resolve(EAVManager)
+            try:
+                eav_manager = container.resolve(EAVManager)
+            except Exception:
+                # If EAVManager is not registered in the container, create it directly
+                eav_manager = EAVManager()
 
         if feature_engineer is None:
             # Create a new feature engineer with the provided config path and EAV manager
@@ -494,7 +562,11 @@ def predict_with_enhanced_model(
         from nexusml.core.di.provider import ContainerProvider
 
         container = ContainerProvider().container
-        eav_manager = container.resolve(EAVManager)
+        try:
+            eav_manager = container.resolve(EAVManager)
+        except Exception:
+            # If EAVManager is not registered in the container, create it directly
+            eav_manager = EAVManager()
 
     # Create a DataFrame with the required structure for the pipeline
     input_data = pd.DataFrame(

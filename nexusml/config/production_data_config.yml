@@ -1,0 +1,138 @@
+# Production Data Configuration for Equipment Classification Model
+# Based on the Equipment Classification Production Model (v1.0.0)
+
+# Required columns for the production model
+# If these columns are missing, they will be created with default values
+required_columns:
+  # Source columns (from raw data)
+  - name: 'equipment_tag'
+    default_value: ''
+    data_type: 'str'
+  - name: 'manufacturer'
+    default_value: ''
+    data_type: 'str'
+  - name: 'model'
+    default_value: ''
+    data_type: 'str'
+  - name: 'category_name'
+    default_value: ''
+    data_type: 'str'
+  - name: 'omniclass_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'uniformat_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'masterformat_code'
+    default_value: ''
+    data_type: 'str'
+  - name: 'mcaa_system_category'
+    default_value: ''
+    data_type: 'str'
+  # Removed building_name, initial_cost, and condition_score as they are not necessary
+  - name: 'CategoryID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'OmniClassID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'UniFormatID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'MasterFormatID'
+    default_value: 0
+    data_type: 'int'
+  - name: 'MCAAID'
+    default_value: ''
+    data_type: 'str'  # Changed from 'int' to 'str' as per model card
+  - name: 'LocationID'
+    default_value: 0
+    data_type: 'int'
+
+  # Target columns (created during feature engineering)
+  - name: 'Equipment_Category'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Uniformat_Class'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Type'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Equipment_Subcategory'
+    default_value: ''
+    data_type: 'str'
+  - name: 'combined_text'
+    default_value: ''
+    data_type: 'str'
+  - name: 'service_life'
+    default_value: 0
+    data_type: 'float'
+  - name: 'Equipment_Type'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Subtype'
+    default_value: ''
+    data_type: 'str'
+  - name: 'OmniClass_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Uniformat_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'MasterFormat_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'MCAA_ID'
+    default_value: ''
+    data_type: 'str'  # Changed from 'int' to 'str' to match MCAAID format
+  - name: 'Location_ID'
+    default_value: 0
+    data_type: 'int'
+  
+  # Additional fields from pricing data system
+  - name: 'Precon_System'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Drawing_Abbreviation'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Precon_Tag'
+    default_value: ''
+    data_type: 'str'
+  - name: 'System_Type_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Equip_Name_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Sub_System_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Sub_System_Class'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Class_ID'
+    default_value: ''
+    data_type: 'str'
+  - name: 'Unit'
+    default_value: ''
+    data_type: 'str'
+
+# MCAAID standard abbreviations mapping based on System Type ID
+mcaaid_mapping:
+  'HVAC Equipment': 'H'
+  'Plumbing Equipment': 'P'
+  'Mechanical/Sheetmetal': 'SM'
+  'Process Cooling Water': 'R'
+  'Hot Water Systems': 'H'
+  'Refrigeration': 'R'
+  'Electrical': 'E'
+  'Fire Protection': 'F'
+  'Controls': 'C'
+
+# Training data configuration
+training_data:
+  default_path: 'nexusml/data/training_data/production_training_data.csv'
+  encoding: 'utf-8'
+  fallback_encoding: 'latin1'
