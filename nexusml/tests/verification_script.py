@@ -180,7 +180,7 @@ def verify_end_to_end(logger):
     
     # Import the example script functions
     try:
-        from examples.pipeline_orchestrator_example import create_orchestrator, train_model_example
+        from examples.pipeline_orchestrator_example import create_orchestrator, train_model_example, StandardDataLoader
         
         # Get the default container provider
         provider = ContainerProvider()
@@ -190,6 +190,10 @@ def verify_end_to_end(logger):
         
         # Register pipeline components
         register_pipeline_components(provider)
+        
+        # Register DataLoader explicitly
+        from nexusml.core.pipeline.interfaces import DataLoader
+        provider.container.register_instance(DataLoader, StandardDataLoader())
         
         # Create orchestrator
         orchestrator = create_orchestrator()
@@ -213,7 +217,25 @@ def verify_prediction_pipeline(logger):
     logger.info("Verifying prediction pipeline...")
     
     try:
-        from examples.prediction_pipeline_example import orchestrator_prediction_example
+        # Try to import the module using a direct path approach
+        import sys
+        import importlib.util
+        
+        # Get the absolute path to the prediction_pipeline_example.py file
+        file_path = Path(__file__).resolve().parent.parent.parent / "examples" / "prediction_pipeline_example.py"
+        
+        if not file_path.exists():
+            logger.error(f"❌ Prediction pipeline example file not found at: {file_path}")
+            return False
+            
+        # Import the module using importlib
+        spec = importlib.util.spec_from_file_location("prediction_pipeline_example", file_path)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules["prediction_pipeline_example"] = module
+        spec.loader.exec_module(module)
+        
+        # Get the orchestrator_prediction_example function
+        orchestrator_prediction_example = module.orchestrator_prediction_example
         
         # Get the default container provider
         provider = ContainerProvider()
@@ -223,6 +245,11 @@ def verify_prediction_pipeline(logger):
         
         # Register pipeline components
         register_pipeline_components(provider)
+        
+        # Register DataLoader explicitly
+        from nexusml.core.pipeline.interfaces import DataLoader
+        from examples.pipeline_orchestrator_example import StandardDataLoader
+        provider.container.register_instance(DataLoader, StandardDataLoader())
         
         # Run the prediction example
         orchestrator_prediction_example(logger)

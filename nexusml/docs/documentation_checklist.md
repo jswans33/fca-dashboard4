@@ -23,9 +23,9 @@ This checklist tracks the progress of the NexusML documentation effort. It follo
 ## Level 3: Module and Class Documentation
 
 - [ ] **Core Modules** - Document core functionality
-  - [ ] data_mapper.py
-  - [ ] data_preprocessing.py
-  - [ ] dynamic_mapper.py
+  - [x] data_mapper.py
+  - [x] data_preprocessing.py
+  - [x] dynamic_mapper.py
   - [ ] eav_manager.py
   - [ ] evaluation.py
   - [ ] feature_engineering.py
@@ -99,10 +99,13 @@ This checklist tracks the progress of the NexusML documentation effort. It follo
 
 ## Next Steps
 
-1. Begin Level 3 documentation of core modules:
-   - Start with data_mapper.py
-   - Then data_preprocessing.py
-   - Continue with other core modules
+1. Continue with Level 3 documentation of core modules:
+   - eav_manager.py
+   - evaluation.py
+   - feature_engineering.py
+   - model_building.py
+   - model.py
+   - reference_manager.py
 
 2. Document command-line tools:
    - classify_equipment.py
