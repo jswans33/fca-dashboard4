@@ -861,3 +861,11 @@ To minimize disruption to ongoing development, we'll use the following migration
 6. **Documentation**: Provide clear migration guides for developers
 
 This approach allows for a smooth transition while ensuring that existing functionality continues to work throughout the refactoring process.
+
+The ultimate goal of this refactoring work is to get the production model card system up and running, which will enable:
+
+Standardized model training with proper validation and evaluation
+Consistent model metadata and documentation through model cards
+Reproducible model building and deployment processes
+Better tracking and versioning of models in production
+Improved model governance and compliance
