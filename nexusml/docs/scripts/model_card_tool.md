@@ -28,6 +28,7 @@ python -m nexusml.scripts.model_card_tool view PATH
 ```
 
 **Arguments:**
+
 - `PATH`: Path to the model card JSON file
 
 **Example:**
@@ -44,6 +45,7 @@ python -m nexusml.scripts.model_card_tool export PATH [--output OUTPUT]
 ```
 
 **Arguments:**
+
 - `PATH`: Path to the model card JSON file
 - `--output`, `-o`: Path to save the HTML file (optional, defaults to the same path with .html extension)
 
@@ -71,6 +73,7 @@ main()
 ```
 
 **Notes:**
+
 - This function sets up the argument parser with subcommands for viewing and exporting model cards
 - It handles the command-line arguments and calls the appropriate functions based on the command
 - If no valid command is provided, it prints the help message and exits with a non-zero status code
