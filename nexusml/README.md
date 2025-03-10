@@ -16,23 +16,26 @@ NexusML is a Python machine learning package for equipment classification. It us
 
 ## Installation
 
-### Basic Installation
+For basic installation:
 
 ```bash
 pip install nexusml
 ```
 
-### Development Installation
+For detailed installation instructions, system requirements, troubleshooting, and configuration guidance, see the [Installation Guide](docs/installation_guide.md).
+
+### Basic Installation Options
 
 ```bash
+# Standard installation
+pip install nexusml
+
+# Development installation
 git clone https://github.com/your-org/nexusml.git
 cd nexusml
 pip install -e ".[dev]"
-```
 
-### With AI Features
-
-```bash
+# With AI features
 pip install "nexusml[ai]"
 ```
 
@@ -229,6 +232,7 @@ By ensuring all components work correctly through verification, we can confident
 
 For more detailed documentation, see the following:
 
+- [Installation Guide](docs/installation_guide.md)
 - [Architecture Overview](docs/architecture/overview.md)
 - [Configuration System](docs/architecture/configuration.md)
 - [Pipeline Architecture](docs/architecture/pipeline.md)
