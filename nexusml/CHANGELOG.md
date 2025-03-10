@@ -13,7 +13,11 @@ This project adheres to
 - Completed the immediate improvements document with detailed implementation
   plan
 - Added comprehensive project template guidelines for new projects
-- Created migration scripts for consolidating output and example directories
+- Created migration scripts for consolidating output directories and organizing
+  examples (excluding fca_dashboard)
+- Added script to identify and remove duplicate files (examples and outputs)
+- Added script to update references to old output directories in Python files
+  with `remove_duplicates.py`
 - Added default output configurations to nexusml_config.yml
 
 ### Fixed

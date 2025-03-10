@@ -31,7 +31,7 @@ class TestPickleModelSerializer(unittest.TestCase):
         self.mock_config_provider = MagicMock(spec=ConfigurationProvider)
         self.mock_config_provider.config.classification.model_dump.return_value = {
             "serialization": {
-                "default_directory": "test_outputs/models",
+                "default_directory": "test_nexusml/output/models",
                 "protocol": pickle.HIGHEST_PROTOCOL,
                 "compress": True,
                 "file_extension": ".pkl",

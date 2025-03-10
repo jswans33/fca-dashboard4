@@ -142,7 +142,7 @@ def test_model_prediction(logger, model, test_data=None):
             predictions = orchestrator.predict(
                 model=model,
                 data=test_data,
-                output_path="outputs/test_predictions.csv",
+                output_path="nexusml/output/test_predictions.csv",
             )
             logger.info(f"Predictions shape: {predictions.shape}")
             logger.info(f"Predictions columns: {predictions.columns.tolist()}")
@@ -233,7 +233,7 @@ def fix_model_for_prediction(logger, model):
             
             # Save the fixed model
             import pickle
-            model_path = "outputs/models/fixed_model.pkl"
+            model_path = "nexusml/output/models/fixed_model.pkl"
             os.makedirs(os.path.dirname(model_path), exist_ok=True)
             with open(model_path, 'wb') as f:
                 pickle.dump(model, f)
@@ -256,7 +256,7 @@ def main():
     logger.info("Starting Model Prediction Test")
     
     # Define model path
-    model_path = "outputs/models/equipment_classifier.pkl"
+    model_path = "nexusml/output/models/equipment_classifier.pkl"
     
     # Test model loading
     model = test_model_loading(logger, model_path)

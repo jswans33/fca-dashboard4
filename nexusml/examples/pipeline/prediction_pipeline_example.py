@@ -53,7 +53,7 @@ def create_orchestrator():
     return create_base_orchestrator()
 
 
-def load_model(orchestrator, model_path="outputs/models/equipment_classifier.pkl"):
+def load_model(orchestrator, model_path="nexusml/output/models/equipment_classifier.pkl"):
     """Load a trained model."""
     logger = logging.getLogger("prediction_pipeline_example")
     logger.info(f"Loading model from {model_path}")

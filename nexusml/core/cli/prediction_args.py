@@ -32,7 +32,7 @@ class PredictionArgumentParser:
         self.parser.add_argument(
             "--model-path",
             type=str,
-            default="outputs/models/equipment_classifier_latest.pkl",
+            default="nexusml/output/models/equipment_classifier_latest.pkl",
             help="Path to the trained model file",
         )
 

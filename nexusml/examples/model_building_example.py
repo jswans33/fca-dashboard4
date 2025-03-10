@@ -200,10 +200,10 @@ def main():
     serializer = BaseModelSerializer()
     
     # Create output directory if it doesn't exist
-    os.makedirs("outputs/models", exist_ok=True)
+    os.makedirs("nexusml/output/models", exist_ok=True)
     
     # Save the best model
-    best_model_path = "outputs/models/best_model.pkl"
+    best_model_path = "nexusml/output/models/best_model.pkl"
     serializer.save_model(optimized_model, best_model_path)
     print(f"Best model saved to {best_model_path}")
     

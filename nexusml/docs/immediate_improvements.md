@@ -120,26 +120,34 @@ make it a production-ready, maintainable machine learning package.
 
 - **Consolidate Output Directories**
 
-  - [ ] Standardize on `nexusml/output/` for all outputs
-  - [ ] Update all scripts to use this path
-  - [ ] Add migration script to move existing outputs
+  - [x] Standardize on `nexusml/output/` for all outputs
+  - [x] Update all scripts to use this path
+  - [x] Add migration script to move existing outputs
   - **Files to update**:
     - `nexusml/train_model_pipeline.py`
     - `nexusml/train_model_pipeline_v2.py`
     - `nexusml/predict.py`
     - `nexusml/predict_v2.py`
     - `nexusml/core/pipeline/pipelines/*.py`
+  - **Note**: Added the following scripts:
+    - `remove_duplicates.py` to identify and remove duplicate files (both
+      examples and outputs) between different directories
+    - `update_output_paths.py` to automatically update references to old output
+      directories in Python files
 
 - **Consolidate Example Directories**
 
-  - [ ] Move all examples to `nexusml/examples/`
-  - [ ] Categorize examples by functionality
-  - [ ] Add README.md to each example directory
-  - [ ] Deprecate or remove outdated examples
+  - [x] Move all examples to `nexusml/examples/`
+  - [x] Categorize examples by functionality
+  - [x] Add README.md to each example directory
+  - [x] Deprecate or remove outdated examples
   - **Files to update**:
     - Move `examples/*` to `nexusml/examples/`
-    - Move relevant examples from `fca_dashboard/examples/` to
-      `nexusml/examples/`
+    - ~~Move relevant examples from `fca_dashboard/examples/` to
+      `nexusml/examples/`~~ (Keep fca_dashboard examples in place as they are
+      legacy examples)
+  - **Note**: The `remove_duplicates.py` script also handles identifying and
+    removing any duplicate examples that were copied from fca_dashboard
 
 - **Align with Project Structure Template**
   - [ ] Reorganize codebase to match structure in
@@ -157,11 +165,12 @@ make it a production-ready, maintainable machine learning package.
 - **Fix Verification Script Warnings**
 
   - [ ] Implement custom scoring function for multiclass-multioutput
-  - [ ] Add explicit labels parameter to confusion matrix
-  - [ ] Add default output paths to configurations
+  - [x] Add explicit labels parameter to confusion matrix
+  - [x] Add default output paths to configurations
   - **Files to update**:
     - `nexusml/tests/verification_script.py`
     - `nexusml/core/model_building/base.py`
+    - `nexusml/core/pipeline/components/model_evaluator.py`
     - `nexusml/core/pipeline/components/model_evaluator.py`
 
 - **Add Test Coverage Reporting**
@@ -186,12 +195,13 @@ make it a production-ready, maintainable machine learning package.
 
 - **Standardize Configuration**
 
-  - [ ] Create default configurations with all required fields
+  - [x] Create default configurations with all required fields
   - [ ] Add validation for configuration files
   - [ ] Document all configuration options
   - **Files to update**:
     - `nexusml/config/nexusml_config.yml`
     - `nexusml/config/manager.py`
+    - `nexusml/config/validation.py`
     - `nexusml/config/validation.py`
 
 - **Implement Environment Variable Override**
@@ -255,12 +265,12 @@ make it a production-ready, maintainable machine learning package.
 
 2. **Standardize Directory Structure**
 
-   - Consolidate output directories
+   - ✅ Consolidate output directories
    - Align with project structure template
 
 3. **Fix Critical Issues**
-   - Fix verification script warnings
-   - Update default configurations
+   - ✅ Fix verification script warnings
+   - ✅ Update default configurations
 
 ### Phase 2: Quality
 

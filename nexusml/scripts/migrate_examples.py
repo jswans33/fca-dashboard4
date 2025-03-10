@@ -39,7 +39,7 @@ logger = logging.getLogger("migrate_examples")
 # Define source and target directories
 SOURCE_DIRS = [
     Path("examples"),  # examples/ -> nexusml/examples/
-    Path("fca_dashboard/examples"),  # fca_dashboard/examples/ -> nexusml/examples/
+    # Note: fca_dashboard examples should remain in place as they are legacy examples
 ]
 TARGET_DIR = Path("nexusml/examples")
 

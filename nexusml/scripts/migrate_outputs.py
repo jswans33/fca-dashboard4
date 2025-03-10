@@ -4,8 +4,8 @@ Output Directory Migration Script
 
 This script consolidates multiple output directories into a single standardized
 output directory structure. It moves files from:
-- nexusml/outputs/ -> nexusml/output/
-- outputs/ -> nexusml/output/
+- nexusml/nexusml/output/ -> nexusml/output/
+- nexusml/output/ -> nexusml/output/
 
 Usage:
     python -m nexusml.scripts.migrate_outputs
@@ -34,8 +34,8 @@ logger = logging.getLogger("migrate_outputs")
 
 # Define source and target directories
 SOURCE_DIRS = [
-    Path("nexusml/outputs"),  # nexusml/outputs/ -> nexusml/output/
-    Path("outputs"),  # outputs/ -> nexusml/output/
+    Path("nexusml/outputs"),  # nexusml/nexusml/output/ -> nexusml/output/
+    Path("outputs"),  # nexusml/output/ -> nexusml/output/
 ]
 TARGET_DIR = Path("nexusml/output")
 

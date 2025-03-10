@@ -519,7 +519,7 @@ def train_model_example(orchestrator, logger):
     # Define paths
     data_path = "examples/sample_data.xlsx"  # Use the sample data file in examples directory
     feature_config_path = "nexusml/config/feature_config.yml"
-    output_dir = "outputs/models"
+    output_dir = "nexusml/output/models"
 
     # Train the model
     try:
@@ -579,7 +579,7 @@ def predict_example(orchestrator, model, logger):
         predictions = orchestrator.predict(
             model=model,
             data=data,
-            output_path="outputs/predictions.csv",
+            output_path="nexusml/output/predictions.csv",
         )
 
         logger.info("Predictions completed successfully")
@@ -614,7 +614,7 @@ def evaluate_example(orchestrator, model, logger):
 
     # Define paths
     data_path = "examples/sample_data.xlsx"  # Use the sample data file in examples directory
-    output_path = "outputs/evaluation_results.json"
+    output_path = "nexusml/output/evaluation_results.json"
 
     # Evaluate the model
     try:
@@ -651,7 +651,7 @@ def save_load_model_example(orchestrator, model, logger):
     logger.info("Save/Load model example")
 
     # Define paths
-    model_path = "outputs/models/saved_model.pkl"
+    model_path = "nexusml/output/models/saved_model.pkl"
 
     # Save the model
     try:

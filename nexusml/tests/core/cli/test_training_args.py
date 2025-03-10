@@ -29,7 +29,7 @@ class TestTrainingArguments:
             assert args.random_state == 42
             assert args.sampling_strategy == "direct"
             assert args.optimize_hyperparameters is False
-            assert args.output_dir == "outputs/models"
+            assert args.output_dir == "nexusml/output/models"
             assert args.model_name == "equipment_classifier"
             assert args.log_level == "INFO"
             assert args.visualize is False
@@ -147,7 +147,7 @@ class TestParseArgs:
             mock_args.random_state = 42
             mock_args.sampling_strategy = "direct"
             mock_args.optimize_hyperparameters = False
-            mock_args.output_dir = "outputs/models"
+            mock_args.output_dir = "nexusml/output/models"
             mock_args.model_name = "equipment_classifier"
             mock_args.log_level = "INFO"
             mock_args.visualize = False
@@ -164,7 +164,7 @@ class TestParseArgs:
             assert args.random_state == 42
             assert args.sampling_strategy == "direct"
             assert args.optimize_hyperparameters is False
-            assert args.output_dir == "outputs/models"
+            assert args.output_dir == "nexusml/output/models"
             assert args.model_name == "equipment_classifier"
             assert args.log_level == "INFO"
             assert args.visualize is False

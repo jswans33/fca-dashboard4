@@ -49,7 +49,7 @@ class PickleModelSerializer(BaseModelSerializer):
         # Create a default serialization configuration
         self.config = {
             "serialization": {
-                "default_directory": "outputs/models",
+                "default_directory": "nexusml/output/models",
                 "protocol": pickle.HIGHEST_PROTOCOL,
                 "compress": True,
                 "file_extension": ".pkl",
@@ -222,7 +222,7 @@ class PickleModelSerializer(BaseModelSerializer):
         try:
             # Use default directory if none provided
             default_dir = self.config.get("serialization", {}).get(
-                "default_directory", "outputs/models"
+                "default_directory", "nexusml/output/models"
             )
             directory_path = directory if directory is not None else default_dir
 
@@ -235,7 +235,7 @@ class PickleModelSerializer(BaseModelSerializer):
                 directory_path.mkdir(parents=True, exist_ok=True)
             else:
                 # Fallback to a default directory if somehow we still have None
-                directory_path = Path("outputs/models")
+                directory_path = Path("nexusml/output/models")
                 directory_path.mkdir(parents=True, exist_ok=True)
 
             # Get file extension

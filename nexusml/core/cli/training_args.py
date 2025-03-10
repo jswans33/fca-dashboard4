@@ -36,7 +36,7 @@ class TrainingArguments:
     optimize_hyperparameters: bool = False
 
     # Output arguments
-    output_dir: str = "outputs/models"
+    output_dir: str = "nexusml/output/models"
     model_name: str = "equipment_classifier"
     log_level: str = "INFO"
     visualize: bool = False
@@ -159,8 +159,8 @@ def parse_args() -> TrainingArguments:
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="outputs/models",
-        help="Directory to save the trained model and results (default: outputs/models)",
+        default="nexusml/output/models",
+        help="Directory to save the trained model and results (default: nexusml/output/models)",
     )
     parser.add_argument(
         "--model-name",

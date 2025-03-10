@@ -118,7 +118,7 @@ def main():
     parser.add_argument(
         "--model-path",
         type=str,
-        default="outputs/models/equipment_classifier_20250306_161707.pkl",
+        default="nexusml/output/models/equipment_classifier_20250306_161707.pkl",
         help="Path to the trained model file",
     )
     parser.add_argument(

@@ -43,7 +43,7 @@ class TestPredictionArgumentParser(unittest.TestCase):
         """Test parsing with default arguments."""
         args = self.parser.parse_args([f"--input-file={self.test_input_file}"])
 
-        self.assertEqual(args.model_path, "outputs/models/equipment_classifier_latest.pkl")
+        self.assertEqual(args.model_path, "nexusml/output/models/equipment_classifier_latest.pkl")
         self.assertEqual(args.input_file, self.test_input_file)
         self.assertEqual(args.output_file, "prediction_results.csv")
         self.assertEqual(args.log_level, "INFO")
@@ -90,7 +90,7 @@ class TestPredictionArgumentParser(unittest.TestCase):
 
         self.assertIsInstance(args_dict, dict)
         self.assertEqual(args_dict["input_file"], self.test_input_file)
-        self.assertEqual(args_dict["model_path"], "outputs/models/equipment_classifier_latest.pkl")
+        self.assertEqual(args_dict["model_path"], "nexusml/output/models/equipment_classifier_latest.pkl")
 
     def test_validate_args_valid(self):
         """Test validation with valid arguments."""
