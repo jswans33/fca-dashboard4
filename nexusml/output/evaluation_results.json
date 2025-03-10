@@ -1,0 +1,31 @@
+{
+  "metrics": {
+    "accuracy": 0.92,
+    "f1": 0.88
+  },
+  "analysis": {
+    "confusion_matrix": [
+      [
+        10,
+        1
+      ],
+      [
+        2,
+        8
+      ]
+    ]
+  },
+  "component_execution_times": {
+    "data_loading": 0.008012056350708008,
+    "data_preprocessing": 0.004998683929443359,
+    "feature_engineering": 0.00499272346496582,
+    "data_splitting": 0.001997232437133789,
+    "model_building": 0.0007796287536621094,
+    "model_training": 0.09107542037963867,
+    "model_evaluation": 0.015162467956542969,
+    "model_saving": 0.002644777297973633,
+    "prediction": 0.0019991397857666016,
+    "saving_predictions": 0.002998828887939453,
+    "data_preparation": 0.0020003318786621094
+  }
+}

@@ -1,0 +1,65 @@
+Validation Report for Wichita Pipeline
+DataFrame Shape: 46 rows, 36 columns
+
+Missing Values Report:
+--------------------------------------------------
+  Asset Name: 0.00% missing
+  Asset Category Name: 0.00% missing
+  Type: 0.00% missing
+  Manufacturer: 10.87% missing
+
+Duplicate Rows Report:
+--------------------------------------------------
+  Duplicate rows: 0
+
+Data Types Report:
+--------------------------------------------------
+  Installation Date:
+    Expected type: date
+    Current type: object
+    Error count: 0
+  Warranty Expiration Date:
+    Expected type: date
+    Current type: object
+    Error count: 0
+  Estimated Replacement Date:
+    Expected type: date
+    Current type: object
+    Error count: 0
+  Cost:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Service Life:
+    Expected type: float
+    Current type: int64
+    Error count: 0
+  Quantity:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Square Feet:
+    Expected type: float
+    Current type: float64
+    Error count: 0
+  Asset Name:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Asset Category Name:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Type:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Manufacturer:
+    Expected type: str
+    Current type: object
+    Error count: 0
+  Model:
+    Expected type: str
+    Current type: object
+    Error count: 0
+

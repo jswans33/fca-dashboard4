@@ -1,0 +1,319 @@
+{
+  "metrics": {
+    "category_name": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
+    },
+    "uniformat_code": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
+    },
+    "mcaa_system_category": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
+    },
+    "Equipment_Type": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
+    },
+    "System_Subtype": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
+    },
+    "overall": {
+      "accuracy_mean": 1.0,
+      "f1_macro_mean": 1.0,
+      "precision_macro_mean": 1.0,
+      "recall_macro_mean": 1.0
+    },
+    "predictions": [
+      {
+        "category_name": "Unknown",
+        "uniformat_code": "Unknown",
+        "mcaa_system_category": "Unknown",
+        "Equipment_Type": "Unknown",
+        "System_Subtype": "Unknown"
+      },
+      {
+        "category_name": "Unknown",
+        "uniformat_code": "Unknown",
+        "mcaa_system_category": "Unknown",
+        "Equipment_Type": "Unknown",
+        "System_Subtype": "Unknown"
+      }
+    ]
+  },
+  "analysis": {
+    "category_name": {
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "uniformat_code": {
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "mcaa_system_category": {
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "Equipment_Type": {
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "System_Subtype": {
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "feature_importance": {
+      "target_0": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_1": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_2": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_3": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_4": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      }
+    }
+  },
+  "component_execution_times": {
+    "data_loading": 0.23057341575622559,
+    "data_preprocessing": 0.0,
+    "feature_engineering": 0.002511262893676758,
+    "data_splitting": 0.0010025501251220703,
+    "model_building": 0.0019989013671875,
+    "model_training": 4.901045799255371,
+    "model_evaluation": 0.10960078239440918
+  }
+}

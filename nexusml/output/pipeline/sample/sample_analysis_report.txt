@@ -1,0 +1,70 @@
+Analysis Report for Sample Pipeline
+DataFrame Shape: 10 rows, 4 columns
+
+Unique Values Analysis:
+--------------------------------------------------
+  Column: name
+    Unique value count: 10
+    Null count: 0 (0.00%)
+    Unique values: Sample 1, Sample 2, Sample 3, Sample 4, Sample 5, Sample 6, Sample 7, Sample 8, Sample 9, Sample 10
+    Value counts (top 5):
+      Sample 1: 1
+      Sample 2: 1
+      Sample 3: 1
+      Sample 4: 1
+      Sample 5: 1
+
+  Column: category
+    Unique value count: 3
+    Null count: 0 (0.00%)
+    Unique values: A, B, C
+    Value counts (top 5):
+      A: 4
+      B: 3
+      C: 3
+
+
+Column Statistics Analysis:
+--------------------------------------------------
+  Column: id
+    Min: 1
+    Max: 10
+    Mean: 5.5
+    Median: 5.5
+    Standard deviation: 3.0276503540974917
+    Q1 (25th percentile): 3.25
+    Q3 (75th percentile): 7.75
+    IQR: 4.5
+    Outliers count: 0
+
+  Column: value
+    Min: 10.5
+    Max: 105.0
+    Mean: 57.75
+    Median: 57.75
+    Standard deviation: 31.790328718023662
+    Q1 (25th percentile): 34.125
+    Q3 (75th percentile): 81.375
+    IQR: 47.25
+    Outliers count: 0
+
+
+Text Analysis:
+--------------------------------------------------
+  Column: name
+    Min length: 8
+    Max length: 9
+    Average length: 8.10
+    Empty strings: 0
+    Pattern analysis:
+      other: 10
+
+  Column: category
+    Min length: 1
+    Max length: 1
+    Average length: 1.00
+    Empty strings: 0
+    Pattern analysis:
+      alpha: 10
+
+

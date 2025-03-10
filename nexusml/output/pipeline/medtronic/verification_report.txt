@@ -1,0 +1,54 @@
+Database Verification Report
+==================================================
+
+Database: C:\Repos\fca-dashboard4\outputs\pipeline\medtronic\medtronics_assets.db
+Table: asset_data
+Row count: 566
+Column count: 24
+
+Placeholder Values Check
+--------------------------------------------------
+  Column: usassetid
+    Total rows: 566
+    Placeholder count: 0
+    Placeholder percentage: 0.00%
+
+  Column: asset tag
+    Total rows: 566
+    Placeholder count: 0
+    Placeholder percentage: 0.00%
+
+Null Values Check
+--------------------------------------------------
+  Column: usassetid
+    Total rows: 566
+    Null count: 0
+    Null percentage: 0.00%
+
+  Column: asset tag
+    Total rows: 566
+    Null count: 0
+    Null percentage: 0.00%
+
+  Column: asset name
+    Total rows: 566
+    Null count: 0
+    Null percentage: 0.00%
+
+Analysis Results
+--------------------------------------------------
+  unique_values_asset tag:
+    count: 564
+    null_count: 0
+    null_percentage: 0.00%
+
+Validation Results
+--------------------------------------------------
+  Missing values in asset name: 0.00%
+
+  Missing values in asset tag: 0.00%
+
+  Missing values in usassetid: 0.00%
+
+  Duplicate rows: 0
+

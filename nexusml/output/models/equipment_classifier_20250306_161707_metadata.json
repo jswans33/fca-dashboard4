@@ -1,0 +1,31 @@
+{
+  "timestamp": "20250306_161707",
+  "model_version": "20250306_161707",
+  "model_path": "outputs\\models\\equipment_classifier_20250306_161707.pkl",
+  "metrics": {
+    "category_name": {
+      "accuracy": 0.0,
+      "f1_macro": 0.0
+    },
+    "uniformat_code": {
+      "accuracy": 0.0,
+      "f1_macro": 0.0
+    },
+    "mcaa_system_category": {
+      "accuracy": 0.3333333333333333,
+      "f1_macro": 0.16666666666666666
+    },
+    "Equipment_Type": {
+      "accuracy": 0.0,
+      "f1_macro": 0.0
+    },
+    "System_Subtype": {
+      "accuracy": 0.0,
+      "f1_macro": 0.0
+    }
+  },
+  "model_type": "EquipmentClassifier",
+  "training_parameters": {
+    "sampling_strategy": "direct"
+  }
+}
