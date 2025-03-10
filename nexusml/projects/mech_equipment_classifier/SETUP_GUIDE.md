@@ -178,6 +178,22 @@ The project implements these custom components:
 
    Copy training data files to the `data/raw` directory.
 
+   **Training Data Template**
+
+   The project includes a CSV template for training data at `data/templates/training_data_template.csv`. You can use this template as a starting point for your training data.
+
+   To generate an Excel version of the template with formatting and data validation, run:
+
+   ```bash
+   python scripts/generate_excel_template.py
+   ```
+
+   This will create an Excel file at `data/templates/mechanical_equipment_training_data_template.xlsx` with:
+   - Formatted column headers
+   - Sample data
+   - Data validation for certain fields
+   - Instructions for filling out the template
+
 8. **Run Data Preparation**
 
    ```bash
