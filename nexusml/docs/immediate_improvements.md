@@ -182,7 +182,7 @@ make it a production-ready, maintainable machine learning package.
     - `nexusml/core/feature_engineering/`
     - `nexusml/core/model_building/`
 
-### 3. Enhance Configuration System
+### 4. Enhance Configuration System
 
 - **Standardize Configuration**
 
@@ -201,7 +201,7 @@ make it a production-ready, maintainable machine learning package.
   - **Files to update**:
     - `nexusml/config/manager.py`
 
-### 4. Improve Documentation
+### 5. Improve Documentation
 
 - **Update API Documentation**
 

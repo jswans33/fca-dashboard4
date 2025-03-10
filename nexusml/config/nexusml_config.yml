@@ -35,3 +35,32 @@ data:
     default_path: 'nexusml/data/training_data/fake_training_data.csv'
     encoding: 'utf-8'
     fallback_encoding: 'latin1'
+
+# Output configuration
+output:
+  # Default output directory for all outputs
+  output_dir: 'nexusml/output'
+
+  # Model saving configuration
+  model:
+    save_model: true
+    model_dir: 'nexusml/output/models'
+    model_format: 'pickle'
+
+  # Results saving configuration
+  results:
+    save_results: true
+    results_dir: 'nexusml/output/results'
+    format: 'csv'
+
+  # Evaluation output configuration
+  evaluation:
+    save_evaluation: true
+    evaluation_dir: 'nexusml/output/evaluation'
+    format: 'json'
+
+  # Model card configuration
+  model_card:
+    save_model_card: true
+    model_card_dir: 'nexusml/output/model_cards'
+    format: 'json'

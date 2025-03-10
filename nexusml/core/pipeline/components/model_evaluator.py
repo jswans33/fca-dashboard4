@@ -6,7 +6,7 @@ that uses the unified configuration system from Work Chunk 1.
 """
 
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -126,7 +126,12 @@ class EnhancedModelEvaluator(BaseModelEvaluator):
                 if not isinstance(y_pred_col, pd.Series):
                     y_pred_col = pd.Series(y_pred_col, index=y_true_col.index)
 
-                col_metrics = self._calculate_metrics(y_true_col, y_pred_col)
+                # Get unique classes for this column to use as labels
+                unique_classes = sorted(set(y_true_col) | set(y_pred_col))
+
+                col_metrics = self._calculate_metrics(
+                    y_true_col, y_pred_col, labels=unique_classes
+                )
                 metrics[col] = col_metrics
 
                 # Log summary metrics
@@ -228,7 +233,7 @@ class EnhancedModelEvaluator(BaseModelEvaluator):
             raise ValueError(f"Error analyzing predictions: {str(e)}") from e
 
     def _calculate_metrics(
-        self, y_true: pd.Series, y_pred: pd.Series
+        self, y_true: pd.Series, y_pred: pd.Series, labels: Optional[List[Any]] = None
     ) -> Dict[str, Any]:
         """
         Calculate evaluation metrics for a single target column.
@@ -236,19 +241,26 @@ class EnhancedModelEvaluator(BaseModelEvaluator):
         Args:
             y_true: True target values.
             y_pred: Predicted target values.
+            labels: List of labels to include in the evaluation. If None, uses all unique values.
 
         Returns:
             Dictionary of metrics.
         """
         metrics = {
             "accuracy": accuracy_score(y_true, y_pred),
-            "precision_macro": precision_score(y_true, y_pred, average="macro"),
-            "recall_macro": recall_score(y_true, y_pred, average="macro"),
-            "f1_macro": f1_score(y_true, y_pred, average="macro"),
-            "classification_report": classification_report(
-                y_true, y_pred, output_dict=True
+            "precision_macro": precision_score(
+                y_true, y_pred, average="macro", labels=labels
             ),
-            "confusion_matrix": confusion_matrix(y_true, y_pred).tolist(),
+            "recall_macro": recall_score(
+                y_true, y_pred, average="macro", labels=labels
+            ),
+            "f1_macro": f1_score(y_true, y_pred, average="macro", labels=labels),
+            "classification_report": classification_report(
+                y_true, y_pred, output_dict=True, labels=labels
+            ),
+            "confusion_matrix": confusion_matrix(
+                y_true, y_pred, labels=labels
+            ).tolist(),
         }
 
         # Calculate per-class metrics

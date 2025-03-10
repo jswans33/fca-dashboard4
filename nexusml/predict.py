@@ -23,8 +23,8 @@ from nexusml.core.model import EquipmentClassifier
 def setup_logging(log_level="INFO"):
     """Set up logging configuration."""
     # Create logs directory if it doesn't exist
-    log_dir = Path("logs")
-    log_dir.mkdir(exist_ok=True)
+    log_dir = Path("nexusml/output/logs")
+    log_dir.mkdir(parents=True, exist_ok=True)
 
     # Set up logging
     numeric_level = getattr(logging, log_level.upper(), logging.INFO)
@@ -49,7 +49,7 @@ def main():
     parser.add_argument(
         "--model-path",
         type=str,
-        default="outputs/models/equipment_classifier_latest.pkl",
+        default="nexusml/output/models/equipment_classifier_latest.pkl",
         help="Path to the trained model file",
     )
     parser.add_argument(
@@ -61,7 +61,7 @@ def main():
     parser.add_argument(
         "--output-file",
         type=str,
-        default="prediction_results.csv",
+        default="nexusml/output/results/prediction_results.csv",
         help="Path to save the prediction results",
     )
     parser.add_argument(
@@ -183,7 +183,7 @@ def main():
             results.append(prediction)
 
             # Print progress
-            current_index = int(i)
+            current_index = i if isinstance(i, int) else 0
             total_items = len(input_data)
             if (current_index + 1) % 10 == 0 or current_index == total_items - 1:
                 logger.info(f"Processed {current_index + 1}/{total_items} items")

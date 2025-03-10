@@ -10,8 +10,17 @@ This project adheres to
 
 ### Added
 
-- No unreleased changes at this time
+- Completed the immediate improvements document with detailed implementation
+  plan
+- Added comprehensive project template guidelines for new projects
+- Created migration scripts for consolidating output and example directories
+- Added default output configurations to nexusml_config.yml
 
 ### Fixed
 
--
+- Corrected section numbering inconsistencies in the immediate improvements
+  document
+- Improved document structure and organization for better readability
+- Fixed confusion matrix warnings by adding explicit labels parameter
+- Standardized output directory paths across all scripts to use nexusml/output/
+- Updated train_model_pipeline.py and predict.py to use standardized paths

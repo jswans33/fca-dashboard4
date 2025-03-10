@@ -22,7 +22,7 @@ import pickle
 import sys
 import time
 from pathlib import Path
-from typing import Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -143,7 +143,7 @@ def validate_training_data(data_path: str) -> Dict:
 
 
 def visualize_category_distribution(
-    df: pd.DataFrame, output_dir: str = "outputs"
+    df: pd.DataFrame, output_dir: str = "nexusml/output"
 ) -> Tuple[str, str]:
     """
     Visualize the distribution of categories in the dataset.
@@ -227,8 +227,8 @@ def setup_logging(log_level: str = "INFO") -> logging.Logger:
         Logger instance
     """
     # Create logs directory if it doesn't exist
-    log_dir = Path("logs")
-    log_dir.mkdir(exist_ok=True)
+    log_dir = Path("nexusml/output/logs")
+    log_dir.mkdir(parents=True, exist_ok=True)
 
     # Create a timestamp for the log file
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -299,8 +299,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="outputs/models",
-        help="Directory to save the trained model and results (default: outputs/models)",
+        default="nexusml/output/models",
+        help="Directory to save the trained model and results (default: nexusml/output/models)",
     )
     parser.add_argument(
         "--model-name",
@@ -565,7 +565,7 @@ def save_model(
         "metrics": metrics,
         "model_type": "EquipmentClassifier",
         "training_parameters": {
-            "sampling_strategy": getattr(classifier, 'sampling_strategy', 'direct'),
+            "sampling_strategy": getattr(classifier, "sampling_strategy", "direct"),
         },
     }
 
@@ -587,6 +587,7 @@ def save_model(
 
     # Copy the files instead of creating symlinks
     import shutil
+
     shutil.copy2(model_path, latest_model_path)
     shutil.copy2(metadata_path, latest_metadata_path)
 
@@ -683,7 +684,7 @@ def make_sample_prediction(
     description: str = "Heat Exchanger for Chilled Water system with Plate and Frame design",
     service_life: float = 20.0,
     logger: Optional[logging.Logger] = None,
-) -> Dict:
+) -> Dict:  # Use generic Dict to avoid type issues
     """
     Make a sample prediction using the trained model.
 
@@ -703,7 +704,17 @@ def make_sample_prediction(
 
     # Check if classifier has a model
     if hasattr(classifier, "predict") and callable(classifier.predict):
-        prediction = classifier.predict(description, service_life)
+        prediction_result = classifier.predict(description, service_life)
+
+        # Convert DataFrame to dict if needed
+        if isinstance(prediction_result, pd.DataFrame):
+            prediction = (
+                prediction_result.to_dict(orient="records")[0]
+                if not prediction_result.empty
+                else {}
+            )
+        else:
+            prediction = prediction_result
 
         if logger:
             logger.info("Prediction results:")
