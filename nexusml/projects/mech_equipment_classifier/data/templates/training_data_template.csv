@@ -1,0 +1,21 @@
+equipment_tag,manufacturer,model,category_name,omniclass_code,uniformat_code,masterformat_code,mcaa_system_category,CategoryID,OmniClassID,UniFormatID,MasterFormatID,MCAAID,LocationID,service_life,Precon_System,Drawing_Abbreviation,Precon_Tag,System_Type_ID,Equip_Name_ID,Sub_System_ID,Sub_System_Class,Class_ID,Unit
+EQ-001,Trane,CVHE-500,Chiller,23-33 13 13,D3030.10,23 64 16,HVAC Equipment,101,2331313,D303010,236416,H,1,20,Cooling,CH,CH-01,H,CHLR,CW,CENT,1,tons
+EQ-002,Carrier,30XA-252,Chiller,23-33 13 13,D3030.10,23 64 16,HVAC Equipment,101,2331313,D303010,236416,H,1,15,Cooling,CH,CH-02,H,CHLR,CW,AIR,1,tons
+EQ-003,Bell & Gossett,e-1510,Pump,23-21 13 13,D3020.10,23 21 23,Hot Water Systems,102,2321313,D302010,232123,H,2,10,Heating,P,P-01,H,PUMP,HW,CENT,2,gpm
+EQ-004,Armstrong,4030,Pump,23-21 13 13,D3020.10,23 21 23,Hot Water Systems,102,2321313,D302010,232123,H,2,12,Heating,P,P-02,H,PUMP,HW,CENT,2,gpm
+EQ-005,Daikin,AWV016,Air Handler,23-33 13 13,D3040.10,23 74 13,HVAC Equipment,103,2333313,D304010,237413,H,3,15,Air Distribution,AHU,AHU-01,H,AHU,SA,VAV,3,cfm
+EQ-006,York,YAH,Air Handler,23-33 13 13,D3040.10,23 74 13,HVAC Equipment,103,2333313,D304010,237413,H,3,18,Air Distribution,AHU,AHU-02,H,AHU,SA,VAV,3,cfm
+EQ-007,Sloan,Royal 111,Flush Valve,22-12 13 13,D2010.10,22 42 39,Plumbing Equipment,201,2212313,D201010,224239,P,4,8,Plumbing,FV,FV-01,P,FLVL,DW,MAN,4,gpm
+EQ-008,Zurn,Z6000AV,Flush Valve,22-12 13 13,D2010.10,22 42 39,Plumbing Equipment,201,2212313,D201010,224239,P,4,10,Plumbing,FV,FV-02,P,FLVL,DW,AUTO,4,gpm
+EQ-009,Kohler,K-4620,Water Closet,22-12 13 13,D2010.10,22 42 13.13,Plumbing Equipment,202,2212313,D201010,22421313,P,5,15,Plumbing,WC,WC-01,P,WC,DW,WALL,5,gpf
+EQ-010,American Standard,2257.101,Water Closet,22-12 13 13,D2010.10,22 42 13.13,Plumbing Equipment,202,2212313,D201010,22421313,P,5,15,Plumbing,WC,WC-02,P,WC,DW,FLOOR,5,gpf
+EQ-011,Siemens,BACnet,Building Automation System,25-30 00 00,D8010.50,25 55 00,Controls,301,2530000,D801050,255500,C,6,12,Controls,BAS,BAS-01,C,BAS,CTRL,DDC,6,points
+EQ-012,Johnson Controls,Metasys,Building Automation System,25-30 00 00,D8010.50,25 55 00,Controls,301,2530000,D801050,255500,C,6,10,Controls,BAS,BAS-02,C,BAS,CTRL,DDC,6,points
+EQ-013,Tyco,TFP155,Sprinkler Head,21-31 13 13,D4010.10,21 13 13,Fire Protection,401,2131313,D401010,211313,F,7,25,Fire Protection,SPH,SPH-01,F,SPH,FP,WET,7,psi
+EQ-014,Viking,VK302,Sprinkler Head,21-31 13 13,D4010.10,21 13 13,Fire Protection,401,2131313,D401010,211313,F,7,25,Fire Protection,SPH,SPH-02,F,SPH,FP,DRY,7,psi
+EQ-015,Square D,NF225,Electrical Panel,26-12 13 13,D5010.10,26 24 16,Electrical,501,2612313,D501010,262416,E,8,30,Electrical,PNL,PNL-01,E,PNL,PWR,DIST,8,amps
+EQ-016,Eaton,PRL4,Electrical Panel,26-12 13 13,D5010.10,26 24 16,Electrical,501,2612313,D501010,262416,E,8,30,Electrical,PNL,PNL-02,E,PNL,PWR,DIST,8,amps
+EQ-017,Greenheck,SQ-75,Exhaust Fan,23-34 13 13,D3040.20,23 34 16,Mechanical/Sheetmetal,601,2334313,D304020,233416,SM,9,15,Air Distribution,EF,EF-01,H,FAN,EX,CENT,9,cfm
+EQ-018,Cook,ACE-B,Exhaust Fan,23-34 13 13,D3040.20,23 34 16,Mechanical/Sheetmetal,601,2334313,D304020,233416,SM,9,15,Air Distribution,EF,EF-02,H,FAN,EX,AXIAL,9,cfm
+EQ-019,Liebert,DS070,Computer Room AC,23-33 13 13,D3050.10,23 81 23,Process Cooling Water,701,2333313,D305010,238123,R,10,10,Cooling,CRAC,CRAC-01,R,CRAC,CW,DX,10,tons
+EQ-020,APC,ACSC100,Computer Room AC,23-33 13 13,D3050.10,23 81 23,Process Cooling Water,701,2333313,D305010,238123,R,10,10,Cooling,CRAC,CRAC-02,R,CRAC,CW,CHW,10,tons
