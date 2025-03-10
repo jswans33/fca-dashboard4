@@ -45,6 +45,74 @@ fca_dashboard/
    make install
    ```
 
+## Installing as a Python Module
+
+You can install this package as a Python module, allowing you to import and use it in other projects.
+
+### Using uv (Recommended)
+
+[uv](https://github.com/astral-sh/uv) is a faster alternative to pip for installing Python packages.
+
+1. Install uv if you don't have it:
+
+   ```bash
+   pip install uv
+   ```
+
+2. Install the package in development mode (editable):
+
+   ```bash
+   uv pip install -e .
+   ```
+
+   Or for a regular installation:
+
+   ```bash
+   uv pip install .
+   ```
+
+   To include development dependencies:
+
+   ```bash
+   uv pip install -e ".[dev]"
+   ```
+
+### Using pip
+
+1. Install the package in development mode (editable):
+
+   ```bash
+   pip install -e .
+   ```
+
+   Or for a regular installation:
+
+   ```bash
+   pip install .
+   ```
+
+   To include development dependencies:
+
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+### Using the Package
+
+Once installed, you can import and use the package in your Python code:
+
+```python
+import fca_dashboard
+
+# Check the version
+print(fca_dashboard.__version__)
+
+# Use modules from the package
+from fca_dashboard.classifier import model
+from fca_dashboard.config import settings
+# etc.
+```
+
 ## Usage
 
 Run the ETL pipeline with default settings:

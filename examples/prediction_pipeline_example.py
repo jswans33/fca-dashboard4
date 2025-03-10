@@ -127,15 +127,16 @@ def create_sample_prediction_data(output_path="examples/data/sample_prediction_d
     return data
 
 
-def orchestrator_prediction_example(logger=None):
+def orchestrator_prediction_example(logger=None, orchestrator=None):
     """Example of using the orchestrator for prediction."""
     if logger is None:
         logger = setup_logging()
     
     logger.info("Starting prediction pipeline example")
     
-    # Create orchestrator
-    orchestrator = create_orchestrator()
+    # Create orchestrator if not provided
+    if orchestrator is None:
+        orchestrator = create_orchestrator()
     
     # Load model
     model = load_model(orchestrator)

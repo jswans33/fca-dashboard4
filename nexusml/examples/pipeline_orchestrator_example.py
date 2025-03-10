@@ -23,6 +23,55 @@ from nexusml.core.pipeline.context import PipelineContext
 from nexusml.core.pipeline.factory import PipelineFactory
 from nexusml.core.pipeline.orchestrator import PipelineOrchestrator
 from nexusml.core.pipeline.registry import ComponentRegistry
+from nexusml.core.pipeline.interfaces import (
+    DataLoader,
+    DataPreprocessor,
+    FeatureEngineer,
+    ModelBuilder,
+    ModelEvaluator,
+    ModelSerializer,
+    ModelTrainer,
+    Predictor,
+)
+
+
+# Data loader implementation that handles both CSV and Excel files
+class StandardDataLoader(DataLoader):
+    """Data loader implementation that handles CSV and Excel files."""
+
+    def __init__(self, file_path=None):
+        self.file_path = file_path
+
+    def load_data(self, data_path=None, **kwargs):
+        """Load data from a file (CSV or Excel)."""
+        path = data_path or self.file_path
+        logger = logging.getLogger("pipeline_orchestrator_example")
+        logger.info(f"Loading data from {path}")
+
+        # In a real implementation, this would handle file not found errors properly
+        try:
+            # Handle the case where path might be None
+            if path is None:
+                raise ValueError("No data path provided")
+
+            # Determine file type based on extension
+            if path.lower().endswith(".csv"):
+                return pd.read_csv(path)
+            elif path.lower().endswith((".xls", ".xlsx")):
+                return pd.read_excel(path)
+            else:
+                raise ValueError(f"Unsupported file format: {path}")
+
+        except FileNotFoundError:
+            logger.error(f"File not found: {path}")
+            raise FileNotFoundError(f"Data file not found: {path}")
+        except Exception as e:
+            logger.error(f"Error loading data: {str(e)}")
+            raise ValueError(f"Error loading data: {str(e)}")
+
+    def get_config(self):
+        """Get the configuration for the data loader."""
+        return {"file_path": self.file_path}
 
 
 def setup_logging():
@@ -51,56 +100,10 @@ def create_orchestrator():
 
     # Register default implementations
     # In a real application, you would register your actual implementations
-    # For this example, we'll implement a simple CSVDataLoader
-
-    from nexusml.core.pipeline.interfaces import (
-        DataLoader,
-        DataPreprocessor,
-        FeatureEngineer,
-        ModelBuilder,
-        ModelEvaluator,
-        ModelSerializer,
-        ModelTrainer,
-        Predictor,
-    )
-
-    # Data loader implementation that handles both CSV and Excel files
-    class StandardDataLoader(DataLoader):
-        """Data loader implementation that handles CSV and Excel files."""
-
-        def __init__(self, file_path=None):
-            self.file_path = file_path
-
-        def load_data(self, data_path=None, **kwargs):
-            """Load data from a file (CSV or Excel)."""
-            path = data_path or self.file_path
-            logger = logging.getLogger("pipeline_orchestrator_example")
-            logger.info(f"Loading data from {path}")
-
-            # In a real implementation, this would handle file not found errors properly
-            try:
-                # Handle the case where path might be None
-                if path is None:
-                    raise ValueError("No data path provided")
-
-                # Determine file type based on extension
-                if path.lower().endswith(".csv"):
-                    return pd.read_csv(path)
-                elif path.lower().endswith((".xls", ".xlsx")):
-                    return pd.read_excel(path)
-                else:
-                    raise ValueError(f"Unsupported file format: {path}")
-
-            except FileNotFoundError:
-                logger.error(f"File not found: {path}")
-                raise FileNotFoundError(f"Data file not found: {path}")
-            except Exception as e:
-                logger.error(f"Error loading data: {str(e)}")
-                raise ValueError(f"Error loading data: {str(e)}")
-
-        def get_config(self):
-            """Get the configuration for the data loader."""
-            return {"file_path": self.file_path}
+    # For this example, we'll use the StandardDataLoader defined at module level
+    
+    # Create an instance of the module-level StandardDataLoader
+    data_loader = StandardDataLoader()
 
     # Simple DataPreprocessor implementation
     class StandardPreprocessor(DataPreprocessor):
@@ -341,7 +344,7 @@ def create_orchestrator():
             }
 
     # Register the components
-    registry.register(DataLoader, "standard", StandardDataLoader)
+    registry.register(DataLoader, "standard", lambda: data_loader)
     registry.register(DataPreprocessor, "standard", StandardPreprocessor)
     registry.register(FeatureEngineer, "simple", SimpleFeatureEngineer)
     registry.register(ModelBuilder, "simple", SimpleModelBuilder)
@@ -362,6 +365,25 @@ def create_orchestrator():
 
     # Create a dependency injection container
     container = DIContainer()
+    
+    # Create instances of all components
+    data_preprocessor = StandardPreprocessor()
+    feature_engineer = SimpleFeatureEngineer()
+    model_builder = SimpleModelBuilder()
+    model_trainer = SimpleModelTrainer()
+    model_evaluator = SimpleModelEvaluator()
+    model_serializer = SimpleModelSerializer()
+    predictor = SimplePredictor()
+    
+    # Register components with the container
+    container.register_instance(DataLoader, data_loader)
+    container.register_instance(DataPreprocessor, data_preprocessor)
+    container.register_instance(FeatureEngineer, feature_engineer)
+    container.register_instance(ModelBuilder, model_builder)
+    container.register_instance(ModelTrainer, model_trainer)
+    container.register_instance(ModelEvaluator, model_evaluator)
+    container.register_instance(ModelSerializer, model_serializer)
+    container.register_instance(Predictor, predictor)
 
     # Create a pipeline factory
     factory = PipelineFactory(registry, container)
@@ -371,6 +393,9 @@ def create_orchestrator():
 
     # Create a pipeline orchestrator
     orchestrator = PipelineOrchestrator(factory, context)
+
+    # Expose the container for the verification script
+    orchestrator.container = container
 
     return orchestrator
 

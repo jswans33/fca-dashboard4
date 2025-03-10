@@ -182,21 +182,36 @@ def verify_end_to_end(logger):
     try:
         from examples.pipeline_orchestrator_example import create_orchestrator, train_model_example, StandardDataLoader
         
-        # Get the default container provider
-        provider = ContainerProvider()
-        
-        # Register core components
-        register_core_components(provider)
-        
-        # Register pipeline components
-        register_pipeline_components(provider)
-        
-        # Register DataLoader explicitly
-        from nexusml.core.pipeline.interfaces import DataLoader
-        provider.container.register_instance(DataLoader, StandardDataLoader())
-        
-        # Create orchestrator
+        # Create orchestrator - this will create and register all components
         orchestrator = create_orchestrator()
+        
+        # Access the container from the orchestrator
+        if not hasattr(orchestrator, 'container'):
+            logger.error("❌ End-to-end verification failed: orchestrator does not expose container")
+            return False
+            
+        # Register the ModelBuilder with the factory's container
+        from nexusml.core.model_building.base import ModelBuilder
+        from nexusml.core.model_building.builders.random_forest import RandomForestBuilder
+        
+        # Get the factory from the orchestrator
+        factory = orchestrator.factory
+        
+        # Register ModelBuilder with the factory's container
+        logger.info("Registering ModelBuilder in the factory's container")
+        factory.container.register_instance(ModelBuilder, RandomForestBuilder())
+        
+        # Register ModelTrainer with the factory's container
+        from nexusml.core.model_training.base import ModelTrainer
+        from nexusml.core.model_training.trainers.standard import StandardModelTrainer
+        logger.info("Registering ModelTrainer in the factory's container")
+        factory.container.register_instance(ModelTrainer, StandardModelTrainer())
+        
+        # Register ModelEvaluator with the factory's container
+        from nexusml.core.model_building.base import ModelEvaluator
+        from nexusml.core.pipeline.components.model_evaluator import EnhancedModelEvaluator
+        logger.info("Registering ModelEvaluator in the factory's container")
+        factory.container.register_instance(ModelEvaluator, EnhancedModelEvaluator())
         
         # Run a simple training example
         model = train_model_example(orchestrator, logger)
@@ -237,22 +252,12 @@ def verify_prediction_pipeline(logger):
         # Get the orchestrator_prediction_example function
         orchestrator_prediction_example = module.orchestrator_prediction_example
         
-        # Get the default container provider
-        provider = ContainerProvider()
+        # Create orchestrator - this will create and register all components
+        from examples.pipeline_orchestrator_example import create_orchestrator
+        orchestrator = create_orchestrator()
         
-        # Register core components
-        register_core_components(provider)
-        
-        # Register pipeline components
-        register_pipeline_components(provider)
-        
-        # Register DataLoader explicitly
-        from nexusml.core.pipeline.interfaces import DataLoader
-        from examples.pipeline_orchestrator_example import StandardDataLoader
-        provider.container.register_instance(DataLoader, StandardDataLoader())
-        
-        # Run the prediction example
-        orchestrator_prediction_example(logger)
+        # Run the prediction example with the orchestrator
+        orchestrator_prediction_example(logger, orchestrator)
         
         # Check if the output file was created
         output_file = Path("examples/output/orchestrator_prediction_results.csv")

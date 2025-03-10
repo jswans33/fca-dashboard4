@@ -2,88 +2,318 @@
   "metrics": {
     "category_name": {
       "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
       "f1_macro": 1.0,
-      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
     },
     "uniformat_code": {
       "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
       "f1_macro": 1.0,
-      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
     },
     "mcaa_system_category": {
       "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
       "f1_macro": 1.0,
-      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
     },
     "Equipment_Type": {
       "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
       "f1_macro": 1.0,
-      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
     },
     "System_Subtype": {
       "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
       "f1_macro": 1.0,
-      "classification_report": "              precision    recall  f1-score   support\n\n     Unknown       1.00      1.00      1.00         2\n\n    accuracy                           1.00         2\n   macro avg       1.00      1.00      1.00         2\nweighted avg       1.00      1.00      1.00         2\n"
+      "classification_report": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          2
+        ]
+      ],
+      "per_class": {
+        "Unknown": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 2
+        }
+      }
     },
     "overall": {
       "accuracy_mean": 1.0,
-      "f1_macro_mean": 1.0
-    }
+      "f1_macro_mean": 1.0,
+      "precision_macro_mean": 1.0,
+      "recall_macro_mean": 1.0
+    },
+    "predictions": [
+      {
+        "category_name": "Unknown",
+        "uniformat_code": "Unknown",
+        "mcaa_system_category": "Unknown",
+        "Equipment_Type": "Unknown",
+        "System_Subtype": "Unknown"
+      },
+      {
+        "category_name": "Unknown",
+        "uniformat_code": "Unknown",
+        "mcaa_system_category": "Unknown",
+        "Equipment_Type": "Unknown",
+        "System_Subtype": "Unknown"
+      }
+    ]
   },
   "analysis": {
     "category_name": {
-      "true_positives": 2,
-      "false_positives": 0,
-      "true_negatives": 0,
-      "false_negatives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
     },
     "uniformat_code": {
-      "true_positives": 2,
-      "false_positives": 0,
-      "true_negatives": 0,
-      "false_negatives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
     },
     "mcaa_system_category": {
-      "true_positives": 2,
-      "false_positives": 0,
-      "true_negatives": 0,
-      "false_negatives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
     },
     "Equipment_Type": {
-      "true_positives": 2,
-      "false_positives": 0,
-      "true_negatives": 0,
-      "false_negatives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
     },
     "System_Subtype": {
-      "true_positives": 2,
-      "false_positives": 0,
-      "true_negatives": 0,
-      "false_negatives": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1_score": 1.0
+      "class_distribution": {
+        "true": {
+          "Unknown": 2
+        },
+        "predicted": {
+          "Unknown": 2
+        }
+      }
+    },
+    "feature_importance": {
+      "target_0": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_1": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_2": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_3": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      },
+      "target_4": {
+        "description": 0.0,
+        "unknown": 0.0,
+        "unknown description": 0.0,
+        "service_life": 0.0
+      }
     }
   },
   "component_execution_times": {
-    "data_loading": 0.17412757873535156,
-    "data_preprocessing": 0.0,
-    "feature_engineering": 0.0,
-    "data_splitting": 0.0,
-    "model_building": 0.01286172866821289,
-    "model_training": 7.556933879852295,
-    "model_evaluation": 0.13346338272094727
+    "data_loading": 0.14402055740356445,
+    "data_preprocessing": 0.0009989738464355469,
+    "feature_engineering": 0.0010004043579101562,
+    "data_splitting": 0.0010037422180175781,
+    "model_building": 0.0009765625,
+    "model_training": 6.457306146621704,
+    "model_evaluation": 0.1273658275604248
   }
 }

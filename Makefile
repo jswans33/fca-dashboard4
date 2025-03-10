@@ -36,10 +36,25 @@ test-integration:
 test-sqlite-staging:
 	python -m pytest fca_dashboard/tests/unit/test_sqlite_staging_manager.py fca_dashboard/tests/integration/test_sqlite_staging_integration.py -v
 
+# Install uv package manager
+install-uv:
+	pip install uv
+
+# Install using pip (traditional method)
 install:
 	python -m pip install --upgrade pip
 	python -m pip install -r requirements.txt
 	python -m pip install -e .
+
+# Install using uv (faster alternative)
+install-uv: install-uv
+	uv pip install -r requirements.txt
+	uv pip install -e .
+
+# Install with development dependencies using uv
+install-dev-uv: install-uv
+	uv pip install -r requirements.txt
+	uv pip install -e ".[dev]"
 	
 commit:
 	git add .
