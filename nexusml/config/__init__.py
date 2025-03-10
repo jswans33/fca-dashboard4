@@ -7,9 +7,14 @@ handling both standalone usage and integration with fca_dashboard.
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Union, cast, Optional, Callable
+from typing import Any, Callable, Dict, Optional, Union, cast
 
 import yaml  # type: ignore
+
+from nexusml.utils.path_utils import get_nexusml_root
+
+# Import the path utilities
+from nexusml.utils.path_utils import get_project_root as utils_get_project_root
 
 # Default paths
 DEFAULT_PATHS = {
@@ -43,18 +48,31 @@ except ImportError:
 
 
 def get_project_root() -> Path:
-    """Get the project root directory."""
-    return Path(__file__).resolve().parent.parent
+    """
+    Get the project root directory.
+
+    This function uses the implementation from nexusml.utils.path_utils
+    to ensure consistent path resolution across the project.
+
+    Returns:
+        Path object pointing to the project root directory
+    """
+    try:
+        return utils_get_project_root()
+    except ImportError:
+        # Fallback to the simple implementation if the utils module is not available
+        return Path(__file__).resolve().parent.parent
 
 
 # Import new functionality
-from nexusml.config.manager import ConfigurationManager
-from nexusml.config.interfaces import (
-    ConfigInterface,
-    DataConfigInterface,
-    FeatureConfigInterface,
-    ModelConfigInterface,
-    PipelineConfigInterface,
+# For backward compatibility, import the compatibility functions
+from nexusml.config.compatibility import (
+    get_config_file_path,
+    get_config_manager,
+    get_config_value,
+    get_data_path,
+    get_output_dir,
+    load_settings,
 )
 from nexusml.config.implementations import (
     YamlConfigBase,
@@ -63,15 +81,27 @@ from nexusml.config.implementations import (
     YamlModelConfig,
     YamlPipelineConfig,
 )
+from nexusml.config.interfaces import (
+    ConfigInterface,
+    DataConfigInterface,
+    FeatureConfigInterface,
+    ModelConfigInterface,
+    PipelineConfigInterface,
+)
+from nexusml.config.manager import ConfigurationManager
 from nexusml.config.model_card import ModelCardConfig
 from nexusml.config.paths import (
     PathResolver,
-    get_path_resolver,
-    resolve_path,
-    get_data_path as get_resolved_data_path,
-    get_config_path as get_resolved_config_path,
     get_output_path,
+    get_path_resolver,
     get_reference_path,
+    resolve_path,
+)
+from nexusml.config.paths import (
+    get_config_path as get_resolved_config_path,
+)
+from nexusml.config.paths import (
+    get_data_path as get_resolved_data_path,
 )
 from nexusml.config.validation import (
     ConfigurationValidator,
@@ -80,23 +110,14 @@ from nexusml.config.validation import (
     validate_config_compatibility,
 )
 
-# For backward compatibility, import the compatibility functions
-from nexusml.config.compatibility import (
-    get_data_path,
-    get_output_dir,
-    load_settings,
-    get_config_file_path,
-    get_config_value,
-    get_config_manager,
-)
-
 # Create a singleton instance of ConfigurationManager
 _config_manager = None
+
 
 def get_configuration_manager() -> ConfigurationManager:
     """
     Get the singleton instance of ConfigurationManager.
-    
+
     Returns:
         ConfigurationManager instance
     """
@@ -105,48 +126,46 @@ def get_configuration_manager() -> ConfigurationManager:
         _config_manager = ConfigurationManager()
     return _config_manager
 
+
 # Export public API
 __all__ = [
     # Core functionality
-    'get_project_root',
-    'DEFAULT_PATHS',
-    'CONFIG_FILES',
-    
+    "get_project_root",
+    "get_nexusml_root",
+    "DEFAULT_PATHS",
+    "CONFIG_FILES",
     # New configuration management
-    'ConfigurationManager',
-    'ConfigInterface',
-    'DataConfigInterface',
-    'FeatureConfigInterface',
-    'ModelConfigInterface',
-    'PipelineConfigInterface',
-    'YamlConfigBase',
-    'YamlDataConfig',
-    'YamlFeatureConfig',
-    'YamlModelConfig',
-    'YamlPipelineConfig',
-    'ModelCardConfig',
-    'get_configuration_manager',
-    
+    "ConfigurationManager",
+    "ConfigInterface",
+    "DataConfigInterface",
+    "FeatureConfigInterface",
+    "ModelConfigInterface",
+    "PipelineConfigInterface",
+    "YamlConfigBase",
+    "YamlDataConfig",
+    "YamlFeatureConfig",
+    "YamlModelConfig",
+    "YamlPipelineConfig",
+    "ModelCardConfig",
+    "get_configuration_manager",
     # Path management
-    'PathResolver',
-    'get_path_resolver',
-    'resolve_path',
-    'get_resolved_data_path',
-    'get_resolved_config_path',
-    'get_output_path',
-    'get_reference_path',
-    
+    "PathResolver",
+    "get_path_resolver",
+    "resolve_path",
+    "get_resolved_data_path",
+    "get_resolved_config_path",
+    "get_output_path",
+    "get_reference_path",
     # Configuration validation
-    'ConfigurationValidator',
-    'get_config_validator',
-    'validate_all_configs',
-    'validate_config_compatibility',
-    
+    "ConfigurationValidator",
+    "get_config_validator",
+    "validate_all_configs",
+    "validate_config_compatibility",
     # Backward compatibility
-    'get_data_path',
-    'get_output_dir',
-    'load_settings',
-    'get_config_file_path',
-    'get_config_value',
-    'get_config_manager',
+    "get_data_path",
+    "get_output_dir",
+    "load_settings",
+    "get_config_file_path",
+    "get_config_value",
+    "get_config_manager",
 ]

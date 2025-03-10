@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NexusML Pipeline Configuration Schema",
+  "description": "Schema for validating the NexusML pipeline configuration file",
+  "type": "object",
+  "properties": {
+    "feature_engineering": {
+      "type": "object",
+      "description": "Feature engineering configuration",
+      "properties": {
+        "text_combinations": {
+          "type": "array",
+          "description": "Text combination configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "numeric_columns": {
+          "type": "array",
+          "description": "Numeric column configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "hierarchies": {
+          "type": "array",
+          "description": "Hierarchy configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "column_mappings": {
+          "type": "array",
+          "description": "Column mapping configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "classification_systems": {
+          "type": "array",
+          "description": "Classification system configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "direct_mappings": {
+          "type": "array",
+          "description": "Direct mapping configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "eav_integration": {
+          "type": "object",
+          "description": "EAV integration configuration",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether EAV integration is enabled"
+            }
+          }
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "description": "Classification configuration",
+      "properties": {
+        "classification_targets": {
+          "type": "array",
+          "description": "Classification target configurations",
+          "items": {
+            "type": "object"
+          }
+        },
+        "input_field_mappings": {
+          "type": "array",
+          "description": "Input field mapping configurations",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "description": "Data configuration",
+      "properties": {
+        "required_columns": {
+          "type": "array",
+          "description": "Required column configurations",
+          "items": {
+            "type": "object",
+            "required": ["name", "data_type"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Column name"
+              },
+              "default_value": {
+                "description": "Default value for the column"
+              },
+              "data_type": {
+                "type": "string",
+                "description": "Data type for the column",
+                "enum": ["str", "int", "float", "bool", "date", "datetime"]
+              }
+            }
+          }
+        },
+        "training_data": {
+          "type": "object",
+          "description": "Training data configuration",
+          "required": ["default_path"],
+          "properties": {
+            "default_path": {
+              "type": "string",
+              "description": "Default path to training data"
+            },
+            "encoding": {
+              "type": "string",
+              "description": "Encoding for training data"
+            },
+            "fallback_encoding": {
+              "type": "string",
+              "description": "Fallback encoding for training data"
+            }
+          }
+        }
+      },
+      "required": ["required_columns", "training_data"]
+    },
+    "output": {
+      "type": "object",
+      "description": "Output configuration",
+      "properties": {
+        "output_dir": {
+          "type": "string",
+          "description": "Default output directory for all outputs"
+        },
+        "model": {
+          "type": "object",
+          "description": "Model saving configuration",
+          "properties": {
+            "save_model": {
+              "type": "boolean",
+              "description": "Whether to save the model"
+            },
+            "model_dir": {
+              "type": "string",
+              "description": "Directory to save models"
+            },
+            "model_format": {
+              "type": "string",
+              "description": "Format to save models",
+              "enum": ["pickle", "joblib", "onnx"]
+            }
+          }
+        },
+        "results": {
+          "type": "object",
+          "description": "Results saving configuration",
+          "properties": {
+            "save_results": {
+              "type": "boolean",
+              "description": "Whether to save results"
+            },
+            "results_dir": {
+              "type": "string",
+              "description": "Directory to save results"
+            },
+            "format": {
+              "type": "string",
+              "description": "Format to save results",
+              "enum": ["csv", "json", "excel"]
+            }
+          }
+        },
+        "evaluation": {
+          "type": "object",
+          "description": "Evaluation output configuration",
+          "properties": {
+            "save_evaluation": {
+              "type": "boolean",
+              "description": "Whether to save evaluation"
+            },
+            "evaluation_dir": {
+              "type": "string",
+              "description": "Directory to save evaluation"
+            },
+            "format": {
+              "type": "string",
+              "description": "Format to save evaluation",
+              "enum": ["json", "csv", "text"]
+            }
+          }
+        },
+        "model_card": {
+          "type": "object",
+          "description": "Model card configuration",
+          "properties": {
+            "save_model_card": {
+              "type": "boolean",
+              "description": "Whether to save model card"
+            },
+            "model_card_dir": {
+              "type": "string",
+              "description": "Directory to save model cards"
+            },
+            "format": {
+              "type": "string",
+              "description": "Format to save model cards",
+              "enum": ["json", "markdown", "html"]
+            }
+          }
+        }
+      },
+      "required": ["output_dir"]
+    }
+  },
+  "required": ["data", "output"]
+}

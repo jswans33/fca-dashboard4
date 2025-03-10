@@ -134,6 +134,8 @@ make it a production-ready, maintainable machine learning package.
       examples and outputs) between different directories
     - `update_output_paths.py` to automatically update references to old output
       directories in Python files
+    - Added comprehensive `README.md` to the scripts directory documenting all
+      utility scripts
 
 - **Consolidate Example Directories**
 
@@ -196,20 +198,24 @@ make it a production-ready, maintainable machine learning package.
 - **Standardize Configuration**
 
   - [x] Create default configurations with all required fields
-  - [ ] Add validation for configuration files
-  - [ ] Document all configuration options
-  - **Files to update**:
+  - [x] Add validation for configuration files
+  - [x] Document all configuration options
+  - **Files updated**:
     - `nexusml/config/nexusml_config.yml`
     - `nexusml/config/manager.py`
     - `nexusml/config/validation.py`
-    - `nexusml/config/validation.py`
+    - `nexusml/config/schemas/pipeline_config_schema.json` (new)
+    - `nexusml/docs/configuration_guide.md` (new)
 
 - **Implement Environment Variable Override**
-  - [ ] Ensure all configuration options can be overridden
-  - [ ] Document environment variable naming convention
-  - [ ] Add validation for environment variables
-  - **Files to update**:
+  - [x] Ensure all configuration options can be overridden
+  - [x] Document environment variable naming convention
+  - [x] Add validation for environment variables
+  - **Files updated**:
     - `nexusml/config/manager.py`
+    - `nexusml/config/validation.py`
+    - `nexusml/tests/test_env_override.py` (new)
+    - `nexusml/tests/test_env_validation.py` (new)
 
 ### 5. Improve Documentation
 
