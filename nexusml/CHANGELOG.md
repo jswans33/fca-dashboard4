@@ -35,3 +35,6 @@ This project adheres to
 - Fixed confusion matrix warnings by adding explicit labels parameter
 - Standardized output directory paths across all scripts to use nexusml/output/
 - Updated train_model_pipeline.py and predict.py to use standardized paths
+- Implemented custom scoring functions for multiclass-multioutput classification
+- Fixed parameter handling in cross-validation for multioutput classification
+- Added proper type hints for scoring function parameters

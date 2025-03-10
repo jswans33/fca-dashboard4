@@ -166,13 +166,13 @@ make it a production-ready, maintainable machine learning package.
 
 - **Fix Verification Script Warnings**
 
-  - [ ] Implement custom scoring function for multiclass-multioutput
+  - [x] Implement custom scoring function for multiclass-multioutput
   - [x] Add explicit labels parameter to confusion matrix
   - [x] Add default output paths to configurations
-  - **Files to update**:
+  - **Files updated**:
     - `nexusml/tests/verification_script.py`
     - `nexusml/core/model_building/base.py`
-    - `nexusml/core/pipeline/components/model_evaluator.py`
+    - `nexusml/core/model_training/scoring.py`
     - `nexusml/core/pipeline/components/model_evaluator.py`
 
 - **Add Test Coverage Reporting**
