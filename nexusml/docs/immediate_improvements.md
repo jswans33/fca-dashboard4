@@ -152,10 +152,10 @@ make it a production-ready, maintainable machine learning package.
     removing any duplicate examples that were copied from fca_dashboard
 
 - **Align with Project Structure Template**
-  - [ ] Reorganize codebase to match structure in
+  - [x] Reorganize codebase to match structure in
         `nexusml/projects/mech_equipment_classifier/README.md`
-  - [ ] Create missing directories
-  - [ ] Move files to appropriate locations
+  - [x] Create missing directories
+  - [x] Move files to appropriate locations
   - **Key directories to create/organize**:
     - `nexusml/data/` - All data files
     - `nexusml/models/` - Saved models
@@ -269,10 +269,10 @@ make it a production-ready, maintainable machine learning package.
    - ✅ Verify the "C:/Repos/fca-dashboard4/.venv/Scripts/python.exe
      c:/Repos/fca-dashboard4/nexusml/tests/verification_script.py" still passes.
 
-2. **Standardize Directory Structure**
+2. **✅ Standardize Directory Structure**
 
    - ✅ Consolidate output directories
-   - Align with project structure template
+   - ✅ Align with project structure template
 
 3. **Fix Critical Issues**
    - ✅ Fix verification script warnings
