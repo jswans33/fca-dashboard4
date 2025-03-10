@@ -10,8 +10,8 @@ import pandas as pd
 from pathlib import Path
 
 from nexusml.config.manager import ConfigurationManager
-from nexusml.core.pipeline.context import PipelineContext
-from nexusml.core.pipeline.stages import (
+from nexusml.src.pipeline.context import PipelineContext
+from nexusml.src.pipeline.stages import (
     ConfigurableDataLoadingStage,
     ConfigDrivenValidationStage,
     SimpleFeatureEngineeringStage,

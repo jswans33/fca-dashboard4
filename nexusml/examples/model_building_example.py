@@ -19,7 +19,7 @@ from nexusml.core.model_training import (
     CrossValidationTrainer,
     GridSearchOptimizer,
 )
-from nexusml.core.model_building.base import BaseModelEvaluator, BaseModelSerializer
+from nexusml.src.models.base import BaseModelEvaluator, BaseModelSerializer
 
 
 def load_sample_data():

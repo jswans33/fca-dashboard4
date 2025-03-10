@@ -15,7 +15,7 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 
 # Import the enhanced data loader
-from nexusml.core.pipeline.components.data_loader import StandardDataLoader
+from nexusml.src.pipeline.components.data_loader import StandardDataLoader
 
 
 def main():

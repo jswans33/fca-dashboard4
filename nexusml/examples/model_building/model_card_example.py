@@ -20,9 +20,9 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from nexusml.core.model_card.model_card import ModelCard
-from nexusml.core.model_card.generator import ModelCardGenerator
-from nexusml.core.model_card.viewer import print_model_card_summary, export_model_card_html
+from nexusml.src.models.cards.model_card import ModelCard
+from nexusml.src.models.cards.generator import ModelCardGenerator
+from nexusml.src.models.cards.viewer import print_model_card_summary, export_model_card_html
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -201,8 +201,8 @@ def example_3_model_card_with_pipeline():
     
     # Import pipeline components
     try:
-        from nexusml.core.pipeline.stages.model_saving import ModelCardSavingStage
-        from nexusml.core.pipeline.context import PipelineContext
+        from nexusml.src.pipeline.stages.model_saving import ModelCardSavingStage
+        from nexusml.src.pipeline.context import PipelineContext
         
         # Create sample data
         X_train, y_train, X_test, y_test = create_sample_data()

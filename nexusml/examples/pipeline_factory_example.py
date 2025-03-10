@@ -8,9 +8,9 @@ pipeline components with proper dependencies.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from nexusml.core.di.container import DIContainer
-from nexusml.core.pipeline.factory import PipelineFactory
-from nexusml.core.pipeline.interfaces import (
+from nexusml.src.utils.di.container import DIContainer
+from nexusml.src.pipeline.factory import PipelineFactory
+from nexusml.src.pipeline.interfaces import (
     DataLoader,
     DataPreprocessor,
     FeatureEngineer,
@@ -20,7 +20,7 @@ from nexusml.core.pipeline.interfaces import (
     ModelTrainer,
     Predictor,
 )
-from nexusml.core.pipeline.registry import ComponentRegistry
+from nexusml.src.pipeline.registry import ComponentRegistry
 
 
 # Mock implementations for demonstration purposes

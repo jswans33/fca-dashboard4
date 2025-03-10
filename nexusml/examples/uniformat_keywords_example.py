@@ -8,7 +8,7 @@ to find Uniformat codes by keyword and enrich equipment data.
 
 import pandas as pd
 
-from nexusml.core.reference.manager import ReferenceManager
+from nexusml.src.utils.reference.manager import ReferenceManager
 
 
 def main():

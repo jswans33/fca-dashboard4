@@ -19,7 +19,7 @@ project_root = Path(__file__).resolve().parent.parent.parent
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from nexusml.core.cli.training_args import TrainingArguments, setup_logging
+from nexusml.src.utils.cli.training_args import TrainingArguments, setup_logging
 from nexusml.train_model_pipeline_v2 import (
     create_orchestrator,
     make_sample_prediction_with_orchestrator,

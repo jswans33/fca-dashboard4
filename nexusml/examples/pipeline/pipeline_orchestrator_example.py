@@ -19,14 +19,14 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from nexusml.core.di.container import DIContainer
-from nexusml.core.pipeline.context import PipelineContext
-from nexusml.core.pipeline.factory import PipelineFactory
-from nexusml.core.pipeline.orchestrator import PipelineOrchestrator
-from nexusml.core.pipeline.registry import ComponentRegistry
+from nexusml.src.utils.di.container import DIContainer
+from nexusml.src.pipeline.context import PipelineContext
+from nexusml.src.pipeline.factory import PipelineFactory
+from nexusml.src.pipeline.orchestrator import PipelineOrchestrator
+from nexusml.src.pipeline.registry import ComponentRegistry
 
 # Import interfaces
-from nexusml.core.pipeline.interfaces import (
+from nexusml.src.pipeline.interfaces import (
     DataLoader,
     DataPreprocessor,
     FeatureEngineer,
@@ -481,8 +481,8 @@ def create_orchestrator():
     registry.set_default_implementation(Predictor, "simple")
 
     # Get the container from the ContainerProvider
-    from nexusml.core.di.provider import ContainerProvider
-    from nexusml.core.di.registration import register_core_components, register_pipeline_components
+    from nexusml.src.utils.di.provider import ContainerProvider
+    from nexusml.src.utils.di.registration import register_core_components, register_pipeline_components
     
     # Get the default container provider
     provider = ContainerProvider()
