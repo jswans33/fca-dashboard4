@@ -107,6 +107,11 @@ This checklist tracks the progress of the NexusML documentation effort. It follo
 - [x] **Scripts README** - Created README for the scripts directory
 - [x] **Utils README** - Created README for the utils directory
 
+## Additional Documentation
+
+- [x] **Dependencies** - Created comprehensive list of dependencies
+- [x] **Offline Resources** - Created list of offline documentation resources
+
 ## Next Steps
 
 All documentation has been completed! 🎉

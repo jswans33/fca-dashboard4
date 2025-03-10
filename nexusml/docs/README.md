@@ -18,9 +18,11 @@ The documentation is organized into the following sections:
 If you're new to NexusML, we recommend starting with the following resources:
 
 1. [Installation Guide](installation_guide.md): Instructions for installing NexusML
-2. [Usage Guide](usage_guide.md): Comprehensive guide for using NexusML
-3. [Examples](examples/README.md): Practical examples of using NexusML
-4. [Architecture Overview](architecture/overview.md): High-level overview of the system architecture
+2. [Dependencies](dependencies.md): Comprehensive list of dependencies required by NexusML
+3. [Usage Guide](usage_guide.md): Comprehensive guide for using NexusML
+4. [Examples](examples/README.md): Practical examples of using NexusML
+5. [Architecture Overview](architecture/overview.md): High-level overview of the system architecture
+6. [Offline Resources](offline_resources.md): List of offline documentation resources for development
 
 ## Documentation Approach
 

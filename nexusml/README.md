@@ -233,6 +233,10 @@ By ensuring all components work correctly through verification, we can confident
 For more detailed documentation, see the following:
 
 - [Installation Guide](docs/installation_guide.md)
+- [Dependencies](docs/dependencies.md)
+- [Usage Guide](docs/usage_guide.md)
+- [API Reference](docs/api_reference.md)
+- [Offline Resources](docs/offline_resources.md)
 - [Architecture Overview](docs/architecture/overview.md)
 - [Configuration System](docs/architecture/configuration.md)
 - [Pipeline Architecture](docs/architecture/pipeline.md)
